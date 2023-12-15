@@ -96,11 +96,11 @@ void Operator::mouseMoveEvent(QGraphicsSceneMouseEvent *event, ViewGraphics *vie
                         m_oppositePos.setY(1);
                 }
 
-                QPointF new_delta = m_lastPos - m_oppositePos;
-                QPointF initial_delta = m_pressedPos - m_oppositePos;
+                QPointF beginOffset = m_pressedPos - m_oppositePos;
+                QPointF endOffset = m_lastPos - m_oppositePos;
 
-                double sx = new_delta.x() / initial_delta.x();
-                double sy = new_delta.y() / initial_delta.y();
+                double sx = endOffset.x() / beginOffset.x();
+                double sy = endOffset.y() / beginOffset.y();
 
                 item->stretch(m_handleType, sx , sy , m_oppositePos);
 
