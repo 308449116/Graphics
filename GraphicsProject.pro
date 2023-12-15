@@ -21,6 +21,8 @@ SOURCES += \
     GraphicsObject/canvasrectitem.cpp \
     Handle/graphicshandle.cpp \
     Handle/graphicsselection.cpp \
+    Operator/operator.cpp \
+    Operator/selectoperator.cpp \
     Utils/utils.cpp \
     GraphicsObject/canvastextitem.cpp \
     main.cpp \
@@ -34,6 +36,8 @@ HEADERS += \
     GraphicsObject/canvasrectitem.h \
     Handle/graphicshandle.h \
     Handle/graphicsselection.h \
+    Operator/operator.h \
+    Operator/selectoperator.h \
     Utils/utils.h \
     GraphicsObject/canvastextitem.h \
     mainwindow.h \

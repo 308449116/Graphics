@@ -11,22 +11,23 @@ SceneGraphics::SceneGraphics(QObject* parent)
 
 //void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //{
-    
+//    Operator * tool = Operator::findTool( Operator::c_drawShape );
+//    if ( tool )
+//        tool->mousePressEvent(mouseEvent,this);
 //}
 
 //void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //{
-    
+//    Operator * tool = Operator::findTool( Operator::c_drawShape );
+//    if ( tool )
+//        tool->mouseMoveEvent(mouseEvent,this);
 //}
 
 //void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 //{
-    
-//}
-
-//void SceneGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
-//{
-    
+//    Operator * tool = Operator::findTool( Operator::c_drawShape );
+//    if ( tool )
+//        tool->mouseReleaseEvent(mouseEvent,this);
 //}
 
 void SceneGraphics::keyPressEvent(QKeyEvent *event)

@@ -39,6 +39,10 @@ public:
 
     void show(QGraphicsItem *item);
 
+    int collidesWithHandle(QGraphicsItem *item, const QPointF & point) const;
+
+    QPointF opposite(QGraphicsItem *item, int handleType) const;
+
 private:
 
     using SelectionPool = QList<GraphicsSelection *>;
@@ -139,6 +143,24 @@ void ViewGraphics::Selection::show(QGraphicsItem *item)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item))
         s->show();
+}
+
+int ViewGraphics::Selection::collidesWithHandle(QGraphicsItem *item, const QPointF &point) const
+{
+    if (GraphicsSelection *s = m_usedSelections.value(item)) {
+        return s->collidesWithHandle(point);
+    }
+
+    return 0;
+}
+
+QPointF ViewGraphics::Selection::opposite(QGraphicsItem *item, int handleType) const
+{
+    if (GraphicsSelection *s = m_usedSelections.value(item)) {
+        return s->opposite(handleType);
+    }
+
+    return QPointF();
 }
 
 
@@ -243,6 +265,10 @@ void ViewGraphics::manageItem(QGraphicsItem *item)
 void ViewGraphics::unmanageItem(QGraphicsItem *item)
 {
     m_manageItem.remove(item);
+}
+
+int ViewGraphics::collidesWithHandle(QGraphicsItem *item, const QPointF &point) const
+{
 }
 
 void ViewGraphics::mouseMoveEvent(QMouseEvent *event)
@@ -351,6 +377,11 @@ void ViewGraphics::mouseReleaseEvent(QMouseEvent *event)
 bool ViewGraphics::isItemSelected(QGraphicsItem *item) const
 {
     return m_selection->isItemSelected(item);
+}
+
+QPointF ViewGraphics::opposite(QGraphicsItem *item, int handleType) const
+{
+    return m_selection->opposite(item, handleType);
 }
 
 bool ViewGraphics::trySelectItem(QGraphicsItem *item)

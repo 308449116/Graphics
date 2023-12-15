@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "GraphicsObject/scenegraphics.h"
+//#include "GraphicsObject/scenegraphics.h"
 //#include "GraphicsObject/canvasbarcodeitem.h"
 //#include "GraphicsObject/decoratoritemgraphics.h"
 #include <QGraphicsItem>
@@ -10,16 +10,16 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    int width = 600;
-    int height = 400;
+//    int width = 600;
+//    int height = 400;
 //    QRectF rect(-width/2, -height/2, width, height);
-    QRectF rect(0, 0, width, height);
+//    QRectF rect(0, 0, width, height);
 //    m_scene = new SceneGraphics(this);
 //    m_scene->setSceneRect(rect);
-    m_scene = dynamic_cast<SceneGraphics*>(ui->graphicsView->scene());
-    if (!m_scene) {
-        qDebug("=============");
-    }
+//    m_scene = dynamic_cast<SceneGraphics*>(ui->graphicsView->scene());
+//    if (!m_scene) {
+//        qDebug("=============");
+//    }
 //    QGraphicsTextItem * testitem = new QGraphicsTextItem("test");
 //    QGraphicsItem * item = qgraphicsitem_cast<QGraphicsItem *>(testitem);
 //    m_scene->addItem(item);

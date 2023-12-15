@@ -23,8 +23,10 @@ public:
     void manageItem(QGraphicsItem *item);
     void unmanageItem(QGraphicsItem *item);
 
-    int collidesWithHandle( const QPointF & point ) const;
+    int collidesWithHandle(QGraphicsItem *item, const QPointF & point ) const;
     bool isItemSelected(QGraphicsItem *item) const;
+    QPointF opposite(QGraphicsItem *item, int handleType) const;
+
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
