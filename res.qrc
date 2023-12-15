@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/close.png</file>
+        <file>icons/resize.png</file>
+        <file>icons/rotate.png</file>
+        <file>icons/rotate_press.png</file>
+    </qresource>
+</RCC>
