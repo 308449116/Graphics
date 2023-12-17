@@ -12,7 +12,7 @@ Operator::Operator()
 //    dashRect = 0;
 //    selLayer = 0;
     m_oppositePos = QPointF();
-    m_m_handleType = GraphicsHandle::Handle_None;
+    m_handleType = GraphicsHandle::Handle_None;
     m_selectMode = NONE;
 }
 

@@ -16,9 +16,12 @@ DESTDIR += $$PWD/out/bin
 #INCLUDEPATH += $$PWD/include/barcode
 
 SOURCES += \
+    GraphicsObject/abstractgraphicstemplate.cpp \
     GraphicsObject/canvasitembase.cpp \
     GraphicsObject/canvasitemmanager.cpp \
     GraphicsObject/canvasrectitem.cpp \
+    GraphicsObject/graphicsitem.cpp \
+    GraphicsObject/graphicsrectitem.cpp \
     Handle/graphicshandle.cpp \
     Handle/graphicsselection.cpp \
     Operator/operator.cpp \
@@ -31,9 +34,12 @@ SOURCES += \
     viewgraphics.cpp
 
 HEADERS += \
+    GraphicsObject/abstractgraphicstemplate.h \
     GraphicsObject/canvasitembase.h \
     GraphicsObject/canvasitemmanager.h \
     GraphicsObject/canvasrectitem.h \
+    GraphicsObject/graphicsitem.h \
+    GraphicsObject/graphicsrectitem.h \
     Handle/graphicshandle.h \
     Handle/graphicsselection.h \
     Operator/operator.h \
