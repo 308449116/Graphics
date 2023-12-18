@@ -2,7 +2,6 @@
 #define GRAPHICSITEM_H
 #include <QObject>
 #include "abstractgraphicstemplate.h"
-#include <QGraphicsItem>
 
 using AbstractGraphicsItem = AbstractGraphicsTemplate<QGraphicsItem>;
 
@@ -15,11 +14,12 @@ public:
         Type = UserType + 1
     };
 
-    GraphicsItem(QGraphicsItem *parent);
+    explicit GraphicsItem(QGraphicsItem *parent = nullptr);
     int  type() const;
 
 signals:
     void selectedChange(QGraphicsItem *item);
 };
 
+extern template class AbstractGraphicsTemplate<QGraphicsItem>;
 #endif // GRAPHICSITEM_H
