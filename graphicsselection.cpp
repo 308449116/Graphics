@@ -83,11 +83,8 @@ void GraphicsSelection::updateGeometry()
 
 void GraphicsSelection::hide()
 {
-    qDebug() << "GraphicsSelection hide";
-
     for (GraphicsHandle *h : m_handleList) {
         if (h) {
-            qDebug() << "h hide";
             h->hide();
         }
     }

@@ -5,6 +5,7 @@
 #include "scenegraphics.h"
 #include "graphicsrectitem.h"
 //#include "canvastextitem.h"
+#include <QDebug>
 
 // ------------------------ ViewGraphics::Selection
 // Maintains a pool of GraphicsSelection to be used for selected item.
@@ -98,6 +99,8 @@ GraphicsSelection *ViewGraphics::Selection::addItem(QGraphicsScene *scene, Graph
 
     m_usedSelections.insert(item, gs);
     gs->setItem(item);
+    qDebug("GraphicsSelection hide item:%p" , gs);
+    qDebug("m_selectionPool insert item:%p" , item);
     qDebug() << "m_selectionPool count:" << m_selectionPool.count();
     qDebug() << "m_usedSelections count:" << m_usedSelections.count();
     return gs;
@@ -136,16 +139,19 @@ void ViewGraphics::Selection::updateGeometry(GraphicsItem *item)
 
 void ViewGraphics::Selection::hide(GraphicsItem *item)
 {
+    qDebug("Selection hide item:%p" , item);
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        qDebug() << "Selection hide";
+        qDebug("GraphicsSelection hide item:%p" , s);
+
         s->hide();
     }
 }
 
 void ViewGraphics::Selection::show(GraphicsItem *item)
 {
-    if (GraphicsSelection *s = m_usedSelections.value(item))
+    if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->show();
+    }
 }
 
 int ViewGraphics::Selection::collidesWithHandle(GraphicsItem *item, const QPointF &point) const

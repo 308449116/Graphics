@@ -31,10 +31,21 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     //高亮选中
     if (option->state & QStyle::State_Selected) {
-        emit selectedChange(this, true);
         qt_graphicsItem_highlightSelected(this, painter, option);
-    } else {
-        emit selectedChange(this, false);
+    }
+}
+
+QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if ( change == QGraphicsItem::ItemSelectedHasChanged ) {
+        QGraphicsItemGroup *group = dynamic_cast<QGraphicsItemGroup*>(parentItem());
+        if (!group) {
+            emit selectedChange(this, value.toBool());
+        } else {
+            setSelected(false);
+            return QVariant::fromValue<bool>(false);
+        }
     }
 
+    return QGraphicsItem::itemChange(change, value);
 }

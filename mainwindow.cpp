@@ -39,12 +39,12 @@ MainWindow::MainWindow(QWidget* parent)
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
 
-    qDebug() << "ui->graphicsView->rect"<< ui->graphicsView->rect();
+//    qDebug() << "ui->graphicsView->rect"<< ui->graphicsView->rect();
 //    ui->graphicsView->setScene(m_scene);
 //    ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 //    ui->graphicsView->setGeometry(0, 0, width, height);
-    qDebug() << "ui->graphicsView->geometry:"<< ui->graphicsView->geometry();
-    qDebug() << "ui->graphicsView->pos:"<< ui->graphicsView->pos();
+//    qDebug() << "ui->graphicsView->geometry:"<< ui->graphicsView->geometry();
+//    qDebug() << "ui->graphicsView->pos:"<< ui->graphicsView->pos();
 
 //    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 //    ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);

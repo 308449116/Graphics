@@ -33,15 +33,12 @@ void Operator::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *
 
     QList<QGraphicsItem *> items = scene->selectedItems();
     GraphicsItem *item = nullptr;
-    qDebug() << "Operator mousePressEvent 11111111111111111 count:" << items.count();
 
     if ( items.count() == 1 ) {
         item = qgraphicsitem_cast<GraphicsItem *>(items.first());
     }
-    qDebug() << "Operator mousePressEvent 2222222222";
 
     if ( item ) {
-        qDebug() << "Operator mousePressEvent 333333333";
         m_handleType = view->collidesWithHandle(item, event->scenePos());
         qDebug() << "Operator mousePressEvent m_handleType:" << m_handleType;
         if ( m_handleType != GraphicsHandle::Handle_None && m_handleType <= GraphicsHandle::Left ) {
@@ -54,8 +51,6 @@ void Operator::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *
         } else if (m_handleType == GraphicsHandle::Rotate) {
             m_selectMode =  ROTATE;
         } else {
-            qDebug() << "Operator mousePressEvent 4444444444";
-
             m_selectMode =  MOVE;
             m_initialPos = item->pos();
         }
@@ -90,24 +85,16 @@ void Operator::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *
 
 void Operator::mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene)
 {
-    qDebug() << "Operator mouseMoveEvent 5555555555";
-
     m_lastPos = event->scenePos();
     QList<QGraphicsItem *> items = scene->selectedItems();
     if ( items.count() == 1 ) {
-        qDebug() << "Operator mouseMoveEvent 6666666666";
-
         GraphicsItem *item = qgraphicsitem_cast<GraphicsItem *>(items.first());
         if ( item != 0 ) {
-            qDebug() << "Operator mouseMoveEvent 77777777777";
-
             if (!m_hideHandleSended) {
                 qDebug() << "Operator mouseMoveEvent 88888888888";
-
                 emit dynamic_cast<SceneGraphics *>(scene)->handleStateChange(item, true);
                 m_hideHandleSended = true;
             }
-            qDebug() << "Operator mouseMoveEvent 99999999999";
 
             //拉伸处理
             if ( m_handleType != GraphicsHandle::Handle_None && m_selectMode == SIZE ) {
@@ -154,7 +141,7 @@ void Operator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene
         GraphicsItem *item = qgraphicsitem_cast<GraphicsItem *>(items.first());
         if ( item && m_lastPos != m_pressedPos ) {
 //            emit dynamic_cast<SceneGraphics *>(scene)->handleStateChange(item, false);
-
+            m_hideHandleSended = false;
             if (m_selectMode == ROTATE) {
 //                emit scene->itemRotate(item , m_lastPos - m_pressedPos);
             } else if (m_selectMode == SIZE) {

@@ -2,7 +2,7 @@
 #define VIEWGRAPHICS_H
 
 #include <QGraphicsView>
-#include <QGraphicsScene>
+#include <QSet>
 
 class SceneGraphics;
 class GraphicsItem;
