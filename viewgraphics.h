@@ -5,7 +5,7 @@
 #include <QGraphicsScene>
 
 class SceneGraphics;
-class QGraphicsItem;
+class GraphicsItem;
 
 class ViewGraphics : public QGraphicsView
 {
@@ -19,27 +19,35 @@ public:
     void createBarcoedItem(void);
 
     //Manage Items
-    bool isManaged(QGraphicsItem *item);
-    void manageItem(QGraphicsItem *item);
-    void unmanageItem(QGraphicsItem *item);
+    bool isManaged(GraphicsItem *item);
+    void manageItem(GraphicsItem *item);
+    void unmanageItem(GraphicsItem *item);
 
-    int collidesWithHandle(QGraphicsItem *item, const QPointF & point ) const;
-    bool isItemSelected(QGraphicsItem *item) const;
-    QPointF opposite(QGraphicsItem *item, int handleType) const;
+    int collidesWithHandle(GraphicsItem *item, const QPointF & point ) const;
+    bool isItemSelected(GraphicsItem *item) const;
+    QPointF opposite(GraphicsItem *item, int handleType) const;
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+
 signals:
+private slots:
+    void selectedStateChange(GraphicsItem *item, bool checked);
+    void removeItemFormScene(GraphicsItem *item);
+    void updateItemHandle(GraphicsItem *item);
+    void handleStateSwitch(GraphicsItem *item, bool isHide);
+
 private:
-    bool trySelectItem(QGraphicsItem *item);
+    bool trySelectItem(GraphicsItem *item);
+    void addItemToScene(GraphicsItem *item);
     class Selection;
     Selection *m_selection;
     SceneGraphics *m_scene;
-    QSet<QGraphicsItem *> m_manageItem;
+    QSet<GraphicsItem *> m_manageItem;
     bool m_isMousePress = false;
-    QGraphicsItem  *m_currentItem = nullptr;
+    GraphicsItem  *m_currentItem = nullptr;
 };
 
 #endif // VIEWGRAPHICS_H

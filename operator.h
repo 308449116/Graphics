@@ -30,6 +30,7 @@ public:
     QPointF m_oppositePos;
     int m_selectMode;
     int m_handleType;
+    bool m_hideHandleSended;
 //    QGraphicsPathItem * dashRect;
 //    GraphicsItemGroup * selLayer;
 };

@@ -11,11 +11,6 @@ GraphicsRectItem::GraphicsRectItem(const QRectF &rect, GraphicsItem *parent)
     m_originPoint = QPointF(0,0);
 }
 
-QRectF GraphicsRectItem::boundingRect() const
-{
-    return m_localRect;
-}
-
 void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
     QTransform trans;
@@ -55,7 +50,7 @@ void GraphicsRectItem::move(const QPointF &point)
     moveBy(point.x(),point.y());
 }
 
-QGraphicsItem *GraphicsRectItem::duplicate() const
+GraphicsItem *GraphicsRectItem::duplicate() const
 {
     GraphicsRectItem *item = new GraphicsRectItem(m_localRect);
     item->m_width = width();
@@ -70,15 +65,17 @@ QGraphicsItem *GraphicsRectItem::duplicate() const
     return item;
 }
 
-void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget)
+
+//    if (isSelected()) {
+//        qDebug() << "isSelected 11111111111111";
+//    } else {
+//        qDebug() << "isSelected 222222222222222";
+//    }
     painter->setPen(m_pen);
     painter->setBrush(m_brush);
     painter->drawRect(m_localRect);
-
-    if (option->state & QStyle::State_Selected) {
-        qt_graphicsItem_highlightSelected(this, painter, option);
-    }
 }
 

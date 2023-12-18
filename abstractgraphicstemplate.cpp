@@ -159,6 +159,7 @@ void AbstractGraphicsTemplate<BaseType>::qt_graphicsItem_highlightSelected(
     painter->drawRect(item->boundingRect().adjusted(-pad, -pad, pad, pad));
 
     painter->setPen(QPen(QColor("lightskyblue"), 0, Qt::SolidLine));
+//    painter->setPen(QPen(option->palette.windowText(), 0, Qt::DashLine));
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(item->boundingRect().adjusted(-pad, -pad, pad, pad));
 }

@@ -2,9 +2,10 @@
 #define SCENEGRAPHICS_H
 
 #include <QGraphicsScene>
-#include <QGraphicsItem>
 
 class Operator;
+class GraphicsItem;
+
 class SceneGraphics : public QGraphicsScene
 {
     Q_OBJECT
@@ -13,7 +14,9 @@ public:
     void mouseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 signals:
-    void deleteGraphicsItem(QGraphicsItem *);
+    void deleteGraphicsItem(GraphicsItem *item);
+    void updateItemHandle(GraphicsItem *item);
+    void handleStateChange(GraphicsItem *item, bool isHide);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

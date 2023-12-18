@@ -1,5 +1,6 @@
 #include "scenegraphics.h"
 #include "operator.h"
+#include "graphicsitem.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
@@ -12,8 +13,8 @@ SceneGraphics::SceneGraphics(QObject* parent)
 
 void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_operator->mousePressEvent(event, this);
     QGraphicsScene::mousePressEvent(event);
+    m_operator->mousePressEvent(event, this);
 }
 
 void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -33,7 +34,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_Delete: {
         foreach (QGraphicsItem *item, selectedItems()) {
-            emit deleteGraphicsItem(item);
+            emit deleteGraphicsItem(qgraphicsitem_cast<GraphicsItem *>(item));
             removeItem(item);
             delete item;
         }

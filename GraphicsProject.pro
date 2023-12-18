@@ -17,16 +17,12 @@ DESTDIR += $$PWD/out/bin
 
 SOURCES += \
     abstractgraphicstemplate.cpp \
-    canvasitembase.cpp \
-    canvasitemmanager.cpp \
-    canvasrectitem.cpp \
     graphicsitem.cpp \
     graphicsrectitem.cpp \
     graphicshandle.cpp \
     graphicsselection.cpp \
     operator.cpp \
     Utils/utils.cpp \
-    canvastextitem.cpp \
     main.cpp \
     mainwindow.cpp \
     scenegraphics.cpp \
@@ -34,16 +30,12 @@ SOURCES += \
 
 HEADERS += \
     abstractgraphicstemplate.h \
-    canvasitembase.h \
-    canvasitemmanager.h \
-    canvasrectitem.h \
     graphicsitem.h \
     graphicsrectitem.h \
     graphicshandle.h \
     graphicsselection.h \
     operator.h \
     Utils/utils.h \
-    canvastextitem.h \
     mainwindow.h \
     scenegraphics.h \
     viewgraphics.h

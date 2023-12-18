@@ -6,7 +6,7 @@
 using AbstractGraphicsItem = AbstractGraphicsTemplate<QGraphicsItem>;
 
 class GraphicsItem : public QObject,
-        public AbstractGraphicsTemplate<QGraphicsItem>
+                     public AbstractGraphicsTemplate<QGraphicsItem>
 {
     Q_OBJECT
 public:
@@ -15,10 +15,18 @@ public:
     };
 
     explicit GraphicsItem(QGraphicsItem *parent = nullptr);
-    int  type() const;
+    virtual ~GraphicsItem() {}
+    int  type() const override;
+    QRectF boundingRect() const override;
+
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    // 自定义元素绘制
+    virtual void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
 
 signals:
-    void selectedChange(QGraphicsItem *item);
+    void selectedChange(GraphicsItem *item, bool checked);
 };
 
 extern template class AbstractGraphicsTemplate<QGraphicsItem>;

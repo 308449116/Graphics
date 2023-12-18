@@ -1,5 +1,6 @@
 #include "graphicsselection.h"
 #include "graphicshandle.h"
+#include "graphicsitem.h"
 
 GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
     : m_scene(parent), m_item(nullptr)
@@ -11,7 +12,7 @@ GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
     //    hide();
 }
 
-void GraphicsSelection::setItem(QGraphicsItem *item)
+void GraphicsSelection::setItem(GraphicsItem *item)
 {
     if (item == nullptr) {
         hide();
@@ -82,8 +83,11 @@ void GraphicsSelection::updateGeometry()
 
 void GraphicsSelection::hide()
 {
+    qDebug() << "GraphicsSelection hide";
+
     for (GraphicsHandle *h : m_handleList) {
         if (h) {
+            qDebug() << "h hide";
             h->hide();
         }
     }
@@ -216,7 +220,8 @@ int GraphicsSelection::swapHandle(int handle, const QPointF& scale ) const
     }
     return handleType;
 }
-QGraphicsItem *GraphicsSelection::item() const
+
+GraphicsItem *GraphicsSelection::item() const
 {
     return m_item;
 }
