@@ -1,11 +1,11 @@
 #include "viewgraphics.h"
-//#include "Handle/graphicshandle.h"
-#include "Handle/graphicsselection.h"
+//#include "graphicshandle.h"
+#include "graphicsselection.h"
 #include <QGraphicsItem>
 #include <QMouseEvent>
-#include "GraphicsObject/scenegraphics.h"
-#include "GraphicsObject/canvasrectitem.h"
-#include "GraphicsObject/canvastextitem.h"
+#include "scenegraphics.h"
+#include "canvasrectitem.h"
+#include "canvastextitem.h"
 
 // ------------------------ ViewGraphics::Selection
 // Maintains a pool of GraphicsSelection to be used for selected item.
@@ -269,6 +269,7 @@ void ViewGraphics::unmanageItem(QGraphicsItem *item)
 
 int ViewGraphics::collidesWithHandle(QGraphicsItem *item, const QPointF &point) const
 {
+    return m_selection->collidesWithHandle(item, point);
 }
 
 void ViewGraphics::mouseMoveEvent(QMouseEvent *event)
@@ -301,24 +302,13 @@ void ViewGraphics::mousePressEvent(QMouseEvent *event)
     QList<QGraphicsItem  *> listItem = m_scene->selectedItems();
     qDebug() << "selectedItems count:" << listItem.count();
     qDebug() << "items count:" << m_scene->items().count();
-//    qDebug() << "isSelected:" << currentItem->isSelected();
     if (currentItem != nullptr) {
-        qDebug() << "3333333";
-        //                if (!isManaged(currentItem) && !isCentralWidget(currentItem))
-        //                    return ;
         if (m_selection->isItemSelected(currentItem)) {
-            qDebug() << "44444444444";
-
             m_selection->show(currentItem);
-            //                    qDebug() << "item pos:" << QString::asprintf("Item 坐标：%.0f,%.0f", currentItem.x(),currentItem.y());
         } else {
-            qDebug() << "555555555";
-
             m_selection->addItem(m_scene, currentItem);
         }
     } else {
-        qDebug() << "6666666666666";
-
         m_selection->hide(currentItem);
     }
 

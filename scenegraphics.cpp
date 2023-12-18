@@ -1,34 +1,32 @@
 #include "scenegraphics.h"
+#include "operator.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
 
 SceneGraphics::SceneGraphics(QObject* parent)
-    : QGraphicsScene{parent}
+    : QGraphicsScene{parent}, m_operator(new Operator)
 {
     
 }
 
-//void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    Operator * tool = Operator::findTool( Operator::c_drawShape );
-//    if ( tool )
-//        tool->mousePressEvent(mouseEvent,this);
-//}
+void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_operator->mousePressEvent(event, this);
+    QGraphicsScene::mousePressEvent(event);
+}
 
-//void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    Operator * tool = Operator::findTool( Operator::c_drawShape );
-//    if ( tool )
-//        tool->mouseMoveEvent(mouseEvent,this);
-//}
+void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_operator->mouseMoveEvent(event, this);
+    QGraphicsScene::mouseMoveEvent(event);
+}
 
-//void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    Operator * tool = Operator::findTool( Operator::c_drawShape );
-//    if ( tool )
-//        tool->mouseReleaseEvent(mouseEvent,this);
-//}
+void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_operator->mouseReleaseEvent(event, this);
+    QGraphicsScene::mouseReleaseEvent(event);
+}
 
 void SceneGraphics::keyPressEvent(QKeyEvent *event)
 {

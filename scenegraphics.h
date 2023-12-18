@@ -4,6 +4,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 
+class Operator;
 class SceneGraphics : public QGraphicsScene
 {
     Q_OBJECT
@@ -15,12 +16,13 @@ signals:
     void deleteGraphicsItem(QGraphicsItem *);
 
 protected:
-//    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-//    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-//    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 private:
     void deselectItems();
+    Operator *m_operator;
 };
 
 #endif // SCENEGRAPHICS_H

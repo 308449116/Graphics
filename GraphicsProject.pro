@@ -16,38 +16,36 @@ DESTDIR += $$PWD/out/bin
 #INCLUDEPATH += $$PWD/include/barcode
 
 SOURCES += \
-    GraphicsObject/abstractgraphicstemplate.cpp \
-    GraphicsObject/canvasitembase.cpp \
-    GraphicsObject/canvasitemmanager.cpp \
-    GraphicsObject/canvasrectitem.cpp \
-    GraphicsObject/graphicsitem.cpp \
-    GraphicsObject/graphicsrectitem.cpp \
-    Handle/graphicshandle.cpp \
-    Handle/graphicsselection.cpp \
-    Operator/operator.cpp \
-    Operator/selectoperator.cpp \
+    abstractgraphicstemplate.cpp \
+    canvasitembase.cpp \
+    canvasitemmanager.cpp \
+    canvasrectitem.cpp \
+    graphicsitem.cpp \
+    graphicsrectitem.cpp \
+    graphicshandle.cpp \
+    graphicsselection.cpp \
+    operator.cpp \
     Utils/utils.cpp \
-    GraphicsObject/canvastextitem.cpp \
+    canvastextitem.cpp \
     main.cpp \
     mainwindow.cpp \
-    GraphicsObject/scenegraphics.cpp \
+    scenegraphics.cpp \
     viewgraphics.cpp
 
 HEADERS += \
-    GraphicsObject/abstractgraphicstemplate.h \
-    GraphicsObject/canvasitembase.h \
-    GraphicsObject/canvasitemmanager.h \
-    GraphicsObject/canvasrectitem.h \
-    GraphicsObject/graphicsitem.h \
-    GraphicsObject/graphicsrectitem.h \
-    Handle/graphicshandle.h \
-    Handle/graphicsselection.h \
-    Operator/operator.h \
-    Operator/selectoperator.h \
+    abstractgraphicstemplate.h \
+    canvasitembase.h \
+    canvasitemmanager.h \
+    canvasrectitem.h \
+    graphicsitem.h \
+    graphicsrectitem.h \
+    graphicshandle.h \
+    graphicsselection.h \
+    operator.h \
     Utils/utils.h \
-    GraphicsObject/canvastextitem.h \
+    canvastextitem.h \
     mainwindow.h \
-    GraphicsObject/scenegraphics.h \
+    scenegraphics.h \
     viewgraphics.h
 
 FORMS += \

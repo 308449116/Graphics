@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QPointF>
 
-class ViewGraphics;
-class GraphicsItem;
+class QGraphicsScene;
+//class GraphicsItem;
 class QGraphicsSceneMouseEvent;
 
 class Operator : public QObject
@@ -20,9 +20,9 @@ public:
     };
 
     Operator();
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, ViewGraphics *view);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, ViewGraphics *view);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, ViewGraphics *view);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *scene);
 
     QPointF m_pressedPos;
     QPointF m_lastPos;

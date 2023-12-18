@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "GraphicsObject/scenegraphics.h"
-//#include "GraphicsObject/canvasbarcodeitem.h"
-//#include "GraphicsObject/decoratoritemgraphics.h"
+//#include "scenegraphics.h"
+//#include "canvasbarcodeitem.h"
+//#include "decoratoritemgraphics.h"
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
 MainWindow::MainWindow(QWidget* parent)

@@ -1,4 +1,6 @@
 #include "graphicsrectitem.h"
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
 
 GraphicsRectItem::GraphicsRectItem(const QRectF &rect, GraphicsItem *parent)
     : GraphicsItem(parent)
@@ -35,7 +37,7 @@ void GraphicsRectItem::updateCoordinate()
     pt2 = mapToScene(m_localRect.center());
     delta = pt1 - pt2;
 
-    if (!parentItem() ){
+    if (!parentItem()) {
         prepareGeometryChange();
         m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
         m_width = m_localRect.width();
@@ -67,3 +69,16 @@ QGraphicsItem *GraphicsRectItem::duplicate() const
     item->updateCoordinate();
     return item;
 }
+
+void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(widget)
+    painter->setPen(m_pen);
+    painter->setBrush(m_brush);
+    painter->drawRect(m_localRect);
+
+    if (option->state & QStyle::State_Selected) {
+        qt_graphicsItem_highlightSelected(this, painter, option);
+    }
+}
+

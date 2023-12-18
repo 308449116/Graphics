@@ -14,7 +14,7 @@ public:
     void move(const QPointF &point) override;
     QGraphicsItem *duplicate () const override;
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QRectF m_initialRect;
     QPointF m_originPoint;
 };
