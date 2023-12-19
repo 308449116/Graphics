@@ -40,7 +40,15 @@ void GraphicsSelection::updateActive()
 void GraphicsSelection::updateGeometry()
 {
     if (!m_item) return;
-    const QRectF r =  m_item->mapRectToScene(m_item->boundingRect());
+    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
+    const QRectF r2 = m_item->getRect();
+    qDebug() << "updateGeometry r:" << r;
+    qDebug() << "updateGeometry r2" << r2;
+    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
+//    qDebug() << "updateGeometry r mapToScene topLeft:"
+//             << m_item->mapToScene(r.topLeft()) << "updateGeometry r2 mapToScene topLeft:"
+//             << m_item->mapToScene(r2.topLeft());
+
 //    const int w = GRAPHICS_HANDLE_SIZE;
 //    const int h = GRAPHICS_HANDLE_SIZE;
 
@@ -81,6 +89,67 @@ void GraphicsSelection::updateGeometry()
     }
 }
 
+//void GraphicsSelection::updateGeometry()
+//{
+//    if (!m_item) return;
+//    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
+//    const QRectF r2 = m_item->getRect();
+//    qDebug() << "updateGeometry r:" << r;
+//    qDebug() << "updateGeometry r2" << r2;
+//    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
+//    qDebug() << "updateGeometry r mapToScene topLeft:"
+//             << m_item->mapToScene(r.topLeft()) << "updateGeometry r2 mapToScene topLeft:"
+//             << m_item->mapToScene(r2.topLeft());
+
+//    QPointF topLeft = m_item->mapToScene(r2.topLeft());
+//    //    QPointF top = r2.top();
+//    QPointF topRight = m_item->mapToScene(r2.topRight());
+//    //    QPointF left = r2.left();
+//    //    QPointF right = r2.right();
+//    QPointF bottomLeft = m_item->mapToScene(r2.bottomLeft());
+//    //    QPointF bottom = r2.bottom();
+//    QPointF bottomRight = m_item->mapToScene(r2.bottomRight());
+
+//    //    const int w = GRAPHICS_HANDLE_SIZE;
+//    //    const int h = GRAPHICS_HANDLE_SIZE;
+
+//    foreach (GraphicsHandle *hndl, m_handleList) {
+//        if (!hndl)
+//            continue;
+//        switch (hndl->handleType()) {
+//        case GraphicsHandle::LeftTop:
+//            hndl->setPos(topLeft);
+//            break;
+//        case GraphicsHandle::Top:
+//            hndl->setPos((topRight.x() + topLeft.x()) / 2, (topRight.y() + topLeft.y()) / 2);
+//            break;
+//        case GraphicsHandle::RightTop:
+//            hndl->setPos(topRight);
+//            break;
+//        case GraphicsHandle::Right:
+//            hndl->setPos((bottomRight.x() +topRight.x()) / 2, (bottomRight.y() + topRight.y()) / 2);
+//            break;
+//        case GraphicsHandle::RightBottom:
+//            hndl->setPos(bottomRight);
+//            break;
+//        case GraphicsHandle::Bottom:
+//            hndl->setPos((bottomRight.x() + bottomLeft.x()) / 2, (bottomRight.y() + bottomLeft.y()) / 2);
+//            break;
+//        case GraphicsHandle::LeftBottom:
+//            hndl->setPos(bottomLeft);
+//            break;
+//        case GraphicsHandle::Left:
+//            hndl->setPos((bottomLeft.x() + topLeft.x()) / 2, (bottomLeft.y() + topLeft.y()) / 2);
+//            break;
+//        case GraphicsHandle::Rotate:
+//            hndl->setPos((bottomRight.x() + bottomLeft.x()) / 2, (bottomRight.y() +bottomLeft.y()) / 2 + ROTATE_HANDLE_MARGIN);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
+//}
+
 void GraphicsSelection::hide()
 {
     for (GraphicsHandle *h : m_handleList) {
@@ -111,7 +180,10 @@ void GraphicsSelection::update()
 int GraphicsSelection::collidesWithHandle(const QPointF &point) const
 {
     foreach (GraphicsHandle *handle, m_handleList) {
-        if (handle->contains(point)) {
+        qDebug() << "handleType:" << handle->handleType()
+             << "  pos:" << handle->pos()
+            << "  scene pos:" << point;
+        if (handle->contains(handle->mapFromScene(point))) {
             return handle->handleType();
         }
     }

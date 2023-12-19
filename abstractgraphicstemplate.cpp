@@ -10,7 +10,7 @@ AbstractGraphicsTemplate<BaseType>::AbstractGraphicsTemplate(QGraphicsItem *pare
 }
 
 template<typename BaseType>
-QRectF AbstractGraphicsTemplate<BaseType>::rect() const
+QRectF AbstractGraphicsTemplate<BaseType>::getRect() const
 {
     return m_localRect;
 }
@@ -39,6 +39,13 @@ void AbstractGraphicsTemplate<BaseType>::stretch(qreal sx, qreal sy, const QPoin
     Q_UNUSED(sx);
     Q_UNUSED(sy);
     Q_UNUSED(origin);
+}
+
+template<typename BaseType>
+void AbstractGraphicsTemplate<BaseType>::rotate(QPointF rotatePos, QPointF lastPos)
+{
+    Q_UNUSED(rotatePos);
+    Q_UNUSED(lastPos);
 }
 
 template<typename BaseType>
@@ -116,7 +123,7 @@ void AbstractGraphicsTemplate<BaseType>::qt_graphicsItem_highlightSelected(
     if (qFuzzyIsNull(qMax(murect.width(), murect.height())))
         return;
 
-    const QRectF mbrect = painter->transform().mapRect(item->boundingRect());
+    const QRectF mbrect = painter->transform().mapRect(getRect());
     if (qMin(mbrect.width(), mbrect.height()) < qreal(1.0))
         return;
 
@@ -156,12 +163,12 @@ void AbstractGraphicsTemplate<BaseType>::qt_graphicsItem_highlightSelected(
 
     painter->setPen(QPen(bgcolor, penWidth, Qt::SolidLine));
     painter->setBrush(Qt::NoBrush);
-    painter->drawRect(item->boundingRect().adjusted(-pad, -pad, pad, pad));
+    painter->drawRect(getRect().adjusted(-pad, -pad, pad, pad));
 
     painter->setPen(QPen(QColor("lightskyblue"), 0, Qt::SolidLine));
 //    painter->setPen(QPen(option->palette.windowText(), 0, Qt::DashLine));
     painter->setBrush(Qt::NoBrush);
-    painter->drawRect(item->boundingRect().adjusted(-pad, -pad, pad, pad));
+    painter->drawRect(getRect().adjusted(-pad, -pad, pad, pad));
 }
 
 template class AbstractGraphicsTemplate<QGraphicsItem>;

@@ -68,14 +68,44 @@ GraphicsItem *GraphicsRectItem::duplicate() const
 void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget)
-
-//    if (isSelected()) {
-//        qDebug() << "isSelected 11111111111111";
-//    } else {
-//        qDebug() << "isSelected 222222222222222";
-//    }
     painter->setPen(m_pen);
     painter->setBrush(m_brush);
     painter->drawRect(m_localRect);
 }
 
+void GraphicsRectItem::rotate(QPointF rotatePos, QPointF lastPos)
+{
+    qDebug() << "rotatePos:" << rotatePos << "  lastPos:" << lastPos ;
+    QPointF originPos = mapToScene(this->boundingRect().center());
+    qDebug() << "originPos:" << originPos ;
+
+    // 从原点延伸出去两条线，鼠标按下时的点和当前鼠标位置所在点的连线
+    QLineF p1 = QLineF(originPos, rotatePos);
+    QLineF p2 = QLineF(originPos, lastPos);
+
+    // 旋转角度
+    qreal dRotateAngle = p2.angleTo(p1);
+
+    // 设置旋转中心
+    this->setTransformOriginPoint(this->boundingRect().center());
+
+    // 计算当前旋转的角度
+    qreal dCurAngle = this->rotation() + dRotateAngle;
+
+    qDebug() << "dRotateAngle" << dRotateAngle;
+    qDebug() << "this->rotation()" << this->rotation();
+    qDebug() << "dCurAngle" << dCurAngle;
+    qDebug();
+//    while (dCurAngle > 360.0) {
+//        dCurAngle -= 360.0;
+//    }
+    if ( dCurAngle > 360 )
+        dCurAngle -= 360;
+    if ( dCurAngle < -360 )
+        dCurAngle+=360;
+
+    prepareGeometryChange();
+    // 设置旋转角度
+    this->setRotation(dCurAngle);
+    this->update();
+}

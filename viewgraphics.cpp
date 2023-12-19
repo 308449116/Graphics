@@ -139,10 +139,7 @@ void ViewGraphics::Selection::updateGeometry(GraphicsItem *item)
 
 void ViewGraphics::Selection::hide(GraphicsItem *item)
 {
-    qDebug("Selection hide item:%p" , item);
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        qDebug("GraphicsSelection hide item:%p" , s);
-
         s->hide();
     }
 }
@@ -188,16 +185,29 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 {
     int width = 600;
     int height = 400;
-    //    QRectF rect(-width/2, -height/2, width, height);
-    QRectF rect(0, 0, width, height);
+    QRectF rect(-width/2, -height/2, width, height);
+//    QRectF rect(0, 0, width, height);
 
-    this->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+//    this->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     this->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 //    this->setDragMode(QGraphicsView::RubberBandDrag);
 
     m_scene = new SceneGraphics();
     m_scene->setSceneRect(rect);
     this->setScene(m_scene);
+
+    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
+
+    QPen pen;
+    pen.setWidth(2);
+    pen.setStyle(Qt::DashLine);
+    QGraphicsLineItem *lineItemX = new QGraphicsLineItem(rect.left(), 0, rect.left() + rect.width(), 0);
+    QGraphicsLineItem *lineItemY = new QGraphicsLineItem(0, rect.top(), 0, rect.top() + rect.height());
+    lineItemX->setPen(pen);
+    lineItemY->setPen(pen);
+    m_scene->addItem(rectItem);
+    m_scene->addItem(lineItemX);
+    m_scene->addItem(lineItemY);
     connect(m_scene, &SceneGraphics::deleteGraphicsItem, this, &ViewGraphics::removeItemFormScene);
     connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
     connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
@@ -232,7 +242,7 @@ void ViewGraphics::createTextItem()
 
 void ViewGraphics::createRectItem()
 {
-    GraphicsRectItem *rectItem = new GraphicsRectItem(QRectF(0, 0, 100, 100));
+    GraphicsRectItem *rectItem = new GraphicsRectItem(QRectF(-50, -50, 100, 100));
     addItemToScene(rectItem);
     /*
     //    CanvasRectItem* rectItem = new CanvasRectItem();
@@ -433,17 +443,13 @@ void ViewGraphics::updateItemHandle(GraphicsItem *item)
 
 void ViewGraphics::handleStateSwitch(GraphicsItem *item, bool isHide)
 {
-    qDebug() << "handleStateSwitch 1111111111 isHide:" << isHide;
-
     if (item == nullptr) return;
 
     if (isHide) {
-        qDebug() << "handleStateSwitch 22222222 isHide:" << isHide;
-
+        qDebug() << "handleStateSwitch  isHide:" << isHide;
         m_selection->hide(item);
     } else {
-        qDebug() << "handleStateSwitch 33333333 isHide:" << isHide;
-
+        qDebug() << "handleStateSwitch  isHide:" << isHide;
         m_selection->show(item);
     }
 }
