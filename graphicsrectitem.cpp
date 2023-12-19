@@ -75,9 +75,7 @@ void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphics
 
 void GraphicsRectItem::rotate(QPointF rotatePos, QPointF lastPos)
 {
-    qDebug() << "rotatePos:" << rotatePos << "  lastPos:" << lastPos ;
     QPointF originPos = mapToScene(this->boundingRect().center());
-    qDebug() << "originPos:" << originPos ;
 
     // 从原点延伸出去两条线，鼠标按下时的点和当前鼠标位置所在点的连线
     QLineF p1 = QLineF(originPos, rotatePos);
@@ -92,17 +90,13 @@ void GraphicsRectItem::rotate(QPointF rotatePos, QPointF lastPos)
     // 计算当前旋转的角度
     qreal dCurAngle = this->rotation() + dRotateAngle;
 
-    qDebug() << "dRotateAngle" << dRotateAngle;
-    qDebug() << "this->rotation()" << this->rotation();
-    qDebug() << "dCurAngle" << dCurAngle;
-    qDebug();
-//    while (dCurAngle > 360.0) {
-//        dCurAngle -= 360.0;
-//    }
-    if ( dCurAngle > 360 )
-        dCurAngle -= 360;
-    if ( dCurAngle < -360 )
-        dCurAngle+=360;
+//    qDebug() << "dRotateAngle" << dRotateAngle;
+//    qDebug() << "this->rotation()" << this->rotation();
+//    qDebug() << "dCurAngle" << dCurAngle;
+//    qDebug();
+    while (dCurAngle > 360.0) {
+        dCurAngle -= 360.0;
+    }
 
     prepareGeometryChange();
     // 设置旋转角度

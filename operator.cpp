@@ -136,6 +136,8 @@ void Operator::mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *s
 //                item->rotate(m_pressedScenePos, m_lastScenePos);
 //                item->rotate(item->mapFromScene(m_pressedScenePos), item->mapFromScene(m_lastScenePos));
                 QPointF origin = item->mapToScene(item->boundingRect().center());
+                item->setTransformOriginPoint(item->boundingRect().center());
+
                 qDebug() << "Operator origin:" << origin;
                 qDebug() << "Operator center:" << item->boundingRect().center();
 

@@ -42,9 +42,9 @@ void GraphicsSelection::updateGeometry()
     if (!m_item) return;
     const QRectF r =  m_item->mapRectToScene(m_item->getRect());
     const QRectF r2 = m_item->getRect();
-    qDebug() << "updateGeometry r:" << r;
-    qDebug() << "updateGeometry r2" << r2;
-    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
+//    qDebug() << "updateGeometry r:" << r;
+//    qDebug() << "updateGeometry r2" << r2;
+//    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
 //    qDebug() << "updateGeometry r mapToScene topLeft:"
 //             << m_item->mapToScene(r.topLeft()) << "updateGeometry r2 mapToScene topLeft:"
 //             << m_item->mapToScene(r2.topLeft());
@@ -180,9 +180,9 @@ void GraphicsSelection::update()
 int GraphicsSelection::collidesWithHandle(const QPointF &point) const
 {
     foreach (GraphicsHandle *handle, m_handleList) {
-        qDebug() << "handleType:" << handle->handleType()
-             << "  pos:" << handle->pos()
-            << "  scene pos:" << point;
+//        qDebug() << "handleType:" << handle->handleType()
+//             << "  pos:" << handle->pos()
+//            << "  scene pos:" << point;
         if (handle->contains(handle->mapFromScene(point))) {
             return handle->handleType();
         }
