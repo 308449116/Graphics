@@ -16,6 +16,12 @@ QRectF AbstractGraphicsTemplate<BaseType>::getRect() const
 }
 
 template<typename BaseType>
+qreal AbstractGraphicsTemplate<BaseType>::getRatio() const
+{
+    return m_ratio;
+}
+
+template<typename BaseType>
 QGraphicsItem *AbstractGraphicsTemplate<BaseType>::duplicate() const
 {
     return nullptr;

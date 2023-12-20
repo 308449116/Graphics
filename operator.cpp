@@ -46,24 +46,20 @@ void Operator::mousePressEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *
         if ( m_handleType != GraphicsHandle::Handle_None && m_handleType <= GraphicsHandle::Left ) {
             m_selectMode = SIZE;
             m_oppositePos = view->opposite(item, m_handleType);
+            qDebug() << "mousePressEvent m_handleType:" << m_handleType
+                     << "  oppositePos:" << m_oppositePos;
+
             if( m_oppositePos.x() == 0 )
                 m_oppositePos.setX(1);
             if (m_oppositePos.y() == 0 )
                 m_oppositePos.setY(1);
+//            m_oppositePos = item->mapFromScene(oppositePos);
         } else if (m_handleType == GraphicsHandle::Rotate) {
-            QPointF origin = item->mapToScene(item->boundingRect().center());
-            qDebug() << "mousePressEvent origin:" << origin;
-            qDebug() << "mousePressEvent boundingRect:" << item->boundingRect();
-
+            QPointF origin = item->mapToScene(item->getRect().center());
             qreal len_y = m_lastScenePos.y() - origin.y();
             qreal len_x = m_lastScenePos.x() - origin.x();
-            qDebug() << "mousePressEvent m_lastScenePos:" << m_lastScenePos;
-            qDebug() << "mousePressEvent len_y:" << len_y;
-            qDebug() << "mousePressEvent len_x:" << len_x;
-
             qreal angle = atan2(len_y, len_x) * 180 / PI;
             m_lastAngle = angle;
-            qDebug() << "mousePressEvent angle:" << angle;
             m_selectMode =  ROTATE;
             m_currentAngle = item->rotation();
         } else {
@@ -120,43 +116,56 @@ void Operator::mouseMoveEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene *s
 //                    if (m_oppositePos.y() == 0 )
 //                        m_oppositePos.setY(1);
 //                }
+                qDebug() << "mouseMoveEvent m_handleType:" << m_handleType
+                         << "  m_oppositePos:" << m_oppositePos;
 
-                QPointF beginOffset = m_pressedScenePos - m_oppositePos;
-                QPointF endOffset = m_lastScenePos - m_oppositePos;
+                QPointF beginOffset = item->mapFromScene(m_pressedScenePos) - item->mapFromScene(m_oppositePos);
+                QPointF endOffset = item->mapFromScene(m_lastScenePos) - item->mapFromScene(m_oppositePos);
 
-                double sx = endOffset.x() / beginOffset.x();
-                double sy = endOffset.y() / beginOffset.y();
+                qreal sx = endOffset.x() / beginOffset.x();
+                qreal sy = endOffset.y() / beginOffset.y();
+                qDebug() << "1111 sx:" << sx <<" sy:" << sy;
 
-                item->stretch(sx , sy , m_oppositePos);
+                switch (m_handleType) {
+                case GraphicsHandle::Right:
+                case GraphicsHandle::Left:
+                    sy = 1;
+                    break;
+                case GraphicsHandle::Top:
+                case GraphicsHandle::Bottom:
+                    sx = 1;
+                    break;
+//                case GraphicsHandle::LeftTop:
+//                case GraphicsHandle::LeftBottom:
+//                case GraphicsHandle::RightTop:
+//                case GraphicsHandle::RightBottom:
+//                    qDebug() << "item->getRatio:" << item->getRatio();
+//                    sy = sx * item->getRatio();
+//                    break;
+                default:
+                    break;
+                }
+                qDebug() << "2222 sx:" << sx <<" sy:" << sy;
+
+                item->stretch(sx , sy , item->mapFromScene(m_oppositePos));
 
 //                emit scene->itemResize(item,m_handleType,QPointF(sx,sy));
             } else if(m_handleType == GraphicsHandle::Rotate && m_selectMode == ROTATE) {
                 //旋转处理
                 qDebug() << "处理旋转开始...";
 //                item->rotate(m_pressedScenePos, m_lastScenePos);
-//                item->rotate(item->mapFromScene(m_pressedScenePos), item->mapFromScene(m_lastScenePos));
-                QPointF origin = item->mapToScene(item->boundingRect().center());
-                item->setTransformOriginPoint(item->boundingRect().center());
-
-                qDebug() << "Operator origin:" << origin;
-                qDebug() << "Operator center:" << item->boundingRect().center();
+                QPointF origin = item->mapToScene(item->getRect().center());
+//                item->setTransformOriginPoint(item->getRect().center());
 
                 qreal len_y = m_lastScenePos.y() - origin.y();
                 qreal len_x = m_lastScenePos.x() - origin.x();
                 qreal angle = atan2(len_y, len_x) * 180 / PI;
-                qDebug() << "len_x:" << len_x << "len_y:" << len_y;
-                qDebug() << "Operator rotation:" << item->rotation();
-                qDebug() << "Operator int(angle - lastAngle):" << int(angle - m_lastAngle);
-                qDebug() << "Operator angle1111:" << angle;
-
                 angle = m_currentAngle + int(angle - m_lastAngle) ;
-
                 if ( angle > 360 )
                     angle -= 360;
                 if ( angle < -360 )
                     angle+=360;
 
-                qDebug() << "Operator angle2222:" << angle;
                 item->setRotation( angle );
             } else if ( m_selectMode == MOVE ) {
                 //移动处理
@@ -187,7 +196,7 @@ void Operator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene
 //                emit scene->itemRotate(item , m_lastScenePos - m_pressedScenePos);
 
             } else if (m_selectMode == SIZE) {
-//                item->updateCoordinate();
+                item->updateCoordinate();
 //                emit scene->itemResize(item , m_lastScenePos - m_pressedScenePos);
             } else {
 //                emit scene->itemMove(item , m_lastScenePos - m_pressedScenePos);
@@ -201,11 +210,12 @@ void Operator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event, QGraphicsScene
     m_selectMode = NONE;
     m_handleType = GraphicsHandle::Handle_None;
     m_oppositePos = QPointF();
+    m_lastAngle = 0;
 }
 
 qreal Operator::CalculatingAngle(GraphicsItem *item, const QPointF &point)
 {
-    QPointF origin = item->mapToScene(item->boundingRect().center());
+    QPointF origin = item->mapToScene(item->getRect().center());
 
     qreal len_y = point.y() - origin.y();
     qreal len_x = point.x() - origin.x();

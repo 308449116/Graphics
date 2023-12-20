@@ -17,6 +17,7 @@ public:
 //    virtual bool saveToXml( QXmlStreamWriter * xml ) = 0 ;
 
     virtual QRectF getRect() const;
+    virtual qreal getRatio() const;
     virtual QGraphicsItem *duplicate() const;
     virtual void updateCoordinate();
     virtual void move(const QPointF &point);
@@ -48,6 +49,7 @@ protected:
     QRectF m_localRect;
     qreal m_width = 0;
     qreal m_height = 0;
+    qreal m_ratio = 1;
 };
 
 #endif // ABSTRACTGRAPHICSTEMPLATE_H

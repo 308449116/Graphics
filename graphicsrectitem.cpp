@@ -1,6 +1,7 @@
 #include "graphicsrectitem.h"
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#define PI 3.1416
 
 GraphicsRectItem::GraphicsRectItem(const QRectF &rect, GraphicsItem *parent)
     : GraphicsItem(parent)
@@ -9,6 +10,7 @@ GraphicsRectItem::GraphicsRectItem(const QRectF &rect, GraphicsItem *parent)
     m_height = rect.height();
     m_localRect = m_initialRect = rect;
     m_originPoint = QPointF(0,0);
+    m_ratio = m_width / m_height;
 }
 
 void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
@@ -18,6 +20,8 @@ void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     trans.scale(sx,sy);
     trans.translate(-origin.x(),-origin.y());
 
+    m_oppositePos = origin;
+
     prepareGeometryChange();
     m_localRect = trans.mapRect(m_initialRect);
     m_width = m_localRect.width();
@@ -26,23 +30,32 @@ void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 void GraphicsRectItem::updateCoordinate()
 {
-    QPointF pt1,pt2,delta;
-
+    QPointF pt1, pt2, delta;
     pt1 = mapToScene(transformOriginPoint());
     pt2 = mapToScene(m_localRect.center());
     delta = pt1 - pt2;
+    qDebug() << "transformOriginPoint111:" << mapToScene(transformOriginPoint());
+    qDebug() << "rotation11111:" << rotation();
 
+    qDebug() << "transformOriginPoint:" << transformOriginPoint();
+    qDebug() << "m_localRect.center:" << m_localRect.center();
+    qDebug() << "delta:" << delta;
     if (!parentItem()) {
         prepareGeometryChange();
-        m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
+        m_localRect = QRectF(-m_width / 2, -m_height / 2, m_width, m_height);
         m_width = m_localRect.width();
         m_height = m_localRect.height();
         setTransform(transform().translate(delta.x(), delta.y()));
         setTransformOriginPoint(m_localRect.center());
         moveBy(-delta.x(), -delta.y());
         setTransform(transform().translate(-delta.x(), -delta.y()));
+        m_oppositePos = QPointF(0,0);
     }
+    qDebug() << "rotation2222:" << rotation();
+    qDebug() << "transformOriginPoint222:" << mapToScene(transformOriginPoint());
+
     m_initialRect = m_localRect;
+    m_ratio = m_width / m_height;
 }
 
 void GraphicsRectItem::move(const QPointF &point)
@@ -71,35 +84,38 @@ void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphics
     painter->setPen(m_pen);
     painter->setBrush(m_brush);
     painter->drawRect(m_localRect);
+
+    painter->setPen(Qt::blue);
+    painter->drawLine(QLine(QPoint(m_oppositePos.x()-6,m_oppositePos.y()),QPoint(m_oppositePos.x()+6,m_oppositePos.y())));
+    painter->drawLine(QLine(QPoint(m_oppositePos.x(),m_oppositePos.y()-6),QPoint(m_oppositePos.x(),m_oppositePos.y()+6)));
 }
 
 void GraphicsRectItem::rotate(QPointF rotatePos, QPointF lastPos)
 {
-    QPointF originPos = mapToScene(this->boundingRect().center());
+//    //旋转处理
+//    qDebug() << "处理旋转开始...";
 
-    // 从原点延伸出去两条线，鼠标按下时的点和当前鼠标位置所在点的连线
-    QLineF p1 = QLineF(originPos, rotatePos);
-    QLineF p2 = QLineF(originPos, lastPos);
+//    QPointF origin = this->mapToScene(this->boundingRect().center());
+//    this->setTransformOriginPoint(this->boundingRect().center());
 
-    // 旋转角度
-    qreal dRotateAngle = p2.angleTo(p1);
+//    qDebug() << "Operator origin:" << origin;
+//    qDebug() << "Operator center:" << this->boundingRect().center();
 
-    // 设置旋转中心
-    this->setTransformOriginPoint(this->boundingRect().center());
+//    qreal len_y = m_lastScenePos.y() - origin.y();
+//    qreal len_x = m_lastScenePos.x() - origin.x();
+//    qreal angle = atan2(len_y, len_x) * 180 / PI;
+//    qDebug() << "len_x:" << len_x << "len_y:" << len_y;
+//    qDebug() << "Operator rotation:" << this->rotation();
+//    qDebug() << "Operator int(angle - lastAngle):" << int(angle - m_lastAngle);
+//    qDebug() << "Operator angle1111:" << angle;
 
-    // 计算当前旋转的角度
-    qreal dCurAngle = this->rotation() + dRotateAngle;
+//    angle = m_currentAngle + int(angle - m_lastAngle) ;
 
-//    qDebug() << "dRotateAngle" << dRotateAngle;
-//    qDebug() << "this->rotation()" << this->rotation();
-//    qDebug() << "dCurAngle" << dCurAngle;
-//    qDebug();
-    while (dCurAngle > 360.0) {
-        dCurAngle -= 360.0;
-    }
+//    if ( angle > 360 )
+//        angle -= 360;
+//    if ( angle < -360 )
+//        angle+=360;
 
-    prepareGeometryChange();
-    // 设置旋转角度
-    this->setRotation(dCurAngle);
-    this->update();
+//    qDebug() << "Operator angle2222:" << angle;
+//    this->setRotation( angle );
 }

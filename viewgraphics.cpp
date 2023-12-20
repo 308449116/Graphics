@@ -242,7 +242,8 @@ void ViewGraphics::createTextItem()
 
 void ViewGraphics::createRectItem()
 {
-    GraphicsRectItem *rectItem = new GraphicsRectItem(QRectF(0, 0, 100, 100));
+    GraphicsRectItem *rectItem = new GraphicsRectItem(QRectF(-50, -50, 100, 100));
+    rectItem->moveBy(50, 50);
     addItemToScene(rectItem);
     /*
     //    CanvasRectItem* rectItem = new CanvasRectItem();

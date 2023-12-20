@@ -39,9 +39,19 @@ void GraphicsSelection::updateActive()
 
 void GraphicsSelection::updateGeometry()
 {
+//    QTransform transform;
+//    transform.translate(m_item->getRect().center().x(),m_item->getRect().center().y());
+//    transform.rotate(0);
+//    transform.translate(-m_item->getRect().center().x(),-m_item->getRect().center().y());
+
     if (!m_item) return;
+    qreal angle = m_item->rotation();
+    m_item->setRotation(0);
     const QRectF r =  m_item->mapRectToScene(m_item->getRect());
-    const QRectF r2 = m_item->getRect();
+    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
+    m_item->setRotation(angle);
+
+//    const QRectF r2 = m_item->getRect();
 //    qDebug() << "updateGeometry r:" << r;
 //    qDebug() << "updateGeometry r2" << r2;
 //    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
@@ -55,6 +65,8 @@ void GraphicsSelection::updateGeometry()
     foreach (GraphicsHandle *hndl, m_handleList) {
         if (!hndl)
             continue;
+        hndl->setRotation(0);
+
         switch (hndl->handleType()) {
         case GraphicsHandle::LeftTop:
             hndl->move(r.x(), r.y());
@@ -86,6 +98,15 @@ void GraphicsSelection::updateGeometry()
         default:
             break;
         }
+
+//        qDebug() << "updateGeometry handleType:" << hndl->handleType()
+//                 << "  pos:" << hndl->pos();
+
+        hndl->setTransformOriginPoint(hndl->mapFromScene(originPoint));
+        hndl->setRotation(angle);
+        qDebug() << "updateGeometry handleType:" << hndl->handleType()
+                 << "  pos:" << hndl->pos()
+                 << "  scenePos:" << hndl->scenePos();
     }
 }
 
@@ -204,29 +225,29 @@ QPointF GraphicsSelection::opposite(int handle) const
 {
     QPointF pt;
     switch (handle) {
-    case GraphicsHandle::Right:
-        pt = m_handleList[GraphicsHandle::Left - 1]->pos();
-        break;
-    case GraphicsHandle::RightTop:
-        pt = m_handleList[GraphicsHandle::GraphicsHandle::LeftBottom - 1]->pos();
-        break;
-    case GraphicsHandle::RightBottom:
-        pt = m_handleList[GraphicsHandle::LeftTop - 1]->pos();
-        break;
-    case GraphicsHandle::LeftBottom:
-        pt = m_handleList[GraphicsHandle::RightTop - 1]->pos();
-        break;
-    case GraphicsHandle::Bottom:
-        pt = m_handleList[GraphicsHandle::Top - 1]->pos();
-        break;
     case GraphicsHandle::LeftTop:
-        pt = m_handleList[GraphicsHandle::RightBottom - 1]->pos();
-        break;
-    case GraphicsHandle::Left:
-        pt = m_handleList[GraphicsHandle::Right - 1]->pos();
+        pt = m_handleList[GraphicsHandle::RightBottom - 1]->scenePos();
         break;
     case GraphicsHandle::Top:
-        pt = m_handleList[GraphicsHandle::Bottom - 1]->pos();
+        pt = m_handleList[GraphicsHandle::Bottom - 1]->scenePos();
+        break;
+    case GraphicsHandle::RightTop:
+        pt = m_handleList[GraphicsHandle::GraphicsHandle::LeftBottom - 1]->scenePos();
+        break;
+    case GraphicsHandle::Right:
+        pt = m_handleList[GraphicsHandle::Left - 1]->scenePos();
+        break;
+    case GraphicsHandle::RightBottom:
+        pt = m_handleList[GraphicsHandle::LeftTop - 1]->scenePos();
+        break;
+    case GraphicsHandle::Bottom:
+        pt = m_handleList[GraphicsHandle::Top - 1]->scenePos();
+        break;
+    case GraphicsHandle::LeftBottom:
+        pt = m_handleList[GraphicsHandle::RightTop - 1]->scenePos();
+        break;
+    case GraphicsHandle::Left:
+        pt = m_handleList[GraphicsHandle::Right - 1]->scenePos();
         break;
     }
     return pt;
