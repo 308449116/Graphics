@@ -17,10 +17,12 @@ DESTDIR += $$PWD/out/bin
 
 SOURCES += \
     abstractgraphicstemplate.cpp \
+    graphicsdraghandle.cpp \
     graphicsitem.cpp \
     graphicsrectitem.cpp \
     graphicshandle.cpp \
     graphicsselection.cpp \
+    graphicssizehandle.cpp \
     operator.cpp \
     Utils/utils.cpp \
     main.cpp \
@@ -30,10 +32,12 @@ SOURCES += \
 
 HEADERS += \
     abstractgraphicstemplate.h \
+    graphicsdraghandle.h \
     graphicsitem.h \
     graphicsrectitem.h \
     graphicshandle.h \
     graphicsselection.h \
+    graphicssizehandle.h \
     operator.h \
     Utils/utils.h \
     mainwindow.h \

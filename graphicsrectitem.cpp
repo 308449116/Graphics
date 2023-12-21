@@ -81,6 +81,8 @@ GraphicsItem *GraphicsRectItem::duplicate() const
 void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget)
+    Q_UNUSED(option)
+
     painter->setPen(m_pen);
     painter->setBrush(m_brush);
     painter->drawRect(m_localRect);

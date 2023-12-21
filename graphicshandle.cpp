@@ -1,51 +1,43 @@
 #include "graphicshandle.h"
-#include <QGraphicsScene>
-#include <QGraphicsRectItem>
+#include "graphicsitem.h"
+
+#include <QStyleOptionGraphicsItem>
 #include <QPainter>
 
-GraphicsHandle::GraphicsHandle(QGraphicsScene* scene , int handleType, bool control)
-    :QGraphicsRectItem(-GRAPHICS_HANDLE_SIZE/2,
-                       -GRAPHICS_HANDLE_SIZE/2,
-                       GRAPHICS_HANDLE_SIZE,
-                        GRAPHICS_HANDLE_SIZE)
+GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
+    : QGraphicsObject(parent)
     ,m_handleType(handleType)
-    ,m_controlPoint(control)
     ,m_state(HandleOff)
-    ,borderColor(Qt::white)
-    , m_scene(scene)
+    ,m_borderColor(Qt::white)
+    ,m_selection(selection)
 {
-//    this->setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
+    setFlag(QGraphicsItem::ItemIsSelectable,true);
     setZValue(1);
-    scene->addItem(this);
     hide();
+}
+
+int GraphicsHandle::handleType() const
+{
+    return m_handleType;
 }
 
 
 void GraphicsHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option)
-    Q_UNUSED(widget)
 
-    painter->save();
-    painter->setPen(Qt::SolidLine);
-    painter->setBrush(QBrush(borderColor));
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+    painter->setRenderHint(QPainter::TextAntialiasing, true);
 
-    painter->setRenderHint(QPainter::Antialiasing,false);
+    // 自定义绘制
+    customPaint(painter, option, widget);
 
-    if ( m_controlPoint  )
-    {
-        painter->setPen(QPen(Qt::red,Qt::SolidLine));
-        painter->setBrush(Qt::green);
-        painter->drawEllipse(rect().center(),3,3);
+    //高亮选中
+    if (option->state & QStyle::State_Selected) {
+        //        qt_graphicsItem_highlightSelected(this, painter, option);
     }
-    else
-    {
-        painter->drawRect(rect());
-    }
-    painter->restore();
 }
-
 
 void GraphicsHandle::setState(GraphicsHandleState st)
 {
@@ -59,28 +51,37 @@ void GraphicsHandle::setState(GraphicsHandleState st)
         show();
         break;
     }
-    borderColor = Qt::white;
+    m_borderColor = Qt::white;
     m_state = st;
 }
 
+void GraphicsHandle::setLocalRect(QRectF localRect)
+{
+    m_localRect = localRect;
+}
+
+void GraphicsHandle::setItem(GraphicsItem *item)
+{
+//    if (item) {
+//        connect(item, &GraphicsItem::selectedChange, [this](GraphicsItem *item, bool checked) {
+//            setVisible(checked);
+//        });
+//    }
+
+    m_item = item;
+}
+
 void GraphicsHandle::move(qreal x, qreal y)
-{   
+{
     setPos(x,y);
 }
 
-//void GraphicsHandle::hoverEnterEvent(QGraphicsSceneHoverEvent *e)
-//{
-//    borderColor = Qt::blue;
-//    update();
-//    QGraphicsRectItem::hoverEnterEvent(e);
-//}
+QRectF GraphicsHandle::boundingRect() const
+{
+    return m_localRect;
+}
 
-//void GraphicsHandle::hoverLeaveEvent(QGraphicsSceneHoverEvent *e)
-//{
-//    borderColor = Qt::white;
-//    update();
-//    QGraphicsRectItem::hoverLeaveEvent(e);
-//}
+
 
 
 

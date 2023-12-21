@@ -6,7 +6,7 @@ GraphicsItem::GraphicsItem(QGraphicsItem *parent)
     : AbstractGraphicsTemplate<QGraphicsItem>(parent)
 {
 //    setFlag(QGraphicsItem::ItemIsMovable, true);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
+//    setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
@@ -42,15 +42,36 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    if ( change == QGraphicsItem::ItemSelectedHasChanged ) {
-        QGraphicsItemGroup *group = dynamic_cast<QGraphicsItemGroup*>(parentItem());
-        if (!group) {
-            emit selectedChange(this, value.toBool());
-        } else {
-            setSelected(false);
-            return QVariant::fromValue<bool>(false);
-        }
-    }
+//    if ( change == QGraphicsItem::ItemSelectedHasChanged ) {
+//        QGraphicsItemGroup *group = dynamic_cast<QGraphicsItemGroup*>(parentItem());
+//        if (!group) {
+//            emit selectedChange(this, value.toBool());
+//        } else {
+//            setSelected(false);
+//            return QVariant::fromValue<bool>(false);
+//        }
+//    }
 
     return QGraphicsItem::itemChange(change, value);
+}
+
+void GraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void GraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+//    if (!m_hideHandleSended) {
+//        emit handleStateSwitch(false);
+//        m_hideHandleSended = true;
+//    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+//    m_hideHandleSended = false;
+//    emit handleStateSwitch(true);
+    QGraphicsItem::mouseReleaseEvent(event);
 }

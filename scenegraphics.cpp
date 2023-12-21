@@ -14,18 +14,18 @@ SceneGraphics::SceneGraphics(QObject* parent)
 void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
-    m_operator->mousePressEvent(event, this);
+//    m_operator->mousePressEvent(event, this);
 }
 
 void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_operator->mouseMoveEvent(event, this);
+//    m_operator->mouseMoveEvent(event, this);
     QGraphicsScene::mouseMoveEvent(event);
 }
 
 void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_operator->mouseReleaseEvent(event, this);
+//    m_operator->mouseReleaseEvent(event, this);
     QGraphicsScene::mouseReleaseEvent(event);
 }
 

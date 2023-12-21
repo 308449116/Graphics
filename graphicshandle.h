@@ -1,24 +1,23 @@
-#ifndef GRAPHICSHANDLE
-#define GRAPHICSHANDLE
+#ifndef GRAPHICSHANDLE_H
+#define GRAPHICSHANDLE_H
 
-#include <QGraphicsRectItem>
+#include <QGraphicsObject>
 
-class QGraphicsRectItem;
-class QGraphicsSceneMouseEvent;
-class QGraphicsScene;
+class GraphicsSelection;
+class GraphicsItem;
 
-const static int GRAPHICS_HANDLE_SIZE = 6;
-
-class GraphicsHandle :public QGraphicsRectItem
+class GraphicsHandle : public QGraphicsObject
 {
+    Q_OBJECT
 public:
     enum GraphicsHandleState {
         HandleOff,
         HandleActive
     };
+
     enum HandleType {
         Handle_None = 0 ,
-        LeftTop ,
+        LeftTop,
         Top,
         RightTop,
         Right,
@@ -26,27 +25,36 @@ public:
         Bottom,
         LeftBottom,
         Left,
+        Drag,
         Rotate,
         HandleTypeEnd //必须以此类型结尾，增加类型只能从中间插入
     };
 
-    GraphicsHandle(QGraphicsScene* scene , int HandleType , bool control = false );
-    int handleType() const  { return m_handleType; }
+    GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
+    int handleType() const;
     void setState(GraphicsHandleState st);
-    void move(qreal x, qreal y );
-protected:
-//    void hoverEnterEvent(QGraphicsSceneHoverEvent *e );
-//    void hoverLeaveEvent(QGraphicsSceneHoverEvent *e );
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void setLocalRect(QRectF localRect);
+    void setItem(GraphicsItem *item);
+    void move(qreal x, qreal y);
+    QRectF boundingRect() const override;
 
-private:
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    // 自定义元素绘制
+    virtual void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
+
+protected:
     const int m_handleType;
-    bool   m_controlPoint;
     GraphicsHandleState m_state;
-    QColor borderColor;
-    QGraphicsScene *m_scene;
+    QColor m_borderColor;
+    GraphicsItem *m_item;
+    GraphicsSelection *m_selection;
+    QRectF m_localRect;
+    QPointF m_pressedScenePos;
+    QPointF m_lastScenePos;
 };
 
 
-#endif // GRAPHICSHANDLE
+#endif // GRAPHICSHANDLE_H
 

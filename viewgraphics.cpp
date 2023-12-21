@@ -408,6 +408,7 @@ bool ViewGraphics::trySelectItem(GraphicsItem *item)
 void ViewGraphics::addItemToScene(GraphicsItem *item)
 {
     m_scene->addItem(item);
+    m_selection->addItem(m_scene, item);
     connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 

@@ -1,15 +1,21 @@
 #include "graphicsselection.h"
-#include "graphicshandle.h"
+#include "graphicssizehandle.h"
+#include "graphicsdraghandle.h"
 #include "graphicsitem.h"
 
 GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
     : m_scene(parent), m_item(nullptr)
 {
-    for (int i = GraphicsHandle::LeftTop; i < GraphicsHandle::HandleTypeEnd; ++i) {
-        GraphicsHandle *handle = new GraphicsHandle(m_scene, static_cast<GraphicsHandle::HandleType>(i));
+    for (int i = GraphicsHandle::LeftTop; i <= GraphicsHandle::Left; ++i) {
+        GraphicsHandle *handle = new GraphicsSizeHandle(i, this);
+        m_scene->addItem(handle);
         m_handleList.push_back(handle);
     }
-    //    hide();
+
+    GraphicsHandle *draghandle = new GraphicsDragHandle(GraphicsHandle::Drag, this);
+    m_scene->addItem(draghandle);
+    m_handleList.push_back(draghandle);
+
 }
 
 void GraphicsSelection::setItem(GraphicsItem *item)
@@ -22,9 +28,19 @@ void GraphicsSelection::setItem(GraphicsItem *item)
 
     m_item = item;
 
-    updateActive();
+    foreach (GraphicsHandle *h ,m_handleList) {
+        h->setItem(m_item);
+    }
     updateGeometry();
     show();
+    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
+        if (isShow) {
+            show();
+            updateGeometry();
+        } else {
+            hide();
+        }
+    });
 }
 
 bool GraphicsSelection::isUsed() const
@@ -91,6 +107,13 @@ void GraphicsSelection::updateGeometry()
             break;
         case GraphicsHandle::Left:
             hndl->move(r.x(), r.y() + r.height() / 2);
+            break;
+        case GraphicsHandle::Drag:
+            qDebug() << "updateGeometry handleType:" << hndl->handleType()
+                     << "  rect:" << r
+                     << "  originPoint:" << originPoint;
+            hndl->setLocalRect(r);
+//            hndl->move(originPoint.x(), originPoint.y());
             break;
         case GraphicsHandle::Rotate:
             hndl->move(r.x() + r.width() / 2, r.y() + r.height() + ROTATE_HANDLE_MARGIN);
@@ -174,7 +197,7 @@ void GraphicsSelection::updateGeometry()
 void GraphicsSelection::hide()
 {
     for (GraphicsHandle *h : m_handleList) {
-        if (h) {
+        if (h && h->handleType() != GraphicsHandle::Drag) {
             h->hide();
         }
     }
@@ -315,4 +338,3 @@ GraphicsItem *GraphicsSelection::item() const
 {
     return m_item;
 }
-
