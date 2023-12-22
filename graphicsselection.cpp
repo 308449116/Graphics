@@ -1,6 +1,7 @@
 #include "graphicsselection.h"
 #include "graphicssizehandle.h"
 #include "graphicsdraghandle.h"
+#include "graphicsRotatehandle.h"
 #include "graphicsitem.h"
 
 GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
@@ -16,6 +17,9 @@ GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
     m_scene->addItem(draghandle);
     m_handleList.push_back(draghandle);
 
+    GraphicsHandle *rotatehandle = new GraphicsRotateHandle(GraphicsHandle::Rotate, this);
+    m_scene->addItem(rotatehandle);
+    m_handleList.push_back(rotatehandle);
 }
 
 void GraphicsSelection::setItem(GraphicsItem *item)
@@ -33,14 +37,14 @@ void GraphicsSelection::setItem(GraphicsItem *item)
     }
     updateGeometry();
     show();
-    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
-        if (isShow) {
-            show();
-            updateGeometry();
-        } else {
-            hide();
-        }
-    });
+//    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
+//        if (isShow) {
+//            show();
+//            updateGeometry();
+//        } else {
+//            hide();
+//        }
+//    });
 }
 
 bool GraphicsSelection::isUsed() const
@@ -109,9 +113,9 @@ void GraphicsSelection::updateGeometry()
             hndl->move(r.x(), r.y() + r.height() / 2);
             break;
         case GraphicsHandle::Drag:
-            qDebug() << "updateGeometry handleType:" << hndl->handleType()
-                     << "  rect:" << r
-                     << "  originPoint:" << originPoint;
+//            qDebug() << "updateGeometry handleType:" << hndl->handleType()
+//                     << "  rect:" << r
+//                     << "  originPoint:" << originPoint;
             hndl->setLocalRect(r);
 //            hndl->move(originPoint.x(), originPoint.y());
             break;
@@ -127,9 +131,9 @@ void GraphicsSelection::updateGeometry()
 
         hndl->setTransformOriginPoint(hndl->mapFromScene(originPoint));
         hndl->setRotation(angle);
-        qDebug() << "updateGeometry handleType:" << hndl->handleType()
-                 << "  pos:" << hndl->pos()
-                 << "  scenePos:" << hndl->scenePos();
+//        qDebug() << "updateGeometry handleType:" << hndl->handleType()
+//                 << "  pos:" << hndl->pos()
+//                 << "  scenePos:" << hndl->scenePos();
     }
 }
 
@@ -199,6 +203,15 @@ void GraphicsSelection::hide()
     for (GraphicsHandle *h : m_handleList) {
         if (h && h->handleType() != GraphicsHandle::Drag) {
             h->hide();
+        }
+    }
+}
+
+void GraphicsSelection::setOpacity(qreal opacity)
+{
+    for (GraphicsHandle *h : m_handleList) {
+        if (h && h->handleType() != GraphicsHandle::Drag) {
+            h->setOpacity(opacity);
         }
     }
 }

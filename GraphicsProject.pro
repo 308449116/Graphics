@@ -21,9 +21,9 @@ SOURCES += \
     graphicsitem.cpp \
     graphicsrectitem.cpp \
     graphicshandle.cpp \
+    graphicsrotatehandle.cpp \
     graphicsselection.cpp \
     graphicssizehandle.cpp \
-    operator.cpp \
     Utils/utils.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -36,9 +36,9 @@ HEADERS += \
     graphicsitem.h \
     graphicsrectitem.h \
     graphicshandle.h \
+    graphicsrotatehandle.h \
     graphicsselection.h \
     graphicssizehandle.h \
-    operator.h \
     Utils/utils.h \
     mainwindow.h \
     scenegraphics.h \

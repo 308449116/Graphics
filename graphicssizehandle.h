@@ -1,7 +1,6 @@
 #ifndef GRAPHICSSIZEHANDLE_H
 #define GRAPHICSSIZEHANDLE_H
 
-#include <QObject>
 #include "graphicshandle.h"
 
 class QGraphicsSceneMouseEvent;

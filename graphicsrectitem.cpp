@@ -34,12 +34,12 @@ void GraphicsRectItem::updateCoordinate()
     pt1 = mapToScene(transformOriginPoint());
     pt2 = mapToScene(m_localRect.center());
     delta = pt1 - pt2;
-    qDebug() << "transformOriginPoint111:" << mapToScene(transformOriginPoint());
-    qDebug() << "rotation11111:" << rotation();
+//    qDebug() << "transformOriginPoint111:" << mapToScene(transformOriginPoint());
+//    qDebug() << "rotation11111:" << rotation();
 
-    qDebug() << "transformOriginPoint:" << transformOriginPoint();
-    qDebug() << "m_localRect.center:" << m_localRect.center();
-    qDebug() << "delta:" << delta;
+//    qDebug() << "transformOriginPoint:" << transformOriginPoint();
+//    qDebug() << "m_localRect.center:" << m_localRect.center();
+//    qDebug() << "delta:" << delta;
     if (!parentItem()) {
         prepareGeometryChange();
         m_localRect = QRectF(-m_width / 2, -m_height / 2, m_width, m_height);
@@ -51,8 +51,8 @@ void GraphicsRectItem::updateCoordinate()
         setTransform(transform().translate(-delta.x(), -delta.y()));
         m_oppositePos = QPointF(0,0);
     }
-    qDebug() << "rotation2222:" << rotation();
-    qDebug() << "transformOriginPoint222:" << mapToScene(transformOriginPoint());
+//    qDebug() << "rotation2222:" << rotation();
+//    qDebug() << "transformOriginPoint222:" << mapToScene(transformOriginPoint());
 
     m_initialRect = m_localRect;
     m_ratio = m_width / m_height;
@@ -90,34 +90,4 @@ void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphics
     painter->setPen(Qt::blue);
     painter->drawLine(QLine(QPoint(m_oppositePos.x()-6,m_oppositePos.y()),QPoint(m_oppositePos.x()+6,m_oppositePos.y())));
     painter->drawLine(QLine(QPoint(m_oppositePos.x(),m_oppositePos.y()-6),QPoint(m_oppositePos.x(),m_oppositePos.y()+6)));
-}
-
-void GraphicsRectItem::rotate(QPointF rotatePos, QPointF lastPos)
-{
-//    //旋转处理
-//    qDebug() << "处理旋转开始...";
-
-//    QPointF origin = this->mapToScene(this->boundingRect().center());
-//    this->setTransformOriginPoint(this->boundingRect().center());
-
-//    qDebug() << "Operator origin:" << origin;
-//    qDebug() << "Operator center:" << this->boundingRect().center();
-
-//    qreal len_y = m_lastScenePos.y() - origin.y();
-//    qreal len_x = m_lastScenePos.x() - origin.x();
-//    qreal angle = atan2(len_y, len_x) * 180 / PI;
-//    qDebug() << "len_x:" << len_x << "len_y:" << len_y;
-//    qDebug() << "Operator rotation:" << this->rotation();
-//    qDebug() << "Operator int(angle - lastAngle):" << int(angle - m_lastAngle);
-//    qDebug() << "Operator angle1111:" << angle;
-
-//    angle = m_currentAngle + int(angle - m_lastAngle) ;
-
-//    if ( angle > 360 )
-//        angle -= 360;
-//    if ( angle < -360 )
-//        angle+=360;
-
-//    qDebug() << "Operator angle2222:" << angle;
-//    this->setRotation( angle );
 }

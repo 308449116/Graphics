@@ -1,33 +1,33 @@
 #include "scenegraphics.h"
-#include "operator.h"
+//#include "operator.h"
 #include "graphicsitem.h"
-#include <QGraphicsSceneMouseEvent>
+//#include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
 
 SceneGraphics::SceneGraphics(QObject* parent)
-    : QGraphicsScene{parent}, m_operator(new Operator)
+    : QGraphicsScene{parent}
 {
     
 }
 
-void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsScene::mousePressEvent(event);
-//    m_operator->mousePressEvent(event, this);
-}
+//void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    QGraphicsScene::mousePressEvent(event);
+////    m_operator->mousePressEvent(event, this);
+//}
 
-void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-//    m_operator->mouseMoveEvent(event, this);
-    QGraphicsScene::mouseMoveEvent(event);
-}
+//void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+//{
+////    m_operator->mouseMoveEvent(event, this);
+//    QGraphicsScene::mouseMoveEvent(event);
+//}
 
-void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-//    m_operator->mouseReleaseEvent(event, this);
-    QGraphicsScene::mouseReleaseEvent(event);
-}
+//void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+//{
+////    m_operator->mouseReleaseEvent(event, this);
+//    QGraphicsScene::mouseReleaseEvent(event);
+//}
 
 void SceneGraphics::keyPressEvent(QKeyEvent *event)
 {
@@ -64,18 +64,18 @@ void SceneGraphics::deselectItems()
     }
 }
 
-void SceneGraphics::mouseEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    switch( mouseEvent->type() ) {
-    case QEvent::GraphicsSceneMousePress:
-        QGraphicsScene::mousePressEvent(mouseEvent);
-        break;
-    case QEvent::GraphicsSceneMouseMove:
-        QGraphicsScene::mouseMoveEvent(mouseEvent);
-        break;
-    case QEvent::GraphicsSceneMouseRelease:
-        QGraphicsScene::mouseReleaseEvent(mouseEvent);
-        break;
-    default: break;
-    }
-}
+//void SceneGraphics::mouseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+//{
+//    switch( mouseEvent->type() ) {
+//    case QEvent::GraphicsSceneMousePress:
+//        QGraphicsScene::mousePressEvent(mouseEvent);
+//        break;
+//    case QEvent::GraphicsSceneMouseMove:
+//        QGraphicsScene::mouseMoveEvent(mouseEvent);
+//        break;
+//    case QEvent::GraphicsSceneMouseRelease:
+//        QGraphicsScene::mouseReleaseEvent(mouseEvent);
+//        break;
+//    default: break;
+//    }
+//}

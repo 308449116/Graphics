@@ -14,11 +14,6 @@ GraphicsSizeHandle::GraphicsSizeHandle(int handleType, GraphicsSelection *select
     setZValue(2);
 }
 
-//QRectF GraphicsSizeHandle::boundingRect() const
-//{
-
-//}
-
 void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
@@ -36,8 +31,8 @@ void GraphicsSizeHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
     m_oppositePos = m_selection->opposite(m_handleType);
-    qDebug() << "mousePressEvent m_handleType:" << m_handleType
-             << "  oppositePos:" << m_oppositePos;
+//    qDebug() << "mousePressEvent m_handleType:" << m_handleType
+//             << "  oppositePos:" << m_oppositePos;
 
     if( m_oppositePos.x() == 0 )
         m_oppositePos.setX(1);
@@ -50,12 +45,11 @@ void GraphicsSizeHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
-
-    qDebug() << "mouseMoveEvent: 11111111111";
+    m_selection->setOpacity(0);
     QPointF beginOffset = m_item->mapFromScene(m_pressedScenePos) - m_item->mapFromScene(m_oppositePos);
     QPointF endOffset = m_item->mapFromScene(m_lastScenePos) - m_item->mapFromScene(m_oppositePos);
-    qDebug() << "m_pressedScenePos" << m_pressedScenePos
-        << " m_lastScenePos" << m_lastScenePos;
+//    qDebug() << "m_pressedScenePos" << m_pressedScenePos
+//        << " m_lastScenePos" << m_lastScenePos;
 
     qreal sx = endOffset.x() / beginOffset.x();
     qreal sy = endOffset.y() / beginOffset.y();
@@ -79,17 +73,16 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     default:
         break;
     }
-    qDebug() << "mouseMoveEvent sx:" << sx
-             << "  sy:" << sy;
+//    qDebug() << "mouseMoveEvent sx:" << sx
+//             << "  sy:" << sy;
     m_item->stretch(sx , sy , m_item->mapFromScene(m_oppositePos));
-    m_selection->updateGeometry();
-
     QGraphicsItem::mouseMoveEvent(event);
 }
 
 void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     m_item->updateCoordinate();
-//    m_selection->updateGeometry();
+    m_selection->updateGeometry();
+    m_selection->setOpacity(1);
     QGraphicsItem::mouseReleaseEvent(event);
 }

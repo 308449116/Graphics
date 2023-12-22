@@ -4,7 +4,6 @@
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QPainter>
 
 GraphicsDragHandle::GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent)
@@ -14,8 +13,9 @@ GraphicsDragHandle::GraphicsDragHandle(int handleType, GraphicsSelection *select
 
 void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-//    Q_UNUSED(option)
-//    Q_UNUSED(widget)
+    Q_UNUSED(painter)
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
 //    qDebug() << "GraphicsDragHandle boundingRect" << m_item->boundingRect();
 //    painter->save();
 //    painter->setPen(Qt::DashLine);
@@ -27,7 +27,6 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "GraphicsDragHandle 11111111";
     m_lastScenePos = m_pressedScenePos = event->scenePos();
     m_initialPos = m_item->pos();
     QGraphicsItem::mousePressEvent(event);
@@ -65,12 +64,3 @@ QVariant GraphicsDragHandle::itemChange(GraphicsItemChange change, const QVarian
 
     return QGraphicsItem::itemChange(change, value);
 }
-
-//QRectF GraphicsDragHandle::boundingRect() const
-//{
-//    if (m_item) {
-//        return m_item->boundingRect();
-//    }
-
-//    return QRectF();
-//}

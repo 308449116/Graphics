@@ -23,6 +23,7 @@ public:
     void hide();
     void show();
     void update();
+    void setOpacity(qreal opacity);
 
     int collidesWithHandle( const QPointF & point ) const;
     QPointF handlePos(int handleType) const;

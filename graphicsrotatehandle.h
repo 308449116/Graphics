@@ -1,26 +1,29 @@
-#ifndef GRAPHICSDRAGHANDLE_H
-#define GRAPHICSDRAGHANDLE_H
+#ifndef GRAPHICSROTATEHANDLE_H
+#define GRAPHICSROTATEHANDLE_H
 
 #include "graphicshandle.h"
 
 class QGraphicsSceneMouseEvent;
 class GraphicsSelection;
 
-class GraphicsDragHandle : public GraphicsHandle
+class GraphicsRotateHandle : public GraphicsHandle
 {
     Q_OBJECT
 public:
-    GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
+    GraphicsRotateHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 
 private:
-    QPointF m_initialPos;
+    qreal m_lastAngle;
+    qreal m_currentAngle;
+    int m_rotateIconWidth = 20;
+    int m_lineLen = 20;
+    QPixmap m_rotatePixmap;
 };
 
-#endif // GRAPHICSDRAGHANDLE_H
+#endif // GRAPHICSROTATEHANDLE_H

@@ -209,8 +209,8 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
     connect(m_scene, &SceneGraphics::deleteGraphicsItem, this, &ViewGraphics::removeItemFormScene);
-    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
-    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
+//    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
+//    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
 }
 
 ViewGraphics::~ViewGraphics()
@@ -277,156 +277,156 @@ void ViewGraphics::createBarcoedItem()
 //    m_manageItem.insert(barcodeitem);
 }
 
-bool ViewGraphics::isManaged(GraphicsItem *item)
-{
-    return m_manageItem.contains(item);
-}
+//bool ViewGraphics::isManaged(GraphicsItem *item)
+//{
+//    return m_manageItem.contains(item);
+//}
 
-void ViewGraphics::manageItem(GraphicsItem *item)
-{
-    m_manageItem.insert(item);
-}
+//void ViewGraphics::manageItem(GraphicsItem *item)
+//{
+//    m_manageItem.insert(item);
+//}
 
-void ViewGraphics::unmanageItem(GraphicsItem *item)
-{
-    m_manageItem.remove(item);
-}
+//void ViewGraphics::unmanageItem(GraphicsItem *item)
+//{
+//    m_manageItem.remove(item);
+//}
 
-int ViewGraphics::collidesWithHandle(GraphicsItem *item, const QPointF &point) const
-{
-    return m_selection->collidesWithHandle(item, point);
-}
+//int ViewGraphics::collidesWithHandle(GraphicsItem *item, const QPointF &point) const
+//{
+//    return m_selection->collidesWithHandle(item, point);
+//}
 
-void ViewGraphics::mouseMoveEvent(QMouseEvent *event)
-{
-    //鼠标移动事件
-//    QPoint point = event->pos();      //QGraphicsView的坐标
-    QGraphicsView::mouseMoveEvent(event);
-}
+//void ViewGraphics::mouseMoveEvent(QMouseEvent *event)
+//{
+//    //鼠标移动事件
+////    QPoint point = event->pos();      //QGraphicsView的坐标
+//    QGraphicsView::mouseMoveEvent(event);
+//}
 
-void ViewGraphics::mousePressEvent(QMouseEvent *event)
-{
-    /*
-    //鼠标左键按下事件
-    if ( event->button() != Qt::LeftButton ) return;
+//void ViewGraphics::mousePressEvent(QMouseEvent *event)
+//{
+//    /*
+//    //鼠标左键按下事件
+//    if ( event->button() != Qt::LeftButton ) return;
 
-    QPoint point = event->pos();  //QGraphicsView的坐标
-    QPointF pointScene = this->mapToScene(point);         //转换到Scene坐标
-    GraphicsItem *currentItem = m_scene->itemAt(pointScene, this->transform());   //获取光标下的绘图项
+//    QPoint point = event->pos();  //QGraphicsView的坐标
+//    QPointF pointScene = this->mapToScene(point);         //转换到Scene坐标
+//    GraphicsItem *currentItem = m_scene->itemAt(pointScene, this->transform());   //获取光标下的绘图项
 
-    if (m_currentItem) {
+//    if (m_currentItem) {
 
-    } else {
-        if (currentItem != nullptr) {
-            if (trySelectItem(currentItem)) {
-            } else {
-            }
-        } else {
-            m_selection->hide(currentItem);
-        }
-    }
-    QList<GraphicsItem  *> listItem = m_scene->selectedItems();
-    qDebug() << "selectedItems count:" << listItem.count();
-    qDebug() << "items count:" << m_scene->items().count();
-    if (currentItem != nullptr) {
-        if (m_selection->isItemSelected(currentItem)) {
-            m_selection->show(currentItem);
-        } else {
-            m_selection->addItem(m_scene, currentItem);
-        }
-    } else {
-        m_selection->hide(currentItem);
-    }
-
-    foreach (GraphicsItem  *item, listItem) {
-        qDebug() << "222222222";
-
+//    } else {
 //        if (currentItem != nullptr) {
-//            qDebug() << "3333333";
-//            //                if (!isManaged(currentItem) && !isCentralWidget(currentItem))
-//            //                    return ;
-//            if (m_selection->isItemSelected(item)) {
-//                qDebug() << "44444444444";
-
-//                m_selection->show(item);
-//                //                    qDebug() << "item pos:" << QString::asprintf("Item 坐标：%.0f,%.0f", currentItem.x(),currentItem.y());
-//                qDebug() << "item pos:" << item->pos();
-//                qDebug() << "item scenePos:" << item->scenePos();
+//            if (trySelectItem(currentItem)) {
 //            } else {
-//                qDebug() << "555555555";
-
-//                m_selection->addItem(m_scene, item);
 //            }
 //        } else {
-//            qDebug() << "6666666666666";
-
-//            m_selection->hide(item);
+//            m_selection->hide(currentItem);
 //        }
-    }
-    */
-    QGraphicsView::mousePressEvent(event);
-}
+//    }
+//    QList<GraphicsItem  *> listItem = m_scene->selectedItems();
+//    qDebug() << "selectedItems count:" << listItem.count();
+//    qDebug() << "items count:" << m_scene->items().count();
+//    if (currentItem != nullptr) {
+//        if (m_selection->isItemSelected(currentItem)) {
+//            m_selection->show(currentItem);
+//        } else {
+//            m_selection->addItem(m_scene, currentItem);
+//        }
+//    } else {
+//        m_selection->hide(currentItem);
+//    }
 
-void ViewGraphics::mouseReleaseEvent(QMouseEvent *event)
-{
-    QGraphicsView::mouseReleaseEvent(event);
-}
+//    foreach (GraphicsItem  *item, listItem) {
+//        qDebug() << "222222222";
 
-bool ViewGraphics::isItemSelected(GraphicsItem *item) const
-{
-    return m_selection->isItemSelected(item);
-}
+////        if (currentItem != nullptr) {
+////            qDebug() << "3333333";
+////            //                if (!isManaged(currentItem) && !isCentralWidget(currentItem))
+////            //                    return ;
+////            if (m_selection->isItemSelected(item)) {
+////                qDebug() << "44444444444";
 
-QPointF ViewGraphics::opposite(GraphicsItem *item, int handleType) const
-{
-    return m_selection->opposite(item, handleType);
-}
+////                m_selection->show(item);
+////                //                    qDebug() << "item pos:" << QString::asprintf("Item 坐标：%.0f,%.0f", currentItem.x(),currentItem.y());
+////                qDebug() << "item pos:" << item->pos();
+////                qDebug() << "item scenePos:" << item->scenePos();
+////            } else {
+////                qDebug() << "555555555";
 
-bool ViewGraphics::trySelectItem(GraphicsItem *item)
-{
-    if (!isManaged(item)) {
-        return false;
-    }
+////                m_selection->addItem(m_scene, item);
+////            }
+////        } else {
+////            qDebug() << "6666666666666";
 
-    if (m_currentItem == item) {
-        return true;
-    }
+////            m_selection->hide(item);
+////        }
+//    }
+//    */
+//    QGraphicsView::mousePressEvent(event);
+//}
 
-    if (item) {
-        if (m_selection->isItemSelected(item)) {
-            m_selection->show(item);
-        } else {
-            m_selection->addItem(m_scene, item);
-        }
-    }
+//void ViewGraphics::mouseReleaseEvent(QMouseEvent *event)
+//{
+//    QGraphicsView::mouseReleaseEvent(event);
+//}
 
-    m_selection->hide(m_currentItem);
-    m_currentItem = item;
-    return true;
-}
+//bool ViewGraphics::isItemSelected(GraphicsItem *item) const
+//{
+//    return m_selection->isItemSelected(item);
+//}
+
+//QPointF ViewGraphics::opposite(GraphicsItem *item, int handleType) const
+//{
+//    return m_selection->opposite(item, handleType);
+//}
+
+//bool ViewGraphics::trySelectItem(GraphicsItem *item)
+//{
+//    if (!isManaged(item)) {
+//        return false;
+//    }
+
+//    if (m_currentItem == item) {
+//        return true;
+//    }
+
+//    if (item) {
+//        if (m_selection->isItemSelected(item)) {
+//            m_selection->show(item);
+//        } else {
+//            m_selection->addItem(m_scene, item);
+//        }
+//    }
+
+//    m_selection->hide(m_currentItem);
+//    m_currentItem = item;
+//    return true;
+//}
 
 void ViewGraphics::addItemToScene(GraphicsItem *item)
 {
     m_scene->addItem(item);
     m_selection->addItem(m_scene, item);
-    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
+//    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 
-void ViewGraphics::selectedStateChange(GraphicsItem *item, bool checked)
-{
-    if (item == nullptr) return;
+//void ViewGraphics::selectedStateChange(GraphicsItem *item, bool checked)
+//{
+//    if (item == nullptr) return;
 
-    if (!m_selection->isItemSelected(item)) {
-        m_selection->addItem(m_scene, item);
-        return;
-    }
+//    if (!m_selection->isItemSelected(item)) {
+//        m_selection->addItem(m_scene, item);
+//        return;
+//    }
 
-    if (checked) {
-        m_selection->show(item);
-    } else {
-        m_selection->hide(item);
-    }
-}
+//    if (checked) {
+//        m_selection->show(item);
+//    } else {
+//        m_selection->hide(item);
+//    }
+//}
 
 void ViewGraphics::removeItemFormScene(GraphicsItem *item)
 {
@@ -437,21 +437,21 @@ void ViewGraphics::removeItemFormScene(GraphicsItem *item)
     }
 }
 
-void ViewGraphics::updateItemHandle(GraphicsItem *item)
-{
-    m_selection->updateGeometry(item);
-    m_selection->show(item);
-}
+//void ViewGraphics::updateItemHandle(GraphicsItem *item)
+//{
+//    m_selection->updateGeometry(item);
+//    m_selection->show(item);
+//}
 
-void ViewGraphics::handleStateSwitch(GraphicsItem *item, bool isHide)
-{
-    if (item == nullptr) return;
+//void ViewGraphics::handleStateSwitch(GraphicsItem *item, bool isHide)
+//{
+//    if (item == nullptr) return;
 
-    if (isHide) {
-        qDebug() << "handleStateSwitch  isHide:" << isHide;
-        m_selection->hide(item);
-    } else {
-        qDebug() << "handleStateSwitch  isHide:" << isHide;
-        m_selection->show(item);
-    }
-}
+//    if (isHide) {
+//        qDebug() << "handleStateSwitch  isHide:" << isHide;
+//        m_selection->hide(item);
+//    } else {
+//        qDebug() << "handleStateSwitch  isHide:" << isHide;
+//        m_selection->show(item);
+//    }
+//}
