@@ -25,6 +25,7 @@ SOURCES += \
     graphicsselection.cpp \
     graphicssizehandle.cpp \
     Utils/utils.cpp \
+    graphicstextitem.cpp \
     main.cpp \
     mainwindow.cpp \
     scenegraphics.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     graphicsselection.h \
     graphicssizehandle.h \
     Utils/utils.h \
+    graphicstextitem.h \
     mainwindow.h \
     scenegraphics.h \
     viewgraphics.h

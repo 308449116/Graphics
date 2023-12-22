@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 #include "scenegraphics.h"
 #include "graphicsrectitem.h"
-//#include "canvastextitem.h"
+#include "graphicstextitem.h"
 #include <QDebug>
 
 // ------------------------ ViewGraphics::Selection
@@ -221,29 +221,16 @@ ViewGraphics::~ViewGraphics()
 
 void ViewGraphics::createTextItem()
 {
-//    QFont font;
-//    font.setPixelSize(100);
-//    CanvasTextItem *textItem = new CanvasTextItem();
-//    //    textitem2 = new QGraphicsSimpleTextItem("jpkD");
-//    //    textitem2->setFont(font);
-//    //    textitem2->setFlags(GraphicsItem::ItemIsSelectable |
-//    //                        GraphicsItem::ItemIsMovable);
-//    //    textitem2->setPos(textItem->pos());
-//    qDebug() << "textItem->pos"<< textItem->pos();
-//    //    qDebug() << "textitem2->pos"<< textitem2->pos();
-//    //    textItem->setCurrentText("123");
-//    //    textItem->setCurrentFont(font);
-//    //    RectGrabber* gabber = new RectGrabber(QSizeF(8, 8));
-//    //    DecoratorItemGraphics* item = new DecoratorItemGraphics(rectItem, gabber);
-//    m_scene->addItem(textItem);
-//    m_manageItem.insert(textItem);
-//    //    m_scene->addItem(textitem2);
+    GraphicsTextItem *textItem = new GraphicsTextItem("jkgp");
+    textItem->moveBy(textItem->width()/2, textItem->height()/2);
+    addItemToScene(textItem);
+
 }
 
 void ViewGraphics::createRectItem()
 {
     GraphicsRectItem *rectItem = new GraphicsRectItem(QRectF(-50, -50, 100, 100));
-    rectItem->moveBy(50, 50);
+    rectItem->moveBy(rectItem->width()/2, rectItem->height()/2);
     addItemToScene(rectItem);
     /*
     //    CanvasRectItem* rectItem = new CanvasRectItem();

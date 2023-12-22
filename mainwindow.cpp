@@ -67,7 +67,7 @@ void MainWindow::on_shpeBtn_clicked()
 
 void MainWindow::on_textBtn_clicked()
 {
-    ui->graphicsView->createRectItem();
+    ui->graphicsView->createTextItem();
 }
 
 

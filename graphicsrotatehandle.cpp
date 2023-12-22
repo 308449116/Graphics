@@ -12,7 +12,7 @@ GraphicsRotateHandle::GraphicsRotateHandle(int handleType, GraphicsSelection *se
     m_lastAngle(0),
     m_currentAngle(0)
 {
-    m_rotatePixmap = QPixmap(":/icons/rotate.png");
+    m_rotatePixmap = QPixmap(":/icons/rotate_press.png");
     m_localRect = QRectF(-5, -5, 10 ,10);
 }
 

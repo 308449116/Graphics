@@ -8,7 +8,6 @@
 GraphicsDragHandle::GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent)
 {
-
 }
 
 void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -23,7 +22,6 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 //    painter->drawRect(boundingRect());
 //    painter->restore();
 }
-
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

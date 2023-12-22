@@ -14,7 +14,6 @@ public:
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-    QRectF m_initialRect;
     QPointF m_originPoint;
     QPointF m_oppositePos;
 };

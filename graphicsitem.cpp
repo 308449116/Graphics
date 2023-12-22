@@ -18,10 +18,10 @@ int GraphicsItem::type() const
 QRectF GraphicsItem::boundingRect() const
 {
     QRectF rect = getRect();
-    if (isSelected()) {
-        rect.adjust(-3.0, -3.0, 3.0, 3.0);
-        rect.adjust(0, 0, 0, 20);
-    }
+//    if (isSelected()) {
+//        rect.adjust(-3.0, -3.0, 3.0, 3.0);
+//        rect.adjust(0, 0, 0, 20);
+//    }
     return rect;
 }
 

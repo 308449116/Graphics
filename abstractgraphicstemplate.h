@@ -44,12 +44,13 @@ protected:
     void qt_graphicsItem_highlightSelected(QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option);
 //    virtual void updatehandles(){}
 //    void setState(SelectionHandleState st);
-    QBrush m_brush;
-    QPen   m_pen ;
-    QRectF m_localRect;
     qreal m_width = 0;
     qreal m_height = 0;
     qreal m_ratio = 1;
+    QBrush m_brush;
+    QPen   m_pen ;
+    QRectF m_localRect;
+    QRectF m_initialRect;
 };
 
 #endif // ABSTRACTGRAPHICSTEMPLATE_H
