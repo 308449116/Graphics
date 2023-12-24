@@ -5,6 +5,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
+#include <QtMath>
 #define PI 3.1416
 
 GraphicsRotateHandle::GraphicsRotateHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
@@ -46,7 +47,7 @@ void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QPointF origin = m_item->mapToScene(m_item->getRect().center());
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
-    qreal angle = atan2(len_y, len_x) * 180 / PI;
+    qreal angle = qAtan2(len_y, len_x) * 180 / PI;
 
     m_lastAngle = angle;
     m_currentAngle = m_item->rotation();
@@ -62,7 +63,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
-    qreal angle = atan2(len_y, len_x) * 180 / PI;
+    qreal angle = qAtan2(len_y, len_x) * 180 / PI;
     angle = m_currentAngle + int(angle - m_lastAngle) ;
     if ( angle > 360 )
         angle -= 360;

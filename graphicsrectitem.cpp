@@ -88,6 +88,6 @@ void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphics
     painter->drawRect(m_localRect);
 
     painter->setPen(Qt::blue);
-    painter->drawLine(QLine(QPoint(m_oppositePos.x()-6,m_oppositePos.y()),QPoint(m_oppositePos.x()+6,m_oppositePos.y())));
-    painter->drawLine(QLine(QPoint(m_oppositePos.x(),m_oppositePos.y()-6),QPoint(m_oppositePos.x(),m_oppositePos.y()+6)));
+    painter->drawLine(QLine(QPoint(m_oppositePos.x()-6, m_oppositePos.y()),QPoint(m_oppositePos.x()+6, m_oppositePos.y())));
+    painter->drawLine(QLine(QPoint(m_oppositePos.x(), m_oppositePos.y()-6),QPoint(m_oppositePos.x(), m_oppositePos.y()+6)));
 }
