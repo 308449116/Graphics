@@ -8,7 +8,6 @@ class GraphicsSelection;
 
 class GraphicsRotateHandle : public GraphicsHandle
 {
-    Q_OBJECT
 public:
     GraphicsRotateHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 

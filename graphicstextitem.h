@@ -26,14 +26,17 @@ protected:
 
 private:
     void updateLocalRect();
+    QSizeF getSizeByFontSize(int fontSize);
+
+private:
     QString m_text;
     QFont m_font;
-    int m_initialFontSize;
+    qreal m_initialFontSize;
+    int m_lastFontSize;
     int m_descent;
     qreal m_scaleX = 1;
-    qreal m_scaleY = 1;
-    QTransform m_transform;
     QPointF m_originPos;
+    QPointF m_textPos;
 };
 
 #endif // GRAPHICSTEXTITEM_H

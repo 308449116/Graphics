@@ -8,42 +8,41 @@
 GraphicsTextItem::GraphicsTextItem(const QString &text, GraphicsItem *parent)
     : GraphicsItem(parent)
 {
-    m_initialFontSize = 100;
+    m_initialFontSize = m_lastFontSize = 100;
     m_font = qApp->font();
     m_font.setPixelSize(m_initialFontSize);
     setText(text);
 }
 
-bool falg = false;
 void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
+    if (qRound(m_initialFontSize * sy) < 10) {
+        return;
+    }
+
     QTransform trans;
     trans.translate(origin.x(),origin.y());
     trans.scale(sx,sy);
     trans.translate(-origin.x(),-origin.y());
-//    qDebug () << "sx:" << sx << "sy:" << sy;
+    qDebug () << "sx:" << sx << "sy:" << sy;
+    qDebug () << "============= transformOriginPoint:" << this->transformOriginPoint();
 
-    m_scaleX = sx;
-    m_scaleY = sy;
     m_originPos = origin;
-//    m_scaleX = sx;
-//    qDebug () << "111111111 pixelSize:" << m_initialFontSize;
-//    int fontSize = m_initialFontSize * sy;
-//    qDebug () << "222222222 pixelSize:" << fontSize;
-//    m_font.setPixelSize(fontSize);
-    falg = true;
-    m_transform = trans;
 
-    qDebug () << "111111111 pixelSize:" << m_initialFontSize;
-
-    this->setTransformOriginPoint(m_originPos);
     prepareGeometryChange();
-//    this->setTransform(trans);
     m_localRect = trans.mapRect(m_initialRect);
     m_width = m_localRect.width();
     m_height = m_localRect.height();
-    qDebug () << "2222222222222 pixelSize:" << m_initialFontSize;
+    if (sx != 1 && sy == 1) {
+        m_scaleX = m_width / getSizeByFontSize(m_initialFontSize).width();
+    } else {
+        qDebug () << "============= m_initialFontSize * sy:" << m_initialFontSize * sy;
+        m_lastFontSize = qRound(m_initialFontSize * sy);
+        qDebug () << "============= m_lastFontSize:" << m_lastFontSize;
 
+        m_font.setPixelSize(m_lastFontSize);
+        m_scaleX = m_width / getSizeByFontSize(m_lastFontSize).width();
+    }
 }
 
 void GraphicsTextItem::updateCoordinate()
@@ -105,7 +104,7 @@ QString GraphicsTextItem::text() const
 void GraphicsTextItem::setFont(const QFont &font)
 {
     m_font = font;
-    m_initialFontSize = m_font.pixelSize();
+    m_initialFontSize = m_lastFontSize = m_font.pixelSize();
     updateLocalRect();
 }
 
@@ -116,20 +115,18 @@ QFont GraphicsTextItem::font() const
 
 void GraphicsTextItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    qDebug () << "============= m_localRect:" << m_localRect;
+//    qDebug () << "============= m_localRect:" << m_localRect;
     Q_UNUSED(widget)
     Q_UNUSED(option)
-    painter->save();
+//    painter->save();
 //    QPointF centerPos(0, 0);
 //    QRectF textRect =  QRectF(centerPos.x(), centerPos.y(), \
 //                                                           m_originSize.width(), m_originSize.height());
-    painter->translate(m_originPos.x(), m_originPos.y());
+    painter->translate(m_localRect.topLeft().x(), m_localRect.topLeft().y());
     //scale
-    painter->scale(m_scaleX, m_scaleY);
-    painter->translate(-m_originPos.x(), -m_originPos.y());
+    painter->scale(m_scaleX, 1);
+    painter->translate(-m_localRect.topLeft().x(), -m_localRect.topLeft().y());
 
-//    if (falg)
-//    painter->setTransform(m_transform);
     // 绘制
     painter->setFont(m_font);
 //    painter->drawText(m_localRect, 0, m_text);
@@ -137,10 +134,10 @@ void GraphicsTextItem::customPaint(QPainter *painter, const QStyleOptionGraphics
 
 //    painter->drawText(QPointF(m_localRect.bottomLeft().x(), m_localRect.bottomLeft().y() - m_descent), m_text);
 
-    painter->setPen(Qt::blue);
-    painter->drawLine(QLine(QPoint(m_originPos.x()-6, m_originPos.y()),QPoint(m_originPos.x()+6, m_originPos.y())));
-    painter->drawLine(QLine(QPoint(m_originPos.x(), m_originPos.y()-6),QPoint(m_originPos.x(), m_originPos.y()+6)));
-    painter->restore();
+//    painter->setPen(Qt::blue);
+//    painter->drawLine(QLine(QPoint(m_originPos.x()-6, m_originPos.y()),QPoint(m_originPos.x()+6, m_originPos.y())));
+//    painter->drawLine(QLine(QPoint(m_originPos.x(), m_originPos.y()-6),QPoint(m_originPos.x(), m_originPos.y()+6)));
+//    painter->restore();
 }
 
 void GraphicsTextItem::updateLocalRect()
@@ -151,10 +148,22 @@ void GraphicsTextItem::updateLocalRect()
 
     m_width = rect.width();
     m_height = rect.height();
+    qDebug () << " pixelSize:" << m_font.pixelSize()
+                << " width:" << m_width
+                << " width:" << m_height;
+
     m_initialRect = m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
     //    m_startSize = m_size = QSizeF(rect.width(), rect.height());
     //    m_originSize = m_startSize;
-
     this->prepareGeometryChange();
     this->update();
+}
+
+QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
+{
+    QFont font;
+    font.setPixelSize(fontSize);
+    QFontMetricsF fm(font);
+    QRectF rect = fm.boundingRect(m_text);
+    return QSizeF(rect.width(), rect.height());
 }

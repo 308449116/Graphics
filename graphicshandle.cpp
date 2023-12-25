@@ -5,7 +5,7 @@
 #include <QPainter>
 
 GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
-    : QGraphicsObject(parent)
+    : QGraphicsItem(parent)
     ,m_handleType(handleType)
     ,m_state(HandleOff)
     ,m_borderColor(Qt::white)
@@ -69,6 +69,11 @@ void GraphicsHandle::setItem(GraphicsItem *item)
 //    }
 
     m_item = item;
+}
+
+GraphicsItem *GraphicsHandle::item() const
+{
+    return m_item;
 }
 
 void GraphicsHandle::move(qreal x, qreal y)

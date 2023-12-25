@@ -1,14 +1,13 @@
 #ifndef GRAPHICSHANDLE_H
 #define GRAPHICSHANDLE_H
 
-#include <QGraphicsObject>
+#include <QGraphicsItem>
 
 class GraphicsSelection;
 class GraphicsItem;
 
-class GraphicsHandle : public QGraphicsObject
+class GraphicsHandle : public QGraphicsItem
 {
-    Q_OBJECT
 public:
     enum GraphicsHandleState {
         HandleOff,
@@ -32,11 +31,13 @@ public:
 
     GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
     int handleType() const;
+    GraphicsItem *item() const;
+    QRectF boundingRect() const override;
+
     void setState(GraphicsHandleState st);
     void setLocalRect(QRectF localRect);
     void setItem(GraphicsItem *item);
     void move(qreal x, qreal y);
-    QRectF boundingRect() const override;
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;

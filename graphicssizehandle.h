@@ -9,7 +9,6 @@ const static int GRAPHICS_HANDLE_SIZE = 6;
 
 class GraphicsSizeHandle : public GraphicsHandle
 {
-    Q_OBJECT
 public:
     GraphicsSizeHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 //    QRectF boundingRect() const override;

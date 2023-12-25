@@ -8,7 +8,6 @@ class GraphicsSelection;
 
 class GraphicsDragHandle : public GraphicsHandle
 {
-    Q_OBJECT
 public:
     GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
