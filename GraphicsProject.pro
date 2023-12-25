@@ -23,6 +23,7 @@ SOURCES += \
     graphicshandle.cpp \
     graphicsrotatehandle.cpp \
     graphicsselection.cpp \
+    graphicsselectionmanager.cpp \
     graphicssizehandle.cpp \
     Utils/utils.cpp \
     graphicstextitem.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     graphicshandle.h \
     graphicsrotatehandle.h \
     graphicsselection.h \
+    graphicsselectionmanager.h \
     graphicssizehandle.h \
     Utils/utils.h \
     graphicstextitem.h \

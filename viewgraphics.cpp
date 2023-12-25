@@ -1,187 +1,14 @@
 #include "viewgraphics.h"
 //#include "graphicshandle.h"
-#include "graphicsselection.h"
+#include "graphicsselectionmanager.h"
 #include <QMouseEvent>
 #include "scenegraphics.h"
 #include "graphicsrectitem.h"
 #include "graphicstextitem.h"
 #include <QDebug>
 
-// ------------------------ ViewGraphics::Selection
-// Maintains a pool of GraphicsSelection to be used for selected item.
-
-class ViewGraphics::Selection
-{
-    Q_DISABLE_COPY_MOVE(Selection)
-public:
-    Selection();
-
-    ~Selection();
-
-    // Clear
-    void clear();
-
-    // Also clear out the pool. Call if reparenting of the main container occurs.
-    void  clearSelectionPool();
-
-    bool isItemSelected(GraphicsItem *item) const;
-
-    QList<GraphicsItem *> selectedItems() const;
-
-    GraphicsSelection *addItem(QGraphicsScene *scene, GraphicsItem *item);
-
-    // remove widget, return new current widget or 0
-    GraphicsItem* removeItem(GraphicsItem *item);
-
-    void updateGeometry(GraphicsItem *item);
-
-    void hide(GraphicsItem *item);
-
-    void show(GraphicsItem *item);
-
-    int collidesWithHandle(GraphicsItem *item, const QPointF & point) const;
-
-    QPointF opposite(GraphicsItem *item, int handleType) const;
-
-private:
-
-    using SelectionPool = QList<GraphicsSelection *>;
-
-    SelectionPool m_selectionPool;
-
-    QHash<GraphicsItem *, GraphicsSelection *> m_usedSelections;
-};
-
-ViewGraphics::Selection::Selection() = default;
-
-ViewGraphics::Selection::~Selection()
-{
-    clearSelectionPool();
-}
-
-void ViewGraphics::Selection::clear()
-{
-    if (!m_usedSelections.isEmpty()) {
-        for (auto it = m_usedSelections.begin(), mend = m_usedSelections.end(); it != mend; ++it)
-            it.value()->setItem(nullptr);
-        m_usedSelections.clear();
-    }
-}
-
-void  ViewGraphics::Selection::clearSelectionPool()
-{
-    clear();
-    qDeleteAll(m_selectionPool);
-    m_selectionPool.clear();
-}
-
-GraphicsSelection *ViewGraphics::Selection::addItem(QGraphicsScene *scene, GraphicsItem *item)
-{
-    GraphicsSelection *gs = m_usedSelections.value(item);
-    if (gs != nullptr) {
-        gs->show();
-        gs->updateActive();
-        return gs;
-    }
-
-    // find a free one in the pool
-    for (auto *s : std::as_const(m_selectionPool)) {
-        if (!s->isUsed()) {
-            gs = s;
-            break;
-        }
-    }
-
-    if (gs == nullptr) {
-        gs = new GraphicsSelection(scene);
-        m_selectionPool.push_back(gs);
-    }
-
-    m_usedSelections.insert(item, gs);
-    gs->setItem(item);
-    qDebug("GraphicsSelection hide item:%p" , gs);
-    qDebug("m_selectionPool insert item:%p" , item);
-    qDebug() << "m_selectionPool count:" << m_selectionPool.count();
-    qDebug() << "m_usedSelections count:" << m_usedSelections.count();
-    return gs;
-}
-
-GraphicsItem* ViewGraphics::Selection::removeItem(GraphicsItem *item)
-{
-    GraphicsSelection *s = m_usedSelections.value(item);
-    if (!s)
-        return item;
-
-    s->setItem(nullptr);
-    m_usedSelections.remove(item);
-
-    if (m_usedSelections.isEmpty())
-        return nullptr;
-
-    return (*m_usedSelections.begin())->item();
-}
-
-bool ViewGraphics::Selection::isItemSelected(GraphicsItem *item) const{
-    return  m_usedSelections.contains(item);
-}
-
-QList<GraphicsItem *> ViewGraphics::Selection::selectedItems() const
-{
-    return m_usedSelections.keys();
-}
-
-void ViewGraphics::Selection::updateGeometry(GraphicsItem *item)
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->updateGeometry();
-    }
-}
-
-void ViewGraphics::Selection::hide(GraphicsItem *item)
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->hide();
-    }
-}
-
-void ViewGraphics::Selection::show(GraphicsItem *item)
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->show();
-    }
-}
-
-int ViewGraphics::Selection::collidesWithHandle(GraphicsItem *item, const QPointF &point) const
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        return s->collidesWithHandle(point);
-    }
-
-    return 0;
-}
-
-QPointF ViewGraphics::Selection::opposite(GraphicsItem *item, int handleType) const
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        return s->opposite(handleType);
-    }
-
-    return QPointF();
-}
-
-
-
-
-
-
-
-
-
-
-
-//========================================================================================
 ViewGraphics::ViewGraphics(QWidget* parent)
-    : QGraphicsView{parent}, m_selection(new Selection)
+    : QGraphicsView{parent}, m_selectionManager(new GraphicsSelectionManager)
 {
     int width = 600;
     int height = 400;
@@ -215,7 +42,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 
 ViewGraphics::~ViewGraphics()
 {
-    delete m_selection;
+    delete m_selectionManager;
     m_scene->deleteLater();
 }
 
@@ -281,7 +108,7 @@ void ViewGraphics::createBarcoedItem()
 
 //int ViewGraphics::collidesWithHandle(GraphicsItem *item, const QPointF &point) const
 //{
-//    return m_selection->collidesWithHandle(item, point);
+//    return m_selectionManager->collidesWithHandle(item, point);
 //}
 
 //void ViewGraphics::mouseMoveEvent(QMouseEvent *event)
@@ -309,20 +136,20 @@ void ViewGraphics::createBarcoedItem()
 //            } else {
 //            }
 //        } else {
-//            m_selection->hide(currentItem);
+//            m_selectionManager->hide(currentItem);
 //        }
 //    }
 //    QList<GraphicsItem  *> listItem = m_scene->selectedItems();
 //    qDebug() << "selectedItems count:" << listItem.count();
 //    qDebug() << "items count:" << m_scene->items().count();
 //    if (currentItem != nullptr) {
-//        if (m_selection->isItemSelected(currentItem)) {
-//            m_selection->show(currentItem);
+//        if (m_selectionManager->isItemSelected(currentItem)) {
+//            m_selectionManager->show(currentItem);
 //        } else {
-//            m_selection->addItem(m_scene, currentItem);
+//            m_selectionManager->addItem(m_scene, currentItem);
 //        }
 //    } else {
-//        m_selection->hide(currentItem);
+//        m_selectionManager->hide(currentItem);
 //    }
 
 //    foreach (GraphicsItem  *item, listItem) {
@@ -332,22 +159,22 @@ void ViewGraphics::createBarcoedItem()
 ////            qDebug() << "3333333";
 ////            //                if (!isManaged(currentItem) && !isCentralWidget(currentItem))
 ////            //                    return ;
-////            if (m_selection->isItemSelected(item)) {
+////            if (m_selectionManager->isItemSelected(item)) {
 ////                qDebug() << "44444444444";
 
-////                m_selection->show(item);
+////                m_selectionManager->show(item);
 ////                //                    qDebug() << "item pos:" << QString::asprintf("Item 坐标：%.0f,%.0f", currentItem.x(),currentItem.y());
 ////                qDebug() << "item pos:" << item->pos();
 ////                qDebug() << "item scenePos:" << item->scenePos();
 ////            } else {
 ////                qDebug() << "555555555";
 
-////                m_selection->addItem(m_scene, item);
+////                m_selectionManager->addItem(m_scene, item);
 ////            }
 ////        } else {
 ////            qDebug() << "6666666666666";
 
-////            m_selection->hide(item);
+////            m_selectionManager->hide(item);
 ////        }
 //    }
 //    */
@@ -361,12 +188,12 @@ void ViewGraphics::createBarcoedItem()
 
 //bool ViewGraphics::isItemSelected(GraphicsItem *item) const
 //{
-//    return m_selection->isItemSelected(item);
+//    return m_selectionManager->isItemSelected(item);
 //}
 
 //QPointF ViewGraphics::opposite(GraphicsItem *item, int handleType) const
 //{
-//    return m_selection->opposite(item, handleType);
+//    return m_selectionManager->opposite(item, handleType);
 //}
 
 //bool ViewGraphics::trySelectItem(GraphicsItem *item)
@@ -380,14 +207,14 @@ void ViewGraphics::createBarcoedItem()
 //    }
 
 //    if (item) {
-//        if (m_selection->isItemSelected(item)) {
-//            m_selection->show(item);
+//        if (m_selectionManager->isItemSelected(item)) {
+//            m_selectionManager->show(item);
 //        } else {
-//            m_selection->addItem(m_scene, item);
+//            m_selectionManager->addItem(m_scene, item);
 //        }
 //    }
 
-//    m_selection->hide(m_currentItem);
+//    m_selectionManager->hide(m_currentItem);
 //    m_currentItem = item;
 //    return true;
 //}
@@ -395,7 +222,7 @@ void ViewGraphics::createBarcoedItem()
 void ViewGraphics::addItemToScene(GraphicsItem *item)
 {
     m_scene->addItem(item);
-    m_selection->addItem(m_scene, item);
+    m_selectionManager->addItem(m_scene, item);
 //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 
@@ -403,15 +230,15 @@ void ViewGraphics::addItemToScene(GraphicsItem *item)
 //{
 //    if (item == nullptr) return;
 
-//    if (!m_selection->isItemSelected(item)) {
-//        m_selection->addItem(m_scene, item);
+//    if (!m_selectionManager->isItemSelected(item)) {
+//        m_selectionManager->addItem(m_scene, item);
 //        return;
 //    }
 
 //    if (checked) {
-//        m_selection->show(item);
+//        m_selectionManager->show(item);
 //    } else {
-//        m_selection->hide(item);
+//        m_selectionManager->hide(item);
 //    }
 //}
 
@@ -419,15 +246,15 @@ void ViewGraphics::removeItemFormScene(GraphicsItem *item)
 {
     if (item == nullptr) return;
 
-    if (m_selection->isItemSelected(item)) {
-        m_selection->removeItem(item);
+    if (m_selectionManager->isItemSelected(item)) {
+        m_selectionManager->removeItem(item);
     }
 }
 
 //void ViewGraphics::updateItemHandle(GraphicsItem *item)
 //{
-//    m_selection->updateGeometry(item);
-//    m_selection->show(item);
+//    m_selectionManager->updateGeometry(item);
+//    m_selectionManager->show(item);
 //}
 
 //void ViewGraphics::handleStateSwitch(GraphicsItem *item, bool isHide)
@@ -436,9 +263,9 @@ void ViewGraphics::removeItemFormScene(GraphicsItem *item)
 
 //    if (isHide) {
 //        qDebug() << "handleStateSwitch  isHide:" << isHide;
-//        m_selection->hide(item);
+//        m_selectionManager->hide(item);
 //    } else {
 //        qDebug() << "handleStateSwitch  isHide:" << isHide;
-//        m_selection->show(item);
+//        m_selectionManager->show(item);
 //    }
 //}

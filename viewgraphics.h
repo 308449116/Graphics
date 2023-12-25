@@ -6,6 +6,7 @@
 
 class SceneGraphics;
 class GraphicsItem;
+class GraphicsSelectionManager;
 
 class ViewGraphics : public QGraphicsView
 {
@@ -41,8 +42,7 @@ private slots:
 private:
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToScene(GraphicsItem *item);
-    class Selection;
-    Selection *m_selection;
+    GraphicsSelectionManager *m_selectionManager;
     SceneGraphics *m_scene;
     QSet<GraphicsItem *> m_manageItem;
     bool m_isMousePress = false;
