@@ -47,7 +47,10 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
     case Qt::Key_A: {
         if(QApplication::keyboardModifiers() & Qt::ControlModifier){
             foreach (QGraphicsItem *item, items()) {
-                item->setSelected(true);
+                GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
+                if (handle && handle->handleType() == GraphicsHandle::Drag) {
+                    handle->setSelected(true);
+                }
             }
 //            if(selectedItems().length() == 1) signalSelectItem(selectedItems().at(0));
         }
