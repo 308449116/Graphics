@@ -52,7 +52,7 @@ QVariant GraphicsDragHandle::itemChange(GraphicsItemChange change, const QVarian
             if (value.toBool()) {
                 m_selection->show();
             } else {
-                m_selection->hide();
+                m_selection->hide(false);
             }
         } else {
             setSelected(false);

@@ -1,10 +1,8 @@
 #include "viewgraphics.h"
-//#include "graphicshandle.h"
 #include "graphicsselectionmanager.h"
-#include <QMouseEvent>
 #include "scenegraphics.h"
-#include "graphicsrectitem.h"
-#include "graphicstextitem.h"
+#include "graphicsitemmanager.h"
+#include "graphicsitemmanager.h"
 #include <QDebug>
 
 ViewGraphics::ViewGraphics(QWidget* parent)
@@ -22,6 +20,8 @@ ViewGraphics::ViewGraphics(QWidget* parent)
     m_scene = new SceneGraphics();
     m_scene->setSceneRect(rect);
     this->setScene(m_scene);
+
+    m_itemManager = new GraphicsItemManager(m_scene);
 
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
 
@@ -43,21 +43,19 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 ViewGraphics::~ViewGraphics()
 {
     delete m_selectionManager;
+    delete m_itemManager;
     m_scene->deleteLater();
 }
 
 void ViewGraphics::createTextItem()
 {
-    GraphicsTextItem *textItem = new GraphicsTextItem("jkgp");
-    textItem->moveBy(textItem->width()/2, textItem->height()/2);
+    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);
     addItemToScene(textItem);
-
 }
 
 void ViewGraphics::createRectItem()
 {
-    GraphicsRectItem *rectItem = new GraphicsRectItem(QRectF(-50, -50, 100, 100));
-    rectItem->moveBy(rectItem->width()/2, rectItem->height()/2);
+    GraphicsItem *rectItem = m_itemManager->createGraphicsItem(GraphicsItemManager::RectItem);
     addItemToScene(rectItem);
     /*
     //    CanvasRectItem* rectItem = new CanvasRectItem();
@@ -221,7 +219,6 @@ void ViewGraphics::createBarcoedItem()
 
 void ViewGraphics::addItemToScene(GraphicsItem *item)
 {
-    m_scene->addItem(item);
     m_selectionManager->addItem(m_scene, item);
 //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
@@ -249,6 +246,8 @@ void ViewGraphics::removeItemFormScene(GraphicsItem *item)
     if (m_selectionManager->isItemSelected(item)) {
         m_selectionManager->removeItem(item);
     }
+
+    m_itemManager->deleteGraphicsItem(item);
 }
 
 //void ViewGraphics::updateItemHandle(GraphicsItem *item)

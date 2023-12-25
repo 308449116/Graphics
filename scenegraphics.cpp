@@ -37,8 +37,6 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
             GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
             if (handle && handle->handleType() == GraphicsHandle::Drag) {
                 emit deleteGraphicsItem(handle->item());
-                removeItem(handle->item());
-                delete handle->item();
             }
         }
 //        deselectItems();

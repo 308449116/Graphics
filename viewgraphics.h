@@ -7,6 +7,7 @@
 class SceneGraphics;
 class GraphicsItem;
 class GraphicsSelectionManager;
+class GraphicsItemManager;
 
 class ViewGraphics : public QGraphicsView
 {
@@ -44,9 +45,10 @@ private:
     void addItemToScene(GraphicsItem *item);
     GraphicsSelectionManager *m_selectionManager;
     SceneGraphics *m_scene;
-    QSet<GraphicsItem *> m_manageItem;
-    bool m_isMousePress = false;
-    GraphicsItem  *m_currentItem = nullptr;
+    GraphicsItemManager *m_itemManager;
+//    QSet<GraphicsItem *> m_manageItem;
+//    bool m_isMousePress = false;
+//    GraphicsItem  *m_currentItem = nullptr;
 };
 
 #endif // VIEWGRAPHICS_H

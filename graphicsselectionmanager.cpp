@@ -61,7 +61,6 @@ GraphicsItem* GraphicsSelectionManager::removeItem(GraphicsItem *item)
         return item;
     }
 
-
     s->setItem(nullptr);
     m_usedSelections.remove(item);
 

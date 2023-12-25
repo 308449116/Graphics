@@ -19,6 +19,7 @@ SOURCES += \
     graphicsabstracttemplate.cpp \
     graphicsdraghandle.cpp \
     graphicsitem.cpp \
+    graphicsitemmanager.cpp \
     graphicsrectitem.cpp \
     graphicshandle.cpp \
     graphicsrotatehandle.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     graphicsabstracttemplate.h \
     graphicsdraghandle.h \
     graphicsitem.h \
+    graphicsitemmanager.h \
     graphicsrectitem.h \
     graphicshandle.h \
     graphicsrotatehandle.h \

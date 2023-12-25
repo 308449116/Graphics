@@ -34,6 +34,9 @@ void GraphicsSelection::setItem(GraphicsItem *item)
 
     foreach (GraphicsHandle *h ,m_handleList) {
         h->setItem(m_item);
+//        if (h->handleType() == GraphicsHandle::Drag) {
+//            h->setFocus();
+//        }
     }
     updateGeometry();
     show();
@@ -198,10 +201,10 @@ void GraphicsSelection::updateGeometry()
 //    }
 //}
 
-void GraphicsSelection::hide()
+void GraphicsSelection::hide(bool isHideDragHandle)
 {
     for (GraphicsHandle *h : m_handleList) {
-        if (h && h->handleType() != GraphicsHandle::Drag) {
+        if (h && (h->handleType() != GraphicsHandle::Drag || isHideDragHandle)) {
             h->hide();
         }
     }

@@ -20,7 +20,7 @@ public:
 
     void updateActive();
     void updateGeometry();
-    void hide();
+    void hide(bool isHideDragHandle = true);
     void show();
     void update();
     void setOpacity(qreal opacity);
