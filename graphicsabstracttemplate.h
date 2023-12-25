@@ -1,16 +1,16 @@
-#ifndef ABSTRACTGRAPHICSTEMPLATE_H
-#define ABSTRACTGRAPHICSTEMPLATE_H
+#ifndef GRAPHICSABSTRACTTEMPLATE_H
+#define GRAPHICSABSTRACTTEMPLATE_H
 
 #include <QGraphicsItem>
 #include <QBrush>
 #include <QPen>
 
 template < typename BaseType = QGraphicsItem >
-class AbstractGraphicsTemplate : public BaseType
+class GraphicsAbstractTemplate : public BaseType
 {
 public:
-    explicit AbstractGraphicsTemplate(QGraphicsItem *parent = nullptr);
-    virtual ~AbstractGraphicsTemplate(){}
+    explicit GraphicsAbstractTemplate(QGraphicsItem *parent = nullptr);
+    virtual ~GraphicsAbstractTemplate(){}
 //    virtual QString displayName () const;
 //    virtual void control(int dir, const QPointF & delta );
 //    virtual bool loadFromXml(QXmlStreamReader * xml ) = 0;
@@ -53,4 +53,4 @@ protected:
     QRectF m_initialRect;
 };
 
-#endif // ABSTRACTGRAPHICSTEMPLATE_H
+#endif // GRAPHICSABSTRACTTEMPLATE_H

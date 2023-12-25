@@ -1,12 +1,12 @@
 #ifndef GRAPHICSITEM_H
 #define GRAPHICSITEM_H
 #include <QObject>
-#include "abstractgraphicstemplate.h"
+#include "graphicsabstracttemplate.h"
 
-using AbstractGraphicsItem = AbstractGraphicsTemplate<QGraphicsItem>;
+using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;
 
 class GraphicsItem : public QObject,
-                     public AbstractGraphicsTemplate<QGraphicsItem>
+                     public GraphicsAbstractItem
 {
     Q_OBJECT
 public:
@@ -37,5 +37,5 @@ private:
     bool m_hideHandleSended = false;
 };
 
-extern template class AbstractGraphicsTemplate<QGraphicsItem>;
+extern template class GraphicsAbstractTemplate<QGraphicsItem>;
 #endif // GRAPHICSITEM_H

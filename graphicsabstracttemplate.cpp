@@ -1,46 +1,46 @@
-#include "abstractgraphicstemplate.h"
+#include "graphicsabstracttemplate.h"
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
 template<typename BaseType>
-AbstractGraphicsTemplate<BaseType>::AbstractGraphicsTemplate(QGraphicsItem *parent)
+GraphicsAbstractTemplate<BaseType>::GraphicsAbstractTemplate(QGraphicsItem *parent)
     : BaseType(parent)
 {
 
 }
 
 template<typename BaseType>
-QRectF AbstractGraphicsTemplate<BaseType>::getRect() const
+QRectF GraphicsAbstractTemplate<BaseType>::getRect() const
 {
     return m_localRect;
 }
 
 template<typename BaseType>
-qreal AbstractGraphicsTemplate<BaseType>::getRatio() const
+qreal GraphicsAbstractTemplate<BaseType>::getRatio() const
 {
     return m_ratio;
 }
 
 template<typename BaseType>
-QGraphicsItem *AbstractGraphicsTemplate<BaseType>::duplicate() const
+QGraphicsItem *GraphicsAbstractTemplate<BaseType>::duplicate() const
 {
     return nullptr;
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::updateCoordinate()
+void GraphicsAbstractTemplate<BaseType>::updateCoordinate()
 {
 
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::move(const QPointF &point)
+void GraphicsAbstractTemplate<BaseType>::move(const QPointF &point)
 {
     Q_UNUSED(point);
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::stretch(qreal sx, qreal sy, const QPointF &origin)
+void GraphicsAbstractTemplate<BaseType>::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
     Q_UNUSED(sx);
     Q_UNUSED(sy);
@@ -48,81 +48,81 @@ void AbstractGraphicsTemplate<BaseType>::stretch(qreal sx, qreal sy, const QPoin
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::rotate(QPointF rotatePos, QPointF lastPos)
+void GraphicsAbstractTemplate<BaseType>::rotate(QPointF rotatePos, QPointF lastPos)
 {
     Q_UNUSED(rotatePos);
     Q_UNUSED(lastPos);
 }
 
 template<typename BaseType>
-qreal AbstractGraphicsTemplate<BaseType>::width() const
+qreal GraphicsAbstractTemplate<BaseType>::width() const
 {
     return m_width;
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::setWidth(qreal width)
+void GraphicsAbstractTemplate<BaseType>::setWidth(qreal width)
 {
     m_width = width;
 }
 
 template<typename BaseType>
-qreal AbstractGraphicsTemplate<BaseType>::height() const
+qreal GraphicsAbstractTemplate<BaseType>::height() const
 {
     return m_height;
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::setHeight(qreal height)
+void GraphicsAbstractTemplate<BaseType>::setHeight(qreal height)
 {
     m_height = height;
 }
 
 template<typename BaseType>
-QColor AbstractGraphicsTemplate<BaseType>::brushColor() const
+QColor GraphicsAbstractTemplate<BaseType>::brushColor() const
 {
     return m_brush.color();
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::setBrushColor(const QColor &color)
+void GraphicsAbstractTemplate<BaseType>::setBrushColor(const QColor &color)
 {
     m_brush.setColor(color);
 }
 
 template<typename BaseType>
-QBrush AbstractGraphicsTemplate<BaseType>::brush() const
+QBrush GraphicsAbstractTemplate<BaseType>::brush() const
 {
     return m_brush;
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::setBrush(const QBrush &brush)
+void GraphicsAbstractTemplate<BaseType>::setBrush(const QBrush &brush)
 {
     m_brush = brush;
 }
 
 template<typename BaseType>
-QPen AbstractGraphicsTemplate<BaseType>::pen() const
+QPen GraphicsAbstractTemplate<BaseType>::pen() const
 {
     return m_pen;
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::setPen(const QPen &pen)
+void GraphicsAbstractTemplate<BaseType>::setPen(const QPen &pen)
 {
     m_pen = pen;
 }
 
 template<typename BaseType>
-QColor AbstractGraphicsTemplate<BaseType>::penColor() const
+QColor GraphicsAbstractTemplate<BaseType>::penColor() const
 {
     return m_pen.color();
 
 }
 
 template<typename BaseType>
-void AbstractGraphicsTemplate<BaseType>::qt_graphicsItem_highlightSelected(
+void GraphicsAbstractTemplate<BaseType>::qt_graphicsItem_highlightSelected(
     QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option)
 {
     const QRectF murect = painter->transform().mapRect(QRectF(0, 0, 1, 1));
@@ -177,4 +177,4 @@ void AbstractGraphicsTemplate<BaseType>::qt_graphicsItem_highlightSelected(
     painter->drawRect(getRect().adjusted(-pad, -pad, pad, pad));
 }
 
-template class AbstractGraphicsTemplate<QGraphicsItem>;
+template class GraphicsAbstractTemplate<QGraphicsItem>;

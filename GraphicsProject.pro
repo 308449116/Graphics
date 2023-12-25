@@ -16,7 +16,7 @@ DESTDIR += $$PWD/out/bin
 #INCLUDEPATH += $$PWD/include/barcode
 
 SOURCES += \
-    abstractgraphicstemplate.cpp \
+    graphicsabstracttemplate.cpp \
     graphicsdraghandle.cpp \
     graphicsitem.cpp \
     graphicsrectitem.cpp \
@@ -33,7 +33,7 @@ SOURCES += \
     viewgraphics.cpp
 
 HEADERS += \
-    abstractgraphicstemplate.h \
+    graphicsabstracttemplate.h \
     graphicsdraghandle.h \
     graphicsitem.h \
     graphicsrectitem.h \
