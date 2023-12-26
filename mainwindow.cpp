@@ -5,11 +5,18 @@
 //#include "decoratoritemgraphics.h"
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_undoAct = ui->graphicsView->createUndoAction();
+    m_redoAct = ui->graphicsView->createRedoAction();
+    ui->editToolBar->addAction(m_undoAct);
+    ui->editToolBar->addAction(m_redoAct);
+    ui->editToolBar->addSeparator();
+    connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateActions);
+    m_timer.start(1000);
 //    int width = 600;
 //    int height = 400;
 //    QRectF rect(-width/2, -height/2, width, height);
@@ -61,19 +68,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_shpeBtn_clicked()
 {
-    ui->graphicsView->createRectItem();
+    ui->graphicsView->createItem(GraphicsItemManager::RectItem);
 }
 
 
 void MainWindow::on_textBtn_clicked()
 {
-    ui->graphicsView->createTextItem();
+    ui->graphicsView->createItem(GraphicsItemManager::TextItem);
 }
 
 
 void MainWindow::on_barcodeBtn_clicked()
 {
-    ui->graphicsView->createBarcoedItem();
+    ui->graphicsView->createItem(GraphicsItemManager::BarcodeItem);
 }
 
 void MainWindow::on_underLineBtn_clicked(bool checked)
@@ -87,3 +94,15 @@ void MainWindow::on_underLineBtn_clicked(bool checked)
 //    font.setBold(true);
 //    textItem->setCurrentFont(font);
 }
+
+void MainWindow::updateActions()
+{
+    m_undoAct->setEnabled(ui->graphicsView->canUndo());
+    m_redoAct->setEnabled(ui->graphicsView->canRedo());
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
+}
+

@@ -12,6 +12,7 @@ public:
     void stretch(qreal sx , qreal sy , const QPointF &origin) override;
     GraphicsItem *duplicate () const override;
     void updateCoordinate() override;
+    int type() const override;
 
     // 设置文本
     void setText(const QString& text);

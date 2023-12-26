@@ -2,8 +2,11 @@
 #include "graphicsselectionmanager.h"
 #include "scenegraphics.h"
 #include "graphicsitemmanager.h"
-#include "graphicsitemmanager.h"
+#include "itemcreatecmd.h"
+#include "graphicsitem.h"
+
 #include <QDebug>
+#include <QUndostack>
 
 ViewGraphics::ViewGraphics(QWidget* parent)
     : QGraphicsView{parent}, m_selectionManager(new GraphicsSelectionManager)
@@ -22,7 +25,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
     this->setScene(m_scene);
 
     m_itemManager = new GraphicsItemManager(m_scene);
-
+    m_undoStack = new QUndoStack(this);
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
 
 //    QPen pen;
@@ -35,7 +38,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 //    m_scene->addItem(rectItem);
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
-    connect(m_scene, &SceneGraphics::deleteGraphicsItem, this, &ViewGraphics::removeItemFormScene);
+    connect(m_scene, &SceneGraphics::deleteGraphicsItem, this, &ViewGraphics::removeItem);
 //    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
 //    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
 }
@@ -47,47 +50,130 @@ ViewGraphics::~ViewGraphics()
     m_scene->deleteLater();
 }
 
-void ViewGraphics::createTextItem()
+void ViewGraphics::createItem(GraphicsItemType type)
 {
-    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);
-    addItemToScene(textItem);
+    if (m_isUndoCmdEnabled) {
+        createItemByCmd(type);
+    } else {
+        createItemByType(type);
+    }
 }
 
-void ViewGraphics::createRectItem()
+GraphicsItem * ViewGraphics::createItemByType(GraphicsItemType type)
 {
-    GraphicsItem *rectItem = m_itemManager->createGraphicsItem(GraphicsItemManager::RectItem);
-    addItemToScene(rectItem);
-    /*
-    //    CanvasRectItem* rectItem = new CanvasRectItem();
-    //    rectItem->setSize(100, 100);
-    //    rectItem->setFlag(GraphicsItem::ItemIsSelectable, false);
-    QGraphicsRectItem* rectItem = new QGraphicsRectItem(QRectF(0, 0, 100, 100));
-    rectItem->setFlag(GraphicsItem::ItemIsSelectable, true);
-    rectItem->setFlag(GraphicsItem::ItemIsMovable, true);
-    //    CanvasRectItem* rectItem2 = new CanvasRectItem();
-    //    rectItem2->setSize(100, 100);
-    //    rectItem2->setPos(110, 0);
-    //    rectItem2->setFlag(GraphicsItem::ItemIsSelectable, false);
-    //    rectItem2->setSelected(false);
-
-    //    QGraphicsItemGroup *group = new QGraphicsItemGroup();
-    //    group->setFlags(GraphicsItem::ItemIsMovable |
-    //                    GraphicsItem::ItemIsSelectable);
-    //    group->addToGroup(rectItem);
-    //    group->addToGroup(rectItem2);
-    //    RectGrabber* gabber = new RectGrabber(QSizeF(8, 8));
-    //    DecoratorItemGraphics* item = new DecoratorItemGraphics(rectItem, gabber);
-    m_scene->addItem(rectItem);
-    m_manageItem.insert(rectItem);
-    */
+    GraphicsItem *item = m_itemManager->createGraphicsItem(type);
+    addItemToSelectionManager(item);
+    return item;
 }
 
-void ViewGraphics::createBarcoedItem()
+void ViewGraphics::createItemByCmd(GraphicsItemType type)
 {
-//    CanvasBarcodeItem *barcodeitem = new CanvasBarcodeItem();
-//    m_scene->addItem(barcodeitem);
-//    m_manageItem.insert(barcodeitem);
+    ItemCreateCmd *createCmd = new ItemCreateCmd(type, this);
+    m_undoStack->push(createCmd);
 }
+
+QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
+{
+    return m_itemManager->getItemDisplayName(type);
+}
+
+void ViewGraphics::removeItem(GraphicsItem *item)
+{
+    if (item == nullptr) return;
+
+    if (m_selectionManager->isItemSelected(item)) {
+        m_selectionManager->removeItem(item);
+    }
+
+    m_itemManager->deleteGraphicsItem(item);
+}
+
+void ViewGraphics::addItem(GraphicsItem *item)
+{
+    m_scene->addItem(item);
+    addItemToSelectionManager(item);
+}
+
+QAction *ViewGraphics::createUndoAction()
+{
+    QAction *undoAct = m_undoStack->createUndoAction(this, tr("undo"));
+    undoAct->setIcon(QIcon(":/icons/undo.png"));
+    return undoAct;
+}
+
+QAction *ViewGraphics::createRedoAction()
+{
+    QAction *redo = m_undoStack->createRedoAction(this, tr("redo"));
+    redo->setIcon(QIcon(":/icons/redo.png"));
+    return redo;
+}
+
+bool ViewGraphics::canUndo() const
+{
+    return m_undoStack->canUndo();
+}
+
+bool ViewGraphics::canRedo() const
+{
+    return m_undoStack->canRedo();
+}
+
+void ViewGraphics::addItemToSelectionManager(GraphicsItem *item)
+{
+    m_selectionManager->addItem(m_scene, item);
+    //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
+}
+
+bool ViewGraphics::isUndoCmdEnabled() const
+{
+    return m_isUndoCmdEnabled;
+}
+
+void ViewGraphics::setUndoCmdEnabled(bool newIsUndoCmdEnabled)
+{
+    m_isUndoCmdEnabled = newIsUndoCmdEnabled;
+}
+//void ViewGraphics::createTextItem()
+//{
+//    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);
+//    addItemToScene(textItem);
+//}
+
+//void ViewGraphics::createRectItem()
+//{
+//    GraphicsItem *rectItem = m_itemManager->createGraphicsItem(GraphicsItemManager::RectItem);
+//    addItemToScene(rectItem);
+//    /*
+//    //    CanvasRectItem* rectItem = new CanvasRectItem();
+//    //    rectItem->setSize(100, 100);
+//    //    rectItem->setFlag(GraphicsItem::ItemIsSelectable, false);
+//    QGraphicsRectItem* rectItem = new QGraphicsRectItem(QRectF(0, 0, 100, 100));
+//    rectItem->setFlag(GraphicsItem::ItemIsSelectable, true);
+//    rectItem->setFlag(GraphicsItem::ItemIsMovable, true);
+//    //    CanvasRectItem* rectItem2 = new CanvasRectItem();
+//    //    rectItem2->setSize(100, 100);
+//    //    rectItem2->setPos(110, 0);
+//    //    rectItem2->setFlag(GraphicsItem::ItemIsSelectable, false);
+//    //    rectItem2->setSelected(false);
+
+//    //    QGraphicsItemGroup *group = new QGraphicsItemGroup();
+//    //    group->setFlags(GraphicsItem::ItemIsMovable |
+//    //                    GraphicsItem::ItemIsSelectable);
+//    //    group->addToGroup(rectItem);
+//    //    group->addToGroup(rectItem2);
+//    //    RectGrabber* gabber = new RectGrabber(QSizeF(8, 8));
+//    //    DecoratorItemGraphics* item = new DecoratorItemGraphics(rectItem, gabber);
+//    m_scene->addItem(rectItem);
+//    m_manageItem.insert(rectItem);
+//    */
+//}
+
+//void ViewGraphics::createBarcoedItem()
+//{
+////    CanvasBarcodeItem *barcodeitem = new CanvasBarcodeItem();
+////    m_scene->addItem(barcodeitem);
+//    //    m_manageItem.insert(barcodeitem);
+//}
 
 //bool ViewGraphics::isManaged(GraphicsItem *item)
 //{
@@ -217,12 +303,6 @@ void ViewGraphics::createBarcoedItem()
 //    return true;
 //}
 
-void ViewGraphics::addItemToScene(GraphicsItem *item)
-{
-    m_selectionManager->addItem(m_scene, item);
-//    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
-}
-
 //void ViewGraphics::selectedStateChange(GraphicsItem *item, bool checked)
 //{
 //    if (item == nullptr) return;
@@ -238,17 +318,6 @@ void ViewGraphics::addItemToScene(GraphicsItem *item)
 //        m_selectionManager->hide(item);
 //    }
 //}
-
-void ViewGraphics::removeItemFormScene(GraphicsItem *item)
-{
-    if (item == nullptr) return;
-
-    if (m_selectionManager->isItemSelected(item)) {
-        m_selectionManager->removeItem(item);
-    }
-
-    m_itemManager->deleteGraphicsItem(item);
-}
 
 //void ViewGraphics::updateItemHandle(GraphicsItem *item)
 //{

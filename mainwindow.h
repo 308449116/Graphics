@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
+#include <QToolBar>
+#include <QAction>
 
 class SceneGraphics;
 class QGraphicsSimpleTextItem;
@@ -16,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget* parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -27,10 +30,23 @@ private slots:
     void on_barcodeBtn_clicked();
 
     void on_underLineBtn_clicked(bool checked);
+
+    void updateActions();
+
+    void on_pushButton_clicked();
+
 private:
-    Ui::MainWindow* ui;
-    SceneGraphics* m_scene;
-    CanvasTextItem* textItem;
+    Ui::MainWindow *ui;
+    SceneGraphics *m_scene;
+    CanvasTextItem *textItem;
     QGraphicsSimpleTextItem *textitem2;
+    QTimer m_timer;
+
+    // edit action
+    QAction *m_undoAct;
+    QAction *m_redoAct;
+
+    // edit toolbar;
+    QToolBar *m_editToolBar;
 };
 #endif // MAINWINDOW_H

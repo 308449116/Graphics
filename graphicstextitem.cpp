@@ -1,4 +1,6 @@
 #include "graphicstextitem.h"
+#include "common.h"
+
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QApplication>
@@ -166,4 +168,9 @@ QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
     QFontMetricsF fm(font);
     QRectF rect = fm.boundingRect(m_text);
     return QSizeF(rect.width(), rect.height());
+}
+
+int GraphicsTextItem::type() const
+{
+    return GraphicsItemType::TextItem;
 }

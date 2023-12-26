@@ -10,10 +10,10 @@ GraphicsItem::GraphicsItem(QGraphicsItem *parent)
 //    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-int GraphicsItem::type() const
-{
-    return Type;
-}
+//int GraphicsItem::type() const
+//{
+//    return Type;
+//}
 
 QRectF GraphicsItem::boundingRect() const
 {
@@ -23,6 +23,16 @@ QRectF GraphicsItem::boundingRect() const
 //        rect.adjust(0, 0, 0, 20);
 //    }
     return rect;
+}
+
+void GraphicsItem::setItemName(QString name)
+{
+    setData(type(), name);
+}
+
+QString GraphicsItem::getItemName()
+{
+    return data(type()).toString();
 }
 
 void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

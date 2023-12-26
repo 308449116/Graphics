@@ -1,4 +1,6 @@
 #include "graphicsrectitem.h"
+#include "common.h"
+
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #define PI 3.1416
@@ -76,6 +78,11 @@ GraphicsItem *GraphicsRectItem::duplicate() const
     item->setZValue(zValue()+0.1);
     item->updateCoordinate();
     return item;
+}
+
+int GraphicsRectItem::type() const
+{
+    return GraphicsItemType::RectItem;
 }
 
 void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

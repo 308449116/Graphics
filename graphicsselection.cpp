@@ -213,7 +213,7 @@ void GraphicsSelection::hide(bool isHideDragHandle)
 void GraphicsSelection::setOpacity(qreal opacity)
 {
     for (GraphicsHandle *h : m_handleList) {
-        if (h && h->handleType() != GraphicsHandle::Drag) {
+        if (h) {
             h->setOpacity(opacity);
         }
     }

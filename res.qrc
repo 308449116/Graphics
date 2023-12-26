@@ -4,5 +4,7 @@
         <file>icons/resize.png</file>
         <file>icons/rotate.png</file>
         <file>icons/rotate_press.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/undo.png</file>
     </qresource>
 </RCC>

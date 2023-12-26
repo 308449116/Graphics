@@ -15,6 +15,7 @@ GraphicsRotateHandle::GraphicsRotateHandle(int handleType, GraphicsSelection *se
 {
     m_rotatePixmap = QPixmap(":/icons/rotate_press.png");
     m_localRect = QRectF(-5, -5, 10 ,10);
+    setZValue(2);
 }
 
 void GraphicsRotateHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

@@ -10,14 +10,12 @@ class GraphicsItem : public QObject,
 {
     Q_OBJECT
 public:
-    enum {
-        Type = UserType + 1
-    };
-
     explicit GraphicsItem(QGraphicsItem *parent = nullptr);
     virtual ~GraphicsItem() {}
-    int  type() const override;
     QRectF boundingRect() const override;
+
+    void setItemName(QString name);
+    QString getItemName();
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
