@@ -105,6 +105,15 @@ void ViewGraphics::addItem(QSharedPointer<GraphicsItem> item)
     addItemToSelectionManager(item);
 }
 
+void ViewGraphics::moveItem(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items, const QPointF &pos)
+{
+    for (auto [initPos, item] : items) {
+        item->setPos(initPos + pos);
+        m_selectionManager->updateGeometry(item);
+//        m_scene->update();
+    }
+}
+
 QAction *ViewGraphics::createUndoAction()
 {
     QAction *undoAct = m_undoCmdManager->createUndoAction();
@@ -131,7 +140,7 @@ bool ViewGraphics::canRedo() const
 
 void ViewGraphics::addItemToSelectionManager(QSharedPointer<GraphicsItem> item)
 {
-    m_selectionManager->addItem(m_scene, item);
+    m_selectionManager->addItem(this, item);
     //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 

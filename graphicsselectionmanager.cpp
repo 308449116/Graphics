@@ -23,7 +23,7 @@ void GraphicsSelectionManager::clearSelectionPool()
     m_selectionPool.clear();
 }
 
-GraphicsSelection *GraphicsSelectionManager::addItem(QGraphicsScene *scene, QSharedPointer<GraphicsItem> item)
+GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item)
 {
     GraphicsSelection *gs = m_usedSelections.value(item);
     if (gs != nullptr) {
@@ -40,7 +40,7 @@ GraphicsSelection *GraphicsSelectionManager::addItem(QGraphicsScene *scene, QSha
     }
 
     if (gs == nullptr) {
-        gs = new GraphicsSelection(scene);
+        gs = new GraphicsSelection(view);
         m_selectionPool.push_back(gs);
     }
 

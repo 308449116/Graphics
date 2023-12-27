@@ -2,10 +2,9 @@
 #define GRAPHICSSELECTION_H
 
 #include <QObject>
-#include <QGraphicsScene>
 #include <QSharedPointer>
 
-class QGraphicsScene;
+class ViewGraphics;
 class GraphicsItem;
 class GraphicsHandle;
 
@@ -15,7 +14,7 @@ class GraphicsSelection : public QObject
 {
     Q_OBJECT
 public:
-    explicit GraphicsSelection(QGraphicsScene *parent);
+    explicit GraphicsSelection(ViewGraphics *view);
 
     void setItem(QSharedPointer<GraphicsItem> item);
 
@@ -42,9 +41,9 @@ public:
     int swapHandle(int handle, const QPointF &scale) const;
 
 private:
-    QList<GraphicsHandle *> m_handleList;
-    QGraphicsScene *m_scene;
+    ViewGraphics *m_view;
     QSharedPointer<GraphicsItem> m_item;
+    QList<GraphicsHandle *> m_handleList;
 };
 
 #endif // GRAPHICSSELECTION_H

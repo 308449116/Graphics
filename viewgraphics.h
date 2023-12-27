@@ -30,6 +30,8 @@ public:
 
     void addItem(QSharedPointer<GraphicsItem> item);
 
+    void moveItem(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items, const QPointF &pos);
+
     QString getItemDisplayName(GraphicsItemType type);
 
     QAction  *createUndoAction();
@@ -60,11 +62,11 @@ private:
     void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
 
 private:
-    GraphicsSelectionManager *m_selectionManager;
+    bool m_isUndoCmdEnabled = true;
     SceneGraphics *m_scene;
     GraphicsItemManager *m_itemManager;
     UndoCmdManager *m_undoCmdManager;
-    bool m_isUndoCmdEnabled = true;
+    GraphicsSelectionManager *m_selectionManager;
 //    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;
 //    GraphicsItem  *m_currentItem = nullptr;

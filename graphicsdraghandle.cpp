@@ -1,13 +1,16 @@
 #include "graphicsdraghandle.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include "viewgraphics.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 
-GraphicsDragHandle::GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
-    :GraphicsHandle(handleType, selection, parent)
+GraphicsDragHandle::GraphicsDragHandle(int handleType, ViewGraphics *view,
+                                       GraphicsSelection *selection, QGraphicsItem *parent)
+    :GraphicsHandle(handleType, selection, parent), m_view(view)
 {
+
 }
 
 void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -25,17 +28,29 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    QGraphicsItem::mousePressEvent(event);
     m_lastScenePos = m_pressedScenePos = event->scenePos();
     m_initialPos = m_item->pos();
-    QGraphicsItem::mousePressEvent(event);
+    m_items.clear();
+
+    QList<QGraphicsItem *> items = m_view->scene()->selectedItems();
+    foreach (auto item, items) {
+        GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
+        if (handle->handleType() == GraphicsHandle::Drag) {
+            m_items.push_back(std::make_pair(handle->item()->pos(), handle->item()));
+        }
+    }
+
 }
 
 void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
+
     //移动处理
-    m_item->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
-    m_selection->updateGeometry();
+    m_view->moveItem(m_items, m_lastScenePos - m_pressedScenePos);
+//    m_item->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
+//    m_selection->updateGeometry();
     QGraphicsItem::mouseMoveEvent(event);
 }
 

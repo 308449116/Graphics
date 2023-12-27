@@ -7,7 +7,7 @@
 #include <QSharedPointer>
 
 class GraphicsItem;
-class QGraphicsScene;
+class ViewGraphics;
 class GraphicsSelection;
 
 class GraphicsSelectionManager
@@ -31,7 +31,7 @@ public:
 
     QPointF opposite(QSharedPointer<GraphicsItem> item, int handleType) const;
 
-    GraphicsSelection *addItem(QGraphicsScene *scene, QSharedPointer<GraphicsItem> item);
+    GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item);
 
     void removeItem(QSharedPointer<GraphicsItem> item);
 

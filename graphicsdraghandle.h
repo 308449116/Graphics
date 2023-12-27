@@ -5,11 +5,13 @@
 
 class QGraphicsSceneMouseEvent;
 class GraphicsSelection;
+class ViewGraphics;
 
 class GraphicsDragHandle : public GraphicsHandle
 {
 public:
-    GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
+    GraphicsDragHandle(int handleType, ViewGraphics *view,
+                       GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -24,6 +26,8 @@ protected:
 
 private:
     QPointF m_initialPos;
+    ViewGraphics *m_view;
+    QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> m_items;
 };
 
 #endif // GRAPHICSDRAGHANDLE_H

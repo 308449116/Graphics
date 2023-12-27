@@ -30,7 +30,7 @@ QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(GraphicsIte
         break;
     }
 
-    if (item == nullptr) return item;
+    if (item.isNull()) return item;
 
     item->moveBy(item->width()/2, item->height()/2);
     m_scene->addItem(item.data());

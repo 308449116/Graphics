@@ -3,30 +3,31 @@
 #include "graphicsdraghandle.h"
 #include "graphicsRotatehandle.h"
 #include "graphicsitem.h"
+#include "viewgraphics.h"
 
-GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
-    : m_scene(parent), m_item(nullptr)
+GraphicsSelection::GraphicsSelection(ViewGraphics *view)
+    : m_view(view), m_item(nullptr)
 {
     for (int i = GraphicsHandle::LeftTop; i <= GraphicsHandle::Left; ++i) {
         GraphicsHandle *handle = new GraphicsSizeHandle(i, this);
-        m_scene->addItem(handle);
+        m_view->scene()->addItem(handle);
         m_handleList.push_back(handle);
     }
 
-    GraphicsHandle *draghandle = new GraphicsDragHandle(GraphicsHandle::Drag, this);
-    m_scene->addItem(draghandle);
+    GraphicsHandle *draghandle = new GraphicsDragHandle(GraphicsHandle::Drag, view, this);
+    m_view->scene()->addItem(draghandle);
     m_handleList.push_back(draghandle);
 
     GraphicsHandle *rotatehandle = new GraphicsRotateHandle(GraphicsHandle::Rotate, this);
-    m_scene->addItem(rotatehandle);
+    m_view->scene()->addItem(rotatehandle);
     m_handleList.push_back(rotatehandle);
 }
 
 void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 {
-    if (item == nullptr) {
+    if (item.isNull()) {
         hide();
-        m_item = nullptr;
+        m_item.clear();
         return;
     }
 
@@ -34,9 +35,6 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 
     foreach (GraphicsHandle *h ,m_handleList) {
         h->setItem(m_item);
-//        if (h->handleType() == GraphicsHandle::Drag) {
-//            h->setFocus();
-//        }
     }
     updateGeometry();
     show();
@@ -52,7 +50,7 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 
 bool GraphicsSelection::isUsed() const
 {
-    return m_item != nullptr;
+    return m_item.data() != nullptr;
 }
 
 void GraphicsSelection::updateGeometry()
@@ -62,7 +60,8 @@ void GraphicsSelection::updateGeometry()
 //    transform.rotate(0);
 //    transform.translate(-m_item->getRect().center().x(),-m_item->getRect().center().y());
 
-    if (!m_item) return;
+    if (m_item.isNull()) return;
+
     qreal angle = m_item->rotation();
     m_item->setRotation(0);
     const QRectF r =  m_item->mapRectToScene(m_item->getRect());

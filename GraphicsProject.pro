@@ -19,6 +19,7 @@ INCLUDEPATH += $$PWD/UndoCmd
 SOURCES += \
     UndoCmd/itemcreatecmd.cpp \
     UndoCmd/itemdeletecmd.cpp \
+    UndoCmd/itemmovecmd.cpp \
     UndoCmd/undocmdmanager.cpp \
     graphicsabstracttemplate.cpp \
     graphicsdraghandle.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 HEADERS += \
     UndoCmd/itemcreatecmd.h \
     UndoCmd/itemdeletecmd.h \
+    UndoCmd/itemmovecmd.h \
     UndoCmd/undocmdmanager.h \
     common.h \
     graphicsabstracttemplate.h \
