@@ -60,7 +60,7 @@ void GraphicsHandle::setLocalRect(QRectF localRect)
     m_localRect = localRect;
 }
 
-void GraphicsHandle::setItem(GraphicsItem *item)
+void GraphicsHandle::setItem(QSharedPointer<GraphicsItem> item)
 {
 //    if (item) {
 //        connect(item, &GraphicsItem::selectedChange, [this](GraphicsItem *item, bool checked) {
@@ -71,7 +71,7 @@ void GraphicsHandle::setItem(GraphicsItem *item)
     m_item = item;
 }
 
-GraphicsItem *GraphicsHandle::item() const
+QSharedPointer<GraphicsItem> GraphicsHandle::item() const
 {
     return m_item;
 }

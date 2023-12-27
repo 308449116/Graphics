@@ -11,10 +11,15 @@ class GraphicsItem : public QObject,
     Q_OBJECT
 public:
     explicit GraphicsItem(QGraphicsItem *parent = nullptr);
+
     virtual ~GraphicsItem() {}
+
     QRectF boundingRect() const override;
 
+    virtual QSharedPointer<GraphicsItem> duplicate() const = 0;
+
     void setItemName(QString name);
+
     QString getItemName();
 
 protected:
@@ -28,7 +33,7 @@ protected:
     virtual void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
 
 signals:
-    void selectedChange(GraphicsItem *item, bool checked);
+//    void selectedChange(GraphicsItem *item, bool checked);
 //    void handleStateSwitch(bool isShow);
 
 private:

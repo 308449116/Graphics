@@ -6,7 +6,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QtMath>
-#define PI 3.1416
+#define PI 3.14159265358979
 
 GraphicsRotateHandle::GraphicsRotateHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent),

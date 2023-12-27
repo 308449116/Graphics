@@ -18,7 +18,7 @@ public:
 private:
     GraphicsItemType m_type;
     ViewGraphics *m_view;
-    GraphicsItem *m_item;
+    QSharedPointer<GraphicsItem> m_item;
 };
 
 #endif

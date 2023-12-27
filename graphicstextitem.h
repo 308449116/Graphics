@@ -8,18 +8,25 @@ class GraphicsTextItem : public GraphicsItem
 {
 public:
     explicit GraphicsTextItem(const QString &text, GraphicsItem *parent = nullptr);
+
     void move(const QPointF &point) override;
-    void stretch(qreal sx , qreal sy , const QPointF &origin) override;
-    GraphicsItem *duplicate () const override;
+
+    void stretch(qreal sx, qreal sy, const QPointF &origin) override;
+
+    QSharedPointer<GraphicsItem> duplicate() const override;
+
     void updateCoordinate() override;
+
     int type() const override;
 
     // 设置文本
     void setText(const QString& text);
+
     QString text() const;
 
     // 设置字体
     void setFont(const QFont& font);
+
     QFont font() const;
 
 protected:

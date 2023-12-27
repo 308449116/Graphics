@@ -7,32 +7,33 @@
 GraphicsItemManager::GraphicsItemManager(SceneGraphics *scene, QObject *parent)
     : QObject{parent}, m_scene{scene}
 {
-    for(int i = RectItem; i < TypeCount; i++) {
+    for(int i = GraphicsItemType::RectItem; i < GraphicsItemType::TypeCount; i++) {
         m_countMap.insert(static_cast<GraphicsItemType>(i), 0);
     }
 }
 
-GraphicsItem *GraphicsItemManager::createGraphicsItem(GraphicsItemType type, const QString& itemName)
+QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(GraphicsItemType type, const QString& itemName)
 {
-    GraphicsItem *item = nullptr;
+    QSharedPointer<GraphicsItem> item;
     switch (type) {
-    case RectItem: {
-        item = new GraphicsRectItem(QRectF(-50, -50, 100, 100));
+    case GraphicsItemType::RectItem: {
+        item = QSharedPointer<GraphicsItem>( new GraphicsRectItem(QRectF(-50, -50, 100, 100)) );
         break;
     }
-    case TextItem: {
-        item = new GraphicsTextItem("jkpg");
+    case GraphicsItemType::TextItem: {
+        item = QSharedPointer<GraphicsItem>( new GraphicsTextItem("jkpg") );
         break;
     }
-    case BarcodeItem:
+    case GraphicsItemType::BarcodeItem:
         break;
     default:
         break;
     }
 
     if (item == nullptr) return item;
+
     item->moveBy(item->width()/2, item->height()/2);
-    m_scene->addItem(item);
+    m_scene->addItem(item.data());
 
     // 获取图元名
     QString tempName = itemName;
@@ -50,11 +51,11 @@ GraphicsItem *GraphicsItemManager::createGraphicsItem(GraphicsItemType type, con
     return item;
 }
 
-void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
+void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsItem> item)
 {
-    if (item == nullptr) return;
+    if (item.isNull()) return;
 
-    m_scene->removeItem(item);
+    m_scene->removeItem(item.data());
 //    delete item;
 //    item = nullptr;
 }
@@ -62,11 +63,11 @@ void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
 QString GraphicsItemManager::getItemDisplayName(GraphicsItemType type)
 {
     switch (type) {
-    case RectItem:
+    case GraphicsItemType::RectItem:
         return "RectItem";
-    case TextItem:
+    case GraphicsItemType::TextItem:
         return "TextItem";
-    case BarcodeItem:
+    case GraphicsItemType::BarcodeItem:
         return "BarcodeItem";
     default:
         return "";
@@ -85,7 +86,7 @@ void GraphicsItemManager::cleanAll()
     m_nameHash.clear();
 
     // 重新计数
-    for(int i = RectItem; i < TypeCount; i++) {
+    for(int i = GraphicsItemType::RectItem; i < GraphicsItemType::TypeCount; i++) {
         m_countMap[static_cast<GraphicsItemType>(i)] = 0;
     }
 }

@@ -12,11 +12,15 @@ public:
     GraphicsDragHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
 protected:
-    void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
     QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
+
+    void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
     QPointF m_initialPos;

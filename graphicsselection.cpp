@@ -22,7 +22,7 @@ GraphicsSelection::GraphicsSelection(QGraphicsScene *parent)
     m_handleList.push_back(rotatehandle);
 }
 
-void GraphicsSelection::setItem(GraphicsItem *item)
+void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 {
     if (item == nullptr) {
         hide();
@@ -53,11 +53,6 @@ void GraphicsSelection::setItem(GraphicsItem *item)
 bool GraphicsSelection::isUsed() const
 {
     return m_item != nullptr;
-}
-
-void GraphicsSelection::updateActive()
-{
-
 }
 
 void GraphicsSelection::updateGeometry()
@@ -350,7 +345,7 @@ int GraphicsSelection::swapHandle(int handle, const QPointF& scale ) const
     return handleType;
 }
 
-GraphicsItem *GraphicsSelection::item() const
+QSharedPointer<GraphicsItem> GraphicsSelection::item() const
 {
     return m_item;
 }

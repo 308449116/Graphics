@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QBrush>
 #include <QPen>
+#include <QSharedPointer>
 
 template < typename BaseType = QGraphicsItem >
 class GraphicsAbstractTemplate : public BaseType
@@ -15,29 +16,40 @@ public:
 //    virtual void control(int dir, const QPointF & delta );
 //    virtual bool loadFromXml(QXmlStreamReader * xml ) = 0;
 //    virtual bool saveToXml( QXmlStreamWriter * xml ) = 0 ;
+//    virtual QSharedPointer<QGraphicsItem> duplicate() const;
 
     virtual QRectF getRect() const;
+
     virtual qreal getRatio() const;
-    virtual QGraphicsItem *duplicate() const;
+
     virtual void updateCoordinate();
+
     virtual void move(const QPointF &point);
+
     virtual void stretch(qreal sx, qreal sy, const QPointF &origin);
+
     virtual void rotate(QPointF rotatePos, QPointF lastPos);
 
     qreal  width() const;
+
     void   setWidth(qreal width);
 
     qreal  height() const;
+
     void   setHeight (qreal height);
 
     QColor brushColor() const;
+
     void   setBrushColor(const QColor &color);
 
     QBrush brush() const;
+
     void   setBrush(const QBrush &brush);
 
     QPen   pen() const;
+
     void   setPen(const QPen &pen);
+
     QColor penColor() const;
 
 protected:

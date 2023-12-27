@@ -3,7 +3,6 @@
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#define PI 3.1416
 
 GraphicsRectItem::GraphicsRectItem(const QRectF &rect, GraphicsItem *parent)
     : GraphicsItem(parent)
@@ -65,7 +64,7 @@ void GraphicsRectItem::move(const QPointF &point)
     moveBy(point.x(),point.y());
 }
 
-GraphicsItem *GraphicsRectItem::duplicate() const
+QSharedPointer<GraphicsItem> GraphicsRectItem::duplicate() const
 {
     GraphicsRectItem *item = new GraphicsRectItem(m_localRect);
     item->m_width = width();
@@ -77,7 +76,7 @@ GraphicsItem *GraphicsRectItem::duplicate() const
     item->setScale(scale());
     item->setZValue(zValue()+0.1);
     item->updateCoordinate();
-    return item;
+    return QSharedPointer<GraphicsItem>(item);
 }
 
 int GraphicsRectItem::type() const

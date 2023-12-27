@@ -2,7 +2,7 @@
 #include "graphicsitem.h"
 #include "viewgraphics.h"
 
-ItemDeleteCmd::ItemDeleteCmd(QList<GraphicsItem *> items, ViewGraphics *view, QUndoCommand *parent)
+ItemDeleteCmd::ItemDeleteCmd(QList<QSharedPointer<GraphicsItem> > items, ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand(parent), m_items(items), m_view(view)
 {
     // 设置名字

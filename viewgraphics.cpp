@@ -5,6 +5,7 @@
 #include "itemcreatecmd.h"
 #include "itemdeletecmd.h"
 #include "graphicsitem.h"
+#include "undocmdmanager.h"
 
 #include <QDebug>
 #include <QUndostack>
@@ -26,8 +27,9 @@ ViewGraphics::ViewGraphics(QWidget* parent)
     this->setScene(m_scene);
 
     m_itemManager = new GraphicsItemManager(m_scene);
-    m_undoStack = new QUndoStack(this);
-    m_undoStack->setUndoLimit(5);
+    m_undoCmdManager = new UndoCmdManager(this);
+    m_undoCmdManager->setUndoLimit(5);
+
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
 
 //    QPen pen;
@@ -40,7 +42,8 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 //    m_scene->addItem(rectItem);
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
-    connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::removeItems);
+    connect(m_scene, SIGNAL(deleteGraphicsItems(QList<QSharedPointer<GraphicsItem> >)),
+            this, SLOT(removeItems(QList<QSharedPointer<GraphicsItem> >)));
 //    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
 //    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
 }
@@ -55,19 +58,18 @@ ViewGraphics::~ViewGraphics()
 void ViewGraphics::createItem(GraphicsItemType type)
 {
     if (m_isUndoCmdEnabled) {
-        createItemByCmd(type);
+        m_undoCmdManager->runCreateCmd(type, this);
     } else {
         createItemByType(type);
     }
 }
 
-void ViewGraphics::removeItems(QList<GraphicsItem *> items)
+void ViewGraphics::removeItems(QList<QSharedPointer<GraphicsItem> > items)
 {
     if (items.empty()) return;
 
     if (m_isUndoCmdEnabled) {
-        ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(items, this);
-        m_undoStack->push(deleteCmd);
+        m_undoCmdManager->runDeleteCmd(items, this);
     } else {
         foreach (auto item, items) {
             removeItem(item);
@@ -75,14 +77,14 @@ void ViewGraphics::removeItems(QList<GraphicsItem *> items)
     }
 }
 
-GraphicsItem * ViewGraphics::createItemByType(GraphicsItemType type)
+QSharedPointer<GraphicsItem> ViewGraphics::createItemByType(GraphicsItemType type)
 {
-    GraphicsItem *item = m_itemManager->createGraphicsItem(type);
+    QSharedPointer<GraphicsItem> item = m_itemManager->createGraphicsItem(type);
     addItemToSelectionManager(item);
     return item;
 }
 
-void ViewGraphics::removeItem(GraphicsItem *item)
+void ViewGraphics::removeItem(QSharedPointer<GraphicsItem> item)
 {
     if (m_selectionManager->isItemSelected(item)) {
         m_selectionManager->removeItem(item);
@@ -91,49 +93,43 @@ void ViewGraphics::removeItem(GraphicsItem *item)
     m_itemManager->deleteGraphicsItem(item);
 }
 
-void ViewGraphics::createItemByCmd(GraphicsItemType type)
-{
-    ItemCreateCmd *createCmd = new ItemCreateCmd(type, this);
-    m_undoStack->push(createCmd);
-}
-
 QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 {
     return m_itemManager->getItemDisplayName(type);
 }
 
 
-void ViewGraphics::addItem(GraphicsItem *item)
+void ViewGraphics::addItem(QSharedPointer<GraphicsItem> item)
 {
-    m_scene->addItem(item);
+    m_scene->addItem(item.data());
     addItemToSelectionManager(item);
 }
 
 QAction *ViewGraphics::createUndoAction()
 {
-    QAction *undoAct = m_undoStack->createUndoAction(this, tr("undo"));
+    QAction *undoAct = m_undoCmdManager->createUndoAction();
     undoAct->setIcon(QIcon(":/icons/undo.png"));
     return undoAct;
 }
 
 QAction *ViewGraphics::createRedoAction()
 {
-    QAction *redo = m_undoStack->createRedoAction(this, tr("redo"));
+    QAction *redo = m_undoCmdManager->createRedoAction();
     redo->setIcon(QIcon(":/icons/redo.png"));
     return redo;
 }
 
 bool ViewGraphics::canUndo() const
 {
-    return m_undoStack->canUndo();
+    return m_undoCmdManager->canUndo();
 }
 
 bool ViewGraphics::canRedo() const
 {
-    return m_undoStack->canRedo();
+    return m_undoCmdManager->canRedo();
 }
 
-void ViewGraphics::addItemToSelectionManager(GraphicsItem *item)
+void ViewGraphics::addItemToSelectionManager(QSharedPointer<GraphicsItem> item)
 {
     m_selectionManager->addItem(m_scene, item);
     //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);

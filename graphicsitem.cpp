@@ -25,6 +25,11 @@ QRectF GraphicsItem::boundingRect() const
     return rect;
 }
 
+//QSharedPointer<GraphicsItem> GraphicsItem::duplicate() const
+//{
+//    return QSharedPointer<GraphicsItem>(nullptr);
+//}
+
 void GraphicsItem::setItemName(QString name)
 {
     setData(type(), name);
@@ -49,6 +54,8 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         qt_graphicsItem_highlightSelected(this, painter, option);
     }
 }
+
+
 
 //QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 //{

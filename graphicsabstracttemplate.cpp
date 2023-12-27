@@ -22,12 +22,6 @@ qreal GraphicsAbstractTemplate<BaseType>::getRatio() const
 }
 
 template<typename BaseType>
-QGraphicsItem *GraphicsAbstractTemplate<BaseType>::duplicate() const
-{
-    return nullptr;
-}
-
-template<typename BaseType>
 void GraphicsAbstractTemplate<BaseType>::updateCoordinate()
 {
 

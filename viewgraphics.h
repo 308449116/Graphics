@@ -11,30 +11,37 @@ class GraphicsItem;
 class GraphicsSelectionManager;
 class GraphicsItemManager;
 class QUndoStack;
+class UndoCmdManager;
 
 class ViewGraphics : public QGraphicsView
 {
     Q_OBJECT
 public:
     explicit ViewGraphics(QWidget* parent = nullptr);
+
     ~ViewGraphics();
+
     // Create Items
     void createItem(GraphicsItemType type);
-    void createItemByCmd(GraphicsItemType type);
-    GraphicsItem *createItemByType(GraphicsItemType type);
 
-    void removeItem(GraphicsItem *item);
-    void addItem(GraphicsItem *item);
+    QSharedPointer<GraphicsItem> createItemByType(GraphicsItemType type);
+
+    void removeItem(QSharedPointer<GraphicsItem> item);
+
+    void addItem(QSharedPointer<GraphicsItem> item);
 
     QString getItemDisplayName(GraphicsItemType type);
 
     QAction  *createUndoAction();
+
     QAction  *createRedoAction();
 
     bool canUndo() const;
+
     bool canRedo() const;
 
     bool isUndoCmdEnabled() const;
+
     void setUndoCmdEnabled(bool newIsUndoCmdEnabled);
 
 protected:
@@ -43,20 +50,20 @@ protected:
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
-    void removeItems(QList<GraphicsItem *> items);
+    void removeItems(QList<QSharedPointer<GraphicsItem> > items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
 //    bool trySelectItem(GraphicsItem *item);
-    void addItemToSelectionManager(GraphicsItem *item);
+    void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
 
 private:
     GraphicsSelectionManager *m_selectionManager;
     SceneGraphics *m_scene;
     GraphicsItemManager *m_itemManager;
-    QUndoStack *m_undoStack;
+    UndoCmdManager *m_undoCmdManager;
     bool m_isUndoCmdEnabled = true;
 //    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;

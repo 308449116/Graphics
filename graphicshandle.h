@@ -30,13 +30,19 @@ public:
     };
 
     GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
-    int handleType() const;
-    GraphicsItem *item() const;
+
     QRectF boundingRect() const override;
 
+    QSharedPointer<GraphicsItem> item() const;
+
+    int handleType() const;
+
     void setState(GraphicsHandleState st);
+
     void setLocalRect(QRectF localRect);
-    void setItem(GraphicsItem *item);
+
+    void setItem(QSharedPointer<GraphicsItem> item);
+
     void move(qreal x, qreal y);
 
 protected:
@@ -47,13 +53,14 @@ protected:
 
 protected:
     const int m_handleType;
-    GraphicsHandleState m_state;
     QColor m_borderColor;
-    GraphicsItem *m_item;
-    GraphicsSelection *m_selection;
     QRectF m_localRect;
     QPointF m_pressedScenePos;
     QPointF m_lastScenePos;
+
+    GraphicsHandleState m_state;
+    QSharedPointer<GraphicsItem> m_item;
+    GraphicsSelection *m_selection;
 };
 
 
