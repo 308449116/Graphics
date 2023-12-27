@@ -43,6 +43,7 @@ protected:
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
+    void removeItems(QList<GraphicsItem *> items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);

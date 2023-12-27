@@ -23,5 +23,11 @@ void ItemCreateCmd::undo()
 
 void ItemCreateCmd::redo()
 {
-    m_item = m_view->createItemByType(m_type);
+    if (m_item) {
+        m_view->addItem(m_item);
+    } else {
+        m_item = m_view->createItemByType(m_type);
+        QString str("Create %1");
+        this->setText(str.arg(m_item->getItemName()));
+    }
 }

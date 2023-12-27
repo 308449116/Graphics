@@ -3,6 +3,7 @@
 #include "scenegraphics.h"
 #include "graphicsitemmanager.h"
 #include "itemcreatecmd.h"
+#include "itemdeletecmd.h"
 #include "graphicsitem.h"
 
 #include <QDebug>
@@ -26,6 +27,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 
     m_itemManager = new GraphicsItemManager(m_scene);
     m_undoStack = new QUndoStack(this);
+    m_undoStack->setUndoLimit(5);
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
 
 //    QPen pen;
@@ -38,7 +40,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 //    m_scene->addItem(rectItem);
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
-    connect(m_scene, &SceneGraphics::deleteGraphicsItem, this, &ViewGraphics::removeItem);
+    connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::removeItems);
 //    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
 //    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
 }
@@ -59,11 +61,34 @@ void ViewGraphics::createItem(GraphicsItemType type)
     }
 }
 
+void ViewGraphics::removeItems(QList<GraphicsItem *> items)
+{
+    if (items.empty()) return;
+
+    if (m_isUndoCmdEnabled) {
+        ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(items, this);
+        m_undoStack->push(deleteCmd);
+    } else {
+        foreach (auto item, items) {
+            removeItem(item);
+        }
+    }
+}
+
 GraphicsItem * ViewGraphics::createItemByType(GraphicsItemType type)
 {
     GraphicsItem *item = m_itemManager->createGraphicsItem(type);
     addItemToSelectionManager(item);
     return item;
+}
+
+void ViewGraphics::removeItem(GraphicsItem *item)
+{
+    if (m_selectionManager->isItemSelected(item)) {
+        m_selectionManager->removeItem(item);
+    }
+
+    m_itemManager->deleteGraphicsItem(item);
 }
 
 void ViewGraphics::createItemByCmd(GraphicsItemType type)
@@ -77,16 +102,6 @@ QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
     return m_itemManager->getItemDisplayName(type);
 }
 
-void ViewGraphics::removeItem(GraphicsItem *item)
-{
-    if (item == nullptr) return;
-
-    if (m_selectionManager->isItemSelected(item)) {
-        m_selectionManager->removeItem(item);
-    }
-
-    m_itemManager->deleteGraphicsItem(item);
-}
 
 void ViewGraphics::addItem(GraphicsItem *item)
 {

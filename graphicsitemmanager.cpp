@@ -43,8 +43,8 @@ GraphicsItem *GraphicsItemManager::createGraphicsItem(GraphicsItemType type, con
             tempName = QString("%1_%2").arg(getItemDisplayName(type)).arg(m_countMap[type]++);
         } while (m_nameHash.find(tempName) != m_nameHash.end());
     }
-
     item->setItemName(tempName);
+
     // 添加到哈希表中
     m_nameHash.insert(tempName, item);
     return item;
@@ -55,8 +55,8 @@ void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
     if (item == nullptr) return;
 
     m_scene->removeItem(item);
-    delete item;
-    item = nullptr;
+//    delete item;
+//    item = nullptr;
 }
 
 QString GraphicsItemManager::getItemDisplayName(GraphicsItemType type)

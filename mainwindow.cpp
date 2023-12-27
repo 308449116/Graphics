@@ -68,19 +68,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_shpeBtn_clicked()
 {
-    ui->graphicsView->createItem(GraphicsItemManager::RectItem);
+    ui->graphicsView->createItem(GraphicsItemType::RectItem);
 }
 
 
 void MainWindow::on_textBtn_clicked()
 {
-    ui->graphicsView->createItem(GraphicsItemManager::TextItem);
+    ui->graphicsView->createItem(GraphicsItemType::TextItem);
 }
 
 
 void MainWindow::on_barcodeBtn_clicked()
 {
-    ui->graphicsView->createItem(GraphicsItemManager::BarcodeItem);
+    ui->graphicsView->createItem(GraphicsItemType::BarcodeItem);
 }
 
 void MainWindow::on_underLineBtn_clicked(bool checked)

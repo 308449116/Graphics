@@ -14,7 +14,7 @@ public:
 //    void mouseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 signals:
-    void deleteGraphicsItem(GraphicsItem *item);
+    void deleteGraphicsItems(QList<GraphicsItem *> items);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateChange(GraphicsItem *item, bool isHide);
 

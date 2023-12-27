@@ -11,6 +11,7 @@ public:
     void stretch(qreal sx , qreal sy , const QPointF &origin) override;
     void updateCoordinate() override;
     GraphicsItem *duplicate () const override;
+    int  type() const override;
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
