@@ -1,6 +1,7 @@
 #include "graphicssizehandle.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include "common.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -9,8 +10,8 @@
 GraphicsSizeHandle::GraphicsSizeHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent)
 {
-    m_localRect = QRectF(-GRAPHICS_HANDLE_SIZE/2,
-                             -GRAPHICS_HANDLE_SIZE/2, GRAPHICS_HANDLE_SIZE, GRAPHICS_HANDLE_SIZE);
+    m_localRect = QRectF(-SIZE_HANDLE_WIDTH/2, -SIZE_HANDLE_WIDTH/2,
+                         SIZE_HANDLE_WIDTH, SIZE_HANDLE_WIDTH);
     setZValue(2);
 }
 

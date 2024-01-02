@@ -1,6 +1,7 @@
 #include "graphicsrotatehandle.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include "common.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -14,7 +15,8 @@ GraphicsRotateHandle::GraphicsRotateHandle(int handleType, GraphicsSelection *se
     m_currentAngle(0)
 {
     m_rotatePixmap = QPixmap(":/icons/rotate_press.png");
-    m_localRect = QRectF(-5, -5, 10 ,10);
+    m_localRect = QRectF(-ROTATE_HANDLE_WIDTH / 2, -ROTATE_HANDLE_WIDTH / 2,
+                         ROTATE_HANDLE_WIDTH ,ROTATE_HANDLE_WIDTH);
     setZValue(2);
 }
 

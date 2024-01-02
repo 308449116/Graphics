@@ -66,6 +66,5 @@ protected:
     GraphicsSelection *m_selection;
 };
 
-
 #endif // GRAPHICSHANDLE_H
 

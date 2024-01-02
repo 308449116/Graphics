@@ -9,8 +9,6 @@ class ViewGraphics;
 class GraphicsItem;
 class GraphicsHandle;
 
-const static int ROTATE_HANDLE_MARGIN = 20;
-
 class GraphicsSelection : public QObject
 {
     Q_OBJECT

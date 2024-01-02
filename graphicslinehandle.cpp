@@ -1,5 +1,6 @@
 #include "graphicslinehandle.h"
 #include "graphicsitem.h"
+#include "common.h"
 
 #include <QGraphicsItem>
 #include <QPainter>
@@ -20,6 +21,6 @@ void GraphicsLineHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
     painter->setPen(Qt::DashLine);
     QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
     painter->drawLine(QPointF(rect.center().x(), rect.center().y() + rect.height() / 2),
-                      QPointF(rect.center().x(), rect.center().y() + rect.height() / 2 + 14));
+                      QPointF(rect.center().x(), rect.center().y() + rect.height() / 2 + LINE_HANDLE_WIDTH));
     painter->restore();
 }

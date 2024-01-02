@@ -5,7 +5,6 @@
 
 class QGraphicsSceneMouseEvent;
 class GraphicsSelection;
-const static int GRAPHICS_HANDLE_SIZE = 6;
 
 class GraphicsSizeHandle : public GraphicsHandle
 {

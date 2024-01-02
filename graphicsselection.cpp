@@ -5,6 +5,7 @@
 #include "graphicslinehandle.h"
 #include "graphicsitem.h"
 #include "viewgraphics.h"
+#include "common.h"
 
 GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     : m_view(view), m_item(nullptr)
@@ -126,10 +127,12 @@ void GraphicsSelection::updateGeometry(QRectF rect)
 //            hndl->move(originPoint.x(), originPoint.y());
             break;
         case GraphicsHandle::Rotate:
-            hndl->move(r.x() + r.width() / 2, r.y() + r.height() + ROTATE_HANDLE_MARGIN);
+            hndl->move(r.x() + r.width() / 2, r.y() + r.height() +
+                       LINE_HANDLE_WIDTH + ROTATE_HANDLE_WIDTH / 2);
             break;
         case GraphicsHandle::Line:
-            hndl->move(r.x() + r.width() / 2, (r.y() + r.height() + ROTATE_HANDLE_MARGIN) / 2);
+            hndl->move(r.x() + r.width() / 2, (r.y() + r.height() +
+                       LINE_HANDLE_WIDTH + ROTATE_HANDLE_WIDTH / 2) / 2);
             break;
         default:
             break;

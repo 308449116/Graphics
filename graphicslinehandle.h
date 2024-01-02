@@ -11,7 +11,6 @@ public:
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-
 };
 
 #endif // GRAPHICSLINEHANDLE_H
