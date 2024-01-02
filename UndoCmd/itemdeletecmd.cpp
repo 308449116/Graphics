@@ -20,14 +20,14 @@ ItemDeleteCmd::~ItemDeleteCmd()
 
 }
 
-void ItemDeleteCmd::undo(void)
+void ItemDeleteCmd::undo()
 {
     foreach (auto item, m_items) {
         m_view->addItem(item);
     }
 }
 
-void ItemDeleteCmd::redo(void)
+void ItemDeleteCmd::redo()
 {
     foreach (auto item, m_items) {
         m_view->removeItem(item);

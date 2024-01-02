@@ -26,9 +26,8 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     trans.translate(origin.x(),origin.y());
     trans.scale(sx,sy);
     trans.translate(-origin.x(),-origin.y());
-    qDebug () << "sx:" << sx << "sy:" << sy;
-    qDebug () << "============= transformOriginPoint:" << this->transformOriginPoint();
-
+//    qDebug () << "sx:" << sx << "sy:" << sy;
+//    qDebug () << "============= transformOriginPoint:" << this->transformOriginPoint();
     m_originPos = origin;
 
     prepareGeometryChange();
@@ -38,10 +37,7 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     if (sx != 1 && sy == 1) {
         m_scaleX = m_width / getSizeByFontSize(m_initialFontSize).width();
     } else {
-        qDebug () << "============= m_initialFontSize * sy:" << m_initialFontSize * sy;
         m_lastFontSize = qRound(m_initialFontSize * sy);
-        qDebug () << "============= m_lastFontSize:" << m_lastFontSize;
-
         m_font.setPixelSize(m_lastFontSize);
         m_scaleX = m_width / getSizeByFontSize(m_lastFontSize).width();
     }

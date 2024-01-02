@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSharedPointer>
+#include <QRectF>
 
 class ViewGraphics;
 class GraphicsItem;
@@ -20,7 +21,7 @@ public:
 
     bool isUsed() const;
 
-    void updateGeometry();
+    void updateGeometry(QRectF rect = QRectF());
 
     void hide(bool isHideDragHandle = true);
 

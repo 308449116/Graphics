@@ -32,27 +32,27 @@ void GraphicsHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     // 自定义绘制
     customPaint(painter, option, widget);
-
-    //高亮选中
-    if (option->state & QStyle::State_Selected) {
-        //        qt_graphicsItem_highlightSelected(this, painter, option);
-    }
 }
 
 void GraphicsHandle::setState(GraphicsHandleState st)
 {
     if (st == m_state)
         return;
-    switch (st) {
-    case HandleOff:
-        hide();
-        break;
-    case HandleActive:
-        show();
-        break;
-    }
-    m_borderColor = Qt::white;
+//    switch (st) {
+//    case HandleOff:
+//        hide();
+//        break;
+//    case HandleActive:
+//        show();
+//        break;
+//    }
+//    m_borderColor = Qt::white;
     m_state = st;
+}
+
+GraphicsHandle::GraphicsHandleState GraphicsHandle::getState()
+{
+    return m_state;
 }
 
 void GraphicsHandle::setLocalRect(QRectF localRect)

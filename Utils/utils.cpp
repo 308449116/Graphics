@@ -10,7 +10,7 @@ Utils::~Utils()
 
 }
 
-Utils* Utils::getInstance(void)
+Utils* Utils::getInstance()
 {
     static Utils instance;
     return &instance;

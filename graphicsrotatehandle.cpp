@@ -58,6 +58,8 @@ void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
+    m_selection->setOpacity(0);
+
     //移动处理
     QPointF origin = m_item->mapToScene(m_item->getRect().center());
 //  item->setTransformOriginPoint(item->getRect().center());
@@ -80,6 +82,8 @@ void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
     m_lastAngle = 0;
+    m_selection->updateGeometry();
+    m_selection->setOpacity(1);
 //    QGraphicsItem::mouseReleaseEvent(event);
 }
 

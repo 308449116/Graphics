@@ -14,9 +14,9 @@ public:
 
     ~ItemDeleteCmd();
 
-    void undo(void) override;
+    void undo() override;
 
-    void redo(void) override;
+    void redo() override;
 
 private:
     QList<QSharedPointer<GraphicsItem> > m_items;

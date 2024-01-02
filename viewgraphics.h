@@ -38,6 +38,9 @@ public:
 
     void moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
 
+    // resize Items
+    void resizeItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
+
     QString getItemDisplayName(GraphicsItemType type);
 
     QAction *createUndoAction();

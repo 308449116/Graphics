@@ -20,11 +20,13 @@ SOURCES += \
     UndoCmd/itemcreatecmd.cpp \
     UndoCmd/itemdeletecmd.cpp \
     UndoCmd/itemmovecmd.cpp \
+    UndoCmd/itemresizecmd.cpp \
     UndoCmd/undocmdmanager.cpp \
     graphicsabstracttemplate.cpp \
     graphicsdraghandle.cpp \
     graphicsitem.cpp \
     graphicsitemmanager.cpp \
+    graphicslinehandle.cpp \
     graphicsrectitem.cpp \
     graphicshandle.cpp \
     graphicsrotatehandle.cpp \
@@ -42,12 +44,14 @@ HEADERS += \
     UndoCmd/itemcreatecmd.h \
     UndoCmd/itemdeletecmd.h \
     UndoCmd/itemmovecmd.h \
+    UndoCmd/itemresizecmd.h \
     UndoCmd/undocmdmanager.h \
     common.h \
     graphicsabstracttemplate.h \
     graphicsdraghandle.h \
     graphicsitem.h \
     graphicsitemmanager.h \
+    graphicslinehandle.h \
     graphicsrectitem.h \
     graphicshandle.h \
     graphicsrotatehandle.h \

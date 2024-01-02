@@ -9,7 +9,7 @@
 class Utils
 {
 public:
-    static Utils* getInstance(void);
+    static Utils* getInstance();
 
     // 获取两个点的距离
     qreal getDistance(const QPointF& p1, const QPointF& p2);

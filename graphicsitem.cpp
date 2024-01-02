@@ -50,12 +50,10 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     customPaint(painter, option, widget);
 
     //高亮选中
-    if (option->state & QStyle::State_Selected) {
-        qt_graphicsItem_highlightSelected(this, painter, option);
-    }
+//    if (m_state & GraphicsHandleState::HandleActive) {
+//        qt_graphicsItem_highlightSelected(this, painter, option);
+//    }
 }
-
-
 
 //QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 //{

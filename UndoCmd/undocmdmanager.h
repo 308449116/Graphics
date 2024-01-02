@@ -35,23 +35,23 @@ public:
                     const QPointF &offsetPos, ViewGraphics *view, bool isMoved);
 
     // 创建Redo Action
-    QAction* createRedoAction(void);
+    QAction* createRedoAction();
 
     // 创建Undo Action
-    QAction* createUndoAction(void);
+    QAction* createUndoAction();
 
     // Undo栈相关
-    bool isUndoStackEmpty(void) const;
+    bool isUndoStackEmpty() const;
 
-    void cleanUndoStack(void);
+    void cleanUndoStack();
 
-    void redo(void);
+    void redo();
 
-    void undo(void);
+    void undo();
 
-    bool canRedo(void) const;
+    bool canRedo() const;
 
-    bool canUndo(void) const;
+    bool canUndo() const;
 
     void setUndoLimit(int limit);
 

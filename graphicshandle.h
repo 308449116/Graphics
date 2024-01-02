@@ -26,6 +26,7 @@ public:
         Left,
         Drag,
         Rotate,
+        Line,
         HandleTypeEnd //必须以此类型结尾，增加类型只能从中间插入
     };
 
@@ -38,6 +39,8 @@ public:
     int handleType() const;
 
     void setState(GraphicsHandleState st);
+
+    GraphicsHandleState getState();
 
     void setLocalRect(QRectF localRect);
 

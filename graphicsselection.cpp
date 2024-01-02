@@ -1,7 +1,8 @@
 #include "graphicsselection.h"
 #include "graphicssizehandle.h"
 #include "graphicsdraghandle.h"
-#include "graphicsRotatehandle.h"
+#include "graphicsrotatehandle.h"
+#include "graphicslinehandle.h"
 #include "graphicsitem.h"
 #include "viewgraphics.h"
 
@@ -21,6 +22,10 @@ GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     GraphicsHandle *rotatehandle = new GraphicsRotateHandle(GraphicsHandle::Rotate, this);
     m_view->scene()->addItem(rotatehandle);
     m_handleList.push_back(rotatehandle);
+
+    GraphicsHandle *linehandle = new GraphicsLineHandle(GraphicsHandle::Line, this);
+    m_view->scene()->addItem(linehandle);
+    m_handleList.push_back(linehandle);
 }
 
 void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
@@ -53,7 +58,7 @@ bool GraphicsSelection::isUsed() const
     return m_item.data() != nullptr;
 }
 
-void GraphicsSelection::updateGeometry()
+void GraphicsSelection::updateGeometry(QRectF rect)
 {
 //    QTransform transform;
 //    transform.translate(m_item->getRect().center().x(),m_item->getRect().center().y());
@@ -62,10 +67,14 @@ void GraphicsSelection::updateGeometry()
 
     if (m_item.isNull()) return;
 
+    if (rect.isNull()) {
+        rect = m_item->getRect();
+    }
+
     qreal angle = m_item->rotation();
     m_item->setRotation(0);
-    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
-    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
+    const QRectF r =  m_item->mapRectToScene(rect);
+    QPointF originPoint = m_item->mapToScene(rect.center());
     m_item->setRotation(angle);
 
 //    const QRectF r2 = m_item->getRect();
@@ -118,6 +127,9 @@ void GraphicsSelection::updateGeometry()
             break;
         case GraphicsHandle::Rotate:
             hndl->move(r.x() + r.width() / 2, r.y() + r.height() + ROTATE_HANDLE_MARGIN);
+            break;
+        case GraphicsHandle::Line:
+            hndl->move(r.x() + r.width() / 2, (r.y() + r.height() + ROTATE_HANDLE_MARGIN) / 2);
             break;
         default:
             break;
@@ -207,7 +219,7 @@ void GraphicsSelection::hide(bool isHideDragHandle)
 void GraphicsSelection::setOpacity(qreal opacity)
 {
     for (GraphicsHandle *h : m_handleList) {
-        if (h) {
+        if (h && h->handleType() != GraphicsHandle::Drag) {
             h->setOpacity(opacity);
         }
     }

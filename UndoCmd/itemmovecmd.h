@@ -11,11 +11,12 @@ class ItemMoveCmd : public QUndoCommand
 {
 public:
     explicit ItemMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
-                         const QPointF &offsetPos, ViewGraphics *view, bool isMoved, QUndoCommand *parent = nullptr);
+                         const QPointF &offsetPos, ViewGraphics *view,
+                         bool isMoved, QUndoCommand *parent = nullptr);
 
-    void undo(void) override;
+    void undo() override;
 
-    void redo(void) override;
+    void redo() override;
 
 private:
     ViewGraphics *m_view;

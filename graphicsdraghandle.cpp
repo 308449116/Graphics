@@ -15,15 +15,20 @@ GraphicsDragHandle::GraphicsDragHandle(int handleType, ViewGraphics *view,
 
 void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(painter)
     Q_UNUSED(option)
     Q_UNUSED(widget)
+
 //    qDebug() << "GraphicsDragHandle boundingRect" << m_item->boundingRect();
-//    painter->save();
-//    painter->setPen(Qt::DashLine);
-//    painter->setBrush(QBrush(Qt::red));
-//    painter->drawRect(boundingRect());
-//    painter->restore();
+//    qDebug() << "GraphicsDragHandle boundingRect" << boundingRect();
+    if (getState() & GraphicsHandleState::HandleActive) {
+        painter->save();
+        painter->setPen(Qt::DashLine);
+        QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
+        painter->drawRect(rect);
+//        painter->drawLine(QPointF(rect.center().x(), rect.center().y() + rect.height() / 2),
+//                          QPointF(rect.center().x(), rect.center().y() + rect.height() / 2 + 14));
+        painter->restore();
+    }
 }
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -46,6 +51,7 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
+    m_selection->setOpacity(0);
 
     //移动处理
     m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos, false);
@@ -56,6 +62,8 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    m_selection->setOpacity(1);
+
     //Undo/Redo 移动处理
     if (m_items.count() > 0 && m_lastScenePos != m_pressedScenePos) {
         m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos, true);
@@ -69,8 +77,10 @@ QVariant GraphicsDragHandle::itemChange(GraphicsItemChange change, const QVarian
         QGraphicsItemGroup *group = dynamic_cast<QGraphicsItemGroup*>(parentItem());
         if (!group) {
             if (value.toBool()) {
+                setState(GraphicsHandleState::HandleActive);
                 m_selection->show();
             } else {
+                setState(GraphicsHandleState::HandleOff);
                 m_selection->hide(false);
             }
         } else {
