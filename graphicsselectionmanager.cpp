@@ -1,6 +1,7 @@
 #include "graphicsselectionmanager.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include <QDebug>
 
 GraphicsSelectionManager::~GraphicsSelectionManager()
 {

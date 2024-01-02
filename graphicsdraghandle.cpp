@@ -42,7 +42,7 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     foreach (auto item, items) {
         GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
         if (handle->handleType() == GraphicsHandle::Drag) {
-            m_items.push_back(std::make_pair(handle->item()->pos(), handle->item()));
+            m_items.push_back(qMakePair(handle->item()->pos(), handle->item()));
         }
     }
 

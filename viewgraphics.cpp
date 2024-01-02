@@ -4,6 +4,8 @@
 #include "graphicsitemmanager.h"
 #include "graphicsitem.h"
 #include "undocmdmanager.h"
+
+#include <QAction>
 #include <QDebug>
 
 ViewGraphics::ViewGraphics(QWidget* parent)
