@@ -48,7 +48,7 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_lastScenePos = event->scenePos();
 
     //移动处理
-    m_view->moveItem(m_items, m_lastScenePos - m_pressedScenePos);
+    m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos, false);
 //    m_item->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
 //    m_selection->updateGeometry();
     QGraphicsItem::mouseMoveEvent(event);
@@ -56,6 +56,10 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    //Undo/Redo 移动处理
+    if (m_items.count() > 0 && m_lastScenePos != m_pressedScenePos) {
+        m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos, true);
+    }
     QGraphicsItem::mouseReleaseEvent(event);
 }
 

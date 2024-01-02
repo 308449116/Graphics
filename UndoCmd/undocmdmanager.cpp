@@ -1,7 +1,9 @@
 #include "undocmdmanager.h"
 #include "itemcreatecmd.h"
 #include "itemdeletecmd.h"
+#include "itemmovecmd.h"
 #include "viewgraphics.h"
+#include <QUndoView>
 
 UndoCmdManager::UndoCmdManager(QObject *parent)
     : QObject{parent}
@@ -19,6 +21,12 @@ void UndoCmdManager::runDeleteCmd(QList<QSharedPointer<GraphicsItem>> items, Vie
 {
     ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(items, view);
     m_undoStack->push(deleteCmd);
+}
+
+void UndoCmdManager::runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem> > > &items, const QPointF &offsetPos, ViewGraphics *view, bool isMoved)
+{
+    ItemMoveCmd *moveCmd = new ItemMoveCmd(items, offsetPos, view, isMoved);
+    m_undoStack->push(moveCmd);
 }
 
 QAction *UndoCmdManager::createRedoAction()
@@ -64,4 +72,9 @@ bool UndoCmdManager::canUndo() const
 void UndoCmdManager::setUndoLimit(int limit)
 {
     m_undoStack->setUndoLimit(limit);
+}
+
+QUndoStack *UndoCmdManager::getUndoStack()
+{
+    return m_undoStack;
 }

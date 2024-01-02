@@ -2,13 +2,9 @@
 #include "graphicsselectionmanager.h"
 #include "scenegraphics.h"
 #include "graphicsitemmanager.h"
-#include "itemcreatecmd.h"
-#include "itemdeletecmd.h"
 #include "graphicsitem.h"
 #include "undocmdmanager.h"
-
 #include <QDebug>
-#include <QUndostack>
 
 ViewGraphics::ViewGraphics(QWidget* parent)
     : QGraphicsView{parent}, m_selectionManager(new GraphicsSelectionManager)
@@ -77,6 +73,29 @@ void ViewGraphics::removeItems(QList<QSharedPointer<GraphicsItem> > items)
     }
 }
 
+void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
+                             const QPointF &pos, bool isUndoCmd)
+{
+    if (items.empty()) return;
+
+    if (isUndoCmd) {
+        if (m_isUndoCmdEnabled) {
+            m_undoCmdManager->runMoveCmd(items, pos, this, true);
+        }
+    } else {
+        for (const auto &[initPos, item] : items) {
+            moveItem(item, initPos + pos);
+        }
+    }
+}
+
+void ViewGraphics::moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos)
+{
+    item->setPos(pos);
+    m_selectionManager->updateGeometry(item);
+//  m_scene->update();
+}
+
 QSharedPointer<GraphicsItem> ViewGraphics::createItemByType(GraphicsItemType type)
 {
     QSharedPointer<GraphicsItem> item = m_itemManager->createGraphicsItem(type);
@@ -103,15 +122,6 @@ void ViewGraphics::addItem(QSharedPointer<GraphicsItem> item)
 {
     m_scene->addItem(item.data());
     addItemToSelectionManager(item);
-}
-
-void ViewGraphics::moveItem(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items, const QPointF &pos)
-{
-    for (auto [initPos, item] : items) {
-        item->setPos(initPos + pos);
-        m_selectionManager->updateGeometry(item);
-//        m_scene->update();
-    }
 }
 
 QAction *ViewGraphics::createUndoAction()
@@ -153,6 +163,12 @@ void ViewGraphics::setUndoCmdEnabled(bool newIsUndoCmdEnabled)
 {
     m_isUndoCmdEnabled = newIsUndoCmdEnabled;
 }
+
+QUndoStack *ViewGraphics::getUndoStack()
+{
+    return m_undoCmdManager->getUndoStack();
+}
+
 //void ViewGraphics::createTextItem()
 //{
 //    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);

@@ -10,9 +10,11 @@ class ItemCreateCmd : public QUndoCommand
 public:
     explicit ItemCreateCmd(GraphicsItemType type,
                            ViewGraphics *view, QUndoCommand *parent = nullptr);
+
     ~ItemCreateCmd();
 
     void undo() override;
+
     void redo() override;
 
 private:

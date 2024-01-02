@@ -11,6 +11,7 @@ class GraphicsItem;
 class GraphicsSelectionManager;
 class GraphicsItemManager;
 class QUndoStack;
+class QUndoView;
 class UndoCmdManager;
 
 class ViewGraphics : public QGraphicsView
@@ -26,17 +27,22 @@ public:
 
     QSharedPointer<GraphicsItem> createItemByType(GraphicsItemType type);
 
-    void removeItem(QSharedPointer<GraphicsItem> item);
-
     void addItem(QSharedPointer<GraphicsItem> item);
 
-    void moveItem(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items, const QPointF &pos);
+    // remove Items
+    void removeItem(QSharedPointer<GraphicsItem> item);
+
+    // move Items
+    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
+                   const QPointF &pos, bool isUndoCmd);
+
+    void moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
 
     QString getItemDisplayName(GraphicsItemType type);
 
-    QAction  *createUndoAction();
+    QAction *createUndoAction();
 
-    QAction  *createRedoAction();
+    QAction *createRedoAction();
 
     bool canUndo() const;
 
@@ -45,6 +51,8 @@ public:
     bool isUndoCmdEnabled() const;
 
     void setUndoCmdEnabled(bool newIsUndoCmdEnabled);
+
+    QUndoStack *getUndoStack();
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;

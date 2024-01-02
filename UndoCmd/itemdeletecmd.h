@@ -11,9 +11,11 @@ class ItemDeleteCmd : public QUndoCommand
 public:
     explicit ItemDeleteCmd(QList<QSharedPointer<GraphicsItem> > items,
                            ViewGraphics *view, QUndoCommand *parent = nullptr);
+
     ~ItemDeleteCmd();
 
     void undo(void) override;
+
     void redo(void) override;
 
 private:

@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->editToolBar->addAction(m_undoAct);
     ui->editToolBar->addAction(m_redoAct);
     ui->editToolBar->addSeparator();
+    ui->editToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    ui->undoView->setStack(ui->graphicsView->getUndoStack());
     connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateActions);
     m_timer.start(1000);
 //    int width = 600;
