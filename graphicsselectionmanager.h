@@ -37,7 +37,7 @@ public:
 
     void updateGeometry(QSharedPointer<GraphicsItem> item);
 
-    void hide(QSharedPointer<GraphicsItem> item);
+    void hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle);
 
     void show(QSharedPointer<GraphicsItem> item);
 

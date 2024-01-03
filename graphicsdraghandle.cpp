@@ -10,7 +10,10 @@ GraphicsDragHandle::GraphicsDragHandle(int handleType, ViewGraphics *view,
                                        GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent), m_view(view)
 {
-
+//    setFocus();
+    setState(GraphicsHandleState::HandleActive);
+//    setActive(true);
+//    setSelected(true);
 }
 
 void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

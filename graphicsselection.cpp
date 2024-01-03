@@ -42,6 +42,7 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
     foreach (GraphicsHandle *h ,m_handleList) {
         h->setItem(m_item);
     }
+
     updateGeometry();
     show();
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {

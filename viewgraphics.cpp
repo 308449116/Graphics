@@ -179,6 +179,7 @@ bool ViewGraphics::canRedo() const
 void ViewGraphics::addItemToSelectionManager(QSharedPointer<GraphicsItem> item)
 {
     m_selectionManager->addItem(this, item);
+    m_selectionManager->hide(item, false);
     //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 

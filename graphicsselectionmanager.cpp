@@ -85,10 +85,10 @@ void GraphicsSelectionManager::updateGeometry(QSharedPointer<GraphicsItem> item)
     }
 }
 
-void GraphicsSelectionManager::hide(QSharedPointer<GraphicsItem> item)
+void GraphicsSelectionManager::hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->hide();
+        s->hide(isHideDragHandle);
     }
 }
 

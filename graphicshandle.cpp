@@ -7,8 +7,8 @@
 GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
     : QGraphicsItem(parent)
     ,m_handleType(handleType)
-    ,m_state(HandleOff)
     ,m_borderColor(Qt::white)
+    ,m_state(HandleOff)
     ,m_selection(selection)
 {
     setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
