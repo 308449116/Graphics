@@ -2,6 +2,7 @@
 #define GRAPHICSSELECTION_H
 
 #include <QRectF>
+#include <QObject>
 #include <QSharedPointer>
 
 class ViewGraphics;
