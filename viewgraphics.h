@@ -7,13 +7,13 @@
 #include "common.h"
 #include "graphicsitemmanager.h"
 
-class SceneGraphics;
-class GraphicsItem;
-class GraphicsSelectionManager;
-class GraphicsItemManager;
-class QUndoStack;
 class QUndoView;
+class QUndoStack;
+class GraphicsItem;
+class SceneGraphics;
 class UndoCmdManager;
+class GraphicsItemManager;
+class GraphicsSelectionManager;
 
 class ViewGraphics : public QGraphicsView
 {
@@ -40,7 +40,10 @@ public:
     void moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
 
     // resize Items
-    void resizeItem(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale, bool isResized);
+    void resizeItem(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale, bool isUndoCmd);
+
+    // rotate Items
+    void rotateItem(QSharedPointer<GraphicsItem> item, const qreal angle, bool isUndoCmd);
 
     QString getItemDisplayName(GraphicsItemType type);
 

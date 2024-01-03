@@ -39,6 +39,9 @@ public:
     void runResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
                       ViewGraphics *view, bool isResized);
 
+    // 添加 旋转图元命令
+    void runRotateCmd(QSharedPointer<GraphicsItem> item, const qreal angle, ViewGraphics *view);
+
     // 创建Redo Action
     QAction* createRedoAction();
 

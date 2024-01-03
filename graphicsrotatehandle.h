@@ -3,13 +3,14 @@
 
 #include "graphicshandle.h"
 
+class ViewGraphics;
 class GraphicsSelection;
 class QGraphicsSceneMouseEvent;
 
 class GraphicsRotateHandle : public GraphicsHandle
 {
 public:
-    GraphicsRotateHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
+    GraphicsRotateHandle(int handleType, ViewGraphics *view, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -26,6 +27,7 @@ private:
     int m_rotateIconWidth = 20;
     int m_lineLen = 20;
     QPixmap m_rotatePixmap;
+    ViewGraphics *m_view;
 };
 
 #endif // GRAPHICSROTATEHANDLE_H

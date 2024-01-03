@@ -112,6 +112,18 @@ void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsItem> item,
     }
 }
 
+void ViewGraphics::rotateItem(QSharedPointer<GraphicsItem> item, const qreal angle, bool isUndoCmd)
+{
+    if (isUndoCmd) {
+        if (m_isUndoCmdEnabled ) {
+            m_undoCmdManager->runRotateCmd(item, angle, this);
+        }
+    } else {
+        item->setRotation(angle);
+        m_selectionManager->updateGeometry(item);
+    }
+}
+
 QSharedPointer<GraphicsItem> ViewGraphics::createItemByType(GraphicsItemType type)
 {
     QSharedPointer<GraphicsItem> item = m_itemManager->createGraphicsItem(type);

@@ -7,8 +7,8 @@
 #include <QMainWindow>
 
 class SceneGraphics;
-class QGraphicsSimpleTextItem;
 class CanvasTextItem;
+class QGraphicsSimpleTextItem;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -21,6 +21,7 @@ SOURCES += \
     UndoCmd/itemdeletecmd.cpp \
     UndoCmd/itemmovecmd.cpp \
     UndoCmd/itemresizecmd.cpp \
+    UndoCmd/itemrotatecmd.cpp \
     UndoCmd/undocmdmanager.cpp \
     graphicsabstracttemplate.cpp \
     graphicsdraghandle.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     UndoCmd/itemdeletecmd.h \
     UndoCmd/itemmovecmd.h \
     UndoCmd/itemresizecmd.h \
+    UndoCmd/itemrotatecmd.h \
     UndoCmd/undocmdmanager.h \
     common.h \
     graphicsabstracttemplate.h \

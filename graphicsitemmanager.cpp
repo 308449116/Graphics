@@ -15,6 +15,7 @@ GraphicsItemManager::GraphicsItemManager(SceneGraphics *scene, QObject *parent)
 QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(GraphicsItemType type, const QString& itemName)
 {
     QSharedPointer<GraphicsItem> item;
+
     switch (type) {
     case GraphicsItemType::RectItem: {
         item = QSharedPointer<GraphicsItem>( new GraphicsRectItem(QRectF(-50, -50, 100, 100)) );

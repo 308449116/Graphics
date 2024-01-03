@@ -3,8 +3,8 @@
 
 #include <QUndoCommand>
 
-#include "viewgraphics.h"
 #include "common.h"
+#include "viewgraphics.h"
 
 class ItemCreateCmd : public QUndoCommand
 {

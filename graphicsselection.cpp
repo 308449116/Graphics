@@ -20,7 +20,7 @@ GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     m_view->scene()->addItem(draghandle);
     m_handleList.push_back(draghandle);
 
-    GraphicsHandle *rotatehandle = new GraphicsRotateHandle(GraphicsHandle::Rotate, this);
+    GraphicsHandle *rotatehandle = new GraphicsRotateHandle(GraphicsHandle::Rotate, view, this);
     m_view->scene()->addItem(rotatehandle);
     m_handleList.push_back(rotatehandle);
 

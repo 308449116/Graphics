@@ -12,7 +12,6 @@ class GraphicsSizeHandle : public GraphicsHandle
 public:
     GraphicsSizeHandle(int handleType, ViewGraphics *view, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 //    QRectF boundingRect() const override;
-    QPointF getOppositePos();
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;

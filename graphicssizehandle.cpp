@@ -16,11 +16,6 @@ GraphicsSizeHandle::GraphicsSizeHandle(int handleType, ViewGraphics *view, Graph
     setZValue(2);
 }
 
-QPointF GraphicsSizeHandle::getOppositePos()
-{
-    return m_selection->opposite(m_handleType);
-}
-
 void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)

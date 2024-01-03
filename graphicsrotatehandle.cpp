@@ -1,6 +1,7 @@
 #include "graphicsrotatehandle.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include "viewgraphics.h"
 #include "common.h"
 
 #include <QStyleOptionGraphicsItem>
@@ -9,10 +10,12 @@
 #include <QtMath>
 #define PI 3.14159265358979
 
-GraphicsRotateHandle::GraphicsRotateHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
+GraphicsRotateHandle::GraphicsRotateHandle(int handleType, ViewGraphics *view,
+                                           GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent),
     m_lastAngle(0),
-    m_currentAngle(0)
+    m_currentAngle(0),
+    m_view(view)
 {
     m_rotatePixmap = QPixmap(":/icons/rotate_press.png");
     m_localRect = QRectF(-ROTATE_HANDLE_WIDTH / 2, -ROTATE_HANDLE_WIDTH / 2,
@@ -69,7 +72,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
     qreal angle = qAtan2(len_y, len_x) * 180 / PI;
-    angle = m_currentAngle + int(angle - m_lastAngle) ;
+    angle = m_currentAngle + int(angle - m_lastAngle);
     if ( angle > 360 )
         angle -= 360;
     if ( angle < -360 )
@@ -83,17 +86,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
-    m_lastAngle = 0;
-    m_selection->updateGeometry();
     m_selection->setOpacity(1);
+    m_view->rotateItem(m_item, m_currentAngle, true);
 //    QGraphicsItem::mouseReleaseEvent(event);
 }
-
-//QRectF GraphicsRotateHandle::boundingRect() const
-//{
-//    if (m_item) {
-//        return m_item->boundingRect();
-//    }
-
-//    return QRectF();
-//}

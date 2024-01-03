@@ -3,6 +3,7 @@
 #include "itemdeletecmd.h"
 #include "itemmovecmd.h"
 #include "itemresizecmd.h"
+#include "itemrotatecmd.h"
 #include "viewgraphics.h"
 #include <QUndoView>
 
@@ -36,6 +37,12 @@ void UndoCmdManager::runResizeCmd(int handleType, QSharedPointer<GraphicsItem> i
 {
     ItemResizeCmd *resizeCmd = new ItemResizeCmd(handleType, item, scale, view, isResized);
     m_undoStack->push(resizeCmd);
+}
+
+void UndoCmdManager::runRotateCmd(QSharedPointer<GraphicsItem> item, const qreal angle, ViewGraphics *view)
+{
+    ItemRotateCmd *rotateCmd = new ItemRotateCmd(item, angle, view);
+    m_undoStack->push(rotateCmd);
 }
 
 QAction *UndoCmdManager::createRedoAction()
