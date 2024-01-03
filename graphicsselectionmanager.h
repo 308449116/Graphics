@@ -1,9 +1,9 @@
 #ifndef GRAPHICSSELECTIONMANAGER_H
 #define GRAPHICSSELECTIONMANAGER_H
 
+#include <QHash>
 #include <QList>
 #include <QPointF>
-#include <QHash>
 #include <QSharedPointer>
 
 class GraphicsItem;

@@ -1,8 +1,9 @@
 #ifndef GRAPHICSTEXTITEM_H
 #define GRAPHICSTEXTITEM_H
 
-#include "graphicsitem.h"
 #include <QFont>
+
+#include "graphicsitem.h"
 
 class GraphicsTextItem : public GraphicsItem
 {

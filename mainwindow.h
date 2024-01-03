@@ -1,10 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QTimer>
-#include <QToolBar>
 #include <QAction>
+#include <QToolBar>
+#include <QMainWindow>
 
 class SceneGraphics;
 class QGraphicsSimpleTextItem;

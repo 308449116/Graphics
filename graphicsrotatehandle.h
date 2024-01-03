@@ -3,8 +3,8 @@
 
 #include "graphicshandle.h"
 
-class QGraphicsSceneMouseEvent;
 class GraphicsSelection;
+class QGraphicsSceneMouseEvent;
 
 class GraphicsRotateHandle : public GraphicsHandle
 {

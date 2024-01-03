@@ -3,7 +3,6 @@
 
 #include <QGraphicsScene>
 
-//class Operator;
 class GraphicsItem;
 
 class SceneGraphics : public QGraphicsScene

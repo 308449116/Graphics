@@ -1,9 +1,9 @@
 #ifndef GRAPHICSABSTRACTTEMPLATE_H
 #define GRAPHICSABSTRACTTEMPLATE_H
 
-#include <QGraphicsItem>
-#include <QBrush>
 #include <QPen>
+#include <QBrush>
+#include <QGraphicsItem>
 #include <QSharedPointer>
 
 template < typename BaseType = QGraphicsItem >

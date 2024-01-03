@@ -1,10 +1,10 @@
 #ifndef GRAPHICSITEMMANAGER_H
 #define GRAPHICSITEMMANAGER_H
 
-#include <QObject>
-#include <QHash>
 #include <QMap>
+#include <QHash>
 #include <QSharedPointer>
+
 #include "common.h"
 
 class SceneGraphics;

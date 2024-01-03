@@ -1,10 +1,11 @@
 #ifndef VIEWGRAPHICS_H
 #define VIEWGRAPHICS_H
 
-#include <QGraphicsView>
 #include <QSet>
-#include "graphicsitemmanager.h"
+#include <QGraphicsView>
+
 #include "common.h"
+#include "graphicsitemmanager.h"
 
 class SceneGraphics;
 class GraphicsItem;

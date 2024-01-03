@@ -1,6 +1,8 @@
 #ifndef GRAPHICSITEM_H
 #define GRAPHICSITEM_H
+
 #include <QObject>
+
 #include "graphicsabstracttemplate.h"
 
 using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;

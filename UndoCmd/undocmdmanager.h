@@ -2,6 +2,7 @@
 #define UNDOCMDMANAGER_H
 
 #include <QUndoStack>
+
 #include "common.h"
 
 class QUndoView;

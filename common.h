@@ -1,5 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
+
 #include <QGraphicsItem>
 
 const static int ROTATE_HANDLE_WIDTH = 14;

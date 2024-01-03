@@ -1,9 +1,8 @@
 #ifndef GRAPHICSSELECTION_H
 #define GRAPHICSSELECTION_H
 
-#include <QObject>
-#include <QSharedPointer>
 #include <QRectF>
+#include <QSharedPointer>
 
 class ViewGraphics;
 class GraphicsItem;

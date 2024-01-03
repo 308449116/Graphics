@@ -3,8 +3,8 @@
 
 #include <QGraphicsItem>
 
-class GraphicsSelection;
 class GraphicsItem;
+class GraphicsSelection;
 
 class GraphicsHandle : public QGraphicsItem
 {

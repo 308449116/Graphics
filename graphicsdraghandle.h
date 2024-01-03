@@ -3,9 +3,9 @@
 
 #include "graphicshandle.h"
 
-class QGraphicsSceneMouseEvent;
-class GraphicsSelection;
 class ViewGraphics;
+class GraphicsSelection;
+class QGraphicsSceneMouseEvent;
 
 class GraphicsDragHandle : public GraphicsHandle
 {

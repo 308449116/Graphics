@@ -3,7 +3,6 @@
 
 #include "graphicshandle.h"
 
-
 class GraphicsLineHandle : public GraphicsHandle
 {
 public:
