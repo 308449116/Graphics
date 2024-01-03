@@ -39,7 +39,7 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 
     m_item = item;
 
-    foreach (GraphicsHandle *h ,m_handleList) {
+    foreach (auto *h ,m_handleList) {
         h->setItem(m_item);
     }
 
@@ -90,7 +90,7 @@ void GraphicsSelection::updateGeometry(QRectF rect)
 //    const int w = GRAPHICS_HANDLE_SIZE;
 //    const int h = GRAPHICS_HANDLE_SIZE;
 
-    foreach (GraphicsHandle *hndl, m_handleList) {
+    foreach (auto *hndl, m_handleList) {
         if (!hndl)
             continue;
         hndl->setRotation(0);
@@ -249,7 +249,7 @@ void GraphicsSelection::update()
 
 int GraphicsSelection::collidesWithHandle(const QPointF &point) const
 {
-    foreach (GraphicsHandle *handle, m_handleList) {
+    foreach (auto *handle, m_handleList) {
 //        qDebug() << "handleType:" << handle->handleType()
 //             << "  pos:" << handle->pos()
 //            << "  scene pos:" << point;
@@ -262,7 +262,7 @@ int GraphicsSelection::collidesWithHandle(const QPointF &point) const
 
 QPointF GraphicsSelection::handlePos(int handleType) const
 {
-    foreach (GraphicsHandle *handle, m_handleList) {
+    foreach (auto *handle, m_handleList) {
         if (handle->handleType() == handleType) {
             return handle->pos();
         }

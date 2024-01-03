@@ -34,7 +34,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_Delete: {
         QList<QSharedPointer<GraphicsItem> > items;
-        foreach (QGraphicsItem *item, selectedItems()) {
+        foreach (auto *item, selectedItems()) {
             GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
             if (handle && handle->handleType() == GraphicsHandle::Drag) {
                 items.push_back(handle->item());
@@ -49,7 +49,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
     }
     case Qt::Key_A: {
         if(QApplication::keyboardModifiers() & Qt::ControlModifier){
-            foreach (QGraphicsItem *item, items()) {
+            foreach (auto *item, items()) {
                 GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
                 if (handle && handle->handleType() == GraphicsHandle::Drag) {
                     handle->setSelected(true);
@@ -67,7 +67,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
 
 void SceneGraphics::deselectItems()
 {
-    foreach (QGraphicsItem *item, selectedItems()) {
+    foreach (auto *item, selectedItems()) {
         removeItem(item);
         item->setSelected(false);
     }
