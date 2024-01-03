@@ -1,18 +1,24 @@
 #include "graphicssizehandle.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include "viewgraphics.h"
 #include "common.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
-GraphicsSizeHandle::GraphicsSizeHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
-    :GraphicsHandle(handleType, selection, parent)
+GraphicsSizeHandle::GraphicsSizeHandle(int handleType, ViewGraphics *view, GraphicsSelection *selection, QGraphicsItem *parent)
+    :GraphicsHandle(handleType, selection, parent), m_view(view)
 {
     m_localRect = QRectF(-SIZE_HANDLE_WIDTH/2, -SIZE_HANDLE_WIDTH/2,
                          SIZE_HANDLE_WIDTH, SIZE_HANDLE_WIDTH);
     setZValue(2);
+}
+
+QPointF GraphicsSizeHandle::getOppositePos()
+{
+    return m_selection->opposite(m_handleType);
 }
 
 void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -53,17 +59,17 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "m_pressedScenePos" << m_pressedScenePos
 //        << " m_lastScenePos" << m_lastScenePos;
 
-    qreal sx = endOffset.x() / beginOffset.x();
-    qreal sy = endOffset.y() / beginOffset.y();
+    m_scaleX = endOffset.x() / beginOffset.x();
+    m_scaleY = endOffset.y() / beginOffset.y();
 
     switch (m_handleType) {
     case GraphicsHandle::Right:
     case GraphicsHandle::Left:
-        sy = 1;
+        m_scaleY = 1;
         break;
     case GraphicsHandle::Top:
     case GraphicsHandle::Bottom:
-        sx = 1;
+        m_scaleX = 1;
         break;
 //                case GraphicsHandle::LeftTop:
 //                case GraphicsHandle::LeftBottom:
@@ -77,7 +83,7 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 //    qDebug() << "mouseMoveEvent sx:" << sx
 //             << "  sy:" << sy;
-    m_item->stretch(sx , sy , m_item->mapFromScene(m_oppositePos));
+    m_item->stretch(m_scaleX, m_scaleY, m_item->mapFromScene(m_oppositePos));
 //    m_item->updateCoordinate();
 //    qreal width = m_item->width();
 //    qreal height = m_item->height();
@@ -91,5 +97,6 @@ void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     m_item->updateCoordinate();
     m_selection->updateGeometry();
     m_selection->setOpacity(1);
+    m_view->resizeItem(m_handleType, m_item, QPointF(m_scaleX, m_scaleY), true);
     QGraphicsItem::mouseReleaseEvent(event);
 }

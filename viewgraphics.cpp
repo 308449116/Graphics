@@ -95,7 +95,21 @@ void ViewGraphics::moveItem(QSharedPointer<GraphicsItem> item, const QPointF &po
 {
     item->setPos(pos);
     m_selectionManager->updateGeometry(item);
-//  m_scene->update();
+    //  m_scene->update();
+}
+
+void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsItem> item,
+                              const QPointF &scale, bool isUndoCmd)
+{
+    if (isUndoCmd) {
+        if (m_isUndoCmdEnabled ) {
+            m_undoCmdManager->runResizeCmd(handleType, item, scale, this, true);
+        }
+    } else {
+        item->stretch(scale.x(), scale.y(), item->mapFromScene(m_selectionManager->opposite(item, handleType)));
+        item->updateCoordinate();
+        m_selectionManager->updateGeometry(item);
+    }
 }
 
 QSharedPointer<GraphicsItem> ViewGraphics::createItemByType(GraphicsItemType type)
@@ -166,7 +180,7 @@ void ViewGraphics::setUndoCmdEnabled(bool newIsUndoCmdEnabled)
     m_isUndoCmdEnabled = newIsUndoCmdEnabled;
 }
 
-QUndoStack *ViewGraphics::getUndoStack()
+QUndoStack *ViewGraphics::getUndoStack() const
 {
     return m_undoCmdManager->getUndoStack();
 }

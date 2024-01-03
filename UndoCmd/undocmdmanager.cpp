@@ -2,6 +2,7 @@
 #include "itemcreatecmd.h"
 #include "itemdeletecmd.h"
 #include "itemmovecmd.h"
+#include "itemresizecmd.h"
 #include "viewgraphics.h"
 #include <QUndoView>
 
@@ -23,10 +24,18 @@ void UndoCmdManager::runDeleteCmd(QList<QSharedPointer<GraphicsItem>> items, Vie
     m_undoStack->push(deleteCmd);
 }
 
-void UndoCmdManager::runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem> > > &items, const QPointF &offsetPos, ViewGraphics *view, bool isMoved)
+void UndoCmdManager::runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem> > > &items,
+                                const QPointF &offsetPos, ViewGraphics *view, bool isMoved)
 {
     ItemMoveCmd *moveCmd = new ItemMoveCmd(items, offsetPos, view, isMoved);
     m_undoStack->push(moveCmd);
+}
+
+void UndoCmdManager::runResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
+                                  ViewGraphics *view, bool isResized)
+{
+    ItemResizeCmd *resizeCmd = new ItemResizeCmd(handleType, item, scale, view, isResized);
+    m_undoStack->push(resizeCmd);
 }
 
 QAction *UndoCmdManager::createRedoAction()

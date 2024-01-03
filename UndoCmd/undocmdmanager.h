@@ -35,6 +35,10 @@ public:
     void runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
                     const QPointF &offsetPos, ViewGraphics *view, bool isMoved);
 
+    // 添加 拉伸图元命令
+    void runResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
+                      ViewGraphics *view, bool isResized);
+
     // 创建Redo Action
     QAction* createRedoAction();
 

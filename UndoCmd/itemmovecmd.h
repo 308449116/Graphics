@@ -1,8 +1,8 @@
 #ifndef ITEMMOVECMD_H
 #define ITEMMOVECMD_H
 
-#include <QUndoCommand>
 #include <QPointF>
+#include <QUndoCommand>
 
 class GraphicsItem;
 class ViewGraphics;

@@ -11,7 +11,7 @@ GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     : m_view(view), m_item(nullptr)
 {
     for (int i = GraphicsHandle::LeftTop; i <= GraphicsHandle::Left; ++i) {
-        GraphicsHandle *handle = new GraphicsSizeHandle(i, this);
+        GraphicsHandle *handle = new GraphicsSizeHandle(i, view, this);
         m_view->scene()->addItem(handle);
         m_handleList.push_back(handle);
     }

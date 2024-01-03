@@ -40,7 +40,7 @@ public:
     void moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
 
     // resize Items
-    void resizeItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
+    void resizeItem(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale, bool isResized);
 
     QString getItemDisplayName(GraphicsItemType type);
 
@@ -56,7 +56,7 @@ public:
 
     void setUndoCmdEnabled(bool newIsUndoCmdEnabled);
 
-    QUndoStack *getUndoStack();
+    QUndoStack *getUndoStack() const;
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
