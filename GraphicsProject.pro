@@ -14,54 +14,57 @@ CONFIG += c++17
 #LIBS += -L$$PWD/lib -lbarcode
 #INCLUDEPATH += $$PWD/include/zint
 #INCLUDEPATH += $$PWD/include/barcode
+INCLUDEPATH += $$PWD/Common
+INCLUDEPATH += $$PWD/GraphicsObject
 INCLUDEPATH += $$PWD/UndoCmd
+INCLUDEPATH += $$PWD/Handle
 
 SOURCES += \
+    GraphicsObject/graphicsabstracttemplate.cpp \
+    GraphicsObject/graphicsitem.cpp \
+    GraphicsObject/graphicsitemmanager.cpp \
+    GraphicsObject/graphicsrectitem.cpp \
+    GraphicsObject/graphicstextitem.cpp \
+    Handle/graphicsdraghandle.cpp \
+    Handle/graphicshandle.cpp \
+    Handle/graphicslinehandle.cpp \
+    Handle/graphicsrotatehandle.cpp \
+    Handle/graphicsselection.cpp \
+    Handle/graphicsselectionmanager.cpp \
+    Handle/graphicssizehandle.cpp \
     UndoCmd/itemcreatecmd.cpp \
     UndoCmd/itemdeletecmd.cpp \
     UndoCmd/itemmovecmd.cpp \
     UndoCmd/itemresizecmd.cpp \
     UndoCmd/itemrotatecmd.cpp \
     UndoCmd/undocmdmanager.cpp \
-    graphicsabstracttemplate.cpp \
-    graphicsdraghandle.cpp \
-    graphicsitem.cpp \
-    graphicsitemmanager.cpp \
-    graphicslinehandle.cpp \
-    graphicsrectitem.cpp \
-    graphicshandle.cpp \
-    graphicsrotatehandle.cpp \
-    graphicsselection.cpp \
-    graphicsselectionmanager.cpp \
-    graphicssizehandle.cpp \
     Utils/utils.cpp \
-    graphicstextitem.cpp \
     main.cpp \
     mainwindow.cpp \
     scenegraphics.cpp \
     viewgraphics.cpp
 
 HEADERS += \
+    Common/common.h \
+    GraphicsObject/graphicsabstracttemplate.h \
+    GraphicsObject/graphicsitem.h \
+    GraphicsObject/graphicsitemmanager.h \
+    GraphicsObject/graphicsrectitem.h \
+    GraphicsObject/graphicstextitem.h \
+    Handle/graphicsdraghandle.h \
+    Handle/graphicshandle.h \
+    Handle/graphicslinehandle.h \
+    Handle/graphicsrotatehandle.h \
+    Handle/graphicsselection.h \
+    Handle/graphicsselectionmanager.h \
+    Handle/graphicssizehandle.h \
     UndoCmd/itemcreatecmd.h \
     UndoCmd/itemdeletecmd.h \
     UndoCmd/itemmovecmd.h \
     UndoCmd/itemresizecmd.h \
     UndoCmd/itemrotatecmd.h \
     UndoCmd/undocmdmanager.h \
-    common.h \
-    graphicsabstracttemplate.h \
-    graphicsdraghandle.h \
-    graphicsitem.h \
-    graphicsitemmanager.h \
-    graphicslinehandle.h \
-    graphicsrectitem.h \
-    graphicshandle.h \
-    graphicsrotatehandle.h \
-    graphicsselection.h \
-    graphicsselectionmanager.h \
-    graphicssizehandle.h \
     Utils/utils.h \
-    graphicstextitem.h \
     mainwindow.h \
     scenegraphics.h \
     viewgraphics.h
@@ -73,9 +76,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-SUBDIRS += \
-    Utils/Utils.pro
 
 RESOURCES += \
     res.qrc
