@@ -11,7 +11,6 @@ GraphicsDragHandle::GraphicsDragHandle(int handleType, ViewGraphics *view,
     :GraphicsHandle(handleType, selection, parent), m_view(view)
 {
 //    setFocus();
-    setState(GraphicsHandleState::HandleActive);
 //    setActive(true);
 //    setSelected(true);
 }

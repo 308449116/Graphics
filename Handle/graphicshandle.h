@@ -10,12 +10,12 @@ class GraphicsHandle : public QGraphicsItem
 {
 public:
     enum GraphicsHandleState {
-        HandleOff,
+        HandleOff = 0,
         HandleActive
     };
 
     enum HandleType {
-        Handle_None = 0 ,
+        Handle_None = 0,
         LeftTop,
         Top,
         RightTop,
