@@ -45,6 +45,9 @@ private:
     // edit action
     QAction *m_undoAct;
     QAction *m_redoAct;
+    QAction *m_selectAct;
+    QAction *m_copyAct;
+    QAction *m_deleteAct;
 
     // edit toolbar;
     QToolBar *m_editToolBar;

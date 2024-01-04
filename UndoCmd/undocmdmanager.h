@@ -42,6 +42,9 @@ public:
     // 添加 旋转图元命令
     void runRotateCmd(QSharedPointer<GraphicsItem> item, const qreal angle, ViewGraphics *view);
 
+    // 添加 拷贝图元命令
+    void runCopyCmd(QList<QSharedPointer<GraphicsItem> > items, ViewGraphics *view);
+
     // 创建Redo Action
     QAction* createRedoAction();
 

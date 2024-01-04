@@ -60,7 +60,7 @@ bool GraphicsSelection::isUsed() const
     return m_item.data() != nullptr;
 }
 
-void GraphicsSelection::updateGeometry(QRectF rect)
+void GraphicsSelection::updateGeometry()
 {
 //    QTransform transform;
 //    transform.translate(m_item->getRect().center().x(),m_item->getRect().center().y());
@@ -69,14 +69,10 @@ void GraphicsSelection::updateGeometry(QRectF rect)
 
     if (m_item.isNull()) return;
 
-    if (rect.isNull()) {
-        rect = m_item->getRect();
-    }
-
     qreal angle = m_item->rotation();
     m_item->setRotation(0);
-    const QRectF r =  m_item->mapRectToScene(rect);
-    QPointF originPoint = m_item->mapToScene(rect.center());
+    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
+    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
     m_item->setRotation(angle);
 
 //    const QRectF r2 = m_item->getRect();

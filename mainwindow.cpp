@@ -4,16 +4,46 @@
 //#include "canvasbarcodeitem.h"
 //#include "decoratoritemgraphics.h"
 #include <QGraphicsItem>
+#include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_selectAct = new QAction(QIcon(":/icons/select"), tr("select"));
+    m_selectAct->setCheckable(true);
+
+    //撤销功能
     m_undoAct = ui->graphicsView->createUndoAction();
+
+    //重做功能
     m_redoAct = ui->graphicsView->createRedoAction();
+
+    //多选功能
+    connect(m_selectAct, &QAction::triggered, this, [this]() {
+        qDebug() << "checked:" << m_selectAct->isChecked();
+        ui->graphicsView->setIsControlModifier(m_selectAct->isChecked());
+    });
+
+    //拷贝功能
+    m_copyAct = new QAction(QIcon(":/icons/copy"), tr("copy"));
+    connect(m_copyAct, &QAction::triggered, this, [this]() {
+        ui->graphicsView->duplicateItems();
+    });
+
+    //删除功能
+    m_deleteAct = new QAction(QIcon(":/icons/delete"), tr("delete"));
+    connect(m_deleteAct, &QAction::triggered, this, [this]() {
+        ui->graphicsView->deleteItems();
+    });
+
     ui->editToolBar->addAction(m_undoAct);
     ui->editToolBar->addAction(m_redoAct);
+    ui->editToolBar->addSeparator();
+    ui->editToolBar->addAction(m_selectAct);
+    ui->editToolBar->addAction(m_copyAct);
+    ui->editToolBar->addAction(m_deleteAct);
     ui->editToolBar->addSeparator();
     ui->editToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     ui->undoView->setStack(ui->graphicsView->getUndoStack());

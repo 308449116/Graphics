@@ -19,7 +19,7 @@ public:
 
     bool isUsed() const;
 
-    void updateGeometry(QRectF rect = QRectF());
+    void updateGeometry();
 
     void hide(bool isHideDragHandle = true);
 

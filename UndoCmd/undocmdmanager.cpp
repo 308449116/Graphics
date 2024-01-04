@@ -4,6 +4,7 @@
 #include "itemmovecmd.h"
 #include "itemresizecmd.h"
 #include "itemrotatecmd.h"
+#include "itemcopycmd.h"
 #include "viewgraphics.h"
 #include <QUndoView>
 
@@ -43,6 +44,12 @@ void UndoCmdManager::runRotateCmd(QSharedPointer<GraphicsItem> item, const qreal
 {
     ItemRotateCmd *rotateCmd = new ItemRotateCmd(item, angle, view);
     m_undoStack->push(rotateCmd);
+}
+
+void UndoCmdManager::runCopyCmd(QList<QSharedPointer<GraphicsItem> > items, ViewGraphics *view)
+{
+    ItemCopyCmd *copyCmd = new ItemCopyCmd(items, view);
+    m_undoStack->push(copyCmd);
 }
 
 QAction *UndoCmdManager::createRedoAction()

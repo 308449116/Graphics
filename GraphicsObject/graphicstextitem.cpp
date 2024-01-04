@@ -75,15 +75,17 @@ void GraphicsTextItem::move(const QPointF &point)
 QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
 {
     GraphicsTextItem *item = new GraphicsTextItem(m_text);
+    item->setFont(m_font);
     item->m_width = width();
     item->m_height = height();
-    item->setPos(pos().x(),pos().y());
+    item->setScaleX(m_scaleX);
+    item->setPos(pos().x() + width(), pos().y());
     item->setTransform(transform());
     item->setTransformOriginPoint(transformOriginPoint());
     item->setRotation(rotation());
     item->setScale(scale());
     item->setZValue(zValue()+0.1);
-    item->setFont(m_font);
+    item->setItemName(this->getItemName().append("_copy"));
     item->updateCoordinate();
     return QSharedPointer<GraphicsItem>(item);
 }
@@ -164,6 +166,16 @@ QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
     QFontMetricsF fm(font);
     QRectF rect = fm.boundingRect(m_text);
     return QSizeF(rect.width(), rect.height());
+}
+
+qreal GraphicsTextItem::scaleX() const
+{
+    return m_scaleX;
+}
+
+void GraphicsTextItem::setScaleX(qreal newScaleX)
+{
+    m_scaleX = newScaleX;
 }
 
 int GraphicsTextItem::type() const

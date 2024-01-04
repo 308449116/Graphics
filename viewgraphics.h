@@ -45,6 +45,12 @@ public:
     // rotate Items
     void rotateItem(QSharedPointer<GraphicsItem> item, const qreal angle, bool isUndoCmd);
 
+    // duplicate Items
+    void duplicateItems();
+
+    // delete Items
+    void deleteItems();
+
     QString getItemDisplayName(GraphicsItemType type);
 
     QAction *createUndoAction();
@@ -61,6 +67,10 @@ public:
 
     QUndoStack *getUndoStack() const;
 
+    bool isControlModifier() const;
+
+    void setIsControlModifier(bool newIsControlModifier);
+
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
@@ -75,6 +85,7 @@ public slots:
 private:
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
+    QList<QSharedPointer<GraphicsItem>> selectedItems();
 
 private:
     bool m_isUndoCmdEnabled = true;
@@ -84,7 +95,7 @@ private:
     GraphicsSelectionManager *m_selectionManager;
 //    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;
-//    GraphicsItem  *m_currentItem = nullptr;
+    //    GraphicsItem  *m_currentItem = nullptr;
 };
 
 #endif // VIEWGRAPHICS_H

@@ -32,6 +32,7 @@ SOURCES += \
     Handle/graphicsselection.cpp \
     Handle/graphicsselectionmanager.cpp \
     Handle/graphicssizehandle.cpp \
+    UndoCmd/itemcopycmd.cpp \
     UndoCmd/itemcreatecmd.cpp \
     UndoCmd/itemdeletecmd.cpp \
     UndoCmd/itemmovecmd.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     Handle/graphicsselection.h \
     Handle/graphicsselectionmanager.h \
     Handle/graphicssizehandle.h \
+    UndoCmd/itemcopycmd.h \
     UndoCmd/itemcreatecmd.h \
     UndoCmd/itemdeletecmd.h \
     UndoCmd/itemmovecmd.h \
@@ -79,3 +81,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+

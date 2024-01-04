@@ -22,7 +22,7 @@ public:
 
     void setItemName(QString name);
 
-    QString getItemName();
+    QString getItemName() const;
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;

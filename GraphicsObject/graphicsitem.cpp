@@ -35,7 +35,7 @@ void GraphicsItem::setItemName(QString name)
     setData(type(), name);
 }
 
-QString GraphicsItem::getItemName()
+QString GraphicsItem::getItemName() const
 {
     return data(type()).toString();
 }

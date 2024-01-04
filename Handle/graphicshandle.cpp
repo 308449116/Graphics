@@ -1,8 +1,8 @@
 #include "graphicshandle.h"
 #include "graphicsitem.h"
 
-#include <QStyleOptionGraphicsItem>
 #include <QPainter>
+#include <QStyleOptionGraphicsItem>
 
 GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent)
     : QGraphicsItem(parent)

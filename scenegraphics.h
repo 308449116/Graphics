@@ -12,18 +12,22 @@ public:
     explicit SceneGraphics(QObject* parent = nullptr);
 //    void mouseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
+    bool isControlModifier() const;
+    void setIsControlModifier(bool newIsControlModifier);
+
 signals:
     void deleteGraphicsItems(QList<QSharedPointer<GraphicsItem> > items);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateChange(GraphicsItem *item, bool isHide);
 
 protected:
-//    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 //    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-//    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 private:
     void deselectItems();
+    bool m_isControlModifier = false;
 //    Operator *m_operator;
 };
 

@@ -30,6 +30,10 @@ public:
 
     QFont font() const;
 
+    qreal scaleX() const;
+
+    void setScaleX(qreal newScaleX);
+
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 

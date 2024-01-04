@@ -69,12 +69,13 @@ QSharedPointer<GraphicsItem> GraphicsRectItem::duplicate() const
     GraphicsRectItem *item = new GraphicsRectItem(m_localRect);
     item->m_width = width();
     item->m_height = height();
-    item->setPos(pos().x(),pos().y());
+    item->setPos(pos().x() + width(), pos().y());
     item->setTransform(transform());
     item->setTransformOriginPoint(transformOriginPoint());
     item->setRotation(rotation());
     item->setScale(scale());
     item->setZValue(zValue()+0.1);
+    item->setItemName(this->getItemName().append("_copy"));
     item->updateCoordinate();
     return QSharedPointer<GraphicsItem>(item);
 }

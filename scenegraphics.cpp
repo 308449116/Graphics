@@ -1,7 +1,7 @@
 #include "scenegraphics.h"
 #include "graphicshandle.h"
 #include "graphicsitem.h"
-//#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
 
@@ -11,11 +11,14 @@ SceneGraphics::SceneGraphics(QObject* parent)
     
 }
 
-//void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    QGraphicsScene::mousePressEvent(event);
-////    m_operator->mousePressEvent(event, this);
-//}
+void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (m_isControlModifier) {
+        event->setModifiers(Qt::ControlModifier);
+    }
+
+    QGraphicsScene::mousePressEvent(event);
+}
 
 //void SceneGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //{
@@ -23,11 +26,14 @@ SceneGraphics::SceneGraphics(QObject* parent)
 //    QGraphicsScene::mouseMoveEvent(event);
 //}
 
-//void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-//{
-////    m_operator->mouseReleaseEvent(event, this);
-//    QGraphicsScene::mouseReleaseEvent(event);
-//}
+void SceneGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (m_isControlModifier) {
+        event->setModifiers(Qt::ControlModifier);
+    }
+
+    QGraphicsScene::mouseReleaseEvent(event);
+}
 
 void SceneGraphics::keyPressEvent(QKeyEvent *event)
 {
@@ -71,6 +77,16 @@ void SceneGraphics::deselectItems()
         removeItem(item);
         item->setSelected(false);
     }
+}
+
+bool SceneGraphics::isControlModifier() const
+{
+    return m_isControlModifier;
+}
+
+void SceneGraphics::setIsControlModifier(bool newIsControlModifier)
+{
+    m_isControlModifier = newIsControlModifier;
 }
 
 //void SceneGraphics::mouseEvent(QGraphicsSceneMouseEvent *mouseEvent)

@@ -2,6 +2,7 @@
 #include "graphicsselectionmanager.h"
 #include "scenegraphics.h"
 #include "graphicsitemmanager.h"
+#include "graphicshandle.h"
 #include "graphicsitem.h"
 #include "undocmdmanager.h"
 
@@ -124,6 +125,33 @@ void ViewGraphics::rotateItem(QSharedPointer<GraphicsItem> item, const qreal ang
     }
 }
 
+void ViewGraphics::deleteItems()
+{
+    QList<QSharedPointer<GraphicsItem>> items = selectedItems();
+
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runDeleteCmd(items, this);
+    } else {
+        foreach (auto item, items) {
+            removeItem(item);
+        }
+    }
+}
+
+void ViewGraphics::duplicateItems()
+{
+    QList<QSharedPointer<GraphicsItem>> items = selectedItems();
+
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runCopyCmd(items, this);
+    } else {
+        foreach (auto item, items) {
+            QSharedPointer<GraphicsItem> itemCopy = item->duplicate();
+            addItem(itemCopy);
+        }
+    }
+}
+
 QSharedPointer<GraphicsItem> ViewGraphics::createItemByType(GraphicsItemType type)
 {
     QSharedPointer<GraphicsItem> item = m_itemManager->createGraphicsItem(type);
@@ -196,6 +224,32 @@ void ViewGraphics::setUndoCmdEnabled(bool newIsUndoCmdEnabled)
 QUndoStack *ViewGraphics::getUndoStack() const
 {
     return m_undoCmdManager->getUndoStack();
+}
+
+bool ViewGraphics::isControlModifier() const
+{
+    return m_scene->isControlModifier();
+}
+
+void ViewGraphics::setIsControlModifier(bool newIsControlModifier)
+{
+    m_scene->setIsControlModifier(newIsControlModifier);
+}
+
+
+QList<QSharedPointer<GraphicsItem>> ViewGraphics::selectedItems()
+{
+    QList<QSharedPointer<GraphicsItem>> itemList;
+
+    QList<QGraphicsItem *> items = m_scene->selectedItems();
+    foreach (auto item, items) {
+        GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
+        if (handle->handleType() == GraphicsHandle::Drag) {
+            itemList << handle->item();
+        }
+    }
+
+    return itemList;
 }
 
 //void ViewGraphics::createTextItem()

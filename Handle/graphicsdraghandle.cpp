@@ -36,7 +36,10 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << "111 GraphicsDragHandle mousePressEvent event->modifiers:" << event->modifiers();
+    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
     QGraphicsItem::mousePressEvent(event);
+
     m_lastScenePos = m_pressedScenePos = event->scenePos();
     m_initialPos = m_item->pos();
     m_items.clear();
@@ -71,6 +74,7 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (m_items.count() > 0 && m_lastScenePos != m_pressedScenePos) {
         m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos, true);
     }
+
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
