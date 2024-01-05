@@ -20,6 +20,18 @@ MainWindow::MainWindow(QWidget *parent)
     //重做功能
     m_redoAct = ui->graphicsView->createRedoAction();
 
+    //放大功能
+    m_zoomInAct = new QAction(QIcon(":/icons/zoomin"), tr("zoomIn"));
+    connect(m_zoomInAct, &QAction::triggered, this, [this]() {
+        ui->graphicsView->scale(1.2, 1.2);
+    });
+
+    //缩小功能
+    m_zoomOutAct = new QAction(QIcon(":/icons/zoomout"), tr("zoomOut"));
+    connect(m_zoomOutAct, &QAction::triggered, this, [this]() {
+        ui->graphicsView->scale(1.0/1.2, 1.0/1.2);
+    });
+
     //多选功能
     connect(m_selectAct, &QAction::triggered, this, [this]() {
         qDebug() << "checked:" << m_selectAct->isChecked();
@@ -38,15 +50,67 @@ MainWindow::MainWindow(QWidget *parent)
         ui->graphicsView->deleteItems();
     });
 
+    //上对齐
+    m_alignTopAct = new QAction(QIcon(":/icons/align_top"), tr("align_top"));
+    connect(m_alignTopAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->alignItems(AlignType::TOP_ALIGN);
+    });
+
+    //下对齐
+    m_alignBottomAct = new QAction(QIcon(":/icons/align_bottom"), tr("align_bottom"));
+    connect(m_alignBottomAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->alignItems(AlignType::BOTTOM_ALIGN);
+    });
+
+    //左对齐
+    m_alignLeftAct = new QAction(QIcon(":/icons/align_left"), tr("align_left"));
+    connect(m_alignLeftAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->alignItems(AlignType::LEFT_ALIGN);
+    });
+
+    //右对齐
+    m_alignRightAct = new QAction(QIcon(":/icons/align_right"), tr("align_right"));
+    connect(m_alignRightAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->alignItems(AlignType::RIGHT_ALIGN);
+    });
+
+    //水平对齐
+    m_alignHCenterAct = new QAction(QIcon(":/icons/align_hcenter"), tr("align_hcenter"));
+    connect(m_alignHCenterAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->alignItems(AlignType::HCENTER_ALIGN);
+    });
+
+    //垂直对齐
+    m_alignVCenterAct = new QAction(QIcon(":/icons/align_vcenter"), tr("align_vcenter"));
+    connect(m_alignVCenterAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->alignItems(AlignType::VCENTER_ALIGN);
+    });
+
     ui->editToolBar->addAction(m_undoAct);
     ui->editToolBar->addAction(m_redoAct);
     ui->editToolBar->addSeparator();
+
+    ui->editToolBar->addAction(m_zoomInAct);
+    ui->editToolBar->addAction(m_zoomOutAct);
+    ui->editToolBar->addSeparator();
+
     ui->editToolBar->addAction(m_selectAct);
     ui->editToolBar->addAction(m_copyAct);
     ui->editToolBar->addAction(m_deleteAct);
     ui->editToolBar->addSeparator();
+
+    ui->editToolBar->addAction(m_alignTopAct);
+    ui->editToolBar->addAction(m_alignBottomAct);
+    ui->editToolBar->addAction(m_alignLeftAct);
+    ui->editToolBar->addAction(m_alignRightAct);
+    ui->editToolBar->addAction(m_alignHCenterAct);
+    ui->editToolBar->addAction(m_alignVCenterAct);
+    ui->editToolBar->addSeparator();
+
     ui->editToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     ui->undoView->setStack(ui->graphicsView->getUndoStack());
+
+    updateActions();
     connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateActions);
     m_timer.start(1000);
 //    int width = 600;
@@ -131,10 +195,21 @@ void MainWindow::updateActions()
 {
     m_undoAct->setEnabled(ui->graphicsView->canUndo());
     m_redoAct->setEnabled(ui->graphicsView->canRedo());
+
+    m_copyAct->setEnabled(ui->graphicsView->selectedItems().count() >= 1);
+    m_deleteAct->setEnabled(ui->graphicsView->selectedItems().count() >= 1);
+
+    m_alignTopAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
+    m_alignBottomAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
+    m_alignLeftAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
+    m_alignRightAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
+    m_alignHCenterAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
+    m_alignVCenterAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
 
 }
+
 

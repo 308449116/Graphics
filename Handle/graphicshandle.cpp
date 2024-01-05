@@ -11,7 +11,7 @@ GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGr
     ,m_state(GraphicsHandleState::HandleOff)
     ,m_selection(selection)
 {
-    setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
+//    setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
     setFlag(QGraphicsItem::ItemIsSelectable,true);
     setZValue(1);
     hide();

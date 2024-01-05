@@ -17,4 +17,20 @@ enum GraphicsItemType
     TypeCount
 };
 
+enum AlignType
+{
+    TOP_ALIGN = 0,
+    BOTTOM_ALIGN,
+    LEFT_ALIGN,
+    RIGHT_ALIGN,
+    HCENTER_ALIGN,
+    VCENTER_ALIGN,
+    CENTER_ALIGN,
+    HORZEVEN_ALIGN,
+    VERTEVEN_ALIGN,
+    WIDTH_ALIGN,
+    HEIGHT_ALIGN,
+    ALL_ALIGN
+};
+
 #endif // COMMON_H

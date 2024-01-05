@@ -35,7 +35,7 @@ public:
 
     // move Items
     void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
-                   const QPointF &pos, bool isUndoCmd);
+                   const QPointF &pos, bool isUndoCmd, bool isMoved = true);
 
     void moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
 
@@ -50,6 +50,9 @@ public:
 
     // delete Items
     void deleteItems();
+
+    // align Items
+    void alignItems(AlignType alignType);
 
     QString getItemDisplayName(GraphicsItemType type);
 
@@ -71,6 +74,8 @@ public:
 
     void setIsControlModifier(bool newIsControlModifier);
 
+    QList<QSharedPointer<GraphicsItem>> selectedItems();
+
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
@@ -85,7 +90,6 @@ public slots:
 private:
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
-    QList<QSharedPointer<GraphicsItem>> selectedItems();
 
 private:
     bool m_isUndoCmdEnabled = true;

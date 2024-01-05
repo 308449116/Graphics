@@ -7,7 +7,17 @@
         <file>icons/redo.png</file>
         <file>icons/undo.png</file>
         <file>icons/copy.png</file>
-        <file>icons/delete.png</file>
         <file>icons/select.png</file>
+        <file>icons/align_bottom.png</file>
+        <file>icons/align_left.png</file>
+        <file>icons/align_right.png</file>
+        <file>icons/align_top.png</file>
+        <file>icons/align_vcenter.png</file>
+        <file>icons/rotate_hover.png</file>
+        <file>icons/zoomin.png</file>
+        <file>icons/zoomout.png</file>
+        <file>icons/align_hcenter.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/past.png</file>
     </qresource>
 </RCC>

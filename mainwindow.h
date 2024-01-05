@@ -49,6 +49,16 @@ private:
     QAction *m_copyAct;
     QAction *m_deleteAct;
 
+    QAction *m_alignTopAct;
+    QAction *m_alignBottomAct;
+    QAction *m_alignLeftAct;
+    QAction *m_alignRightAct;
+    QAction *m_alignHCenterAct;
+    QAction *m_alignVCenterAct;
+
+    QAction *m_zoomInAct;
+    QAction *m_zoomOutAct;
+
     // edit toolbar;
     QToolBar *m_editToolBar;
 };

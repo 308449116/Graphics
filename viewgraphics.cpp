@@ -8,6 +8,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QGraphicsItemGroup>
 
 ViewGraphics::ViewGraphics(QWidget* parent)
     : QGraphicsView{parent}, m_selectionManager(new GraphicsSelectionManager)
@@ -77,13 +78,13 @@ void ViewGraphics::removeItems(QList<QSharedPointer<GraphicsItem> > items)
 }
 
 void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
-                             const QPointF &pos, bool isUndoCmd)
+                             const QPointF &pos, bool isUndoCmd, bool isMoved)
 {
     if (items.empty()) return;
 
     if (isUndoCmd) {
         if (m_isUndoCmdEnabled) {
-            m_undoCmdManager->runMoveCmd(items, pos, this, true);
+            m_undoCmdManager->runMoveCmd(items, pos, this, isMoved);
         }
     } else {
         for (const auto &[initPos, item] : items) {
@@ -128,6 +129,7 @@ void ViewGraphics::rotateItem(QSharedPointer<GraphicsItem> item, const qreal ang
 void ViewGraphics::deleteItems()
 {
     QList<QSharedPointer<GraphicsItem>> items = selectedItems();
+    if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
         m_undoCmdManager->runDeleteCmd(items, this);
@@ -138,9 +140,64 @@ void ViewGraphics::deleteItems()
     }
 }
 
+void ViewGraphics::alignItems(AlignType alignType)
+{
+    QList<QSharedPointer<GraphicsItem>> items = selectedItems();
+    if (items.isEmpty()) return;
+
+    QSharedPointer<GraphicsItem> refItem = items.first();
+    QRectF refRect = refItem->mapRectToScene(refItem->boundingRect());
+    QPointF refCenterPos = refRect.center();
+
+    QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> itemList;
+    foreach (auto item, items) {
+        itemList.clear();
+        QGraphicsItemGroup *g = qgraphicsitem_cast<QGraphicsItemGroup *>(item->parentItem());
+        if (g) {
+            continue;
+        }
+
+        QRectF rect = item->mapRectToScene(item->boundingRect());
+        QPointF lastPos = rect.center();
+        switch (alignType) {
+        case AlignType::TOP_ALIGN:
+            lastPos.setY(refCenterPos.y() - (refRect.height() - rect.height()) / 2);
+            break;
+        case AlignType::BOTTOM_ALIGN:
+            lastPos.setY(refCenterPos.y() + (refRect.height() - rect.height()) / 2);
+            break;
+        case AlignType::LEFT_ALIGN:
+            lastPos.setX(refCenterPos.x() - (refRect.width() - rect.width()) / 2);
+            break;
+        case AlignType::RIGHT_ALIGN:
+            lastPos.setX(refCenterPos.x() + (refRect.width() - rect.width()) / 2);
+            break;
+        case AlignType::HCENTER_ALIGN:
+            lastPos.setY(refCenterPos.y());
+            break;
+        case AlignType::VCENTER_ALIGN:
+            lastPos.setX(refCenterPos.x());
+            break;
+        case AlignType::CENTER_ALIGN:
+            lastPos = refCenterPos;
+            break;
+        default:
+            break;
+        }
+
+        QPointF initPos = rect.center();
+        QPointF movePos = lastPos - initPos;
+        if ( !movePos.isNull() ) {
+            itemList.push_back(qMakePair(item->pos(), item));
+            moveItems(itemList, movePos, true, false);
+        }
+    }
+}
+
 void ViewGraphics::duplicateItems()
 {
     QList<QSharedPointer<GraphicsItem>> items = selectedItems();
+    if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
         m_undoCmdManager->runCopyCmd(items, this);
