@@ -5,8 +5,6 @@
 
 #include "graphicsabstracttemplate.h"
 
-using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;
-
 class GraphicsItem : public QObject,
                      public GraphicsAbstractItem
 {

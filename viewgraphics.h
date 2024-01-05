@@ -54,6 +54,12 @@ public:
     // align Items
     void alignItems(AlignType alignType);
 
+    // group Items
+    void groupItems();
+
+    // ungroup Items
+    void ungroupItems();
+
     QString getItemDisplayName(GraphicsItemType type);
 
     QAction *createUndoAction();

@@ -18,6 +18,7 @@
         <file>icons/zoomout.png</file>
         <file>icons/align_hcenter.png</file>
         <file>icons/delete.png</file>
-        <file>icons/past.png</file>
+        <file>icons/group.png</file>
+        <file>icons/ungroup.png</file>
     </qresource>
 </RCC>

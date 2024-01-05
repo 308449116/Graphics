@@ -86,6 +86,12 @@ MainWindow::MainWindow(QWidget *parent)
         ui->graphicsView->alignItems(AlignType::VCENTER_ALIGN);
     });
 
+    //创建组
+    m_groupAct = new QAction(QIcon(":/icons/group"), tr("group"));
+
+    //取消组
+    m_ungroupAct = new QAction(QIcon(":/icons/ungroup"), tr("ungroup"));
+
     ui->editToolBar->addAction(m_undoAct);
     ui->editToolBar->addAction(m_redoAct);
     ui->editToolBar->addSeparator();
@@ -105,6 +111,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->editToolBar->addAction(m_alignRightAct);
     ui->editToolBar->addAction(m_alignHCenterAct);
     ui->editToolBar->addAction(m_alignVCenterAct);
+    ui->editToolBar->addSeparator();
+
+    ui->editToolBar->addAction(m_groupAct);
+    ui->editToolBar->addAction(m_ungroupAct);
     ui->editToolBar->addSeparator();
 
     ui->editToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);

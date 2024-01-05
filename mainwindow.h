@@ -42,7 +42,7 @@ private:
     QGraphicsSimpleTextItem *textitem2;
     QTimer m_timer;
 
-    // edit action
+    //action
     QAction *m_undoAct;
     QAction *m_redoAct;
     QAction *m_selectAct;
@@ -59,6 +59,8 @@ private:
     QAction *m_zoomInAct;
     QAction *m_zoomOutAct;
 
+    QAction *m_groupAct;
+    QAction *m_ungroupAct;
     // edit toolbar;
     QToolBar *m_editToolBar;
 };

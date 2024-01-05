@@ -194,6 +194,17 @@ void ViewGraphics::alignItems(AlignType alignType)
     }
 }
 
+void ViewGraphics::groupItems()
+{
+//    QList<QSharedPointer<GraphicsItem>> items = selectedItems();
+//    m_scene->createItemGroup(items);
+}
+
+void ViewGraphics::ungroupItems()
+{
+
+}
+
 void ViewGraphics::duplicateItems()
 {
     QList<QSharedPointer<GraphicsItem>> items = selectedItems();

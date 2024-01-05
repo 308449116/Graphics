@@ -65,4 +65,6 @@ protected:
     QRectF m_initialRect;
 };
 
+using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;
+
 #endif // GRAPHICSABSTRACTTEMPLATE_H
