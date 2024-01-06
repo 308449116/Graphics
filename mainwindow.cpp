@@ -88,9 +88,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     //创建组
     m_groupAct = new QAction(QIcon(":/icons/group"), tr("group"));
+    connect(m_groupAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->groupItems();
+    });
 
     //取消组
     m_ungroupAct = new QAction(QIcon(":/icons/ungroup"), tr("ungroup"));
+//    connect(m_alignVCenterAct, &QAction::triggered, this, [this](){
+//        ui->graphicsView->alignItems(AlignType::VCENTER_ALIGN);
+//    });
 
     ui->editToolBar->addAction(m_undoAct);
     ui->editToolBar->addAction(m_redoAct);

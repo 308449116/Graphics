@@ -9,7 +9,8 @@ const static int LINE_HANDLE_WIDTH = 20;
 
 enum GraphicsItemType
 {
-    RectItem = QGraphicsItem::UserType + 1,
+    GroupItem = QGraphicsItem::UserType + 1,
+    RectItem,
     TextItem,
     BarcodeItem,
     EllipseItem,

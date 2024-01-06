@@ -3,6 +3,7 @@
 #include "scenegraphics.h"
 #include "graphicsitemmanager.h"
 #include "graphicshandle.h"
+#include "graphicsitemgroup.h"
 #include "undocmdmanager.h"
 
 #include <QAction>
@@ -195,8 +196,15 @@ void ViewGraphics::alignItems(AlignType alignType)
 
 void ViewGraphics::groupItems()
 {
-//    QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
-//    m_scene->createItemGroup(items);
+    QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
+    if (items.isEmpty()) return;
+
+    foreach(auto item, items) {
+        m_selectionManager->hide(item, true);
+    }
+
+    QSharedPointer<GraphicsAbstractItem> itemGroup = m_itemManager->createGraphicsItemGroup(items);
+    m_selectionManager->addItem(this, itemGroup);
 }
 
 void ViewGraphics::ungroupItems()
@@ -207,6 +215,7 @@ void ViewGraphics::ungroupItems()
 void ViewGraphics::duplicateItems()
 {
     QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
+    qDebug() << "duplicateItems count:" << items.count();
     if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
@@ -243,6 +252,15 @@ QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 
 void ViewGraphics::addItem(QSharedPointer<GraphicsAbstractItem> item)
 {
+    GraphicsItemGroup *g = dynamic_cast<GraphicsItemGroup *>(item.data());
+    if (g) {
+        qDebug() << "childItems count:" << g->childItems().count();
+        foreach (auto childItem, g->childItems()) {
+            m_scene->addItem(childItem);
+        }
+    } else {
+        qDebug() << "QGraphicsItemGroup is null";
+    }
     m_scene->addItem(item.data());
     addItemToSelectionManager(item);
 }

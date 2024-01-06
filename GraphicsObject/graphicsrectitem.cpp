@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
-GraphicsRectItem::GraphicsRectItem(const QRectF &rect, GraphicsItem *parent)
+GraphicsRectItem::GraphicsRectItem(const QRectF &rect, QGraphicsItem *parent)
     : GraphicsItem(parent)
 {
     m_width = rect.width();

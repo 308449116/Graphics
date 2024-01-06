@@ -73,5 +73,6 @@ protected:
 };
 
 using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;
+using GraphicsAbstractItemGroup = GraphicsAbstractTemplate<QGraphicsItemGroup>;
 
 #endif // GRAPHICSABSTRACTTEMPLATE_H

@@ -7,7 +7,7 @@ GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGr
     : QGraphicsItem(parent)
     ,m_handleType(handleType)
     ,m_borderColor(Qt::white)
-    ,m_state(GraphicsHandleState::HandleOff)
+    ,m_state(GraphicsHandleState::HandleActive)
     ,m_selection(selection)
 {
 //    setFlag(QGraphicsItem::ItemIgnoresTransformations,true);

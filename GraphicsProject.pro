@@ -22,6 +22,7 @@ INCLUDEPATH += $$PWD/Handle
 SOURCES += \
     GraphicsObject/graphicsabstracttemplate.cpp \
     GraphicsObject/graphicsitem.cpp \
+    GraphicsObject/graphicsitemgroup.cpp \
     GraphicsObject/graphicsitemmanager.cpp \
     GraphicsObject/graphicsrectitem.cpp \
     GraphicsObject/graphicstextitem.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     Common/common.h \
     GraphicsObject/graphicsabstracttemplate.h \
     GraphicsObject/graphicsitem.h \
+    GraphicsObject/graphicsitemgroup.h \
     GraphicsObject/graphicsitemmanager.h \
     GraphicsObject/graphicsrectitem.h \
     GraphicsObject/graphicstextitem.h \

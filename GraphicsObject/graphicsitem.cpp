@@ -3,7 +3,7 @@
 #include <QStyleOptionGraphicsItem>
 
 GraphicsItem::GraphicsItem(QGraphicsItem *parent)
-    : GraphicsAbstractItem(parent)
+    : GraphicsAbstractTemplate<QGraphicsItem>(parent)
 {
 //    setFlag(QGraphicsItem::ItemIsMovable, true);
 //    setFlag(QGraphicsItem::ItemIsSelectable, true);

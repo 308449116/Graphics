@@ -8,7 +8,7 @@
 class GraphicsTextItem : public GraphicsItem
 {
 public:
-    explicit GraphicsTextItem(const QString &text, GraphicsItem *parent = nullptr);
+    explicit GraphicsTextItem(const QString &text, QGraphicsItem *parent = nullptr);
 
     void move(const QPointF &point) override;
 

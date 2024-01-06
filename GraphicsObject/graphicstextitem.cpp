@@ -7,7 +7,7 @@
 #include <QStaticText>
 #include <QDebug>
 
-GraphicsTextItem::GraphicsTextItem(const QString &text, GraphicsItem *parent)
+GraphicsTextItem::GraphicsTextItem(const QString &text, QGraphicsItem *parent)
     : GraphicsItem(parent)
 {
     m_initialFontSize = m_lastFontSize = 100;

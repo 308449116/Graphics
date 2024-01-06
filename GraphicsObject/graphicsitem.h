@@ -5,10 +5,8 @@
 
 #include "graphicsabstracttemplate.h"
 
-class GraphicsItem : public QObject,
-                     public GraphicsAbstractItem
+class GraphicsItem : public GraphicsAbstractTemplate<QGraphicsItem>
 {
-    Q_OBJECT
 public:
     explicit GraphicsItem(QGraphicsItem *parent = nullptr);
 

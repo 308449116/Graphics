@@ -18,7 +18,13 @@ public:
     explicit GraphicsItemManager(SceneGraphics *scene, QObject *parent = nullptr);
 
     // 创建图元
-    QSharedPointer<GraphicsAbstractItem> createGraphicsItem(GraphicsItemType type, const QString& itemName = "");
+    QSharedPointer<GraphicsAbstractItem> createGraphicsItem(
+        GraphicsItemType type, const QString& itemName = "", QGraphicsItem *parent = nullptr);
+
+    // 创建图元组
+    QSharedPointer<GraphicsAbstractItem> createGraphicsItemGroup(
+        QList<QSharedPointer<GraphicsAbstractItem> > items,
+        const QString& itemName = "", QGraphicsItem *parent = nullptr);
 
     // 删除图元
     void deleteGraphicsItem(QSharedPointer<GraphicsAbstractItem> item);
@@ -30,6 +36,9 @@ public:
     int getItemCounts(GraphicsItemType type);
 
     void cleanAll();
+
+private:
+    void manageItem(QSharedPointer<GraphicsAbstractItem> item, const QString& itemName);
 
 private:
     SceneGraphics *m_scene;

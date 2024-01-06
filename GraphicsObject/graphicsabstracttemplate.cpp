@@ -190,3 +190,4 @@ void GraphicsAbstractTemplate<BaseType>::qt_graphicsItem_highlightSelected(
 }
 
 template class GraphicsAbstractTemplate<QGraphicsItem>;
+template class GraphicsAbstractTemplate<QGraphicsItemGroup>;

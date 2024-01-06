@@ -24,7 +24,8 @@ void ItemCopyCmd::redo()
             auto itemCopy = item->duplicate();
             m_view->addItem(itemCopy);
             m_itemsCopy.push_back(itemCopy);
-            strs << item->getItemName();
+            qDebug() << "itemCopy->getItemName():" << itemCopy->getItemName();
+            strs << itemCopy->getItemName();
         }
         m_strName = strs.join(",");
     } else {

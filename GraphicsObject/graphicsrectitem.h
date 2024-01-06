@@ -6,7 +6,7 @@
 class GraphicsRectItem : public GraphicsItem
 {
 public:
-    explicit GraphicsRectItem(const QRectF &rect, GraphicsItem *parent = nullptr);
+    explicit GraphicsRectItem(const QRectF &rect, QGraphicsItem *parent = nullptr);
 
     int  type() const override;
 
