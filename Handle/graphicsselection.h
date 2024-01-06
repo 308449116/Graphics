@@ -4,9 +4,9 @@
 #include <QRectF>
 #include <QObject>
 #include <QSharedPointer>
+#include "graphicsabstracttemplate.h"
 
 class ViewGraphics;
-class GraphicsItem;
 class GraphicsHandle;
 
 class GraphicsSelection : public QObject
@@ -15,7 +15,7 @@ class GraphicsSelection : public QObject
 public:
     explicit GraphicsSelection(ViewGraphics *view);
 
-    void setItem(QSharedPointer<GraphicsItem> item);
+    void setItem(QSharedPointer<GraphicsAbstractItem> item);
 
     bool isUsed() const;
 
@@ -33,7 +33,7 @@ public:
 
     QPointF handlePos(int handleType) const;
 
-    QSharedPointer<GraphicsItem> item() const;
+    QSharedPointer<GraphicsAbstractItem> item() const;
 
     QPointF opposite(int handle) const;
 
@@ -41,7 +41,7 @@ public:
 
 private:
     ViewGraphics *m_view;
-    QSharedPointer<GraphicsItem> m_item;
+    QSharedPointer<GraphicsAbstractItem> m_item;
     QList<GraphicsHandle *> m_handleList;
 };
 

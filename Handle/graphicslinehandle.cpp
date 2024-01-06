@@ -1,5 +1,4 @@
 #include "graphicslinehandle.h"
-#include "graphicsitem.h"
 #include "common.h"
 
 #include <QGraphicsItem>

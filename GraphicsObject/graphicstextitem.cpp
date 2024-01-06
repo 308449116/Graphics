@@ -72,7 +72,7 @@ void GraphicsTextItem::move(const QPointF &point)
     moveBy(point.x(),point.y());
 }
 
-QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
+QSharedPointer<GraphicsAbstractItem> GraphicsTextItem::duplicate() const
 {
     GraphicsTextItem *item = new GraphicsTextItem(m_text);
     item->setFont(m_font);
@@ -87,7 +87,7 @@ QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
     item->setZValue(zValue()+0.1);
     item->setItemName(this->getItemName().append("_copy"));
     item->updateCoordinate();
-    return QSharedPointer<GraphicsItem>(item);
+    return QSharedPointer<GraphicsAbstractItem>(item);
 }
 
 void GraphicsTextItem::setText(const QString &text)

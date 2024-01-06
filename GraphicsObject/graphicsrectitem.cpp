@@ -64,7 +64,7 @@ void GraphicsRectItem::move(const QPointF &point)
     moveBy(point.x(),point.y());
 }
 
-QSharedPointer<GraphicsItem> GraphicsRectItem::duplicate() const
+QSharedPointer<GraphicsAbstractItem> GraphicsRectItem::duplicate() const
 {
     GraphicsRectItem *item = new GraphicsRectItem(m_localRect);
     item->m_width = width();
@@ -77,7 +77,7 @@ QSharedPointer<GraphicsItem> GraphicsRectItem::duplicate() const
     item->setZValue(zValue()+0.1);
     item->setItemName(this->getItemName().append("_copy"));
     item->updateCoordinate();
-    return QSharedPointer<GraphicsItem>(item);
+    return QSharedPointer<GraphicsAbstractItem>(item);
 }
 
 int GraphicsRectItem::type() const

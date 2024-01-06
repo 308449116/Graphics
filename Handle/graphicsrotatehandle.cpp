@@ -1,6 +1,5 @@
 #include "graphicsrotatehandle.h"
 #include "graphicsselection.h"
-#include "graphicsitem.h"
 #include "viewgraphics.h"
 #include "common.h"
 

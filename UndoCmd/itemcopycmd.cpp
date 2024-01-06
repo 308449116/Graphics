@@ -1,8 +1,7 @@
 #include "itemcopycmd.h"
-#include "graphicsitem.h"
 #include "viewgraphics.h"
 
-ItemCopyCmd::ItemCopyCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view, QUndoCommand *parent)
+ItemCopyCmd::ItemCopyCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand{parent}, m_view(view), m_items{items}
 {
 

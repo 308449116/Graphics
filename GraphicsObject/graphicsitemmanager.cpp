@@ -1,5 +1,4 @@
 #include "graphicsitemmanager.h"
-#include "graphicsitem.h"
 #include "graphicsrectitem.h"
 #include "graphicstextitem.h"
 #include "scenegraphics.h"
@@ -12,17 +11,17 @@ GraphicsItemManager::GraphicsItemManager(SceneGraphics *scene, QObject *parent)
     }
 }
 
-QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(GraphicsItemType type, const QString& itemName)
+QSharedPointer<GraphicsAbstractItem> GraphicsItemManager::createGraphicsItem(GraphicsItemType type, const QString& itemName)
 {
-    QSharedPointer<GraphicsItem> item;
+    QSharedPointer<GraphicsAbstractItem> item;
 
     switch (type) {
     case GraphicsItemType::RectItem: {
-        item = QSharedPointer<GraphicsItem>( new GraphicsRectItem(QRectF(-50, -50, 100, 100)) );
+        item = QSharedPointer<GraphicsAbstractItem>( new GraphicsRectItem(QRectF(-50, -50, 100, 100)) );
         break;
     }
     case GraphicsItemType::TextItem: {
-        item = QSharedPointer<GraphicsItem>( new GraphicsTextItem("jkpg") );
+        item = QSharedPointer<GraphicsAbstractItem>( new GraphicsTextItem("jkpg") );
         break;
     }
     case GraphicsItemType::BarcodeItem:
@@ -52,7 +51,7 @@ QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(GraphicsIte
     return item;
 }
 
-void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsItem> item)
+void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (item.isNull()) return;
 

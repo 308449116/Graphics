@@ -5,8 +5,8 @@
 #include <QList>
 #include <QPointF>
 #include <QSharedPointer>
+#include "graphicsabstracttemplate.h"
 
-class GraphicsItem;
 class ViewGraphics;
 class GraphicsSelection;
 
@@ -23,28 +23,28 @@ public:
 
     void clearSelectionPool();
 
-    bool isItemSelected(QSharedPointer<GraphicsItem> item) const;
+    bool isItemSelected(QSharedPointer<GraphicsAbstractItem> item) const;
 
-    QList<QSharedPointer<GraphicsItem> > selectedItems() const;
+    QList<QSharedPointer<GraphicsAbstractItem> > selectedItems() const;
 
-    int collidesWithHandle(QSharedPointer<GraphicsItem> item, const QPointF & point) const;
+    int collidesWithHandle(QSharedPointer<GraphicsAbstractItem> item, const QPointF & point) const;
 
-    QPointF opposite(QSharedPointer<GraphicsItem> item, int handleType) const;
+    QPointF opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const;
 
-    GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item);
+    GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsAbstractItem> item);
 
-    void removeItem(QSharedPointer<GraphicsItem> item);
+    void removeItem(QSharedPointer<GraphicsAbstractItem> item);
 
-    void updateGeometry(QSharedPointer<GraphicsItem> item);
+    void updateGeometry(QSharedPointer<GraphicsAbstractItem> item);
 
-    void hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle);
+    void hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle);
 
-    void show(QSharedPointer<GraphicsItem> item);
+    void show(QSharedPointer<GraphicsAbstractItem> item);
 
 private:
     using SelectionPool = QList<GraphicsSelection *>;
     SelectionPool m_selectionPool;
-    QHash<QSharedPointer<GraphicsItem>, GraphicsSelection *> m_usedSelections;
+    QHash<QSharedPointer<GraphicsAbstractItem>, GraphicsSelection *> m_usedSelections;
 };
 
 #endif // GRAPHICSSELECTIONMANAGER_H

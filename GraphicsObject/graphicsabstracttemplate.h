@@ -30,6 +30,12 @@ public:
 
     virtual void rotate(QPointF rotatePos, QPointF lastPos);
 
+    virtual QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>> duplicate() const;
+
+    void setItemName(QString name);
+
+    QString getItemName() const;
+
     qreal  width() const;
 
     void   setWidth(qreal width);
@@ -63,6 +69,7 @@ protected:
     QPen   m_pen ;
     QRectF m_localRect;
     QRectF m_initialRect;
+    QString m_itemName;
 };
 
 using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;

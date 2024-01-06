@@ -1,8 +1,7 @@
 #include "itemrotatecmd.h"
-#include "graphicsitem.h"
 #include "viewgraphics.h"
 
-ItemRotateCmd::ItemRotateCmd(QSharedPointer<GraphicsItem> item, const qreal initialAngle,
+ItemRotateCmd::ItemRotateCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal initialAngle,
                              ViewGraphics *view,QUndoCommand *parent)
     : QUndoCommand{parent}, m_initialAngle(initialAngle),
     m_view(view), m_item(item)

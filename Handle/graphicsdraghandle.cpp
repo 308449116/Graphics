@@ -1,6 +1,5 @@
 #include "graphicsdraghandle.h"
 #include "graphicsselection.h"
-#include "graphicsitem.h"
 #include "viewgraphics.h"
 
 #include <QStyleOptionGraphicsItem>
@@ -35,8 +34,8 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "111 GraphicsDragHandle mousePressEvent event->modifiers:" << event->modifiers();
-    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
+//    qDebug() << "111 GraphicsDragHandle mousePressEvent event->modifiers:" << event->modifiers();
+//    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
     QGraphicsItem::mousePressEvent(event);
 
     m_lastScenePos = m_pressedScenePos = event->scenePos();
@@ -50,7 +49,6 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
             m_items.push_back(qMakePair(handle->item()->pos(), handle->item()));
         }
     }
-
 }
 
 void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

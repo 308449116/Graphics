@@ -1,6 +1,5 @@
 #include "scenegraphics.h"
 #include "graphicshandle.h"
-#include "graphicsitem.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
@@ -39,7 +38,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Delete: {
-        QList<QSharedPointer<GraphicsItem> > items;
+        QList<QSharedPointer<GraphicsAbstractItem> > items;
         foreach (auto *item, selectedItems()) {
             GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
             if (handle && handle->handleType() == GraphicsHandle::Drag) {

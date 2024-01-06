@@ -9,7 +9,6 @@
 
 class QUndoView;
 class QUndoStack;
-class GraphicsItem;
 class SceneGraphics;
 class UndoCmdManager;
 class GraphicsItemManager;
@@ -26,24 +25,24 @@ public:
     // Create Items
     void createItem(GraphicsItemType type);
 
-    QSharedPointer<GraphicsItem> createItemByType(GraphicsItemType type);
+    QSharedPointer<GraphicsAbstractItem> createItemByType(GraphicsItemType type);
 
-    void addItem(QSharedPointer<GraphicsItem> item);
+    void addItem(QSharedPointer<GraphicsAbstractItem> item);
 
     // remove Items
-    void removeItem(QSharedPointer<GraphicsItem> item);
+    void removeItem(QSharedPointer<GraphicsAbstractItem> item);
 
     // move Items
-    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
+    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
                    const QPointF &pos, bool isUndoCmd, bool isMoved = true);
 
-    void moveItem(QSharedPointer<GraphicsItem> item, const QPointF &pos);
+    void moveItem(QSharedPointer<GraphicsAbstractItem> item, const QPointF &pos);
 
     // resize Items
-    void resizeItem(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale, bool isUndoCmd);
+    void resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale, bool isUndoCmd);
 
     // rotate Items
-    void rotateItem(QSharedPointer<GraphicsItem> item, const qreal angle, bool isUndoCmd);
+    void rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle, bool isUndoCmd);
 
     // duplicate Items
     void duplicateItems();
@@ -80,7 +79,7 @@ public:
 
     void setIsControlModifier(bool newIsControlModifier);
 
-    QList<QSharedPointer<GraphicsItem>> selectedItems();
+    QList<QSharedPointer<GraphicsAbstractItem>> selectedItems();
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
@@ -88,14 +87,14 @@ protected:
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
-    void removeItems(QList<QSharedPointer<GraphicsItem> > items);
+    void removeItems(QList<QSharedPointer<GraphicsAbstractItem> > items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
 //    bool trySelectItem(GraphicsItem *item);
-    void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
+    void addItemToSelectionManager(QSharedPointer<GraphicsAbstractItem> item);
 
 private:
     bool m_isUndoCmdEnabled = true;

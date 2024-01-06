@@ -49,6 +49,12 @@ void GraphicsAbstractTemplate<BaseType>::rotate(QPointF rotatePos, QPointF lastP
 }
 
 template<typename BaseType>
+QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > GraphicsAbstractTemplate<BaseType>::duplicate() const
+{
+    return  QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> >(nullptr);
+}
+
+template<typename BaseType>
 qreal GraphicsAbstractTemplate<BaseType>::width() const
 {
     return m_width;
@@ -113,6 +119,18 @@ QColor GraphicsAbstractTemplate<BaseType>::penColor() const
 {
     return m_pen.color();
 
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::setItemName(QString name)
+{
+    m_itemName = name;
+}
+
+template<typename BaseType>
+QString GraphicsAbstractTemplate<BaseType>::getItemName() const
+{
+    return m_itemName;
 }
 
 template<typename BaseType>

@@ -3,7 +3,6 @@
 #include "graphicsdraghandle.h"
 #include "graphicsrotatehandle.h"
 #include "graphicslinehandle.h"
-#include "graphicsitem.h"
 #include "viewgraphics.h"
 #include "common.h"
 
@@ -29,7 +28,7 @@ GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     m_handleList.push_back(linehandle);
 }
 
-void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
+void GraphicsSelection::setItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (item.isNull()) {
         hide();
@@ -356,7 +355,7 @@ int GraphicsSelection::swapHandle(int handle, const QPointF& scale ) const
     return handleType;
 }
 
-QSharedPointer<GraphicsItem> GraphicsSelection::item() const
+QSharedPointer<GraphicsAbstractItem> GraphicsSelection::item() const
 {
     return m_item;
 }

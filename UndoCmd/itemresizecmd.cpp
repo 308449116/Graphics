@@ -1,8 +1,7 @@
 #include "itemresizecmd.h"
-#include "graphicsitem.h"
 #include "viewgraphics.h"
 
-ItemResizeCmd::ItemResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
+ItemResizeCmd::ItemResizeCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale,
                              ViewGraphics *view, bool isResized, QUndoCommand *parent)
     : QUndoCommand{parent}, m_handleType(handleType), m_isResized(isResized),
     m_scale(scale), m_view(view), m_item(item)

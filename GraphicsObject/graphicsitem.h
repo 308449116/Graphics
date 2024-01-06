@@ -16,11 +16,11 @@ public:
 
     QRectF boundingRect() const override;
 
-    virtual QSharedPointer<GraphicsItem> duplicate() const = 0;
+//    virtual QSharedPointer<GraphicsAbstractItem> duplicate() const = 0;
 
-    void setItemName(QString name);
+//    void setItemName(QString name);
 
-    QString getItemName() const;
+//    QString getItemName() const;
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -41,4 +41,5 @@ private:
 };
 
 extern template class GraphicsAbstractTemplate<QGraphicsItem>;
+
 #endif // GRAPHICSITEM_H

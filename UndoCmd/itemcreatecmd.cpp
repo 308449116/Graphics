@@ -1,6 +1,5 @@
 #include "itemcreatecmd.h"
 #include "viewgraphics.h"
-#include "graphicsitem.h"
 
 ItemCreateCmd::ItemCreateCmd(GraphicsItemType type, ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand(parent), m_type(type), m_view(view), m_item(nullptr)

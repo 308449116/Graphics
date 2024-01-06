@@ -1,5 +1,4 @@
 #include "graphicshandle.h"
-#include "graphicsitem.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -60,7 +59,7 @@ void GraphicsHandle::setLocalRect(QRectF localRect)
     m_localRect = localRect;
 }
 
-void GraphicsHandle::setItem(QSharedPointer<GraphicsItem> item)
+void GraphicsHandle::setItem(QSharedPointer<GraphicsAbstractItem> item)
 {
 //    if (item) {
 //        connect(item, &GraphicsItem::selectedChange, [this](GraphicsItem *item, bool checked) {
@@ -71,7 +70,7 @@ void GraphicsHandle::setItem(QSharedPointer<GraphicsItem> item)
     m_item = item;
 }
 
-QSharedPointer<GraphicsItem> GraphicsHandle::item() const
+QSharedPointer<GraphicsAbstractItem> GraphicsHandle::item() const
 {
     return m_item;
 }

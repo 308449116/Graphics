@@ -4,14 +4,14 @@
 #include <QPointF>
 #include <QUndoCommand>
 #include <QSharedPointer>
+#include "graphicsabstracttemplate.h"
 
-class GraphicsItem;
 class ViewGraphics;
 
 class ItemRotateCmd : public QUndoCommand
 {
 public:
-    explicit ItemRotateCmd(QSharedPointer<GraphicsItem> item, const qreal initialAngle,
+    explicit ItemRotateCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal initialAngle,
                            ViewGraphics *view, QUndoCommand *parent = nullptr);
 
     void undo() override;
@@ -23,7 +23,7 @@ private:
     qreal m_rotateAngle;
 
     ViewGraphics *m_view;
-    QSharedPointer<GraphicsItem> m_item;
+    QSharedPointer<GraphicsAbstractItem> m_item;
 };
 
 #endif // ITEMROTATECMD_H

@@ -2,8 +2,8 @@
 #define GRAPHICSHANDLE_H
 
 #include <QGraphicsItem>
+#include "graphicsabstracttemplate.h"
 
-class GraphicsItem;
 class GraphicsSelection;
 
 class GraphicsHandle : public QGraphicsItem
@@ -34,7 +34,7 @@ public:
 
     QRectF boundingRect() const override;
 
-    QSharedPointer<GraphicsItem> item() const;
+    QSharedPointer<GraphicsAbstractItem> item() const;
 
     int handleType() const;
 
@@ -44,7 +44,7 @@ public:
 
     void setLocalRect(QRectF localRect);
 
-    void setItem(QSharedPointer<GraphicsItem> item);
+    void setItem(QSharedPointer<GraphicsAbstractItem> item);
 
     void move(qreal x, qreal y);
 
@@ -62,7 +62,7 @@ protected:
     QPointF m_lastScenePos;
 
     GraphicsHandleState m_state;
-    QSharedPointer<GraphicsItem> m_item;
+    QSharedPointer<GraphicsAbstractItem> m_item;
     GraphicsSelection *m_selection;
 };
 

@@ -27,7 +27,7 @@ protected:
 private:
     QPointF m_initialPos;
     ViewGraphics *m_view;
-    QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> m_items;
+    QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> m_items;
 };
 
 #endif // GRAPHICSDRAGHANDLE_H

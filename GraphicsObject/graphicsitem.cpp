@@ -25,20 +25,20 @@ QRectF GraphicsItem::boundingRect() const
     return rect;
 }
 
-//QSharedPointer<GraphicsItem> GraphicsItem::duplicate() const
+//QSharedPointer<GraphicsAbstractItem> GraphicsItem::duplicate() const
 //{
-//    return QSharedPointer<GraphicsItem>(nullptr);
+//    return QSharedPointer<GraphicsAbstractItem>(nullptr);
 //}
 
-void GraphicsItem::setItemName(QString name)
-{
-    setData(type(), name);
-}
+//void GraphicsItem::setItemName(QString name)
+//{
+//    setData(type(), name);
+//}
 
-QString GraphicsItem::getItemName() const
-{
-    return data(type()).toString();
-}
+//QString GraphicsItem::getItemName() const
+//{
+//    return data(type()).toString();
+//}
 
 void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

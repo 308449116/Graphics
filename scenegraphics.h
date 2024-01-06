@@ -2,8 +2,7 @@
 #define SCENEGRAPHICS_H
 
 #include <QGraphicsScene>
-
-class GraphicsItem;
+#include "graphicsabstracttemplate.h"
 
 class SceneGraphics : public QGraphicsScene
 {
@@ -16,7 +15,7 @@ public:
     void setIsControlModifier(bool newIsControlModifier);
 
 signals:
-    void deleteGraphicsItems(QList<QSharedPointer<GraphicsItem> > items);
+    void deleteGraphicsItems(QList<QSharedPointer<GraphicsAbstractItem> > items);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateChange(GraphicsItem *item, bool isHide);
 

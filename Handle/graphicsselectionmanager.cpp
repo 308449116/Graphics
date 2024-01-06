@@ -1,6 +1,5 @@
 #include "graphicsselectionmanager.h"
 #include "graphicsselection.h"
-#include "graphicsitem.h"
 #include <QDebug>
 
 GraphicsSelectionManager::~GraphicsSelectionManager()
@@ -24,7 +23,7 @@ void GraphicsSelectionManager::clearSelectionPool()
     m_selectionPool.clear();
 }
 
-GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item)
+GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QSharedPointer<GraphicsAbstractItem> item)
 {
     GraphicsSelection *gs = m_usedSelections.value(item);
     if (gs != nullptr) {
@@ -54,7 +53,7 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QShared
     return gs;
 }
 
-void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
+void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     GraphicsSelection *s = m_usedSelections.value(item);
     if (!s) {
@@ -69,37 +68,37 @@ void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
     }
 }
 
-bool GraphicsSelectionManager::isItemSelected(QSharedPointer<GraphicsItem> item) const{
+bool GraphicsSelectionManager::isItemSelected(QSharedPointer<GraphicsAbstractItem> item) const{
     return  m_usedSelections.contains(item);
 }
 
-QList<QSharedPointer<GraphicsItem> > GraphicsSelectionManager::selectedItems() const
+QList<QSharedPointer<GraphicsAbstractItem> > GraphicsSelectionManager::selectedItems() const
 {
     return m_usedSelections.keys();
 }
 
-void GraphicsSelectionManager::updateGeometry(QSharedPointer<GraphicsItem> item)
+void GraphicsSelectionManager::updateGeometry(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->updateGeometry();
     }
 }
 
-void GraphicsSelectionManager::hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle)
+void GraphicsSelectionManager::hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->hide(isHideDragHandle);
     }
 }
 
-void GraphicsSelectionManager::show(QSharedPointer<GraphicsItem> item)
+void GraphicsSelectionManager::show(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->show();
     }
 }
 
-int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsItem> item, const QPointF &point) const
+int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsAbstractItem> item, const QPointF &point) const
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         return s->collidesWithHandle(point);
@@ -108,7 +107,7 @@ int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsItem> it
     return 0;
 }
 
-QPointF GraphicsSelectionManager::opposite(QSharedPointer<GraphicsItem> item, int handleType) const
+QPointF GraphicsSelectionManager::opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         return s->opposite(handleType);
