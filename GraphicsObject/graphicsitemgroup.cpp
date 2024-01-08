@@ -7,6 +7,22 @@ GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parent)
 
 }
 
+GraphicsItemGroup::GraphicsItemGroup(QList<QSharedPointer<GraphicsAbstractItem> > items, QGraphicsItem *parent)
+    : GraphicsAbstractTemplate <QGraphicsItemGroup>{parent}
+{
+    foreach (auto item, items){
+        QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->parentItem());
+        if ( !g ) {
+            addToGroup(item);
+        }
+    }
+}
+
+GraphicsItemGroup::~GraphicsItemGroup()
+{
+    m_childItems.clear();
+}
+
 int GraphicsItemGroup::type() const
 {
     return GraphicsItemType::GroupItem;
@@ -50,17 +66,9 @@ QSharedPointer<GraphicsAbstractItem> GraphicsItemGroup::duplicate() const
     QList<QSharedPointer<GraphicsAbstractItem> > items = duplicateItems();
     qDebug() << "GraphicsItemGroup duplicateItems count:" << items.count();
 
-    GraphicsItemGroup *itemGroup = new GraphicsItemGroup();
-    foreach (auto item, items) {
-        qDebug() << "GraphicsItemGroup type:" << item->type();
-        itemGroup->addToGroup(item.data());
-    }
-
-    itemGroup->m_localRect = m_localRect;
-    itemGroup->m_initialRect = m_initialRect;
-    itemGroup->m_width = m_width;
-    itemGroup->m_height = m_height;
-    itemGroup->setPos(pos().x() + width(), pos().y());
+    GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items);
+    itemGroup->updateCoordinate();
+    itemGroup->setPos(pos().x() + m_width, pos().y());
     itemGroup->setPen(pen());
     itemGroup->setBrush(brush());
     itemGroup->setTransform(transform());
@@ -69,24 +77,41 @@ QSharedPointer<GraphicsAbstractItem> GraphicsItemGroup::duplicate() const
     itemGroup->setScale(scale());
     itemGroup->setZValue(zValue()+0.1);
     itemGroup->setItemName(this->getItemName().append("_copy"));
-    itemGroup->updateCoordinate();
 
-    QSharedPointer<GraphicsAbstractItem> shareItem = QSharedPointer<GraphicsAbstractItem>(
+    return QSharedPointer<GraphicsAbstractItem>(
         qgraphicsitem_cast<GraphicsAbstractItem *>(itemGroup));
+}
 
-    GraphicsItemGroup *g = dynamic_cast<GraphicsItemGroup *>(shareItem.data());
-    if (itemGroup) {
-        qDebug() << "111 childItems count:" << itemGroup->childItems().count();
-    } else {
-        qDebug() << "111 QGraphicsItemGroup is null";
-    }
-
-    return shareItem;
+QSet<QSharedPointer<GraphicsAbstractItem> > GraphicsItemGroup::getChildItems() const
+{
+    return m_childItems;
 }
 
 void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
 
+}
+
+void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsAbstractItem> item)
+{
+    this->addToGroup(item.data());
+    m_childItems.insert(item);
+}
+
+void GraphicsItemGroup::removeFromGroup(QSharedPointer<GraphicsAbstractItem> item)
+{
+    this->removeFromGroup(item.data());
+    m_childItems.remove(item);
+}
+
+void GraphicsItemGroup::addToGroup(QGraphicsItem *item)
+{
+    QGraphicsItemGroup::addToGroup(item);
+}
+
+void GraphicsItemGroup::removeFromGroup(QGraphicsItem *item)
+{
+    QGraphicsItemGroup::removeFromGroup(item);
 }
 
 QList<QSharedPointer<GraphicsAbstractItem> > GraphicsItemGroup::duplicateItems() const
@@ -95,8 +120,9 @@ QList<QSharedPointer<GraphicsAbstractItem> > GraphicsItemGroup::duplicateItems()
 
     foreach (auto *item , childItems() ) {
         auto *abstractItem = qgraphicsitem_cast<GraphicsAbstractItem*>(item);
-        if ( abstractItem ){
+        if ( abstractItem ) {
             auto copyItem = abstractItem->duplicate();
+            copyItem->setPos(abstractItem->pos());
             copylist.append(copyItem);
         }
     }

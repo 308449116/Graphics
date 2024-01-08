@@ -9,6 +9,8 @@ GraphicsDragHandle::GraphicsDragHandle(int handleType, ViewGraphics *view,
                                        GraphicsSelection *selection, QGraphicsItem *parent)
     :GraphicsHandle(handleType, selection, parent), m_view(view)
 {
+    setState(GraphicsHandleState::HandleActive);
+    setSelected(false);
 //    setFocus();
 //    setActive(true);
 //    setSelected(true);

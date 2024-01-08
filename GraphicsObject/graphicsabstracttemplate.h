@@ -26,11 +26,17 @@ public:
 
     virtual void move(const QPointF &point);
 
-    virtual void stretch(qreal sx, qreal sy, const QPointF &origin);
-
     virtual void rotate(QPointF rotatePos, QPointF lastPos);
 
+    virtual void stretch(qreal sx, qreal sy, const QPointF &origin);
+
     virtual QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>> duplicate() const;
+
+    virtual void addToGroup(QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>> item);
+
+    virtual void removeFromGroup(QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>> item);
+
+    virtual QSet<QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>>> getChildItems() const;
 
     void setItemName(QString name);
 
@@ -66,7 +72,7 @@ protected:
     qreal m_height = 0;
     qreal m_ratio = 1;
     QBrush m_brush;
-    QPen   m_pen ;
+    QPen   m_pen;
     QRectF m_localRect;
     QRectF m_initialRect;
     QString m_itemName;

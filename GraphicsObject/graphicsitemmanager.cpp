@@ -2,6 +2,7 @@
 #include "graphicsrectitem.h"
 #include "graphicstextitem.h"
 #include "graphicsitemgroup.h"
+#include "graphicsselectionmanager.h"
 #include "scenegraphics.h"
 
 GraphicsItemManager::GraphicsItemManager(SceneGraphics *scene, QObject *parent)
@@ -40,18 +41,25 @@ QSharedPointer<GraphicsAbstractItem> GraphicsItemManager::createGraphicsItem(
     return item;
 }
 
+//QSharedPointer<GraphicsAbstractItem> GraphicsItemManager::createGraphicsItemGroup(
+//    QList<QSharedPointer<GraphicsAbstractItem> > items, const QString &itemName, QGraphicsItem *parent)
+//{
+//    QSharedPointer<GraphicsAbstractItemGroup> itemGroup;
+//    itemGroup = QSharedPointer<GraphicsAbstractItemGroup> (new GraphicsItemGroup(items, parent));
+//    itemGroup->updateCoordinate();
+
+//    QSharedPointer<GraphicsAbstractItem> itemSharedPointer = itemGroup.dynamicCast<GraphicsAbstractItem>();
+//    manageItem(itemSharedPointer, itemName);
+
+//    return itemSharedPointer;
+//}
+
 QSharedPointer<GraphicsAbstractItem> GraphicsItemManager::createGraphicsItemGroup(
     QList<QSharedPointer<GraphicsAbstractItem> > items, const QString &itemName, QGraphicsItem *parent)
 {
-    GraphicsItemGroup *itemGroup = new GraphicsItemGroup(parent);
-    foreach (auto item, items){
-        QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->parentItem());
-        if ( !g ) {
-            itemGroup->addToGroup(item.data());
-        }
-    }
-
+    GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items, parent);
     itemGroup->updateCoordinate();
+
     QSharedPointer<GraphicsAbstractItem> itemSharedPointer = QSharedPointer<GraphicsAbstractItem>(
         qgraphicsitem_cast<GraphicsAbstractItem *>(itemGroup));
     manageItem(itemSharedPointer, itemName);
@@ -85,6 +93,14 @@ void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsAbstractItem
     if (item.isNull()) return;
 
     m_scene->removeItem(item.data());
+
+    if (item->type() == GraphicsItemType::GroupItem) {
+        foreach (auto childItem, item->getChildItems()) {
+            m_nameHash.remove(childItem->getItemName());
+        }
+    }
+
+    m_nameHash.remove(item->getItemName());
 //    delete item;
 //    item = nullptr;
 }
@@ -111,6 +127,37 @@ int GraphicsItemManager::getItemCounts(GraphicsItemType type)
 {
     return m_countMap[type];
 }
+
+void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager)
+{
+    if (item->type() != GraphicsItemType::GroupItem) return;
+
+    qDebug() << "itemGroup->getChildItems().count:" << item->getChildItems().count();
+    foreach (auto childItem, item->getChildItems()) {
+        item->removeFromGroup(childItem);
+        selectManager->show(childItem);
+        selectManager->updateGeometry(childItem);
+    }
+
+    selectManager->removeItem(item);
+}
+
+//void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager)
+//{
+//    GraphicsAbstractItem *ab = item.data();
+//    GraphicsAbstractItemGroup *itemGroup  = dynamic_cast<GraphicsAbstractItemGroup *>(ab);
+//    if (itemGroup) {
+//        qDebug() << "itemGroup->getChildItems().count:" << itemGroup->getChildItems().count();
+//        foreach (auto childItem, itemGroup->getChildItems()) {
+//            //            itemGroup->removeFromGroup(childItem);
+//            selectManager->show(childItem);
+//        }
+//    } else {
+//        qDebug() << "itemGroup ============= ";
+//    }
+
+//    selectManager->removeItem(item);
+//}
 
 void GraphicsItemManager::cleanAll()
 {

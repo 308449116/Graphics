@@ -209,7 +209,12 @@ void ViewGraphics::groupItems()
 
 void ViewGraphics::ungroupItems()
 {
+    QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
+    if (items.isEmpty()) return;
 
+    foreach (auto item, items) {
+        m_itemManager->ungroup(item, m_selectionManager);
+    }
 }
 
 void ViewGraphics::duplicateItems()
@@ -292,7 +297,7 @@ bool ViewGraphics::canRedo() const
 void ViewGraphics::addItemToSelectionManager(QSharedPointer<GraphicsAbstractItem> item)
 {
     m_selectionManager->addItem(this, item);
-    m_selectionManager->hide(item, false);
+//    m_selectionManager->hide(item, false);
     //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 

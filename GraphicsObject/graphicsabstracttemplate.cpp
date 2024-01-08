@@ -55,6 +55,24 @@ QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > GraphicsAbstractTemplat
 }
 
 template<typename BaseType>
+QSet<QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > > GraphicsAbstractTemplate<BaseType>::getChildItems() const
+{
+    return QSet<QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > >();
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::addToGroup(QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > item)
+{
+    Q_UNUSED(item);
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::removeFromGroup(QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > item)
+{
+    Q_UNUSED(item);
+}
+
+template<typename BaseType>
 qreal GraphicsAbstractTemplate<BaseType>::width() const
 {
     return m_width;

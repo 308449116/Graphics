@@ -1,5 +1,6 @@
 #include "graphicsselectionmanager.h"
 #include "graphicsselection.h"
+#include "common.h"
 #include <QDebug>
 
 GraphicsSelectionManager::~GraphicsSelectionManager()
@@ -54,6 +55,17 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QShared
 }
 
 void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsAbstractItem> item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        foreach (auto childItem, item->getChildItems()) {
+            deleteItem(childItem);
+        }
+    }
+
+    deleteItem(item);
+}
+
+void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     GraphicsSelection *s = m_usedSelections.value(item);
     if (!s) {

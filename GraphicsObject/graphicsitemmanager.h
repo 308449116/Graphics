@@ -9,6 +9,7 @@
 #include "graphicsabstracttemplate.h"
 
 class SceneGraphics;
+class GraphicsSelectionManager;
 
 class GraphicsItemManager : public QObject
 {
@@ -34,6 +35,9 @@ public:
 
     // 根据图元类型获取图元数
     int getItemCounts(GraphicsItemType type);
+
+    // 取消分组
+    void ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager);
 
     void cleanAll();
 

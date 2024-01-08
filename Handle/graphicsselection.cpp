@@ -36,6 +36,8 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsAbstractItem> item)
         return;
     }
 
+    m_view->scene()->clearSelection();
+
     m_item = item;
 
     foreach (auto *h ,m_handleList) {
@@ -229,6 +231,10 @@ void GraphicsSelection::show()
     for (GraphicsHandle *h : m_handleList) {
         if (h) {
             h->show();
+            if (h->handleType() == GraphicsHandle::Drag ) {
+                h->setState(GraphicsHandle::HandleActive);
+                h->setSelected(true);
+            }
         }
     }
 }

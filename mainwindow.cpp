@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 //#include "scenegraphics.h"
-//#include "canvasbarcodeitem.h"
-//#include "decoratoritemgraphics.h"
+//#include "graphicsitemmanager.h"
+//#include "graphicstextitem.h"
 #include <QGraphicsItem>
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
@@ -94,9 +94,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //取消组
     m_ungroupAct = new QAction(QIcon(":/icons/ungroup"), tr("ungroup"));
-//    connect(m_alignVCenterAct, &QAction::triggered, this, [this](){
-//        ui->graphicsView->alignItems(AlignType::VCENTER_ALIGN);
-//    });
+    connect(m_ungroupAct, &QAction::triggered, this, [this](){
+        ui->graphicsView->ungroupItems();
+    });
 
     ui->editToolBar->addAction(m_undoAct);
     ui->editToolBar->addAction(m_redoAct);
@@ -192,7 +192,13 @@ void MainWindow::on_textBtn_clicked()
 
 void MainWindow::on_barcodeBtn_clicked()
 {
-    ui->graphicsView->createItem(GraphicsItemType::BarcodeItem);
+//    GraphicsItemManager *manager = new GraphicsItemManager(dynamic_cast<SceneGraphics *>(ui->graphicsView->scene()));
+//    QSharedPointer<GraphicsAbstractItem> item =
+//        QSharedPointer<GraphicsAbstractItem>( new GraphicsTextItem("jkpg") );
+//    ui->graphicsView->scene()->addItem(item.data());
+;
+
+//    ui->graphicsView->createItem(GraphicsItemType::BarcodeItem);
 }
 
 void MainWindow::on_underLineBtn_clicked(bool checked)

@@ -42,6 +42,8 @@ public:
     void show(QSharedPointer<GraphicsAbstractItem> item);
 
 private:
+    void deleteItem(QSharedPointer<GraphicsAbstractItem> item);
+
     using SelectionPool = QList<GraphicsSelection *>;
     SelectionPool m_selectionPool;
     QHash<QSharedPointer<GraphicsAbstractItem>, GraphicsSelection *> m_usedSelections;
