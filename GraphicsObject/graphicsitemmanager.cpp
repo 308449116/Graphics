@@ -132,10 +132,17 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
 {
     if (item->type() != GraphicsItemType::GroupItem) return;
 
-    qDebug() << "itemGroup->getChildItems().count:" << item->getChildItems().count();
+    qDebug() << "111 itemGroup->getChildItems().count:" << item->getChildItems().count();
+    qDebug() << "111 itemGroup->getChildItems().rotation:" << item->rotation();
+    qreal angle = item->rotation();
+    item->setRotation(0);
     foreach (auto childItem, item->getChildItems()) {
+//        QPointF originPoint = childItem->transformOriginPoint();
         item->removeFromGroup(childItem);
+//        childItem->setTransformOriginPoint(childItem->mapFromItem(item.data(), item->transformOriginPoint()));
+        childItem->setRotation(childItem->rotation() + angle);
         selectManager->show(childItem);
+        qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
         selectManager->updateGeometry(childItem);
     }
 
@@ -155,7 +162,6 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
 //    } else {
 //        qDebug() << "itemGroup ============= ";
 //    }
-
 //    selectManager->removeItem(item);
 //}
 

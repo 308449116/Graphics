@@ -13,7 +13,7 @@ GraphicsItemGroup::GraphicsItemGroup(QList<QSharedPointer<GraphicsAbstractItem> 
     foreach (auto item, items){
         QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->parentItem());
         if ( !g ) {
-            addToGroup(item);
+            GraphicsItemGroup::addToGroup(item);
         }
     }
 }
@@ -35,6 +35,13 @@ QRectF GraphicsItemGroup::boundingRect() const
 
 void GraphicsItemGroup::updateCoordinate()
 {
+    foreach (QGraphicsItem *item , childItems()) {
+        GraphicsAbstractItem *abstractItem = qgraphicsitem_cast<GraphicsAbstractItem*>(item);
+        if (abstractItem) {
+            abstractItem->updateCoordinate();
+        }
+    }
+
     if (m_localRect.isNull()) {
         m_localRect = QGraphicsItemGroup::boundingRect();
     }
@@ -53,12 +60,6 @@ void GraphicsItemGroup::updateCoordinate()
     moveBy(-delta.x(),-delta.y());
     //   setTransform(transform().translate(-delta.x(),-delta.y()));
 
-    foreach (QGraphicsItem *item , childItems()) {
-        GraphicsAbstractItem *abstractItem = qgraphicsitem_cast<GraphicsAbstractItem*>(item);
-        if (abstractItem) {
-            abstractItem->updateCoordinate();
-        }
-    }
 }
 
 QSharedPointer<GraphicsAbstractItem> GraphicsItemGroup::duplicate() const
@@ -89,7 +90,19 @@ QSet<QSharedPointer<GraphicsAbstractItem> > GraphicsItemGroup::getChildItems() c
 
 void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
+    foreach (auto childItem, getChildItems()) {
+        childItem->stretch(sx, sy, childItem->mapFromItem(this, origin));
+    }
 
+    QTransform trans;
+    trans.translate(origin.x(),origin.y());
+    trans.scale(sx,sy);
+    trans.translate(-origin.x(),-origin.y());
+
+    prepareGeometryChange();
+    m_localRect = trans.mapRect(m_initialRect);
+    m_width = m_localRect.width();
+    m_height = m_localRect.height();
 }
 
 void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsAbstractItem> item)

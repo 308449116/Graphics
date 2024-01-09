@@ -257,16 +257,19 @@ QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 
 void ViewGraphics::addItem(QSharedPointer<GraphicsAbstractItem> item)
 {
-    GraphicsItemGroup *g = dynamic_cast<GraphicsItemGroup *>(item.data());
-    if (g) {
-        qDebug() << "childItems count:" << g->childItems().count();
-        foreach (auto childItem, g->childItems()) {
-            m_scene->addItem(childItem);
-        }
-    } else {
-        qDebug() << "QGraphicsItemGroup is null";
-    }
+    addGroupItems(item);
     m_scene->addItem(item.data());
+}
+
+void ViewGraphics::addGroupItems(QSharedPointer<GraphicsAbstractItem> item)
+{
+    //递归添加组的子图元
+    if (item->type() == GraphicsItemType::GroupItem) {
+        foreach (auto childItem, item->getChildItems()) {
+            addGroupItems(childItem);
+        }
+    }
+
     addItemToSelectionManager(item);
 }
 

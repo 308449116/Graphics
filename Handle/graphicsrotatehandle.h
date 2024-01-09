@@ -23,7 +23,7 @@ protected:
 
 private:
     qreal m_lastAngle;
-    qreal m_currentAngle;
+    qreal m_initAngle;
     int m_rotateIconWidth = 20;
     int m_lineLen = 20;
     QPixmap m_rotatePixmap;

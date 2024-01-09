@@ -93,6 +93,7 @@ public slots:
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
+    void addGroupItems(QSharedPointer<GraphicsAbstractItem> item);
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToSelectionManager(QSharedPointer<GraphicsAbstractItem> item);
 

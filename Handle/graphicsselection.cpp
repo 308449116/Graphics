@@ -73,7 +73,7 @@ void GraphicsSelection::updateGeometry()
     qreal angle = m_item->rotation();
     m_item->setRotation(0);
     const QRectF r =  m_item->mapRectToScene(m_item->getRect());
-    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
+    QPointF originPoint = m_item->mapToScene(m_item->transformOriginPoint());
     m_item->setRotation(angle);
 
 //    const QRectF r2 = m_item->getRect();
