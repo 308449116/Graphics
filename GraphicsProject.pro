@@ -36,9 +36,11 @@ SOURCES += \
     UndoCmd/itemcopycmd.cpp \
     UndoCmd/itemcreatecmd.cpp \
     UndoCmd/itemdeletecmd.cpp \
+    UndoCmd/itemgroupcmd.cpp \
     UndoCmd/itemmovecmd.cpp \
     UndoCmd/itemresizecmd.cpp \
     UndoCmd/itemrotatecmd.cpp \
+    UndoCmd/itemungroupcmd.cpp \
     UndoCmd/undocmdmanager.cpp \
     Utils/utils.cpp \
     main.cpp \
@@ -64,9 +66,11 @@ HEADERS += \
     UndoCmd/itemcopycmd.h \
     UndoCmd/itemcreatecmd.h \
     UndoCmd/itemdeletecmd.h \
+    UndoCmd/itemgroupcmd.h \
     UndoCmd/itemmovecmd.h \
     UndoCmd/itemresizecmd.h \
     UndoCmd/itemrotatecmd.h \
+    UndoCmd/itemungroupcmd.h \
     UndoCmd/undocmdmanager.h \
     Utils/utils.h \
     mainwindow.h \

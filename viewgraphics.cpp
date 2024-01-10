@@ -28,7 +28,8 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 
     m_itemManager = new GraphicsItemManager(m_scene);
     m_undoCmdManager = new UndoCmdManager(this);
-    m_undoCmdManager->setUndoLimit(5);
+    connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::removeItemsByCmd);
+//    m_undoCmdManager->setUndoLimit(5);
 
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
 
@@ -42,8 +43,8 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 //    m_scene->addItem(rectItem);
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
-    connect(m_scene, SIGNAL(deleteGraphicsItems(QList<QSharedPointer<GraphicsAbstractItem> >)),
-            this, SLOT(removeItems(QList<QSharedPointer<GraphicsAbstractItem> >)));
+//    connect(m_scene, SIGNAL(deleteGraphicsItems(QList<QSharedPointer<GraphicsAbstractItem> >)),
+//            this, SLOT(removeItemsByCmd(QList<QSharedPointer<GraphicsAbstractItem> >)));
 //    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
 //    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);
 }
@@ -55,89 +56,104 @@ ViewGraphics::~ViewGraphics()
     m_scene->deleteLater();
 }
 
-void ViewGraphics::createItem(GraphicsItemType type)
+void ViewGraphics::createItemByCmd(GraphicsItemType type)
 {
     if (m_isUndoCmdEnabled) {
         m_undoCmdManager->runCreateCmd(type, this);
     } else {
-        createItemByType(type);
+        createItem(type);
     }
 }
 
-void ViewGraphics::removeItems(QList<QSharedPointer<GraphicsAbstractItem> > items)
+QSharedPointer<GraphicsAbstractItem> ViewGraphics::createItem(GraphicsItemType type)
 {
-    if (items.empty()) return;
-
-    if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runDeleteCmd(items, this);
-    } else {
-        foreach (auto item, items) {
-            removeItem(item);
-        }
-    }
+    QSharedPointer<GraphicsAbstractItem> item = m_itemManager->createGraphicsItem(type);
+    addItemToSelectionManager(item);
+    return item;
 }
 
-void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
-                             const QPointF &pos, bool isUndoCmd, bool isMoved)
-{
-    if (items.empty()) return;
-
-    if (isUndoCmd) {
-        if (m_isUndoCmdEnabled) {
-            m_undoCmdManager->runMoveCmd(items, pos, this, isMoved);
-        }
-    } else {
-        for (const auto &[initPos, item] : items) {
-            moveItem(item, initPos + pos);
-        }
-    }
-}
-
-void ViewGraphics::moveItem(QSharedPointer<GraphicsAbstractItem> item, const QPointF &pos)
-{
-    item->setPos(pos);
-    m_selectionManager->updateGeometry(item);
-    //  m_scene->update();
-}
-
-void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item,
-                              const QPointF &scale, bool isUndoCmd)
-{
-    if (isUndoCmd) {
-        if (m_isUndoCmdEnabled ) {
-            m_undoCmdManager->runResizeCmd(handleType, item, scale, this, true);
-        }
-    } else {
-        item->stretch(scale.x(), scale.y(), item->mapFromScene(m_selectionManager->opposite(item, handleType)));
-        item->updateCoordinate();
-        m_selectionManager->updateGeometry(item);
-    }
-}
-
-void ViewGraphics::rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle, bool isUndoCmd)
-{
-    if (isUndoCmd) {
-        if (m_isUndoCmdEnabled ) {
-            m_undoCmdManager->runRotateCmd(item, angle, this);
-        }
-    } else {
-        item->setRotation(angle);
-        m_selectionManager->updateGeometry(item);
-    }
-}
-
-void ViewGraphics::deleteItems()
+void ViewGraphics::removeItemsByCmd()
 {
     QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
+
     if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
         m_undoCmdManager->runDeleteCmd(items, this);
     } else {
-        foreach (auto item, items) {
-            removeItem(item);
-        }
+        removeItems(items);
     }
+}
+
+void ViewGraphics::removeItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items)
+{
+    foreach (auto item, items) {
+        removeItem(item);
+    }
+}
+
+void ViewGraphics::removeItem(QSharedPointer<GraphicsAbstractItem> item)
+{
+    if (m_selectionManager->isItemSelected(item)) {
+        m_selectionManager->removeItem(item);
+    }
+
+    m_itemManager->deleteGraphicsItem(item);
+}
+
+void ViewGraphics::moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+                             const QPointF &pos, bool isMoved)
+{
+    if (items.empty()) return;
+
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runMoveCmd(items, pos, this, isMoved);
+    } else {
+        moveItems(items, pos);
+    }
+}
+
+void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+                             const QPointF &pos)
+{
+    for (const auto &[initPos, item] : items) {
+        item->setPos(initPos + pos);
+        m_selectionManager->updateGeometry(item);
+        //  m_scene->update();
+    }
+}
+
+void ViewGraphics::resizeItemByCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item,
+                                   const QPointF &scale, bool isResized)
+{
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runResizeCmd(handleType, item, scale, this, isResized);
+    } else {
+        resizeItem(handleType, item, scale);
+    }
+}
+
+void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item,
+                              const QPointF &scale)
+{
+    item->stretch(scale.x(), scale.y(), item->mapFromScene(m_selectionManager->opposite(item, handleType)));
+    item->updateCoordinate();
+    m_selectionManager->updateGeometry(item);
+}
+
+void ViewGraphics::rotateItemByCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal angle)
+{
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runRotateCmd(item, angle, this);
+    } else {
+        rotateItem(item, angle);
+    }
+}
+
+void ViewGraphics::rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle)
+{
+    item->setRotation(angle);
+    m_selectionManager->updateGeometry(item);
 }
 
 void ViewGraphics::alignItems(AlignType alignType)
@@ -189,15 +205,24 @@ void ViewGraphics::alignItems(AlignType alignType)
         QPointF movePos = lastPos - initPos;
         if ( !movePos.isNull() ) {
             itemList.push_back(qMakePair(item->pos(), item));
-            moveItems(itemList, movePos, true, false);
+            moveItemsByCmd(itemList, movePos, false);
         }
+    }
+}
+
+void ViewGraphics::groupItemsByCmd()
+{
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runGroupCmd(this);
+    } else {
+        groupItems();
     }
 }
 
 void ViewGraphics::groupItems()
 {
     QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
-    if (items.isEmpty()) return;
+    if (items.count() <= 1) return;
 
     foreach(auto item, items) {
         m_selectionManager->hide(item, true);
@@ -205,6 +230,15 @@ void ViewGraphics::groupItems()
 
     QSharedPointer<GraphicsAbstractItem> itemGroup = m_itemManager->createGraphicsItemGroup(items);
     m_selectionManager->addItem(this, itemGroup);
+}
+
+void ViewGraphics::ungroupItemsByCmd()
+{
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runUngroupCmd(this);
+    } else {
+        ungroupItems();
+    }
 }
 
 void ViewGraphics::ungroupItems()
@@ -217,7 +251,7 @@ void ViewGraphics::ungroupItems()
     }
 }
 
-void ViewGraphics::duplicateItems()
+void ViewGraphics::duplicateItemsByCmd()
 {
     QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
     qDebug() << "duplicateItems count:" << items.count();
@@ -231,22 +265,6 @@ void ViewGraphics::duplicateItems()
             addItem(itemCopy);
         }
     }
-}
-
-QSharedPointer<GraphicsAbstractItem> ViewGraphics::createItemByType(GraphicsItemType type)
-{
-    QSharedPointer<GraphicsAbstractItem> item = m_itemManager->createGraphicsItem(type);
-    addItemToSelectionManager(item);
-    return item;
-}
-
-void ViewGraphics::removeItem(QSharedPointer<GraphicsAbstractItem> item)
-{
-    if (m_selectionManager->isItemSelected(item)) {
-        m_selectionManager->removeItem(item);
-    }
-
-    m_itemManager->deleteGraphicsItem(item);
 }
 
 QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
@@ -301,7 +319,7 @@ void ViewGraphics::addItemToSelectionManager(QSharedPointer<GraphicsAbstractItem
 {
     m_selectionManager->addItem(this, item);
 //    m_selectionManager->hide(item, false);
-    //    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
+//    connect(item, &GraphicsItem::selectedChange, this, &ViewGraphics::selectedStateChange);
 }
 
 bool ViewGraphics::isUndoCmdEnabled() const

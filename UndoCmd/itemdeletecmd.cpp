@@ -28,7 +28,5 @@ void ItemDeleteCmd::undo()
 
 void ItemDeleteCmd::redo()
 {
-    foreach (auto item, m_items) {
-        m_view->removeItem(item);
-    }
+    m_view->removeItems(m_items);
 }

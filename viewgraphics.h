@@ -23,41 +23,52 @@ public:
     ~ViewGraphics();
 
     // Create Items
-    void createItem(GraphicsItemType type);
+    void createItemByCmd(GraphicsItemType type);
 
-    QSharedPointer<GraphicsAbstractItem> createItemByType(GraphicsItemType type);
+    QSharedPointer<GraphicsAbstractItem> createItem(GraphicsItemType type);
 
     void addItem(QSharedPointer<GraphicsAbstractItem> item);
 
     // remove Items
+    void removeItemsByCmd();
+
     void removeItem(QSharedPointer<GraphicsAbstractItem> item);
 
-    // move Items
-    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
-                   const QPointF &pos, bool isUndoCmd, bool isMoved = true);
+    void removeItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items);
 
-    void moveItem(QSharedPointer<GraphicsAbstractItem> item, const QPointF &pos);
+    // move Items
+    void moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+                   const QPointF &pos, bool isMoved = true);
+
+    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+                   const QPointF &pos);
 
     // resize Items
-    void resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale, bool isUndoCmd);
+    void resizeItemByCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item,
+                         const QPointF &scale, bool isResized);
+
+    void resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale);
 
     // rotate Items
-    void rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle, bool isUndoCmd);
+    void rotateItemByCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal angle);
+
+    void rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle);
 
     // duplicate Items
-    void duplicateItems();
-
-    // delete Items
-    void deleteItems();
-
-    // align Items
-    void alignItems(AlignType alignType);
+    void duplicateItemsByCmd();
 
     // group Items
+    void groupItemsByCmd();
+
     void groupItems();
 
     // ungroup Items
+    void ungroupItemsByCmd();
+
     void ungroupItems();
+
+    // align Items
+    void alignItems(AlignType alignType);
 
     QString getItemDisplayName(GraphicsItemType type);
 
@@ -87,7 +98,7 @@ protected:
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
-    void removeItems(QList<QSharedPointer<GraphicsAbstractItem> > items);
+//    void removeItemsByCmd(const QList<QSharedPointer<GraphicsAbstractItem> > &items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);

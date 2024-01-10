@@ -12,7 +12,7 @@ ItemResizeCmd::ItemResizeCmd(int handleType, QSharedPointer<GraphicsAbstractItem
 void ItemResizeCmd::undo()
 {
     m_isResized = false;
-    m_view->resizeItem(m_handleType, m_item, QPointF(1.0/m_scale.x(), 1.0/m_scale.y()), false);
+    m_view->resizeItem(m_handleType, m_item, QPointF(1.0/m_scale.x(), 1.0/m_scale.y()));
     setText(QObject::tr("Undo Resize %1,%2 ,name:%3")
                 .arg(1.0/m_scale.x(), 8, 'f', 2)
                 .arg(1.0/m_scale.y(), 8, 'f', 2)
@@ -28,5 +28,5 @@ void ItemResizeCmd::redo()
 
     if (m_isResized) return;
 
-    m_view->resizeItem(m_handleType, m_item, m_scale, false);
+    m_view->resizeItem(m_handleType, m_item, m_scale);
 }

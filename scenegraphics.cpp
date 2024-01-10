@@ -38,18 +38,19 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Delete: {
-        QList<QSharedPointer<GraphicsAbstractItem> > items;
-        foreach (auto *item, selectedItems()) {
-            GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
-            if (handle && handle->handleType() == GraphicsHandle::Drag) {
-                items.push_back(handle->item());
-            }
-        }
+//        QList<QSharedPointer<GraphicsAbstractItem> > items;
+//        foreach (auto *item, selectedItems()) {
+//            GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
+//            if (handle && handle->handleType() == GraphicsHandle::Drag) {
+//                items.push_back(handle->item());
+//            }
+//        }
 
-        if (!items.empty()) {
-            emit deleteGraphicsItems(items);
-        }
+//        if (!items.empty()) {
+//            emit deleteGraphicsItems(items);
+//        }
 //        deselectItems();
+        emit deleteGraphicsItems();
         break;
     }
     case Qt::Key_A: {

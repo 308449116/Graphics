@@ -5,6 +5,8 @@
 #include "itemresizecmd.h"
 #include "itemrotatecmd.h"
 #include "itemcopycmd.h"
+#include "itemgroupcmd.h"
+#include "itemungroupcmd.h"
 #include "viewgraphics.h"
 #include <QUndoView>
 
@@ -50,6 +52,18 @@ void UndoCmdManager::runCopyCmd(QList<QSharedPointer<GraphicsAbstractItem> > ite
 {
     ItemCopyCmd *copyCmd = new ItemCopyCmd(items, view);
     m_undoStack->push(copyCmd);
+}
+
+void UndoCmdManager::runGroupCmd(ViewGraphics *view)
+{
+    ItemGroupCmd *groupCmd = new ItemGroupCmd(view);
+    m_undoStack->push(groupCmd);
+}
+
+void UndoCmdManager::runUngroupCmd(ViewGraphics *view)
+{
+    ItemUngroupCmd *ungroupCmd = new ItemUngroupCmd(view);
+    m_undoStack->push(ungroupCmd);
 }
 
 QAction *UndoCmdManager::createRedoAction()

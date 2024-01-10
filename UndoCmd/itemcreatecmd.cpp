@@ -25,7 +25,7 @@ void ItemCreateCmd::redo()
     if (m_item) {
         m_view->addItem(m_item);
     } else {
-        m_item = m_view->createItemByType(m_type);
+        m_item = m_view->createItem(m_type);
         QString str("Create %1");
         this->setText(str.arg(m_item->getItemName()));
     }

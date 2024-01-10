@@ -41,13 +41,13 @@ MainWindow::MainWindow(QWidget *parent)
     //拷贝功能
     m_copyAct = new QAction(QIcon(":/icons/copy"), tr("copy"));
     connect(m_copyAct, &QAction::triggered, this, [this]() {
-        ui->graphicsView->duplicateItems();
+        ui->graphicsView->duplicateItemsByCmd();
     });
 
     //删除功能
     m_deleteAct = new QAction(QIcon(":/icons/delete"), tr("delete"));
     connect(m_deleteAct, &QAction::triggered, this, [this]() {
-        ui->graphicsView->deleteItems();
+        ui->graphicsView->removeItemsByCmd();
     });
 
     //上对齐
@@ -89,13 +89,13 @@ MainWindow::MainWindow(QWidget *parent)
     //创建组
     m_groupAct = new QAction(QIcon(":/icons/group"), tr("group"));
     connect(m_groupAct, &QAction::triggered, this, [this](){
-        ui->graphicsView->groupItems();
+        ui->graphicsView->groupItemsByCmd();
     });
 
     //取消组
     m_ungroupAct = new QAction(QIcon(":/icons/ungroup"), tr("ungroup"));
     connect(m_ungroupAct, &QAction::triggered, this, [this](){
-        ui->graphicsView->ungroupItems();
+        ui->graphicsView->ungroupItemsByCmd();
     });
 
     ui->editToolBar->addAction(m_undoAct);
@@ -180,13 +180,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_shpeBtn_clicked()
 {
-    ui->graphicsView->createItem(GraphicsItemType::RectItem);
+    ui->graphicsView->createItemByCmd(GraphicsItemType::RectItem);
 }
 
 
 void MainWindow::on_textBtn_clicked()
 {
-    ui->graphicsView->createItem(GraphicsItemType::TextItem);
+    ui->graphicsView->createItemByCmd(GraphicsItemType::TextItem);
 }
 
 
@@ -198,7 +198,7 @@ void MainWindow::on_barcodeBtn_clicked()
 //    ui->graphicsView->scene()->addItem(item.data());
 ;
 
-//    ui->graphicsView->createItem(GraphicsItemType::BarcodeItem);
+//    ui->graphicsView->createItemByCmd(GraphicsItemType::BarcodeItem);
 }
 
 void MainWindow::on_underLineBtn_clicked(bool checked)

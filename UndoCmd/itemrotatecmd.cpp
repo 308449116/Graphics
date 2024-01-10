@@ -11,12 +11,12 @@ ItemRotateCmd::ItemRotateCmd(QSharedPointer<GraphicsAbstractItem> item, const qr
 
 void ItemRotateCmd::undo()
 {
-    m_view->rotateItem(m_item, m_initialAngle, false);
+    m_view->rotateItem(m_item, m_initialAngle);
     setText(QObject::tr("Undo Rotate %1").arg(m_initialAngle));
 }
 
 void ItemRotateCmd::redo()
 {
-    m_view->rotateItem(m_item, m_rotateAngle, false);
+    m_view->rotateItem(m_item, m_rotateAngle);
     setText(QObject::tr("Redo Rotate %1").arg(m_rotateAngle));
 }

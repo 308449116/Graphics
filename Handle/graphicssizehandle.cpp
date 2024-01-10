@@ -91,6 +91,6 @@ void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     m_item->updateCoordinate();
     m_selection->updateGeometry();
     m_selection->setOpacity(1);
-    m_view->resizeItem(m_handleType, m_item, QPointF(m_scaleX, m_scaleY), true);
+    m_view->resizeItemByCmd(m_handleType, m_item, QPointF(m_scaleX, m_scaleY), true);
     QGraphicsItem::mouseReleaseEvent(event);
 }
