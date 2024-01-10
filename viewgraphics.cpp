@@ -28,7 +28,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 
     m_itemManager = new GraphicsItemManager(m_scene);
     m_undoCmdManager = new UndoCmdManager(this);
-    connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::removeItemsByCmd);
+    connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::deleteItemsByCmd);
 //    m_undoCmdManager->setUndoLimit(5);
 
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
@@ -72,7 +72,7 @@ QSharedPointer<GraphicsAbstractItem> ViewGraphics::createItem(GraphicsItemType t
     return item;
 }
 
-void ViewGraphics::removeItemsByCmd()
+void ViewGraphics::deleteItemsByCmd()
 {
     QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
 
@@ -81,18 +81,18 @@ void ViewGraphics::removeItemsByCmd()
     if (m_isUndoCmdEnabled) {
         m_undoCmdManager->runDeleteCmd(items, this);
     } else {
-        removeItems(items);
+        deleteItems(items);
     }
 }
 
-void ViewGraphics::removeItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items)
+void ViewGraphics::deleteItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items)
 {
     foreach (auto item, items) {
-        removeItem(item);
+        deleteItem(item);
     }
 }
 
-void ViewGraphics::removeItem(QSharedPointer<GraphicsAbstractItem> item)
+void ViewGraphics::deleteItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (m_selectionManager->isItemSelected(item)) {
         m_selectionManager->removeItem(item);

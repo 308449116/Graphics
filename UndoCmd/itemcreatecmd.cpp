@@ -16,7 +16,7 @@ ItemCreateCmd::~ItemCreateCmd()
 void ItemCreateCmd::undo()
 {
     if (m_item) {
-        m_view->removeItem(m_item);
+        m_view->deleteItem(m_item);
     }
 }
 

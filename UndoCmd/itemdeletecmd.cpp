@@ -28,5 +28,5 @@ void ItemDeleteCmd::undo()
 
 void ItemDeleteCmd::redo()
 {
-    m_view->removeItems(m_items);
+    m_view->deleteItems(m_items);
 }

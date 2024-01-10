@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     //删除功能
     m_deleteAct = new QAction(QIcon(":/icons/delete"), tr("delete"));
     connect(m_deleteAct, &QAction::triggered, this, [this]() {
-        ui->graphicsView->removeItemsByCmd();
+        ui->graphicsView->deleteItemsByCmd();
     });
 
     //上对齐

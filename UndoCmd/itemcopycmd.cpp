@@ -9,7 +9,7 @@ ItemCopyCmd::ItemCopyCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, View
 
 void ItemCopyCmd::undo()
 {
-    m_view->removeItems(m_itemsCopy);
+    m_view->deleteItems(m_itemsCopy);
     this->setText(QString("Undo Copy [%1]").arg(m_strName));
 }
 

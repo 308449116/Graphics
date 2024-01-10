@@ -30,11 +30,11 @@ public:
     void addItem(QSharedPointer<GraphicsAbstractItem> item);
 
     // remove Items
-    void removeItemsByCmd();
+    void deleteItemsByCmd();
 
-    void removeItem(QSharedPointer<GraphicsAbstractItem> item);
+    void deleteItem(QSharedPointer<GraphicsAbstractItem> item);
 
-    void removeItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items);
+    void deleteItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items);
 
     // move Items
     void moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
