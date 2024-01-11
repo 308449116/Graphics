@@ -98,7 +98,7 @@ void ViewGraphics::deleteItem(QSharedPointer<GraphicsAbstractItem> item)
         m_selectionManager->removeItem(item);
     }
 
-    m_scene->removeItem(item.data());
+    m_scene->removeItem(item);
     m_itemManager->deleteGraphicsItem(item);
 }
 
@@ -282,7 +282,7 @@ QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 void ViewGraphics::addItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     addGroupItems(item);
-    m_scene->addItem(item.data());
+    m_scene->addItem(item);
 }
 
 void ViewGraphics::addGroupItems(QSharedPointer<GraphicsAbstractItem> item)

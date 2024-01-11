@@ -56,8 +56,6 @@ void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     m_lastAngle = angle;
     m_initAngle = m_item->rotation();
-    qDebug() << "mousePressEvent m_initAngle:" << m_initAngle;
-    qDebug() << "mousePressEvent angle:" << angle;
 //    QGraphicsItem::mousePressEvent(event);
 }
 
@@ -74,8 +72,6 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal len_x = m_lastScenePos.x() - origin.x();
     qreal angle = qAtan2(len_y, len_x) * 180 / PI;
     angle = m_initAngle + int(angle - m_lastAngle);
-    qDebug() << "222 mouseMoveEvent angle:" << angle;
-
     if ( angle > 360 )
         angle -= 360;
     if ( angle < -360 )

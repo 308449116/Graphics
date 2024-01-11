@@ -138,7 +138,6 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
     QList<QPair<QSharedPointer<GraphicsAbstractItem>, QPointF>> itemPosList;
     foreach (auto childItem, item->getChildItems()) {
         itemPosList.append(qMakePair(childItem, childItem->scenePos()));
-//        qDebug() << "111 itemGroup->getChildItems().pos:" << childItem->scenePos();
     }
 
     qreal angle = item->rotation();

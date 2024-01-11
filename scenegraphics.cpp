@@ -10,6 +10,11 @@ SceneGraphics::SceneGraphics(QObject* parent)
     
 }
 
+SceneGraphics::~SceneGraphics()
+{
+    m_items.clear();
+}
+
 void SceneGraphics::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (m_isControlModifier) {
@@ -79,6 +84,16 @@ void SceneGraphics::deselectItems()
     }
 }
 
+void SceneGraphics::addItem(QGraphicsItem *item)
+{
+    QGraphicsScene::addItem(item);
+}
+
+void SceneGraphics::removeItem(QGraphicsItem *item)
+{
+    QGraphicsScene::removeItem(item);
+}
+
 bool SceneGraphics::isControlModifier() const
 {
     return m_isControlModifier;
@@ -87,6 +102,18 @@ bool SceneGraphics::isControlModifier() const
 void SceneGraphics::setIsControlModifier(bool newIsControlModifier)
 {
     m_isControlModifier = newIsControlModifier;
+}
+
+void SceneGraphics::addItem(QSharedPointer<GraphicsAbstractItem> item)
+{
+    this->addItem(item.data());
+    m_items.insert(item);
+}
+
+void SceneGraphics::removeItem(QSharedPointer<GraphicsAbstractItem> item)
+{
+    this->removeItem(item.data());
+    m_items.remove(item);
 }
 
 //void SceneGraphics::mouseEvent(QGraphicsSceneMouseEvent *mouseEvent)
