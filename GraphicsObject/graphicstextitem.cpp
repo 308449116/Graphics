@@ -86,6 +86,7 @@ QSharedPointer<GraphicsAbstractItem> GraphicsTextItem::duplicate() const
     item->setScale(scale());
     item->setZValue(zValue()+0.1);
     item->setItemName(this->getItemName().append("_copy"));
+    item->setGroupAngle(groupAngle());
     item->updateCoordinate();
     return QSharedPointer<GraphicsAbstractItem>(item);
 }

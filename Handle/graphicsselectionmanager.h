@@ -36,7 +36,7 @@ public:
 
     void removeItem(QSharedPointer<GraphicsAbstractItem> item);
 
-    void updateGeometry(QSharedPointer<GraphicsAbstractItem> item, qreal anchorAngle = 0);
+    void updateGeometry(QSharedPointer<GraphicsAbstractItem> item);
 
     void hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle);
 

@@ -61,7 +61,7 @@ bool GraphicsSelection::isUsed() const
     return m_item.data() != nullptr;
 }
 
-void GraphicsSelection::updateGeometry(qreal anchorAngle)
+void GraphicsSelection::updateGeometry()
 {
 //    QTransform transform;
 //    transform.translate(m_item->getRect().center().x(),m_item->getRect().center().y());
@@ -69,12 +69,9 @@ void GraphicsSelection::updateGeometry(qreal anchorAngle)
 //    transform.translate(-m_item->getRect().center().x(),-m_item->getRect().center().y());
 
     if (m_item.isNull()) return;
-    qDebug() << "updateGeometry anchorAngle:" << anchorAngle;
 
     qreal groupAngle = m_item->groupAngle();
     qreal initAngle = m_item->rotation();
-    qDebug() << "groupAngle:" << groupAngle;
-    qDebug() << "initAngle:" << initAngle;
 
     qreal angle = 0;
     if (groupAngle == 0) {
@@ -82,14 +79,19 @@ void GraphicsSelection::updateGeometry(qreal anchorAngle)
         m_item->setRotation(0);
     } else {
         angle = initAngle + groupAngle;
-        m_item->setRotation(-angle);
+        m_item->setRotation(-groupAngle);
+        qDebug() << "groupAngle:" << groupAngle;
+        qDebug() << "initAngle:" << initAngle;
+        qDebug() << "angle:" << angle;
     }
 
-    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
-    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
+    const QRectF &r = m_item->mapRectToScene(m_item->getRect());
+//    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
+    QPointF originPoint = m_item->mapToScene(m_item->transformOriginPoint());
     m_item->setRotation(initAngle);
-    qDebug() << "angle:" << angle;
-    qDebug() << "updateGeometry r:" << r;
+//    qDebug() << "updateGeometry r:" << r;
+//    qDebug() << "updateGeometry getRect():" << m_item->getRect();
+//    qDebug() << "originPoint:" << originPoint;
 
 //    const QRectF r2 = m_item->getRect();
 //    qDebug() << "updateGeometry r:" << r;
@@ -102,10 +104,14 @@ void GraphicsSelection::updateGeometry(qreal anchorAngle)
 //    const int w = GRAPHICS_HANDLE_SIZE;
 //    const int h = GRAPHICS_HANDLE_SIZE;
 
+//    m_handleList[GraphicsHandle::Drag]->setRotation(0);
+//    const QRectF &r = m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
+
     foreach (auto *hndl, m_handleList) {
         if (!hndl)
             continue;
         hndl->setRotation(0);
+
 
         switch (hndl->handleType()) {
         case GraphicsHandle::LeftTop:

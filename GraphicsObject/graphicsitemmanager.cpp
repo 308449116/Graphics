@@ -158,7 +158,7 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
 //        childItem->setRotation(angle);
 //        item->updateCoordinate();
 //        childItem->setParentItem(nullptr);
-        childItem->setGroupAngle(angle);
+        childItem->setGroupAngle(childItem->groupAngle() + angle);
 
         selectionManager->show(childItem);
         selectionManager->updateGeometry(childItem);
