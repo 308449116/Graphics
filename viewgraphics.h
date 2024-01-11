@@ -60,12 +60,12 @@ public:
     // group Items
     void groupItemsByCmd();
 
-    void groupItems();
+    QSharedPointer<GraphicsAbstractItem> groupItems(QList<QSharedPointer<GraphicsAbstractItem>> items);
 
     // ungroup Items
     void ungroupItemsByCmd();
 
-    void ungroupItems();
+    void ungroupItems(QList<QSharedPointer<GraphicsAbstractItem>> items);
 
     // align Items
     void alignItems(AlignType alignType);

@@ -61,7 +61,7 @@ bool GraphicsSelection::isUsed() const
     return m_item.data() != nullptr;
 }
 
-void GraphicsSelection::updateGeometry()
+void GraphicsSelection::updateGeometry(qreal anchorAngle)
 {
 //    QTransform transform;
 //    transform.translate(m_item->getRect().center().x(),m_item->getRect().center().y());
@@ -69,12 +69,27 @@ void GraphicsSelection::updateGeometry()
 //    transform.translate(-m_item->getRect().center().x(),-m_item->getRect().center().y());
 
     if (m_item.isNull()) return;
+    qDebug() << "updateGeometry anchorAngle:" << anchorAngle;
 
-    qreal angle = m_item->rotation();
-    m_item->setRotation(0);
+    qreal groupAngle = m_item->groupAngle();
+    qreal initAngle = m_item->rotation();
+    qDebug() << "groupAngle:" << groupAngle;
+    qDebug() << "initAngle:" << initAngle;
+
+    qreal angle = 0;
+    if (groupAngle == 0) {
+        angle = initAngle;
+        m_item->setRotation(0);
+    } else {
+        angle = initAngle + groupAngle;
+        m_item->setRotation(-angle);
+    }
+
     const QRectF r =  m_item->mapRectToScene(m_item->getRect());
-    QPointF originPoint = m_item->mapToScene(m_item->transformOriginPoint());
-    m_item->setRotation(angle);
+    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
+    m_item->setRotation(initAngle);
+    qDebug() << "angle:" << angle;
+    qDebug() << "updateGeometry r:" << r;
 
 //    const QRectF r2 = m_item->getRect();
 //    qDebug() << "updateGeometry r:" << r;
@@ -199,8 +214,20 @@ void GraphicsSelection::updateGeometry()
 //        case GraphicsHandle::Left:
 //            hndl->setPos((bottomLeft.x() + topLeft.x()) / 2, (bottomLeft.y() + topLeft.y()) / 2);
 //            break;
+//        case GraphicsHandle::Drag:
+////            qDebug() << "updateGeometry handleType:" << hndl->handleType()
+////                     << "  rect:" << r
+////                     << "  originPoint:" << originPoint;
+//            hndl->setLocalRect(QRectF(topLeft, QSizeF(r2.width(), r2.height())));
+////            hndl->move(originPoint.x(), originPoint.y());
+//            break;
 //        case GraphicsHandle::Rotate:
-//            hndl->setPos((bottomRight.x() + bottomLeft.x()) / 2, (bottomRight.y() +bottomLeft.y()) / 2 + ROTATE_HANDLE_MARGIN);
+//            hndl->move(r.x() + r.width() / 2, r.y() + r.height() +
+//                       LINE_HANDLE_WIDTH + ROTATE_HANDLE_WIDTH / 2);
+//            break;
+//        case GraphicsHandle::Line:
+//            hndl->move(r.x() + r.width() / 2, (r.y() + r.height() +
+//                       LINE_HANDLE_WIDTH + ROTATE_HANDLE_WIDTH / 2) / 2);
 //            break;
 //        default:
 //            break;

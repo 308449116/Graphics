@@ -3,14 +3,20 @@
 #include "graphicstextitem.h"
 #include "graphicsitemgroup.h"
 #include "graphicsselectionmanager.h"
-#include "scenegraphics.h"
+#include "viewgraphics.h"
 
-GraphicsItemManager::GraphicsItemManager(SceneGraphics *scene, QObject *parent)
-    : QObject{parent}, m_scene{scene}
+GraphicsItemManager::GraphicsItemManager(QObject *parent)
+    : QObject{parent}
 {
     for(int i = GraphicsItemType::RectItem; i < GraphicsItemType::TypeCount; i++) {
         m_countMap.insert(static_cast<GraphicsItemType>(i), 0);
     }
+}
+
+GraphicsItemManager::~GraphicsItemManager()
+{
+    m_nameHash.clear();
+    m_countMap.clear();
 }
 
 QSharedPointer<GraphicsAbstractItem> GraphicsItemManager::createGraphicsItem(
@@ -69,9 +75,6 @@ QSharedPointer<GraphicsAbstractItem> GraphicsItemManager::createGraphicsItemGrou
 
 void GraphicsItemManager::manageItem(QSharedPointer<GraphicsAbstractItem> item, const QString& itemName)
 {
-    // 将图元添加到场景
-    m_scene->addItem(item.data());
-
     // 获取图元名
     QString tempName = itemName;
     if (tempName.isEmpty() || m_nameHash.find(tempName) != m_nameHash.end())
@@ -91,8 +94,6 @@ void GraphicsItemManager::manageItem(QSharedPointer<GraphicsAbstractItem> item, 
 void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (item.isNull()) return;
-
-    m_scene->removeItem(item.data());
 
     if (item->type() == GraphicsItemType::GroupItem) {
         foreach (auto childItem, item->getChildItems()) {
@@ -128,25 +129,43 @@ int GraphicsItemManager::getItemCounts(GraphicsItemType type)
     return m_countMap[type];
 }
 
-void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager)
+void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view)
 {
     if (item->type() != GraphicsItemType::GroupItem) return;
 
-    qDebug() << "111 itemGroup->getChildItems().count:" << item->getChildItems().count();
-    qDebug() << "111 itemGroup->getChildItems().rotation:" << item->rotation();
-    qreal angle = item->rotation();
-    item->setRotation(0);
+//    qDebug() << "111 itemGroup->getChildItems().count:" << item->getChildItems().count();
+//    qDebug() << "111 itemGroup->getChildItems().rotation:" << item->rotation();
+    QList<QPair<QSharedPointer<GraphicsAbstractItem>, QPointF>> itemPosList;
     foreach (auto childItem, item->getChildItems()) {
+        itemPosList.append(qMakePair(childItem, childItem->scenePos()));
+//        qDebug() << "111 itemGroup->getChildItems().pos:" << childItem->scenePos();
+    }
+
+    qreal angle = item->rotation();
+//    item->setRotation(0);
+    foreach (auto childItem, item->getChildItems()) {
+//        qDebug() << "itemGroup->getChildItems().pos:" << childItem->scenePos();
+//        qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
 //        QPointF originPoint = childItem->transformOriginPoint();
         item->removeFromGroup(childItem);
 //        childItem->setTransformOriginPoint(childItem->mapFromItem(item.data(), item->transformOriginPoint()));
-        childItem->setRotation(childItem->rotation() + angle);
-        selectManager->show(childItem);
-        qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
-        selectManager->updateGeometry(childItem);
-    }
+//        for (const auto &[item, pos] : itemPosList) {
+//            if (item == childItem) {
+//                childItem->setPos(pos);
+//                break;
+//            }
+//        }
+//        childItem->setRotation(angle);
+//        item->updateCoordinate();
+//        childItem->setParentItem(nullptr);
+        childItem->setGroupAngle(angle);
 
-    selectManager->removeItem(item);
+        selectionManager->show(childItem);
+        selectionManager->updateGeometry(childItem);
+    }
+//    item->setRotation(angle);
+
+    selectionManager->removeItem(item);
 }
 
 //void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager)

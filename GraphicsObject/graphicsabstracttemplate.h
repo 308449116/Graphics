@@ -64,6 +64,10 @@ public:
 
     QColor penColor() const;
 
+    qreal groupAngle() const;
+
+    void setGroupAngle(qreal newGroupAngle);
+
 protected:
     void qt_graphicsItem_highlightSelected(QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option);
 //    virtual void updatehandles(){}
@@ -71,6 +75,7 @@ protected:
     qreal m_width = 0;
     qreal m_height = 0;
     qreal m_ratio = 1;
+    qreal m_groupAngle = 0;
     QBrush m_brush;
     QPen   m_pen;
     QRectF m_localRect;

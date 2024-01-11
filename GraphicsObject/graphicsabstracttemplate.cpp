@@ -207,5 +207,17 @@ void GraphicsAbstractTemplate<BaseType>::qt_graphicsItem_highlightSelected(
     painter->drawRect(getRect().adjusted(-pad, -pad, pad, pad));
 }
 
+template<typename BaseType>
+qreal GraphicsAbstractTemplate<BaseType>::groupAngle() const
+{
+    return m_groupAngle;
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::setGroupAngle(qreal newGroupAngle)
+{
+    m_groupAngle = newGroupAngle;
+}
+
 template class GraphicsAbstractTemplate<QGraphicsItem>;
 template class GraphicsAbstractTemplate<QGraphicsItemGroup>;

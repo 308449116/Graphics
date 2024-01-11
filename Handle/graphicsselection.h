@@ -19,7 +19,7 @@ public:
 
     bool isUsed() const;
 
-    void updateGeometry();
+    void updateGeometry(qreal anchorAngle = 0);
 
     void hide(bool isHideDragHandle = true);
 

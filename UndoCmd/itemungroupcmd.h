@@ -3,12 +3,15 @@
 
 #include <QUndoCommand>
 
+#include "graphicsabstracttemplate.h"
+
 class ViewGraphics;
 
 class ItemUngroupCmd : public QUndoCommand
 {
 public:
-    explicit ItemUngroupCmd(ViewGraphics *view, QUndoCommand *parent = nullptr);
+    explicit ItemUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items,
+                            ViewGraphics *view, QUndoCommand *parent = nullptr);
 
     void undo() override;
 
@@ -16,6 +19,7 @@ public:
 
 private:
     ViewGraphics *m_view;
+    QHash<QSharedPointer<GraphicsAbstractItem>, QSet<QSharedPointer<GraphicsAbstractItem>> > m_groupItemsHash;
 };
 
 #endif // ITEMUNGROUPCMD_H

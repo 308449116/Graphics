@@ -5,6 +5,7 @@
 #include <QList>
 #include <QPointF>
 #include <QSharedPointer>
+
 #include "graphicsabstracttemplate.h"
 
 class ViewGraphics;
@@ -35,7 +36,7 @@ public:
 
     void removeItem(QSharedPointer<GraphicsAbstractItem> item);
 
-    void updateGeometry(QSharedPointer<GraphicsAbstractItem> item);
+    void updateGeometry(QSharedPointer<GraphicsAbstractItem> item, qreal anchorAngle = 0);
 
     void hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle);
 
@@ -44,6 +45,7 @@ public:
 private:
     void deleteItem(QSharedPointer<GraphicsAbstractItem> item);
 
+private:
     using SelectionPool = QList<GraphicsSelection *>;
     SelectionPool m_selectionPool;
     QHash<QSharedPointer<GraphicsAbstractItem>, GraphicsSelection *> m_usedSelections;

@@ -54,15 +54,15 @@ void UndoCmdManager::runCopyCmd(QList<QSharedPointer<GraphicsAbstractItem> > ite
     m_undoStack->push(copyCmd);
 }
 
-void UndoCmdManager::runGroupCmd(ViewGraphics *view)
+void UndoCmdManager::runGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view)
 {
-    ItemGroupCmd *groupCmd = new ItemGroupCmd(view);
+    ItemGroupCmd *groupCmd = new ItemGroupCmd(items, view);
     m_undoStack->push(groupCmd);
 }
 
-void UndoCmdManager::runUngroupCmd(ViewGraphics *view)
+void UndoCmdManager::runUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view)
 {
-    ItemUngroupCmd *ungroupCmd = new ItemUngroupCmd(view);
+    ItemUngroupCmd *ungroupCmd = new ItemUngroupCmd(items, view);
     m_undoStack->push(ungroupCmd);
 }
 

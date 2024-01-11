@@ -48,6 +48,8 @@ public:
 
     void move(qreal x, qreal y);
 
+    void updateHandle() {};
+
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 

@@ -68,7 +68,7 @@ void ViewGraphics::createItemByCmd(GraphicsItemType type)
 QSharedPointer<GraphicsAbstractItem> ViewGraphics::createItem(GraphicsItemType type)
 {
     QSharedPointer<GraphicsAbstractItem> item = m_itemManager->createGraphicsItem(type);
-    addItemToSelectionManager(item);
+    addItem(item);
     return item;
 }
 
@@ -98,6 +98,7 @@ void ViewGraphics::deleteItem(QSharedPointer<GraphicsAbstractItem> item)
         m_selectionManager->removeItem(item);
     }
 
+    m_scene->removeItem(item.data());
     m_itemManager->deleteGraphicsItem(item);
 }
 
@@ -212,42 +213,47 @@ void ViewGraphics::alignItems(AlignType alignType)
 
 void ViewGraphics::groupItemsByCmd()
 {
+    QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
+    if (items.count() <= 1) {
+        return;
+    }
+
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runGroupCmd(this);
+        m_undoCmdManager->runGroupCmd(items, this);
     } else {
-        groupItems();
+        groupItems(items);
     }
 }
 
-void ViewGraphics::groupItems()
+QSharedPointer<GraphicsAbstractItem> ViewGraphics::groupItems(QList<QSharedPointer<GraphicsAbstractItem>> items)
 {
-    QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
-    if (items.count() <= 1) return;
-
-    foreach(auto item, items) {
-        m_selectionManager->hide(item, true);
-    }
+//    foreach(auto item, items) {
+//        m_selectionManager->hide(item, true);
+//    }
 
     QSharedPointer<GraphicsAbstractItem> itemGroup = m_itemManager->createGraphicsItemGroup(items);
-    m_selectionManager->addItem(this, itemGroup);
+//    m_selectionManager->addItem(this, itemGroup);
+    addItem(itemGroup);
+
+    return itemGroup;
 }
 
 void ViewGraphics::ungroupItemsByCmd()
 {
-    if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runUngroupCmd(this);
-    } else {
-        ungroupItems();
-    }
-}
-
-void ViewGraphics::ungroupItems()
-{
     QList<QSharedPointer<GraphicsAbstractItem>> items = selectedItems();
     if (items.isEmpty()) return;
 
+    if (m_isUndoCmdEnabled) {
+        m_undoCmdManager->runUngroupCmd(items, this);
+    } else {
+        ungroupItems(items);
+    }
+}
+
+void ViewGraphics::ungroupItems(QList<QSharedPointer<GraphicsAbstractItem>> items)
+{
     foreach (auto item, items) {
-        m_itemManager->ungroup(item, m_selectionManager);
+        m_itemManager->ungroup(item, m_selectionManager, this);
     }
 }
 
@@ -285,6 +291,7 @@ void ViewGraphics::addGroupItems(QSharedPointer<GraphicsAbstractItem> item)
     if (item->type() == GraphicsItemType::GroupItem) {
         foreach (auto childItem, item->getChildItems()) {
             addGroupItems(childItem);
+            m_selectionManager->hide(childItem, true);
         }
     }
 

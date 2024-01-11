@@ -89,10 +89,10 @@ QList<QSharedPointer<GraphicsAbstractItem> > GraphicsSelectionManager::selectedI
     return m_usedSelections.keys();
 }
 
-void GraphicsSelectionManager::updateGeometry(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsSelectionManager::updateGeometry(QSharedPointer<GraphicsAbstractItem> item, qreal anchorAngle)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->updateGeometry();
+        s->updateGeometry(anchorAngle);
     }
 }
 

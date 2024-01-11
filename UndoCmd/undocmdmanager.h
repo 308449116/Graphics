@@ -46,10 +46,10 @@ public:
     void runCopyCmd(QList<QSharedPointer<GraphicsAbstractItem> > items, ViewGraphics *view);
 
     // 添加 分组命令
-    void runGroupCmd(ViewGraphics *view);
+    void runGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view);
 
     // 添加 取消分组命令
-    void runUngroupCmd(ViewGraphics *view);
+    void runUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view);
 
     // 创建Redo Action
     QAction* createRedoAction();

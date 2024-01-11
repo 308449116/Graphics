@@ -8,15 +8,15 @@
 #include "common.h"
 #include "graphicsabstracttemplate.h"
 
-class SceneGraphics;
+class ViewGraphics;
 class GraphicsSelectionManager;
 
 class GraphicsItemManager : public QObject
 {
     Q_OBJECT
-
 public:
-    explicit GraphicsItemManager(SceneGraphics *scene, QObject *parent = nullptr);
+    explicit GraphicsItemManager(QObject *parent = nullptr);
+    ~GraphicsItemManager();
 
     // 创建图元
     QSharedPointer<GraphicsAbstractItem> createGraphicsItem(
@@ -37,7 +37,7 @@ public:
     int getItemCounts(GraphicsItemType type);
 
     // 取消分组
-    void ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager);
+    void ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view);
 
     void cleanAll();
 
@@ -45,7 +45,6 @@ private:
     void manageItem(QSharedPointer<GraphicsAbstractItem> item, const QString& itemName);
 
 private:
-    SceneGraphics *m_scene;
     QHash<QString, QSharedPointer<GraphicsAbstractItem>> m_nameHash;
     QMap<GraphicsItemType, int> m_countMap;
 };
