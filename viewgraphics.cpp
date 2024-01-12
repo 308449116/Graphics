@@ -137,7 +137,9 @@ void ViewGraphics::resizeItemByCmd(int handleType, QSharedPointer<GraphicsAbstra
 void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item,
                               const QPointF &scale)
 {
-    item->stretch(scale.x(), scale.y(), item->mapFromScene(m_selectionManager->opposite(item, handleType)));
+    const QPointF &oppositePos = item->mapFromScene(m_selectionManager->opposite(item, handleType));
+    item->setOppositePos(oppositePos);
+    item->stretch(scale.x(), scale.y());
     item->updateCoordinate();
     m_selectionManager->updateGeometry(item);
 }
@@ -291,7 +293,7 @@ void ViewGraphics::addGroupItems(QSharedPointer<GraphicsAbstractItem> item)
     if (item->type() == GraphicsItemType::GroupItem) {
         foreach (auto childItem, item->getChildItems()) {
             addGroupItems(childItem);
-            m_selectionManager->hide(childItem, true);
+//            m_selectionManager->hide(childItem, true);
         }
     }
 
@@ -368,6 +370,11 @@ QList<QSharedPointer<GraphicsAbstractItem>> ViewGraphics::selectedItems()
     }
 
     return itemList;
+}
+
+QPointF ViewGraphics::opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const
+{
+    return m_selectionManager->opposite(item, handleType);
 }
 
 //void ViewGraphics::createTextItem()
@@ -510,11 +517,6 @@ QList<QSharedPointer<GraphicsAbstractItem>> ViewGraphics::selectedItems()
 //bool ViewGraphics::isItemSelected(GraphicsItem *item) const
 //{
 //    return m_selectionManager->isItemSelected(item);
-//}
-
-//QPointF ViewGraphics::opposite(GraphicsItem *item, int handleType) const
-//{
-//    return m_selectionManager->opposite(item, handleType);
 //}
 
 //bool ViewGraphics::trySelectItem(GraphicsItem *item)

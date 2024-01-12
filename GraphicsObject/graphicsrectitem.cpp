@@ -14,8 +14,10 @@ GraphicsRectItem::GraphicsRectItem(const QRectF &rect, QGraphicsItem *parent)
     m_ratio = m_width / m_height;
 }
 
-void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
+void GraphicsRectItem::stretch(qreal sx, qreal sy)
 {
+    const QPointF &origin = this->oppositePos();
+
     QTransform trans;
     trans.translate(origin.x(),origin.y());
     trans.scale(sx,sy);

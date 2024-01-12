@@ -163,8 +163,7 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
         selectionManager->updateGeometry(childItem);
     }
 //    item->setRotation(angle);
-
-    selectionManager->removeItem(item);
+    view->deleteItem(item);
 }
 
 //void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, GraphicsSelectionManager *selectManager)

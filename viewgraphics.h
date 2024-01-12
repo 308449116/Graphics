@@ -92,6 +92,8 @@ public:
 
     QList<QSharedPointer<GraphicsAbstractItem>> selectedItems();
 
+    QPointF opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const;
+
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;

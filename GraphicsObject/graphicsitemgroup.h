@@ -26,7 +26,7 @@ public:
 
     QSet<QSharedPointer<GraphicsAbstractItem > > getChildItems() const override;
 
-    void stretch(qreal sx, qreal sy, const QPointF &origin) override;
+    void stretch(qreal sx, qreal sy) override;
 
     void addToGroup(QSharedPointer<GraphicsAbstractItem> item) override;
 

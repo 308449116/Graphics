@@ -114,12 +114,13 @@ QSet<QSharedPointer<GraphicsAbstractItem> > GraphicsItemGroup::getChildItems() c
     return m_childItems;
 }
 
-void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
+void GraphicsItemGroup::stretch(qreal sx, qreal sy)
 {
     foreach (auto childItem, getChildItems()) {
-        childItem->stretch(sx, sy, childItem->mapFromItem(this, origin));
+        childItem->stretch(sx, sy);
     }
 
+    const QPointF &origin = this->oppositePos();
     QTransform trans;
     trans.translate(origin.x(),origin.y());
     trans.scale(sx,sy);

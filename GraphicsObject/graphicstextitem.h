@@ -12,7 +12,7 @@ public:
 
     void move(const QPointF &point) override;
 
-    void stretch(qreal sx, qreal sy, const QPointF &origin) override;
+    void stretch(qreal sx, qreal sy) override;
 
     QSharedPointer<GraphicsAbstractItem> duplicate() const override;
 

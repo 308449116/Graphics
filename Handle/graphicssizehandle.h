@@ -23,10 +23,13 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
+    void setItemsOpposite(QSharedPointer<GraphicsAbstractItem> item);
+
+private:
 //    QPointF m_pressedScenePos;
 //    QPointF m_lastScenePos;
 //    QPointF m_initialPos;
-    QPointF m_oppositePos;
+//    QPointF m_oppositePos;
     ViewGraphics *m_view;
     qreal m_scaleX = 1.0;
     qreal m_scaleY = 1.0;

@@ -32,7 +32,7 @@ public:
 
     virtual void rotate(QPointF rotatePos, QPointF lastPos);
 
-    virtual void stretch(qreal sx, qreal sy, const QPointF &origin);
+    virtual void stretch(qreal sx, qreal sy);
 
     virtual QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>> duplicate() const;
 
@@ -72,6 +72,10 @@ public:
 
     void setGroupAngle(qreal newGroupAngle);
 
+    QPointF oppositePos() const;
+
+    void setOppositePos(const QPointF &newOppositePos);
+
 protected:
     void qt_graphicsItem_highlightSelected(QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option);
 //    virtual void updatehandles(){}
@@ -85,6 +89,7 @@ protected:
     QRectF m_localRect;
     QRectF m_initialRect;
     QString m_itemName;
+    QPointF m_oppositePos;
 };
 
 using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;

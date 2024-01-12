@@ -16,11 +16,13 @@ GraphicsTextItem::GraphicsTextItem(const QString &text, QGraphicsItem *parent)
     setText(text);
 }
 
-void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
+void GraphicsTextItem::stretch(qreal sx, qreal sy)
 {
     if (qRound(m_initialFontSize * sy) < 10) {
         return;
     }
+
+    const QPointF &origin = this->oppositePos();
 
     QTransform trans;
     trans.translate(origin.x(),origin.y());

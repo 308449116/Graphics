@@ -34,11 +34,10 @@ void GraphicsAbstractTemplate<BaseType>::move(const QPointF &point)
 }
 
 template<typename BaseType>
-void GraphicsAbstractTemplate<BaseType>::stretch(qreal sx, qreal sy, const QPointF &origin)
+void GraphicsAbstractTemplate<BaseType>::stretch(qreal sx, qreal sy)
 {
     Q_UNUSED(sx);
     Q_UNUSED(sy);
-    Q_UNUSED(origin);
 }
 
 template<typename BaseType>
@@ -205,6 +204,18 @@ void GraphicsAbstractTemplate<BaseType>::qt_graphicsItem_highlightSelected(
 //    painter->setPen(QPen(option->palette.windowText(), 0, Qt::DashLine));
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(getRect().adjusted(-pad, -pad, pad, pad));
+}
+
+template<typename BaseType>
+QPointF GraphicsAbstractTemplate<BaseType>::oppositePos() const
+{
+    return m_oppositePos;
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::setOppositePos(const QPointF &newOppositePos)
+{
+    m_oppositePos = newOppositePos;
 }
 
 template<typename BaseType>
