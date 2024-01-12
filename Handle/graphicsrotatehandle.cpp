@@ -45,7 +45,6 @@ void GraphicsRotateHandle::customPaint(QPainter *painter, const QStyleOptionGrap
     painter->restore();
 }
 
-
 void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
@@ -77,7 +76,9 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if ( angle < -360 )
         angle += 360;
 
+    qDebug() << "1111111 angle:" << angle;
     m_item->setRotation( angle );
+    m_item->update();
     m_selection->updateGeometry();
     QGraphicsItem::mouseMoveEvent(event);
 }
@@ -85,6 +86,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
+
     m_selection->setOpacity(1);
     m_view->rotateItemByCmd(m_item, m_initAngle);
 //    QGraphicsItem::mouseReleaseEvent(event);

@@ -11,7 +11,9 @@ class GraphicsAbstractTemplate : public BaseType
 {
 public:
     explicit GraphicsAbstractTemplate(QGraphicsItem *parent = nullptr);
+
     virtual ~GraphicsAbstractTemplate(){}
+
 //    virtual QString displayName () const;
 //    virtual void control(int dir, const QPointF & delta );
 //    virtual bool loadFromXml(QXmlStreamReader * xml ) = 0;
@@ -23,6 +25,8 @@ public:
     virtual qreal getRatio() const;
 
     virtual void updateCoordinate();
+
+    virtual void setRotation(qreal newAngle) = 0;
 
     virtual void move(const QPointF &point);
 

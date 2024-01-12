@@ -87,7 +87,7 @@ void GraphicsSelection::updateGeometry()
 
     const QRectF &r = m_item->mapRectToScene(m_item->getRect());
 //    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
-    QPointF originPoint = m_item->mapToScene(m_item->transformOriginPoint());
+    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
     m_item->setRotation(initAngle);
 //    qDebug() << "updateGeometry r:" << r;
 //    qDebug() << "updateGeometry getRect():" << m_item->getRect();

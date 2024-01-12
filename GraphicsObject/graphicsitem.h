@@ -14,6 +14,8 @@ public:
 
     QRectF boundingRect() const override;
 
+    void setRotation(qreal newAngle) override;
+
 //    virtual QSharedPointer<GraphicsAbstractItem> duplicate() const = 0;
 
 //    void setItemName(QString name);

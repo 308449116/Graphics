@@ -6,8 +6,8 @@ GraphicsItem::GraphicsItem(QGraphicsItem *parent)
     : GraphicsAbstractTemplate<QGraphicsItem>(parent)
 {
 //    setFlag(QGraphicsItem::ItemIsMovable, true);
-//    setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
 //int GraphicsItem::type() const
@@ -23,6 +23,11 @@ QRectF GraphicsItem::boundingRect() const
 //        rect.adjust(0, 0, 0, 20);
 //    }
     return rect;
+}
+
+void GraphicsItem::setRotation(qreal newAngle)
+{
+    QGraphicsItem::setRotation(newAngle);
 }
 
 //QSharedPointer<GraphicsAbstractItem> GraphicsItem::duplicate() const

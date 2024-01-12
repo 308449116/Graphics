@@ -84,12 +84,3 @@ QRectF GraphicsHandle::boundingRect() const
 {
     return m_localRect;
 }
-
-
-
-
-
-
-
-
-

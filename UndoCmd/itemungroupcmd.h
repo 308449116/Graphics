@@ -20,6 +20,8 @@ public:
 private:
     ViewGraphics *m_view;
     QHash<QSharedPointer<GraphicsAbstractItem>, QSet<QSharedPointer<GraphicsAbstractItem>> > m_groupItemsHash;
+//    QHash<QSharedPointer<GraphicsAbstractItem>,
+//          QSet< std::tuple<QSharedPointer<GraphicsAbstractItem> , qreal, qreal> > > m_groupItemsHash;
 };
 
 #endif // ITEMUNGROUPCMD_H

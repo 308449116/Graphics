@@ -4,7 +4,8 @@
 GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parent)
     : GraphicsAbstractTemplate <QGraphicsItemGroup>{parent}
 {
-
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
 GraphicsItemGroup::GraphicsItemGroup(QList<QSharedPointer<GraphicsAbstractItem> > items, QGraphicsItem *parent)
@@ -62,6 +63,31 @@ void GraphicsItemGroup::updateCoordinate()
 
 }
 
+void GraphicsItemGroup::setRotation(qreal newAngle)
+{
+    if (m_currentAngle == newAngle) return;
+
+    m_lastAngle = m_currentAngle;
+    m_currentAngle = newAngle;
+
+    foreach (auto childItem, this->getChildItems()) {
+        setChildItemRotation(childItem);
+    }
+
+    QGraphicsItemGroup::setRotation(newAngle);
+}
+
+void GraphicsItemGroup::setChildItemRotation(QSharedPointer<GraphicsAbstractItem> item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        foreach (auto childItem, item->getChildItems()) {
+            setChildItemRotation(childItem);
+        }
+    }
+
+    item->setGroupAngle(item->groupAngle() + (m_currentAngle - m_lastAngle));
+}
+
 QSharedPointer<GraphicsAbstractItem> GraphicsItemGroup::duplicate() const
 {
     QList<QSharedPointer<GraphicsAbstractItem> > items = duplicateItems();
@@ -117,6 +143,23 @@ void GraphicsItemGroup::removeFromGroup(QSharedPointer<GraphicsAbstractItem> ite
     m_childItems.remove(item);
 }
 
+//QVariant GraphicsItemGroup::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+//{
+//    qDebug() << "111111111111111111";
+
+//    if ( change == QGraphicsItem::ItemRotationHasChanged ) {
+//        qreal newAngle = value.toDouble();
+//        qreal oldAngel = this->rotation();
+//        qDebug() << "newAngle:" << newAngle << "  oldAngel:" << oldAngel;
+//        foreach (auto childItem, this->getChildItems()) {
+//            childItem->setCurrentGroupAngle(newAngle);
+//            childItem->setGroupAngle(childItem->groupAngle() + (newAngle - oldAngel));
+//        }
+//    }
+
+//    return QGraphicsItem::itemChange(change, value);
+//}
+
 void GraphicsItemGroup::addToGroup(QGraphicsItem *item)
 {
     QGraphicsItemGroup::addToGroup(item);
@@ -142,4 +185,3 @@ QList<QSharedPointer<GraphicsAbstractItem> > GraphicsItemGroup::duplicateItems()
 
     return copylist;
 }
-
