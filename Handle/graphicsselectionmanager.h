@@ -36,11 +36,15 @@ public:
 
     void removeItem(QSharedPointer<GraphicsAbstractItem> item);
 
-    void updateGeometry(QSharedPointer<GraphicsAbstractItem> item);
+    void updateHandle(QSharedPointer<GraphicsAbstractItem> item);
 
     void hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle);
 
     void show(QSharedPointer<GraphicsAbstractItem> item);
+
+    void setZValue(QSharedPointer<GraphicsAbstractItem> item, qreal z);
+
+    qreal zValue(QSharedPointer<GraphicsAbstractItem> item);
 
 private:
     void deleteItem(QSharedPointer<GraphicsAbstractItem> item);

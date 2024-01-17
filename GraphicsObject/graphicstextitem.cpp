@@ -45,14 +45,14 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy)
     }
 }
 
-void GraphicsTextItem::updateCoordinate()
+void GraphicsTextItem::updateCoordinate(bool isGroup)
 {
-    QPointF pt1, pt2, delta;
-    pt1 = mapToScene(transformOriginPoint());
-    pt2 = mapToScene(m_localRect.center());
-    delta = pt1 - pt2;
-
     if (!parentItem()) {
+        QPointF pt1, pt2, delta;
+        pt1 = mapToScene(transformOriginPoint());
+        pt2 = mapToScene(m_localRect.center());
+        delta = pt1 - pt2;
+
         prepareGeometryChange();
         m_localRect = QRectF(-m_width / 2, -m_height / 2, m_width, m_height);
         m_width = m_localRect.width();
@@ -62,9 +62,12 @@ void GraphicsTextItem::updateCoordinate()
         moveBy(-delta.x(), -delta.y());
         setTransform(transform().translate(-delta.x(), -delta.y()));
         m_originPos = QPoint(0, 0);
+
+        m_initialFontSize = m_font.pixelSize();
+    } else {
+        setTransformOriginPoint(m_localRect.center());
     }
 
-    m_initialFontSize = m_font.pixelSize();
     m_initialRect = m_localRect;
     m_ratio = m_width / m_height;
 }

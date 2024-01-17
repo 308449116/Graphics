@@ -16,6 +16,7 @@ public:
 
     enum HandleType {
         Handle_None = 0,
+        Drag,
         LeftTop,
         Top,
         RightTop,
@@ -24,13 +25,14 @@ public:
         Bottom,
         LeftBottom,
         Left,
-        Drag,
         Rotate,
         Line,
         HandleTypeEnd //必须以此类型结尾，增加类型只能从中间插入
     };
 
     GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
+
+//    virtual void updateHandle(QSharedPointer<GraphicsAbstractItem> item);
 
     QRectF boundingRect() const override;
 
@@ -47,8 +49,6 @@ public:
     void setItem(QSharedPointer<GraphicsAbstractItem> item);
 
     void move(qreal x, qreal y);
-
-    void updateHandle() {};
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;

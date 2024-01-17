@@ -10,7 +10,7 @@ public:
 
     int  type() const override;
 
-    void updateCoordinate() override;
+    void updateCoordinate(bool isGroup = false) override;
 
     void move(const QPointF &point) override;
 

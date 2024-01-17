@@ -5,8 +5,9 @@
 
 #include "graphicsabstracttemplate.h"
 
-class GraphicsItemGroup : public GraphicsAbstractTemplate<QGraphicsItemGroup>
+class GraphicsItemGroup : public QObject, public GraphicsAbstractTemplate<QGraphicsItemGroup>
 {
+    Q_OBJECT
 public:
     explicit GraphicsItemGroup(QGraphicsItem *parent = nullptr);
 
@@ -18,7 +19,7 @@ public:
 
     QRectF boundingRect() const override;
 
-    void updateCoordinate() override;
+    void updateCoordinate(bool isGroup = true) override;
 
     void setRotation(qreal newAngle)  override;
 
@@ -31,7 +32,12 @@ public:
     void addToGroup(QSharedPointer<GraphicsAbstractItem> item) override;
 
     void removeFromGroup(QSharedPointer<GraphicsAbstractItem> item) override;
+
+signals:
+    void sendUpdateHandle();
+
 protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 //    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 
 private:
@@ -39,6 +45,7 @@ private:
     void setChildItemRotation(QSharedPointer<GraphicsAbstractItem> item);
     void addToGroup(QGraphicsItem *item);
     void removeFromGroup(QGraphicsItem *item);
+//    void setItemZValue(QSharedPointer<GraphicsAbstractItem> item);
 
 private:
     QSet<QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > > m_childItems;

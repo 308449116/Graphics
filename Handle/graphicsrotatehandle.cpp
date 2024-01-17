@@ -19,7 +19,7 @@ GraphicsRotateHandle::GraphicsRotateHandle(int handleType, ViewGraphics *view,
     m_rotatePixmap = QPixmap(":/icons/rotate_press.png");
     m_localRect = QRectF(-ROTATE_HANDLE_WIDTH / 2, -ROTATE_HANDLE_WIDTH / 2,
                          ROTATE_HANDLE_WIDTH ,ROTATE_HANDLE_WIDTH);
-    setZValue(2);
+//    setZValue(2);
 }
 
 void GraphicsRotateHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -76,10 +76,11 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if ( angle < -360 )
         angle += 360;
 
-    qDebug() << "1111111 angle:" << angle;
+//    qDebug() << "1111111 angle:" << angle;
     m_item->setRotation( angle );
     m_item->update();
-    m_selection->updateGeometry();
+    m_view->updateHandle(m_item);
+//    updateHandle(m_item);
     QGraphicsItem::mouseMoveEvent(event);
 }
 
@@ -89,5 +90,16 @@ void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     m_selection->setOpacity(1);
     m_view->rotateItemByCmd(m_item, m_initAngle);
-//    QGraphicsItem::mouseReleaseEvent(event);
+    //    QGraphicsItem::mouseReleaseEvent(event);
 }
+
+//void GraphicsRotateHandle::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+//{
+//    if (item->type() == GraphicsItemType::GroupItem) {
+//        foreach (auto childItem, item->getChildItems()) {
+//            updateHandle(childItem);
+//        }
+//    }
+
+//    m_view->updateHandle(item);
+//}

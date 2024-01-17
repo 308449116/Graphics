@@ -67,6 +67,10 @@ void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsAbstractItem> i
 
 void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsAbstractItem> item)
 {
+    if (m_usedSelections.isEmpty()) {
+        return;
+    }
+
     GraphicsSelection *s = m_usedSelections.value(item);
     if (!s) {
         return;
@@ -74,10 +78,6 @@ void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsAbstractItem> i
 
     s->setItem(nullptr);
     m_usedSelections.remove(item);
-
-    if (m_usedSelections.isEmpty()) {
-        return;
-    }
 }
 
 bool GraphicsSelectionManager::isItemSelected(QSharedPointer<GraphicsAbstractItem> item) const{
@@ -89,10 +89,16 @@ QList<QSharedPointer<GraphicsAbstractItem> > GraphicsSelectionManager::selectedI
     return m_usedSelections.keys();
 }
 
-void GraphicsSelectionManager::updateGeometry(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsSelectionManager::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
 {
+    if (item->type() == GraphicsItemType::GroupItem) {
+        foreach (auto childItem, item->getChildItems()) {
+            this->updateHandle(childItem);
+        }
+    }
+
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->updateGeometry();
+        s->updateHandle();
     }
 }
 
@@ -108,6 +114,22 @@ void GraphicsSelectionManager::show(QSharedPointer<GraphicsAbstractItem> item)
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->show();
     }
+}
+
+void GraphicsSelectionManager::setZValue(QSharedPointer<GraphicsAbstractItem> item, qreal z)
+{
+    if (GraphicsSelection *s = m_usedSelections.value(item)) {
+        s->setZValue(z);
+    }
+}
+
+qreal GraphicsSelectionManager::zValue(QSharedPointer<GraphicsAbstractItem> item)
+{
+    if (GraphicsSelection *s = m_usedSelections.value(item)) {
+        return s->zValue();
+    }
+
+    return 0;
 }
 
 int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsAbstractItem> item, const QPointF &point) const

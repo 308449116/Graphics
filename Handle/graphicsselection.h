@@ -19,7 +19,9 @@ public:
 
     bool isUsed() const;
 
-    void updateGeometry();
+    bool isActived() const;
+
+    void updateHandle();
 
     void hide(bool isHideDragHandle = true);
 
@@ -38,6 +40,10 @@ public:
     QPointF opposite(int handle) const;
 
     int swapHandle(int handle, const QPointF &scale) const;
+
+    void setZValue(qreal z);
+
+    qreal zValue();
 
 private:
     ViewGraphics *m_view;

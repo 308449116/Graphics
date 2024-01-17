@@ -23,15 +23,18 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
 //    qDebug() << "GraphicsDragHandle boundingRect" << m_item->boundingRect();
 //    qDebug() << "GraphicsDragHandle boundingRect" << boundingRect();
-    if (getState() & GraphicsHandleState::HandleActive) {
+//    if (getState() & GraphicsHandleState::HandleActive) {
         painter->save();
         painter->setPen(Qt::DashLine);
         QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
+//        qDebug() << "GraphicsDragHandle customPaint rect:"
+//                 << rect;
+
         painter->drawRect(rect);
 //        painter->drawLine(QPointF(rect.center().x(), rect.center().y() + rect.height() / 2),
 //                          QPointF(rect.center().x(), rect.center().y() + rect.height() / 2 + 14));
         painter->restore();
-    }
+//    }
 }
 
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -39,8 +42,10 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent event->modifiers:" << event->modifiers();
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
     QGraphicsItem::mousePressEvent(event);
+    qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
 
     m_lastScenePos = m_pressedScenePos = event->scenePos();
+//    qDebug() << "m_pressedScenePos:" << m_lastScenePos;
     m_initialPos = m_item->pos();
     m_items.clear();
 
@@ -57,11 +62,13 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
     m_selection->setOpacity(0);
+//    qDebug() << "m_lastScenePos:" << m_lastScenePos;
+//    qDebug() << "m_lastScenePos - m_pressedScenePos:" << m_lastScenePos - m_pressedScenePos;
 
     //移动处理
     m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos);
 //    m_item->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
-//    m_selection->updateGeometry();
+//    m_selection->updateHandle();
     QGraphicsItem::mouseMoveEvent(event);
 }
 

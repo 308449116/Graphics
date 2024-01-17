@@ -119,7 +119,7 @@ void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsA
 {
     for (const auto &[initPos, item] : items) {
         item->setPos(initPos + pos);
-        m_selectionManager->updateGeometry(item);
+        m_selectionManager->updateHandle(item);
         //  m_scene->update();
     }
 }
@@ -141,7 +141,7 @@ void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsAbstractIte
     item->setOppositePos(oppositePos);
     item->stretch(scale.x(), scale.y());
     item->updateCoordinate();
-    m_selectionManager->updateGeometry(item);
+    m_selectionManager->updateHandle(item);
 }
 
 void ViewGraphics::rotateItemByCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal angle)
@@ -156,7 +156,7 @@ void ViewGraphics::rotateItemByCmd(QSharedPointer<GraphicsAbstractItem> item, co
 void ViewGraphics::rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle)
 {
     item->setRotation(angle);
-    m_selectionManager->updateGeometry(item);
+    m_selectionManager->updateHandle(item);
 }
 
 void ViewGraphics::alignItems(AlignType alignType)
@@ -234,6 +234,30 @@ QSharedPointer<GraphicsAbstractItem> ViewGraphics::groupItems(QList<QSharedPoint
 //    }
 
     QSharedPointer<GraphicsAbstractItem> itemGroup = m_itemManager->createGraphicsItemGroup(items);
+
+    GraphicsAbstractItemGroup *g = qgraphicsitem_cast<GraphicsAbstractItemGroup *>(itemGroup.data());
+    GraphicsItemGroup *group = dynamic_cast<GraphicsItemGroup *>(itemGroup.data());
+    QSharedPointer<GraphicsAbstractItemGroup> sharedGroup = itemGroup.dynamicCast<GraphicsAbstractItemGroup>();
+    if(g) {
+        qDebug() << "==========g==========";
+    } else {
+        qDebug() << "++++++++ g nullptr ++++++++";
+    }
+
+    if(group) {
+        qDebug() << "==========group==========";
+    } else {
+        qDebug() << "++++++++ group nullptr ++++++++";
+    }
+
+    if(sharedGroup) {
+        qDebug() << "==========sharedGroup==========";
+    } else {
+        qDebug() << "++++++++ sharedGroup nullptr ++++++++";
+    }
+//    connect(group, &GraphicsItemGroup::sendUpdateHandle, this, [](){
+//        qDebug() << "====================";
+//    });
 //    m_selectionManager->addItem(this, itemGroup);
     addItem(itemGroup);
 
@@ -284,6 +308,7 @@ QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 void ViewGraphics::addItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     addGroupItems(item);
+    setZValue(item);
     m_scene->addItem(item);
 }
 
@@ -292,12 +317,31 @@ void ViewGraphics::addGroupItems(QSharedPointer<GraphicsAbstractItem> item)
     //递归添加组的子图元
     if (item->type() == GraphicsItemType::GroupItem) {
         foreach (auto childItem, item->getChildItems()) {
+            childItem->setItemParent(item);
             addGroupItems(childItem);
 //            m_selectionManager->hide(childItem, true);
         }
     }
 
     addItemToSelectionManager(item);
+//    if (!item->getItemParent().isNull()) {
+//        qDebug() << "========= m_selectionManager->zValue(item):" << m_selectionManager->zValue(item->getItemParent());
+//        m_selectionManager->setZValue(item, m_selectionManager->zValue(item->getItemParent()) + 1);
+//    }
+}
+
+void ViewGraphics::setZValue(QSharedPointer<GraphicsAbstractItem> item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        foreach (auto childItem, item->getChildItems()) {
+            setZValue(childItem);
+        }
+    }
+
+    if (!item->getItemParent().isNull()) {
+//        qDebug() << "========= m_selectionManager->zValue(item):" << m_selectionManager->zValue(item->getItemParent());
+        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
+    }
 }
 
 QAction *ViewGraphics::createUndoAction()
@@ -375,6 +419,11 @@ QList<QSharedPointer<GraphicsAbstractItem>> ViewGraphics::selectedItems()
 QPointF ViewGraphics::opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const
 {
     return m_selectionManager->opposite(item, handleType);
+}
+
+void ViewGraphics::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+{
+    m_selectionManager->updateHandle(item);
 }
 
 //void ViewGraphics::createTextItem()
@@ -560,7 +609,7 @@ QPointF ViewGraphics::opposite(QSharedPointer<GraphicsAbstractItem> item, int ha
 
 //void ViewGraphics::updateItemHandle(GraphicsItem *item)
 //{
-//    m_selectionManager->updateGeometry(item);
+//    m_selectionManager->updateHandle(item);
 //    m_selectionManager->show(item);
 //}
 

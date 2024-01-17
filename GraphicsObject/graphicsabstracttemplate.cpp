@@ -15,16 +15,16 @@ QRectF GraphicsAbstractTemplate<BaseType>::getRect() const
     return m_localRect;
 }
 
-template<typename BaseType>
-qreal GraphicsAbstractTemplate<BaseType>::getRatio() const
-{
-    return m_ratio;
-}
+//template<typename BaseType>
+//qreal GraphicsAbstractTemplate<BaseType>::getRatio() const
+//{
+//    return m_ratio;
+//}
 
 template<typename BaseType>
-void GraphicsAbstractTemplate<BaseType>::updateCoordinate()
+void GraphicsAbstractTemplate<BaseType>::updateCoordinate(bool isGroup)
 {
-
+    Q_UNUSED(isGroup);
 }
 
 template<typename BaseType>
@@ -204,6 +204,30 @@ void GraphicsAbstractTemplate<BaseType>::qt_graphicsItem_highlightSelected(
 //    painter->setPen(QPen(option->palette.windowText(), 0, Qt::DashLine));
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(getRect().adjusted(-pad, -pad, pad, pad));
+}
+
+template<typename BaseType>
+GraphicsSelection *GraphicsAbstractTemplate<BaseType>::selection() const
+{
+    return m_selection;
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::setSelection(GraphicsSelection *newSelection)
+{
+    m_selection = newSelection;
+}
+
+template<typename BaseType>
+QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > GraphicsAbstractTemplate<BaseType>::getItemParent() const
+{
+    return m_itemParent;
+}
+
+template<typename BaseType>
+void GraphicsAbstractTemplate<BaseType>::setItemParent(QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > newItemParent)
+{
+    m_itemParent = newItemParent;
 }
 
 template<typename BaseType>

@@ -6,6 +6,8 @@
 #include <QGraphicsItem>
 #include <QSharedPointer>
 
+class GraphicsSelection;
+
 template < typename BaseType = QGraphicsItem >
 class GraphicsAbstractTemplate : public BaseType
 {
@@ -19,12 +21,11 @@ public:
 //    virtual bool loadFromXml(QXmlStreamReader * xml ) = 0;
 //    virtual bool saveToXml( QXmlStreamWriter * xml ) = 0 ;
 //    virtual QSharedPointer<QGraphicsItem> duplicate() const;
+//    virtual qreal getRatio() const;
 
     virtual QRectF getRect() const;
 
-    virtual qreal getRatio() const;
-
-    virtual void updateCoordinate();
+    virtual void updateCoordinate(bool isGroup = false);
 
     virtual void setRotation(qreal newAngle) = 0;
 
@@ -76,6 +77,14 @@ public:
 
     void setOppositePos(const QPointF &newOppositePos);
 
+    QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > getItemParent() const;
+
+    void setItemParent(QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > newItemParent);
+
+    void setSelection(GraphicsSelection *newSelection);
+
+    GraphicsSelection *selection() const;
+
 protected:
     void qt_graphicsItem_highlightSelected(QGraphicsItem *item, QPainter *painter, const QStyleOptionGraphicsItem *option);
 //    virtual void updatehandles(){}
@@ -90,6 +99,8 @@ protected:
     QRectF m_initialRect;
     QString m_itemName;
     QPointF m_oppositePos;
+    QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem>> m_itemParent = nullptr;
+    GraphicsSelection *m_selection = nullptr;
 };
 
 using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;

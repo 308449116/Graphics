@@ -12,7 +12,7 @@ GraphicsSizeHandle::GraphicsSizeHandle(int handleType, ViewGraphics *view, Graph
 {
     m_localRect = QRectF(-SIZE_HANDLE_WIDTH/2, -SIZE_HANDLE_WIDTH/2,
                          SIZE_HANDLE_WIDTH, SIZE_HANDLE_WIDTH);
-    setZValue(2);
+//    setZValue(2);
 }
 
 void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -24,6 +24,30 @@ void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
     painter->setPen(Qt::SolidLine);
     painter->setBrush(QBrush(m_borderColor));
     painter->drawRect(QRectF(m_localRect));
+//    QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
+//    qDebug() << "GraphicsSizeHandle customPaint rect:"
+//             << rect;
+//    switch (m_handleType) {
+//    case GraphicsHandle::LeftTop:
+//        setPos(rect.topLeft());
+//        break;
+//    case GraphicsHandle::Top:
+//        break;
+//    case GraphicsHandle::RightTop:
+//        break;
+//    case GraphicsHandle::Right:
+//        break;
+//    case GraphicsHandle::RightBottom:
+//        break;
+//    case GraphicsHandle::Bottom:
+//        break;
+//    case GraphicsHandle::LeftBottom:
+//        break;
+//    case GraphicsHandle::Left:
+//        break;
+//    default:
+//        break;
+//    }
     painter->restore();
 }
 
@@ -106,7 +130,7 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //    m_item->updateCoordinate();
 //    qreal width = m_item->width();
 //    qreal height = m_item->height();
-//    m_selection->updateGeometry(QRectF(-width / 2, -height / 2, width, height));
+//    m_selection->updateHandle(QRectF(-width / 2, -height / 2, width, height));
 
 //    QGraphicsItem::mouseMoveEvent(event);
 }
@@ -114,8 +138,20 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     m_item->updateCoordinate();
-    m_selection->updateGeometry();
+    m_view->updateHandle(m_item);
+//    updateHandle(m_item);
     m_selection->setOpacity(1);
     m_view->resizeItemByCmd(m_handleType, m_item, QPointF(m_scaleX, m_scaleY), true);
     QGraphicsItem::mouseReleaseEvent(event);
 }
+
+//void GraphicsSizeHandle::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+//{
+//    if (item->type() == GraphicsItemType::GroupItem) {
+//        foreach (auto childItem, item->getChildItems()) {
+//            updateHandle(childItem);
+//        }
+//    }
+
+//    m_view->updateHandle(item);
+//}

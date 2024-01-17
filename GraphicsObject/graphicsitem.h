@@ -5,8 +5,9 @@
 
 #include "graphicsabstracttemplate.h"
 
-class GraphicsItem : public GraphicsAbstractTemplate<QGraphicsItem>
+class GraphicsItem : public QObject, public GraphicsAbstractTemplate<QGraphicsItem>
 {
+    Q_OBJECT
 public:
     explicit GraphicsItem(QGraphicsItem *parent = nullptr);
 
@@ -24,7 +25,7 @@ public:
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-//    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
+    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 //    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 //    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
@@ -33,6 +34,7 @@ protected:
     virtual void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
 
 signals:
+    void sendPararenItemGeometryChange();
 //    void selectedChange(GraphicsItem *item, bool checked);
 //    void handleStateSwitch(bool isShow);
 

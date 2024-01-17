@@ -9,15 +9,15 @@
 GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     : m_view(view), m_item(nullptr)
 {
+    GraphicsHandle *draghandle = new GraphicsDragHandle(GraphicsHandle::Drag, view, this);
+    m_view->scene()->addItem(draghandle);
+    m_handleList.push_back(draghandle);
+
     for (int i = GraphicsHandle::LeftTop; i <= GraphicsHandle::Left; ++i) {
         GraphicsHandle *handle = new GraphicsSizeHandle(i, view, this);
         m_view->scene()->addItem(handle);
         m_handleList.push_back(handle);
     }
-
-    GraphicsHandle *draghandle = new GraphicsDragHandle(GraphicsHandle::Drag, view, this);
-    m_view->scene()->addItem(draghandle);
-    m_handleList.push_back(draghandle);
 
     GraphicsHandle *rotatehandle = new GraphicsRotateHandle(GraphicsHandle::Rotate, view, this);
     m_view->scene()->addItem(rotatehandle);
@@ -31,25 +31,25 @@ GraphicsSelection::GraphicsSelection(ViewGraphics *view)
 void GraphicsSelection::setItem(QSharedPointer<GraphicsAbstractItem> item)
 {
     if (item.isNull()) {
-        hide();
+        hide(true);
+        m_item->setSelection(nullptr);
         m_item.clear();
         return;
     }
 
     m_view->scene()->clearSelection();
-
     m_item = item;
-
+    m_item->setSelection(this);
     foreach (auto *h ,m_handleList) {
         h->setItem(m_item);
     }
 
-    updateGeometry();
+    updateHandle();
     show();
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
 //        if (isShow) {
 //            show();
-//            updateGeometry();
+//            updateHandle();
 //        } else {
 //            hide();
 //        }
@@ -61,7 +61,12 @@ bool GraphicsSelection::isUsed() const
     return m_item.data() != nullptr;
 }
 
-void GraphicsSelection::updateGeometry()
+bool GraphicsSelection::isActived() const
+{
+    return (m_handleList[GraphicsHandle::Drag - 1]->getState() == GraphicsHandle::HandleActive);
+}
+
+void GraphicsSelection::updateHandle()
 {
 //    QTransform transform;
 //    transform.translate(m_item->getRect().center().x(),m_item->getRect().center().y());
@@ -80,25 +85,25 @@ void GraphicsSelection::updateGeometry()
     } else {
         angle = initAngle + groupAngle;
         m_item->setRotation(-groupAngle);
-        qDebug() << "groupAngle:" << groupAngle;
-        qDebug() << "initAngle:" << initAngle;
-        qDebug() << "angle:" << angle;
+//        qDebug() << "groupAngle:" << groupAngle;
+//        qDebug() << "initAngle:" << initAngle;
+//        qDebug() << "angle:" << angle;
     }
 
     const QRectF &r = m_item->mapRectToScene(m_item->getRect());
 //    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
     QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
     m_item->setRotation(initAngle);
-//    qDebug() << "updateGeometry r:" << r;
-//    qDebug() << "updateGeometry getRect():" << m_item->getRect();
+//    qDebug() << "updateHandle r:" << r;
+//    qDebug() << "updateHandle getRect():" << m_item->getRect();
 //    qDebug() << "originPoint:" << originPoint;
 
 //    const QRectF r2 = m_item->getRect();
-//    qDebug() << "updateGeometry r:" << r;
-//    qDebug() << "updateGeometry r2" << r2;
-//    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
-//    qDebug() << "updateGeometry r mapToScene topLeft:"
-//             << m_item->mapToScene(r.topLeft()) << "updateGeometry r2 mapToScene topLeft:"
+//    qDebug() << "updateHandle r:" << r;
+//    qDebug() << "updateHandle r2" << r2;
+//    qDebug() << "updateHandle r topLeft:" << r.topLeft() << "updateHandle r2 topLeft:" << r2.topLeft();
+//    qDebug() << "updateHandle r mapToScene topLeft:"
+//             << m_item->mapToScene(r.topLeft()) << "updateHandle r2 mapToScene topLeft:"
 //             << m_item->mapToScene(r2.topLeft());
 
 //    const int w = GRAPHICS_HANDLE_SIZE;
@@ -139,9 +144,13 @@ void GraphicsSelection::updateGeometry()
             hndl->move(r.x(), r.y() + r.height() / 2);
             break;
         case GraphicsHandle::Drag:
-//            qDebug() << "updateGeometry handleType:" << hndl->handleType()
+//            qDebug() << "updateHandle handleType:" << hndl->handleType()
 //                     << "  rect:" << r
 //                     << "  originPoint:" << originPoint;
+//            qDebug() << "updateHandle setLocalRect rect:"
+//                     << hndl->mapRectFromItem(m_item.data(), m_item->getRect());
+//            qDebug() << "updateHandle setLocalRect r:"
+//                     << r;
             hndl->setLocalRect(r);
 //            hndl->move(originPoint.x(), originPoint.y());
             break;
@@ -157,27 +166,27 @@ void GraphicsSelection::updateGeometry()
             break;
         }
 
-//        qDebug() << "updateGeometry handleType:" << hndl->handleType()
+//        qDebug() << "updateHandle handleType:" << hndl->handleType()
 //                 << "  pos:" << hndl->pos();
 
         hndl->setTransformOriginPoint(hndl->mapFromScene(originPoint));
         hndl->setRotation(angle);
-//        qDebug() << "updateGeometry handleType:" << hndl->handleType()
+//        qDebug() << "updateHandle handleType:" << hndl->handleType()
 //                 << "  pos:" << hndl->pos()
 //                 << "  scenePos:" << hndl->scenePos();
     }
 }
 
-//void GraphicsSelection::updateGeometry()
+//void GraphicsSelection::updateHandle()
 //{
 //    if (!m_item) return;
 //    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
 //    const QRectF r2 = m_item->getRect();
-//    qDebug() << "updateGeometry r:" << r;
-//    qDebug() << "updateGeometry r2" << r2;
-//    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
-//    qDebug() << "updateGeometry r mapToScene topLeft:"
-//             << m_item->mapToScene(r.topLeft()) << "updateGeometry r2 mapToScene topLeft:"
+//    qDebug() << "updateHandle r:" << r;
+//    qDebug() << "updateHandle r2" << r2;
+//    qDebug() << "updateHandle r topLeft:" << r.topLeft() << "updateHandle r2 topLeft:" << r2.topLeft();
+//    qDebug() << "updateHandle r mapToScene topLeft:"
+//             << m_item->mapToScene(r.topLeft()) << "updateHandle r2 mapToScene topLeft:"
 //             << m_item->mapToScene(r2.topLeft());
 
 //    QPointF topLeft = m_item->mapToScene(r2.topLeft());
@@ -221,7 +230,7 @@ void GraphicsSelection::updateGeometry()
 //            hndl->setPos((bottomLeft.x() + topLeft.x()) / 2, (bottomLeft.y() + topLeft.y()) / 2);
 //            break;
 //        case GraphicsHandle::Drag:
-////            qDebug() << "updateGeometry handleType:" << hndl->handleType()
+////            qDebug() << "updateHandle handleType:" << hndl->handleType()
 ////                     << "  rect:" << r
 ////                     << "  originPoint:" << originPoint;
 //            hndl->setLocalRect(QRectF(topLeft, QSizeF(r2.width(), r2.height())));
@@ -392,6 +401,22 @@ int GraphicsSelection::swapHandle(int handle, const QPointF& scale ) const
         }
     }
     return handleType;
+}
+
+void GraphicsSelection::setZValue(qreal z)
+{
+    foreach (auto handle, m_handleList) {
+        handle->setZValue(z);
+    }
+}
+
+qreal GraphicsSelection::zValue()
+{
+//    foreach (auto item, m_handleList) {
+//        qDebug() << "GraphicsSelection::zValue: " << item->zValue();
+//        qDebug() << "GraphicsSelection::handleType: " << item->handleType();
+//    }
+    return m_handleList[GraphicsHandle::Drag - 1]->zValue();
 }
 
 QSharedPointer<GraphicsAbstractItem> GraphicsSelection::item() const

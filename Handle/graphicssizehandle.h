@@ -13,6 +13,8 @@ public:
     GraphicsSizeHandle(int handleType, ViewGraphics *view, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 //    QRectF boundingRect() const override;
 
+//    void updateHandle(QSharedPointer<GraphicsAbstractItem> item) override;
+
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 

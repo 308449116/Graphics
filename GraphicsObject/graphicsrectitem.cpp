@@ -31,31 +31,40 @@ void GraphicsRectItem::stretch(qreal sx, qreal sy)
     m_height = m_localRect.height();
 }
 
-void GraphicsRectItem::updateCoordinate()
+void GraphicsRectItem::updateCoordinate(bool isGroup)
 {
-    QPointF pt1, pt2, delta;
-    pt1 = mapToScene(transformOriginPoint());
-    pt2 = mapToScene(m_localRect.center());
-    delta = pt1 - pt2;
-//    qDebug() << "transformOriginPoint111:" << mapToScene(transformOriginPoint());
-//    qDebug() << "rotation11111:" << rotation();
-
-//    qDebug() << "transformOriginPoint:" << transformOriginPoint();
-//    qDebug() << "m_localRect.center:" << m_localRect.center();
-//    qDebug() << "delta:" << delta;
+    qDebug() << "isGroup:" << isGroup;
     if (!parentItem()) {
+        QPointF pt1, pt2, delta;
+        pt1 = mapToScene(transformOriginPoint());
+        pt2 = mapToScene(m_localRect.center());
+        delta = pt1 - pt2;
+        //    qDebug() << "transformOriginPoint111:" << mapToScene(transformOriginPoint());
+        //    qDebug() << "rotation11111:" << rotation();
+
+        //    qDebug() << "transformOriginPoint:" << transformOriginPoint();
+        //    qDebug() << "m_localRect.center:" << m_localRect.center();
+        //    qDebug() << "delta:" << delta;
+
         prepareGeometryChange();
         m_localRect = QRectF(-m_width / 2, -m_height / 2, m_width, m_height);
+        //    qDebug() << "1111111111 GraphicsRectItem m_localRect:" << m_localRect;
+
         m_width = m_localRect.width();
         m_height = m_localRect.height();
         setTransform(transform().translate(delta.x(), delta.y()));
         setTransformOriginPoint(m_localRect.center());
         moveBy(-delta.x(), -delta.y());
         setTransform(transform().translate(-delta.x(), -delta.y()));
-        m_oppositePos = QPointF(0,0);
+        m_oppositePos = m_localRect.center();
+        qDebug() << "rotation2222:" << rotation();
+        //    qDebug() << "transformOriginPoint222:" << mapToScene(transformOriginPoint());
+    } else {
+        qDebug() << "rotation33333333333:" << rotation();
+
+        setTransformOriginPoint(m_localRect.center());
+        m_oppositePos = m_localRect.center();
     }
-//    qDebug() << "rotation2222:" << rotation();
-//    qDebug() << "transformOriginPoint222:" << mapToScene(transformOriginPoint());
 
     m_initialRect = m_localRect;
     m_ratio = m_width / m_height;

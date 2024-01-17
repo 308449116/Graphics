@@ -60,20 +60,23 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 //    }
 }
 
-//QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-//{
-//    if ( change == QGraphicsItem::ItemSelectedHasChanged ) {
-//        QGraphicsItemGroup *group = dynamic_cast<QGraphicsItemGroup*>(parentItem());
-//        if (!group) {
-//            emit selectedChange(this, value.toBool());
-//        } else {
-//            setSelected(false);
-//            return QVariant::fromValue<bool>(false);
-//        }
-//    }
+QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if ( change == QGraphicsItem::ItemPositionChange ||
+        change == QGraphicsItem::ItemChildAddedChange ||
+        change == QGraphicsItem::ItemChildRemovedChange ||
+        change == QGraphicsItem::ItemRotationChange ||
+        change == QGraphicsItem::ItemScaleChange) {
+        if (!this->getItemParent().isNull()) {
+//            qDebug() << "change:" << change;
+//            qDebug() << "old rotation:" << this->rotation();
+//            qDebug() << "new rotation:" << value.toDouble();
+            emit this->sendPararenItemGeometryChange();
+        }
+    }
 
-//    return QGraphicsItem::itemChange(change, value);
-//}
+    return QGraphicsItem::itemChange(change, value);
+}
 
 //void GraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //{

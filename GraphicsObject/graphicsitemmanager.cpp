@@ -135,10 +135,10 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
 
 //    qDebug() << "111 itemGroup->getChildItems().count:" << item->getChildItems().count();
 //    qDebug() << "111 itemGroup->getChildItems().rotation:" << item->rotation();
-    QList<QPair<QSharedPointer<GraphicsAbstractItem>, QPointF>> itemPosList;
-    foreach (auto childItem, item->getChildItems()) {
-        itemPosList.append(qMakePair(childItem, childItem->scenePos()));
-    }
+//    QList<QPair<QSharedPointer<GraphicsAbstractItem>, QPointF>> itemPosList;
+//    foreach (auto childItem, item->getChildItems()) {
+//        itemPosList.append(qMakePair(childItem, childItem->scenePos()));
+//    }
 
 //    qreal angle = item->rotation();
 //    item->setRotation(0);
@@ -157,10 +157,10 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsAbstractItem> item, Gra
 //        }
 //        childItem->setRotation(angle);
 //        item->updateCoordinate();
-//        childItem->setParentItem(nullptr);
-
+        childItem->setItemParent(nullptr);
+        selectionManager->setZValue(childItem, selectionManager->zValue(childItem) - 1);
         selectionManager->show(childItem);
-        selectionManager->updateGeometry(childItem);
+        selectionManager->updateHandle(childItem);
     }
 //    item->setRotation(angle);
     view->deleteItem(item);

@@ -94,6 +94,8 @@ public:
 
     QPointF opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const;
 
+    void updateHandle(QSharedPointer<GraphicsAbstractItem> item);
+
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
@@ -109,6 +111,7 @@ private:
     void addGroupItems(QSharedPointer<GraphicsAbstractItem> item);
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToSelectionManager(QSharedPointer<GraphicsAbstractItem> item);
+    void setZValue(QSharedPointer<GraphicsAbstractItem> item);
 
 private:
     bool m_isUndoCmdEnabled = true;

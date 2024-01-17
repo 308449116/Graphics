@@ -16,6 +16,11 @@ GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGr
     hide();
 }
 
+//void GraphicsHandle::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+//{
+//    Q_UNUSED(item);
+//}
+
 int GraphicsHandle::handleType() const
 {
     return m_handleType;

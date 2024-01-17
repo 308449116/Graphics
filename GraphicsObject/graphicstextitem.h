@@ -16,7 +16,7 @@ public:
 
     QSharedPointer<GraphicsAbstractItem> duplicate() const override;
 
-    void updateCoordinate() override;
+    void updateCoordinate(bool isGroup = false) override;
 
     int type() const override;
 
