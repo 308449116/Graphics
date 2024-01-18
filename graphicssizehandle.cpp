@@ -46,8 +46,8 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
     m_selection->setOpacity(0);
-    QPointF beginOffset = m_item->mapFromScene(m_pressedScenePos) - m_item->mapFromScene(m_oppositePos);
-    QPointF endOffset = m_item->mapFromScene(m_lastScenePos) - m_item->mapFromScene(m_oppositePos);
+    QPointF beginOffset = m_item->item()->mapFromScene(m_pressedScenePos) - m_item->item()->mapFromScene(m_oppositePos);
+    QPointF endOffset = m_item->item()->mapFromScene(m_lastScenePos) - m_item->item()->mapFromScene(m_oppositePos);
 //    qDebug() << "m_pressedScenePos" << m_pressedScenePos
 //        << " m_lastScenePos" << m_lastScenePos;
 
@@ -75,7 +75,7 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 //    qDebug() << "mouseMoveEvent sx:" << sx
 //             << "  sy:" << sy;
-    m_item->stretch(sx , sy , m_item->mapFromScene(m_oppositePos));
+    m_item->stretch(sx , sy , m_item->item()->mapFromScene(m_oppositePos));
     QGraphicsItem::mouseMoveEvent(event);
 }
 

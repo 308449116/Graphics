@@ -15,7 +15,7 @@ GraphicsItem *GraphicsItemManager::createGraphicsItem(GraphicsItemType type)
     GraphicsItem *item = nullptr;
     switch (type) {
     case GraphicsItemType::RectItem: {
-        item = new GraphicsRectItem(QRectF(-50, -50, 100, 100));
+        item = new GraphicsRectItem(QRectF(0, 0, 100, 100));
         break;
     }
     case GraphicsItemType::TextItem: {
@@ -30,8 +30,8 @@ GraphicsItem *GraphicsItemManager::createGraphicsItem(GraphicsItemType type)
 
     if (item == nullptr) return item;
 
-    item->moveBy(item->width()/2, item->height()/2);
-    m_scene->addItem(item);
+//    item->moveBy(item->width()/2, item->height()/2);
+    m_scene->addItem(item->item());
     return item;
 }
 
@@ -39,7 +39,7 @@ void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
 {
     if (item == nullptr) return;
 
-    m_scene->removeItem(item);
+    m_scene->removeItem(item->item());
     delete item;
     item = nullptr;
 }

@@ -44,7 +44,7 @@ void GraphicsRotateHandle::customPaint(QPainter *painter, const QStyleOptionGrap
 void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
-    QPointF origin = m_item->mapToScene(m_item->getRect().center());
+    QPointF origin = m_item->item()->mapToScene(m_item->boundingRect().center());
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
     qreal angle = qAtan2(len_y, len_x) * 180 / PI;
@@ -58,8 +58,8 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
     //移动处理
-    QPointF origin = m_item->mapToScene(m_item->getRect().center());
-//  item->setTransformOriginPoint(item->getRect().center());
+    QPointF origin = m_item->item()->mapToScene(m_item->boundingRect().center());
+    m_item->item()->setTransformOriginPoint(m_item->boundingRect().center());
 
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
@@ -72,6 +72,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     m_item->setRotation( angle );
     m_selection->updateGeometry();
+//    qDebug() << "GraphicsRotateHandle boundingRect" << m_item->boundingRect();
     QGraphicsItem::mouseMoveEvent(event);
 }
 

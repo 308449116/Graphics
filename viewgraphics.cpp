@@ -4,6 +4,7 @@
 #include "graphicsitemmanager.h"
 #include "graphicsitemmanager.h"
 #include <QDebug>
+#include <QGraphicsItem>
 
 ViewGraphics::ViewGraphics(QWidget* parent)
     : QGraphicsView{parent}, m_selectionManager(new GraphicsSelectionManager)

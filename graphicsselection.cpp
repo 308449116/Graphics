@@ -70,12 +70,14 @@ void GraphicsSelection::updateGeometry()
     if (!m_item) return;
     qreal angle = m_item->rotation();
     m_item->setRotation(0);
-    const QRectF r =  m_item->mapRectToScene(m_item->getRect());
-    QPointF originPoint = m_item->mapToScene(m_item->getRect().center());
+    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());
+    QPointF originPoint = m_item->item()->mapToScene(m_item->item()->boundingRect().center());
     m_item->setRotation(angle);
 
 //    const QRectF r2 = m_item->getRect();
-//    qDebug() << "updateGeometry r:" << r;
+    qDebug() << "updateGeometry r:" << r;
+    qDebug() << "updateGeometry getRect:" << m_item->getRect();
+    qDebug() << "updateGeometry boundingRect:" << m_item->item()->boundingRect();
 //    qDebug() << "updateGeometry r2" << r2;
 //    qDebug() << "updateGeometry r topLeft:" << r.topLeft() << "updateGeometry r2 topLeft:" << r2.topLeft();
 //    qDebug() << "updateGeometry r mapToScene topLeft:"

@@ -26,7 +26,7 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
-    m_initialPos = m_item->pos();
+    m_initialPos = m_item->item()->pos();
     QGraphicsItem::mousePressEvent(event);
 }
 
@@ -34,7 +34,7 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
     //移动处理
-    m_item->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
+    m_item->item()->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
     m_selection->updateGeometry();
     QGraphicsItem::mouseMoveEvent(event);
 }

@@ -1,77 +1,114 @@
 #include "graphicsitem.h"
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
 
-GraphicsItem::GraphicsItem(QGraphicsItem *parent)
-    : GraphicsAbstractItem(parent)
+GraphicsItem::GraphicsItem(QObject *parent)
+    : QObject(parent)
 {
-//    setFlag(QGraphicsItem::ItemIsMovable, true);
-//    setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-int GraphicsItem::type() const
+GraphicsItem::~GraphicsItem()
 {
-    return Type;
+    if (m_item) {
+        delete m_item;
+        m_item = nullptr;
+    }
+}
+
+QRectF GraphicsItem::getRect() const
+{
+    return m_localRect;
+}
+
+void GraphicsItem::addToGroup(QSharedPointer<GraphicsItem> item)
+{
+    Q_UNUSED(item);
+}
+
+void GraphicsItem::removeFromGroup(QSharedPointer<GraphicsItem> item)
+{
+    Q_UNUSED(item);
+}
+
+QSet<QSharedPointer<GraphicsItem> > GraphicsItem::getChildItems() const
+{
+    return QSet<QSharedPointer<GraphicsItem> >();
+}
+
+void GraphicsItem::setRotation(qreal newAngle)
+{
+    m_item->setRotation(newAngle);
+}
+
+qreal GraphicsItem::rotation()
+{
+    return m_item->rotation();
+}
+
+void GraphicsItem::move(const QPointF &point)
+{
+    m_item->moveBy(point.x(),point.y());
+}
+
+void GraphicsItem::setItemName(QString newName)
+{
+    m_itemName = newName;
+}
+
+QString GraphicsItem::itemName() const
+{
+    return m_itemName;
+}
+
+qreal GraphicsItem::width() const
+{
+    return m_width;
+}
+
+void GraphicsItem::setWidth(qreal newWidth)
+{
+    m_width = newWidth;
+}
+
+qreal GraphicsItem::height() const
+{
+    return m_height;
+}
+
+void GraphicsItem::setHeight(qreal newHeight)
+{
+    m_height = newHeight;
+}
+
+QGraphicsItem *GraphicsItem::item() const
+{
+    return m_item;
 }
 
 QRectF GraphicsItem::boundingRect() const
 {
-    QRectF rect = getRect();
-//    if (isSelected()) {
-//        rect.adjust(-3.0, -3.0, 3.0, 3.0);
-//        rect.adjust(0, 0, 0, 20);
-//    }
-    return rect;
+    return m_item->boundingRect();
 }
 
-void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+bool GraphicsItem::contains(const QPointF &point) const
 {
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-    painter->setRenderHint(QPainter::TextAntialiasing, true);
-
-    // 自定义绘制
-    customPaint(painter, option, widget);
-
-    //高亮选中
-    if (option->state & QStyle::State_Selected) {
-        qt_graphicsItem_highlightSelected(this, painter, option);
-    }
+    return m_item->contains(point);
 }
 
-//QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-//{
-//    if ( change == QGraphicsItem::ItemSelectedHasChanged ) {
-//        QGraphicsItemGroup *group = dynamic_cast<QGraphicsItemGroup*>(parentItem());
-//        if (!group) {
-//            emit selectedChange(this, value.toBool());
-//        } else {
-//            setSelected(false);
-//            return QVariant::fromValue<bool>(false);
-//        }
-//    }
+qreal GraphicsItem::groupAngle() const
+{
+    return m_groupAngle;
+}
 
-//    return QGraphicsItem::itemChange(change, value);
-//}
+void GraphicsItem::setGroupAngle(qreal newGroupAngle)
+{
+    m_groupAngle = newGroupAngle;
+}
 
-//void GraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    QGraphicsItem::mousePressEvent(event);
-//}
+QPointF GraphicsItem::oppositePos() const
+{
+    return m_oppositePos;
+}
 
-//void GraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-//{
-////    if (!m_hideHandleSended) {
-////        emit handleStateSwitch(false);
-////        m_hideHandleSended = true;
-////    }
-//    QGraphicsItem::mouseMoveEvent(event);
-//}
-
-//void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-//{
-////    m_hideHandleSended = false;
-////    emit handleStateSwitch(true);
-//    QGraphicsItem::mouseReleaseEvent(event);
-//}
+void GraphicsItem::setOppositePos(QPointF newOppositePos)
+{
+    m_oppositePos = newOppositePos;
+}
