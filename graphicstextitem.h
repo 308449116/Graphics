@@ -29,10 +29,6 @@ public:
 
     QFont font() const;
 
-    qreal scaleX() const;
-
-    void setScaleX(qreal newScaleX);
-
     //protected:
     //    void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
@@ -47,9 +43,9 @@ private:
     qreal m_initialFontSize;
     int m_lastFontSize;
     int m_descent;
-    qreal m_scaleX = 1;
     QPointF m_originPos;
     QPointF m_textPos;
+    QTransform m_transform;
 };
 
 #endif // GRAPHICSTEXTITEM_H

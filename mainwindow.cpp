@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "graphicsitem.h"
+#include "graphicstextitem.h"
 //#include "scenegraphics.h"
 //#include "canvasbarcodeitem.h"
 //#include "decoratoritemgraphics.h"
@@ -73,7 +75,17 @@ void MainWindow::on_textBtn_clicked()
 
 void MainWindow::on_barcodeBtn_clicked()
 {
-    ui->graphicsView->createBarcoedItem();
+//    ui->graphicsView->createBarcoedItem();
+    rectItem = new GraphicsTextItem("jpkg");
+    ui->graphicsView->scene()->addItem(rectItem->item());
+    QTransform transform;
+    transform.translate(rectItem->item()->transformOriginPoint().x(), rectItem->item()->transformOriginPoint().y());
+    transform.scale(3, 1);
+    transform.rotate(rectItem->rotation());
+    transform.translate(-rectItem->item()->transformOriginPoint().x(), -rectItem->item()->transformOriginPoint().y());
+    rectItem->item()->setTransform(transform);
+    rectItem->item()->moveBy(300, 300);
+//    rectItem->item()->setScale(rectItem->scaleX());
 }
 
 void MainWindow::on_underLineBtn_clicked(bool checked)
@@ -87,3 +99,20 @@ void MainWindow::on_underLineBtn_clicked(bool checked)
 //    font.setBold(true);
 //    textItem->setCurrentFont(font);
 }
+
+static int count = 1;
+void MainWindow::on_imageBtn_clicked()
+{
+
+//    textItem->item()->setRotation(90);
+    QTransform transform;
+    transform.translate(rectItem->item()->transformOriginPoint().x(), rectItem->item()->transformOriginPoint().y());
+    transform.scale(3, 1);
+    transform.rotate(angle * count);
+    transform.translate(-rectItem->item()->transformOriginPoint().x(), -rectItem->item()->transformOriginPoint().y());
+    rectItem->item()->setTransform(transform);
+//    rectItem->item()->setRotation(30);
+    count++;
+
+}
+

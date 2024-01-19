@@ -35,12 +35,13 @@ QSet<QSharedPointer<GraphicsItem> > GraphicsItem::getChildItems() const
 
 void GraphicsItem::setRotation(qreal newAngle)
 {
-    m_item->setRotation(newAngle);
+    m_angle = newAngle;
+    setTransform();
 }
 
 qreal GraphicsItem::rotation()
 {
-    return m_item->rotation();
+    return m_angle;
 }
 
 void GraphicsItem::move(const QPointF &point)
@@ -111,4 +112,36 @@ QPointF GraphicsItem::oppositePos() const
 void GraphicsItem::setOppositePos(QPointF newOppositePos)
 {
     m_oppositePos = newOppositePos;
+}
+
+qreal GraphicsItem::scaleX() const
+{
+    return m_scaleX;
+}
+
+void GraphicsItem::setScaleX(qreal newScaleX)
+{
+    m_scaleX = newScaleX;
+    setTransform();
+}
+
+qreal GraphicsItem::scaleY() const
+{
+    return m_scaleY;
+}
+
+void GraphicsItem::setScaleY(qreal newScaleY)
+{
+    m_scaleY = newScaleY;
+    setTransform();
+}
+
+void GraphicsItem::setTransform()
+{
+    QTransform transform;
+    transform.translate(m_item->transformOriginPoint().x(), m_item->transformOriginPoint().y());
+    transform.rotate(m_angle);
+    transform.scale(m_scaleX, m_scaleY);
+    transform.translate(-m_item->transformOriginPoint().x(), -m_item->transformOriginPoint().y());
+    m_item->setTransform(transform);
 }

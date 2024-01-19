@@ -6,6 +6,7 @@
 class SceneGraphics;
 class QGraphicsSimpleTextItem;
 class CanvasTextItem;
+class GraphicsItem;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,10 +28,14 @@ private slots:
     void on_barcodeBtn_clicked();
 
     void on_underLineBtn_clicked(bool checked);
+    void on_imageBtn_clicked();
+
 private:
     Ui::MainWindow* ui;
     SceneGraphics* m_scene;
     CanvasTextItem* textItem;
     QGraphicsSimpleTextItem *textitem2;
+    GraphicsItem *rectItem;
+    int angle = 90;
 };
 #endif // MAINWINDOW_H

@@ -66,18 +66,23 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     }
 
     qDebug () << "m_scaleX:" << m_scaleX;
+    this->setScaleX(m_scaleX);
+    qDebug () << "m_scaleX:" << m_scaleX;
+//    QTransform transform;
+//    transform.translate(m_item->transformOriginPoint().x(), m_item->transformOriginPoint().y());
+//    transform.scale(m_scaleX, m_scaleY);
+//    transform.rotate(this->rotation());
+//    transform.translate(-m_item->transformOriginPoint().x(), -m_item->transformOriginPoint().y());
+//    m_textItem->setTransform(transform);
 
-    QTransform transform;
-//    transform.scale(m_scaleX, 1);
-//    // 将变换应用到文本项上
 //    m_textItem->setTransformOriginPoint(m_textItem->boundingRect().width() / 2,
 //                                        m_textItem->boundingRect().height() / 2);
 //    transform.translate(-m_textItem->boundingRect().width() / 2, -m_textItem->boundingRect().height()/ 2);
-//    transform.translate(m_localRect.topLeft().x(), m_localRect.topLeft().y());
-    transform.scale(m_scaleX, 1);
-//    transform.translate(-m_localRect.bottomRight().x(), -m_localRect.bottomRight().y());
+//    transform.translate(origin.x(), origin.y());
+//    transform.scale(m_scaleX, 1);
+//    transform.translate(-origin.x(), -origin.y());
 //    transform.translate(m_textItem->boundingRect().width() / 2, m_textItem->boundingRect().height()/ 2);
-    m_textItem->setTransform(transform);
+//    m_textItem->setTransform(transform);
 }
 
 void GraphicsTextItem::updateCoordinate()
@@ -85,7 +90,7 @@ void GraphicsTextItem::updateCoordinate()
     if (!m_textItem->parentItem()) {
         auto angle = qDegreesToRadians(m_textItem->rotation());
 
-        auto p1 = m_localRect.center();
+        auto p1 = m_textItem->boundingRect().center();
         auto origin = m_textItem->transformOriginPoint();
         QPointF p2 = QPointF(0, 0);
 
@@ -94,9 +99,9 @@ void GraphicsTextItem::updateCoordinate()
 
         auto diff = p1 - p2;
         m_textItem->moveBy(-diff.x(), -diff.y());
-        m_textItem->setTransformOriginPoint(m_localRect.center());
+        m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
     } else {
-        m_textItem->setTransformOriginPoint(m_localRect.center());
+        m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
     }
 
     m_initialRect = m_localRect;
@@ -190,6 +195,7 @@ void GraphicsTextItem::updateLocalRect()
              << " width:" << m_height;
 
     m_initialRect = m_localRect = m_textItem->boundingRect();
+    m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
     //    m_initialRect = m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
     //    m_startSize = m_size = QSizeF(rect.width(), rect.height());
     //    m_originSize = m_startSize;
@@ -206,15 +212,15 @@ QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
     return QSizeF(rect.width(), rect.height());
 }
 
-qreal GraphicsTextItem::scaleX() const
-{
-    return m_scaleX;
-}
+//qreal GraphicsTextItem::scaleX() const
+//{
+//    return m_scaleX;
+//}
 
-void GraphicsTextItem::setScaleX(qreal newScaleX)
-{
-    m_scaleX = newScaleX;
-}
+//void GraphicsTextItem::setScaleX(qreal newScaleX)
+//{
+//    m_scaleX = newScaleX;
+//}
 
 int GraphicsTextItem::type() const
 {

@@ -44,7 +44,9 @@ void GraphicsRotateHandle::customPaint(QPainter *painter, const QStyleOptionGrap
 void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
-    QPointF origin = m_item->item()->mapToScene(m_item->boundingRect().center());
+//    QPointF origin = m_item->item()->sceneBoundingRect().center();
+//    QPointF origin = m_item->item()->mapToScene(m_item->boundingRect().center());
+    QPointF origin = m_item->item()->mapToScene(m_item->item()->transformOriginPoint());
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
     qreal angle = qAtan2(len_y, len_x) * 180 / PI;
@@ -58,8 +60,10 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
     //移动处理
-    QPointF origin = m_item->item()->mapToScene(m_item->boundingRect().center());
-    m_item->item()->setTransformOriginPoint(m_item->boundingRect().center());
+//    QPointF origin = m_item->item()->sceneBoundingRect().center();
+//    m_item->item()->setTransformOriginPoint(origin);
+    QPointF origin = m_item->item()->mapToScene(m_item->item()->transformOriginPoint());
+//    m_item->item()->setTransformOriginPoint(origin);
 
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
@@ -70,6 +74,16 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if ( angle < -360 )
         angle+=360;
 
+//    QTransform transform;
+//    transform.translate(m_item->item()->transformOriginPoint().x(), m_item->item()->transformOriginPoint().y());
+//    transform.scale(m_item->scaleX(), 1);
+//    transform.rotate(angle);
+//    transform.translate(-m_item->item()->transformOriginPoint().x(), -m_item->item()->transformOriginPoint().y());
+//    m_item->item()->setTransform(transform);
+    qDebug() << "m_item->scaleX()" << m_item->scaleX();
+    qDebug() << "origin:" << m_item->item()->transformOriginPoint();
+    qDebug() << "angle:" << angle;
+    qDebug() << "rotation:" << m_item->rotation();
     m_item->setRotation( angle );
     m_selection->updateGeometry();
 //    qDebug() << "GraphicsRotateHandle boundingRect" << m_item->boundingRect();

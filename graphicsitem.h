@@ -62,11 +62,24 @@ public:
     QPointF oppositePos() const;
     void setOppositePos(QPointF newOppositePos);
 
+    qreal scaleX() const;
+    void setScaleX(qreal newScaleX);
+
+    qreal scaleY() const;
+    void setScaleY(qreal newScaleY);
+
+private:
+    void setTransform();
+
 protected:
     qreal m_width = 0;
     qreal m_height = 0;
     qreal m_groupAngle = 0;
+    qreal m_angle = 0;
+
     QGraphicsItem *m_item = nullptr;
+    qreal m_scaleX = 1;
+    qreal m_scaleY = 1;
 
     QString m_itemName;
     QRectF m_localRect;

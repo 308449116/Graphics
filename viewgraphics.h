@@ -49,6 +49,7 @@ private:
 //    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;
 //    GraphicsItem  *m_currentItem = nullptr;
+    GraphicsItem *textItem;
 };
 
 #endif // VIEWGRAPHICS_H

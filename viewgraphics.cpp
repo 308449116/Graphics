@@ -2,7 +2,7 @@
 #include "graphicsselectionmanager.h"
 #include "scenegraphics.h"
 #include "graphicsitemmanager.h"
-#include "graphicsitemmanager.h"
+#include "graphicsitem.h"
 #include <QDebug>
 #include <QGraphicsItem>
 
@@ -50,7 +50,7 @@ ViewGraphics::~ViewGraphics()
 
 void ViewGraphics::createTextItem()
 {
-    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);
+    textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);
     addItemToScene(textItem);
 }
 
@@ -85,6 +85,7 @@ void ViewGraphics::createRectItem()
 
 void ViewGraphics::createBarcoedItem()
 {
+    textItem->item()->setRotation(90);
 //    CanvasBarcodeItem *barcodeitem = new CanvasBarcodeItem();
 //    m_scene->addItem(barcodeitem);
 //    m_manageItem.insert(barcodeitem);
