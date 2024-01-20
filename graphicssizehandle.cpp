@@ -73,8 +73,7 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     default:
         break;
     }
-//    qDebug() << "mouseMoveEvent sx:" << sx
-//             << "  sy:" << sy;
+    qDebug() << "mouseMoveEvent m_oppositePos:" << m_item->item()->mapFromScene(m_oppositePos);
     m_item->stretch(sx , sy , m_item->item()->mapFromScene(m_oppositePos));
     QGraphicsItem::mouseMoveEvent(event);
 }

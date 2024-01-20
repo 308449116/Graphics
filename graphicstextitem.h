@@ -43,9 +43,9 @@ private:
     qreal m_initialFontSize;
     int m_lastFontSize;
     int m_descent;
-    QPointF m_originPos;
     QPointF m_textPos;
     QTransform m_transform;
+    bool m_fontChange;
 };
 
 #endif // GRAPHICSTEXTITEM_H

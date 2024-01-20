@@ -69,12 +69,26 @@ void GraphicsSelection::updateGeometry()
 
     if (!m_item) return;
     qreal angle = m_item->rotation();
-    m_item->setRotation(0);
-    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());
-    QPointF originPoint = m_item->item()->mapToScene(m_item->item()->boundingRect().center());
-    m_item->setRotation(angle);
+//    m_item->setRotation(0);
+    QTransform transform;
+    QPointF pos = m_item->item()->mapToScene(m_item->originPos());
+    transform.translate(pos.x(), pos.y());
+    transform.rotate(-angle);
+//    transform.scale(m_item->scaleX(), m_item->scaleY());
+    transform.translate(-pos.x(), -pos.y());
+
+    const QRectF r =  m_item->item()->mapRectToScene(transform.mapRect(m_item->item()->boundingRect()));
+//    QRectF rect = QRectF(m_item->item()->scenePos(), QSizeF(m_item->width(), m_item->height()));
+//    const QRectF r =  rect;
+//    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());
+//    transform.map()
+//    QPointF originPoint = transform.map(m_item->originPos());
+    QPointF originPoint = r.center();
+//    QPointF originPoint = m_item->item()->mapToScene(m_item->item()->boundingRect().center());
+//    m_item->setRotation(angle);
 
 //    const QRectF r2 = m_item->getRect();
+//    QTransform trans = m_item->item()->sceneTransform();
     qDebug() << "updateGeometry width:" << m_item->width();
     qDebug() << "updateGeometry height:" << m_item->height();
 //    qDebug() << "updateGeometry scale:" << m_item->item()->scale();
@@ -83,10 +97,11 @@ void GraphicsSelection::updateGeometry()
 //    qDebug() << "updateGeometry rotation:" << m_item->rotation();
     qDebug() << "updateGeometry transformOriginPoint:" << m_item->item()->transformOriginPoint();
     qDebug() << "updateGeometry mapToScene transformOriginPoint:" << m_item->item()->mapToScene(m_item->item()->transformOriginPoint());
-    qDebug() << "updateGeometry originPoint:" << originPoint;
+//    qDebug() << "updateGeometry originPoint:" << originPoint;
     qDebug() << "updateGeometry pos:" << m_item->item()->pos();
     qDebug() << "updateGeometry r:" << r;
     qDebug() << "updateGeometry getRect:" << m_item->getRect();
+//    qDebug() << "updateGeometry rect:" << rect;
     qDebug() << "updateGeometry mapRectToScene:" << m_item->item()->mapRectToScene(m_item->getRect());
     qDebug() << "updateGeometry boundingRect:" << m_item->item()->boundingRect();
     qDebug() << "updateGeometry sceneBoundingRect:" << m_item->item()->sceneBoundingRect();
@@ -149,6 +164,7 @@ void GraphicsSelection::updateGeometry()
 
         hndl->setTransformOriginPoint(hndl->mapFromScene(originPoint));
         hndl->setRotation(angle);
+//        hndl->setTransform(trans);
 //        qDebug() << "updateGeometry handleType:" << hndl->handleType()
 //                 << "  pos:" << hndl->pos()
 //                 << "  scenePos:" << hndl->scenePos();

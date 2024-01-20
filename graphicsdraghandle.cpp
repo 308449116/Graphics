@@ -26,6 +26,8 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
+//    qDebug() << "GraphicsDragHandle pos:" << m_item->item()->pos();
+//    qDebug() << "GraphicsDragHandle scenePos:" << m_item->item()->scenePos();
     m_initialPos = m_item->item()->pos();
     QGraphicsItem::mousePressEvent(event);
 }

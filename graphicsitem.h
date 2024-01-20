@@ -68,6 +68,9 @@ public:
     qreal scaleY() const;
     void setScaleY(qreal newScaleY);
 
+    QPointF originPos() const;
+    void setOriginPos(QPointF newOriginPos);
+
 private:
     void setTransform();
 
@@ -85,6 +88,7 @@ protected:
     QRectF m_localRect;
     QRectF m_initialRect;
     QPointF m_oppositePos;
+    QPointF m_originPos;
 };
 
 #endif // GRAPHICSITEM_H

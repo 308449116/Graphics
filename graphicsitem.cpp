@@ -139,9 +139,19 @@ void GraphicsItem::setScaleY(qreal newScaleY)
 void GraphicsItem::setTransform()
 {
     QTransform transform;
-    transform.translate(m_item->transformOriginPoint().x(), m_item->transformOriginPoint().y());
+    transform.translate(m_originPos.x(), m_originPos.y());
     transform.rotate(m_angle);
     transform.scale(m_scaleX, m_scaleY);
-    transform.translate(-m_item->transformOriginPoint().x(), -m_item->transformOriginPoint().y());
+    transform.translate(-m_originPos.x(), -m_originPos.y());
     m_item->setTransform(transform);
+}
+
+QPointF GraphicsItem::originPos() const
+{
+    return m_originPos;
+}
+
+void GraphicsItem::setOriginPos(QPointF newOriginPos)
+{
+    m_originPos = newOriginPos;
 }
