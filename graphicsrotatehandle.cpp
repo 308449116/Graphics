@@ -79,6 +79,14 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "angle:" << angle;
     qDebug() << "rotation:" << m_item->rotation();
     m_item->setRotation( angle );
+
+    QTransform transform;
+    qDebug() << "m_translationPos========:" << m_item->originPos();
+    transform.translate(m_item->originPos().x(), m_item->originPos().y());
+    transform.rotate(m_item->rotation());
+    transform.scale(m_item->scaleX(), m_item->scaleY());
+    transform.translate(-m_item->originPos().x(), -m_item->originPos().y());
+    m_item->item()->setTransform(transform);
     m_selection->updateGeometry();
 //    qDebug() << "GraphicsRotateHandle boundingRect" << m_item->boundingRect();
     QGraphicsItem::mouseMoveEvent(event);

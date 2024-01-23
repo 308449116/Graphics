@@ -38,7 +38,7 @@ void GraphicsSelection::setItem(GraphicsItem *item)
 //            h->setFocus();
 //        }
     }
-    updateGeometry();
+    updateActive();
     show();
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
 //        if (isShow) {
@@ -57,8 +57,68 @@ bool GraphicsSelection::isUsed() const
 
 void GraphicsSelection::updateActive()
 {
+    if (!m_item) return;
 
+    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());
+    foreach (GraphicsHandle *hndl, m_handleList) {
+        if (!hndl)
+            continue;
+
+        switch (hndl->handleType()) {
+        case GraphicsHandle::LeftTop:
+            hndl->move(r.x(), r.y());
+            break;
+        case GraphicsHandle::Top:
+            hndl->move(r.x() + r.width() / 2, r.y());
+            break;
+        case GraphicsHandle::RightTop:
+            hndl->move(r.x() + r.width(), r.y());
+            break;
+        case GraphicsHandle::Right:
+            hndl->move(r.x() + r.width(), r.y() + r.height() / 2);
+            break;
+        case GraphicsHandle::RightBottom:
+            hndl->move(r.x() + r.width(), r.y() + r.height());
+            break;
+        case GraphicsHandle::Bottom:
+            hndl->move(r.x() + r.width() / 2, r.y() + r.height());
+            break;
+        case GraphicsHandle::LeftBottom:
+            hndl->move(r.x(), r.y() + r.height());
+            break;
+        case GraphicsHandle::Left:
+            hndl->move(r.x(), r.y() + r.height() / 2);
+            break;
+        case GraphicsHandle::Drag:
+            //            qDebug() << "updateGeometry handleType:" << hndl->handleType()
+            //                     << "  rect:" << r
+            //                     << "  originPoint:" << originPoint;
+            hndl->setLocalRect(r);
+            //            hndl->move(originPoint.x(), originPoint.y());
+            break;
+        case GraphicsHandle::Rotate:
+            hndl->move(r.x() + r.width() / 2, r.y() + r.height() + ROTATE_HANDLE_MARGIN);
+            break;
+        default:
+            break;
+        }
+    }
 }
+
+//void GraphicsSelection::updateGeometry()
+//{
+//    if (!m_item) return;
+////    QTransform transform = m_item->item()->transform();
+////    transform.rotate(0);
+//    foreach (GraphicsHandle *hndl, m_handleList) {
+//        if (!hndl)
+//            continue;
+
+//        QTransform transform = hndl->itemTransform(m_item->item());
+////        transform.scale(1, 1);
+//        hndl->setTransform(transform);
+//    }
+//}
 
 void GraphicsSelection::updateGeometry()
 {
@@ -71,13 +131,14 @@ void GraphicsSelection::updateGeometry()
     qreal angle = m_item->rotation();
 //    m_item->setRotation(0);
     QTransform transform;
-    QPointF pos = m_item->item()->mapToScene(m_item->originPos());
+    QPointF pos = m_item->originPos();
     transform.translate(pos.x(), pos.y());
     transform.rotate(-angle);
 //    transform.scale(m_item->scaleX(), m_item->scaleY());
     transform.translate(-pos.x(), -pos.y());
 
     const QRectF r =  m_item->item()->mapRectToScene(transform.mapRect(m_item->item()->boundingRect()));
+//    const QRectF r =  m_item->item()->mapRectToScene(transform.mapRect(m_item->item()->boundingRect()));
 //    QRectF rect = QRectF(m_item->item()->scenePos(), QSizeF(m_item->width(), m_item->height()));
 //    const QRectF r =  rect;
 //    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());

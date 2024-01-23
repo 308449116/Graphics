@@ -36,6 +36,9 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 //    m_scene->addItem(rectItem);
 //    m_scene->addItem(lineItemX);
 //    m_scene->addItem(lineItemY);
+
+
+
     connect(m_scene, &SceneGraphics::deleteGraphicsItem, this, &ViewGraphics::removeItemFormScene);
 //    connect(m_scene, &SceneGraphics::handleStateChange, this, &ViewGraphics::handleStateSwitch);
 //    connect(m_scene, &SceneGraphics::updateItemHandle, this, &ViewGraphics::updateItemHandle);

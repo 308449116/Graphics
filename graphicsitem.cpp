@@ -36,7 +36,7 @@ QSet<QSharedPointer<GraphicsItem> > GraphicsItem::getChildItems() const
 void GraphicsItem::setRotation(qreal newAngle)
 {
     m_angle = newAngle;
-    setTransform();
+//    setTransform();
 }
 
 qreal GraphicsItem::rotation()
@@ -122,7 +122,7 @@ qreal GraphicsItem::scaleX() const
 void GraphicsItem::setScaleX(qreal newScaleX)
 {
     m_scaleX = newScaleX;
-    setTransform();
+//    setTransform();
 }
 
 qreal GraphicsItem::scaleY() const
@@ -133,25 +133,26 @@ qreal GraphicsItem::scaleY() const
 void GraphicsItem::setScaleY(qreal newScaleY)
 {
     m_scaleY = newScaleY;
-    setTransform();
+//    setTransform();
 }
 
 void GraphicsItem::setTransform()
 {
     QTransform transform;
-    transform.translate(m_originPos.x(), m_originPos.y());
+    qDebug() << "m_translationPos========:" << m_translationPos;
+//    transform.translate(m_translationPos.x(), m_translationPos.y());
     transform.rotate(m_angle);
     transform.scale(m_scaleX, m_scaleY);
-    transform.translate(-m_originPos.x(), -m_originPos.y());
+//    transform.translate(-m_translationPos.x(), -m_translationPos.y());
     m_item->setTransform(transform);
 }
 
 QPointF GraphicsItem::originPos() const
 {
-    return m_originPos;
+    return m_translationPos;
 }
 
 void GraphicsItem::setOriginPos(QPointF newOriginPos)
 {
-    m_originPos = newOriginPos;
+    m_translationPos = newOriginPos;
 }

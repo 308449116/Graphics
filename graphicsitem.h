@@ -88,7 +88,7 @@ protected:
     QRectF m_localRect;
     QRectF m_initialRect;
     QPointF m_oppositePos;
-    QPointF m_originPos;
+    QPointF m_translationPos;
 };
 
 #endif // GRAPHICSITEM_H

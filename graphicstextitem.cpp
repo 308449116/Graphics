@@ -28,6 +28,21 @@ GraphicsTextItem::GraphicsTextItem(const QString &text, QObject *parent)
     m_font.setPixelSize(m_initialFontSize);
     m_text = "jpkg";
     setFont(m_font);
+    setRotation(30);
+
+    QTransform transform;
+    qDebug() << "m_translationPos========:" << m_translationPos;
+    qDebug() << "boundingRect()========:" << boundingRect();
+    transform.translate(boundingRect().center().x(), boundingRect().center().y());
+    transform.rotate(30);
+    transform.scale(2, 1);
+      //  transform.translate(-boundingRect().center().x()*0.5, -boundingRect().center().y()*0.5);
+    this->item()->setTransform(transform);
+
+//    this->item()->setTransformOriginPoint(boundingRect().center()*2);
+//    this->item()->setRotation(30);
+//    this->item()->setScale(2);
+
 }
 
 void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
@@ -45,7 +60,7 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     trans.translate(-origin.x(),-origin.y());
     qDebug () << "sx:" << sx << "sy:" << sy;
     //    qDebug () << "============= transformOriginPoint:" << this->transformOriginPoint();
-//    m_originPos = origin;
+//    m_translationPos = origin;
 
     //    prepareGeometryChange();
     m_localRect = trans.mapRect(m_initialRect);
@@ -60,13 +75,14 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
         qDebug () << "getSizeByFontSize:" << getSizeByFontSize(m_initialFontSize).width();
         qDebug () << "m_initialFontSize:" << m_initialFontSize;
 
+        m_translationPos = origin;
         QTransform transform;
         transform.translate(origin.x(), origin.y());
-        qDebug () << "origin.x():" << transform.map(m_originPos);
+//        qDebug () << "origin.x():" << transform.map(m_translationPos);
         transform.rotate(m_angle);
         transform.scale(m_scaleX, m_scaleY);
         transform.translate(-origin.x(), -origin.y());
-        qDebug () << "-origin.x():" << transform.map(m_originPos);
+//        qDebug () << "-origin.x():" << transform.map(m_translationPos);
         m_item->setTransform(transform);
         m_fontChange = false;
     } else {
@@ -101,11 +117,21 @@ void GraphicsTextItem::updateCoordinate()
 {
     if (!m_textItem->parentItem()) {
         auto angle = qDegreesToRadians(m_textItem->rotation());
+//        auto p1 = m_textItem->mapToScene(transform.map(m_textItem->boundingRect().center()));
+//        auto origin = m_textItem->mapToScene(m_translationPos);
+//        auto p1 = m_textItem->sceneBoundingRect().center();
+        qDebug () << "1111 m_translationPos:" << m_translationPos;
+        qDebug () << "1111 m_scaleY:" << m_scaleY;
 
-        auto p1 = m_textItem->mapToScene(m_textItem->boundingRect().center());
-        auto origin = m_textItem->mapToScene(m_originPos);
+        QTransform transform;
+//        transform.translate(m_translationPos.x(), m_translationPos.y());
+        transform.rotate(m_angle);
+        transform.scale(m_scaleX, m_scaleY);
+
+        auto p1 = m_textItem->boundingRect().center();
+        auto origin = m_translationPos;
         QPointF p2 = QPointF(0, 0);
-        qDebug () << "p1:" << p1;
+        qDebug () << "p1:"<< p1;
         qDebug () << "origin:" << origin;
 
         p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
@@ -115,8 +141,14 @@ void GraphicsTextItem::updateCoordinate()
         auto diff = p1 - p2;
         qDebug () << "diff:" << diff;
         m_textItem->moveBy(-diff.x(), -diff.y());
-        //                m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
-        m_originPos = m_textItem->boundingRect().center();
+//        m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
+        m_translationPos = p1;
+        qDebug () << "m_translationPos:" << m_translationPos;
+        qDebug () << "boundingRect center:" << m_textItem->boundingRect().center();
+        qDebug () << "sceneBoundingRect center:" <<m_textItem->sceneBoundingRect().center();
+//        m_translationPos = m_textItem->mapToScene(p1);
+//        qDebug () << "updateCoordinate sceneBoundingRect:" << m_textItem->sceneBoundingRect();
+//        qDebug () << "updateCoordinate m_translationPos:" << m_textItem->sceneBoundingRect();
     } else {
         //        m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
     }
@@ -124,6 +156,34 @@ void GraphicsTextItem::updateCoordinate()
     m_initialRect = m_localRect;
     m_initialFontSize = m_lastFontSize;
 }
+//void GraphicsTextItem::updateCoordinate()
+//{
+//    if (!m_textItem->parentItem()) {
+//        auto angle = qDegreesToRadians(m_textItem->rotation());
+
+//        auto p1 = m_textItem->mapToScene(m_textItem->boundingRect().center());
+//        auto origin = m_textItem->mapToScene(m_translationPos);
+//        QPointF p2 = QPointF(0, 0);
+//        qDebug () << "p1:" << p1;
+//        qDebug () << "origin:" << origin;
+
+//        p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
+//        p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
+//        qDebug () << "p2:" << p2;
+
+//        auto diff = p1 - p2;
+//        qDebug () << "diff:" << diff;
+//        m_textItem->moveBy(-diff.x(), -diff.y());
+//        //                m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
+//        m_translationPos = m_textItem->boundingRect().center();
+//        qDebug () << "updateCoordinate m_translationPos:" << m_translationPos;
+//    } else {
+//        //        m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
+//    }
+
+//    m_initialRect = m_localRect;
+//    m_initialFontSize = m_lastFontSize;
+//}
 
 QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
 {
@@ -191,8 +251,8 @@ QFont GraphicsTextItem::font() const
 ////    painter->drawText(QPointF(m_localRect.bottomLeft().x(), m_localRect.bottomLeft().y() - m_descent), m_text);
 
 ////    painter->setPen(Qt::blue);
-////    painter->drawLine(QLine(QPoint(m_originPos.x()-6, m_originPos.y()),QPoint(m_originPos.x()+6, m_originPos.y())));
-////    painter->drawLine(QLine(QPoint(m_originPos.x(), m_originPos.y()-6),QPoint(m_originPos.x(), m_originPos.y()+6)));
+////    painter->drawLine(QLine(QPoint(m_translationPos.x()-6, m_translationPos.y()),QPoint(m_translationPos.x()+6, m_translationPos.y())));
+////    painter->drawLine(QLine(QPoint(m_translationPos.x(), m_translationPos.y()-6),QPoint(m_translationPos.x(), m_translationPos.y()+6)));
 ////    painter->restore();
 //}
 
@@ -212,7 +272,7 @@ void GraphicsTextItem::updateLocalRect()
              << " width:" << m_height;
 
     m_initialRect = m_localRect = m_textItem->boundingRect();
-    m_originPos = m_textItem->boundingRect().center();
+    m_translationPos = m_textItem->boundingRect().center();
     //    m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
     //    m_initialRect = m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
     //    m_startSize = m_size = QSizeF(rect.width(), rect.height());

@@ -33,6 +33,7 @@ void GraphicsSizeHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     m_oppositePos = m_selection->opposite(m_handleType);
 //    qDebug() << "mousePressEvent m_handleType:" << m_handleType
 //             << "  oppositePos:" << m_oppositePos;
+    qDebug() << "mouseMoveEvent m_oppositePos:" << m_item->item()->mapFromScene(m_oppositePos);
 
     if( m_oppositePos.x() == 0 )
         m_oppositePos.setX(1);
@@ -73,15 +74,17 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     default:
         break;
     }
-    qDebug() << "mouseMoveEvent m_oppositePos:" << m_item->item()->mapFromScene(m_oppositePos);
+//    qDebug() << "mouseMoveEvent m_oppositePos:" << m_item->item()->mapFromScene(m_oppositePos);
     m_item->stretch(sx , sy , m_item->item()->mapFromScene(m_oppositePos));
     QGraphicsItem::mouseMoveEvent(event);
 }
 
 void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_item->updateCoordinate();
-    m_selection->updateGeometry();
-    m_selection->setOpacity(1);
+    if (m_lastScenePos != m_pressedScenePos) {
+        m_item->updateCoordinate();
+        m_selection->updateGeometry();
+        m_selection->setOpacity(1);
+    }
     QGraphicsItem::mouseReleaseEvent(event);
 }
