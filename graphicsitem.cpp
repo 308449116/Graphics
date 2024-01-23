@@ -112,3 +112,20 @@ void GraphicsItem::setOppositePos(QPointF newOppositePos)
 {
     m_oppositePos = newOppositePos;
 }
+
+qreal GraphicsItem::scaleY() const
+{
+    return m_scaleY;
+}
+
+qreal GraphicsItem::scaleX() const
+{
+    return m_scaleX;
+}
+
+void GraphicsItem::setScale(qreal scaleX, qreal scaleY)
+{
+    m_scaleX = scaleX;
+    m_scaleY = scaleY;
+    stretch(scaleX, scaleY, QPointF(0, 0));
+}

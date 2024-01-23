@@ -1,33 +1,99 @@
 #include "graphicstextitem.h"
-//#include "common.h"
 
-//#include <QPainter>
-//#include <QStyleOptionGraphicsItem>
-//#include <QStaticText>
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
+#include <QStaticText>
 #include <QApplication>
 #include <QFontMetricsF>
 #include <QDebug>
 
+GraphicsTextItem::GraphicsSimpleTextItem::GraphicsSimpleTextItem(QGraphicsItem *parent) :
+    QGraphicsSimpleTextItem{parent}
+{
+
+}
+
+GraphicsTextItem::GraphicsSimpleTextItem::GraphicsSimpleTextItem(const QString &text, QGraphicsItem *parent) :
+    QGraphicsSimpleTextItem{text, parent}
+{
+
+}
+
+void GraphicsTextItem::GraphicsSimpleTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    //    qDebug () << "============= m_itemBoundingRect:" << m_itemBoundingRect;
+        Q_UNUSED(widget)
+        Q_UNUSED(option)
+    //    painter->save();
+    //    QPointF centerPos(0, 0);
+    //    QRectF textRect =  QRectF(centerPos.x(), centerPos.y(), \
+    //                             m_originSize.width(), m_originSize.height());
+        painter->translate(m_itemBoundingRect.topLeft().x(), m_itemBoundingRect.topLeft().y());
+        painter->scale(m_scaleX, 1);
+        painter->translate(-m_itemBoundingRect.topLeft().x(), -m_itemBoundingRect.topLeft().y());
+
+        // 绘制
+        painter->setFont(this->font());
+    //    painter->drawText(m_itemBoundingRect, 0, m_text);
+        painter->drawStaticText(m_itemBoundingRect.topLeft(), QStaticText(this->text()));
+
+    //    painter->drawText(QPointF(m_itemBoundingRect.bottomLeft().x(), m_itemBoundingRect.bottomLeft().y() - m_descent), m_text);
+    //    painter->setPen(Qt::blue);
+    //    painter->drawLine(QLine(QPoint(m_originPos.x()-6, m_originPos.y()),QPoint(m_originPos.x()+6, m_originPos.y())));
+    //    painter->drawLine(QLine(QPoint(m_originPos.x(), m_originPos.y()-6),QPoint(m_originPos.x(), m_originPos.y()+6)));
+        //    painter->restore();
+}
+
+void GraphicsTextItem::GraphicsSimpleTextItem::setScale(qreal scaleX, qreal scaleY)
+{
+    m_scaleX = scaleX;
+    m_scaleY = scaleY;
+}
+
+qreal GraphicsTextItem::GraphicsSimpleTextItem::scaleY() const
+{
+    return m_scaleX;
+}
+
+qreal GraphicsTextItem::GraphicsSimpleTextItem::scaleX() const
+{
+    return m_scaleY;
+}
+
+void GraphicsTextItem::GraphicsSimpleTextItem::setItemBoundingRect(const QRectF &newItemBoundingRect)
+{
+    m_itemBoundingRect = newItemBoundingRect;
+}
+
+QRectF GraphicsTextItem::GraphicsSimpleTextItem::boundingRect() const
+{
+    return m_itemBoundingRect;
+}
+
+
+
+
+
 GraphicsTextItem::GraphicsTextItem(QObject *parent)
     : GraphicsItem(parent)
 {
-    m_item = m_textItem = new QGraphicsSimpleTextItem();
+    m_item = m_textItem = new GraphicsSimpleTextItem();
     m_initialFontSize = m_lastFontSize = 100;
     m_font = qApp->font();
     m_font.setPixelSize(m_initialFontSize);
     m_text = "jpkg";
+
+    m_textItem->setFont(m_font);
+    m_textItem->setText(m_text);
     updateLocalRect();
 }
 
-GraphicsTextItem::GraphicsTextItem(const QString &text, QObject *parent)
-    : GraphicsItem(parent)
+GraphicsTextItem::GraphicsTextItem(const QString &text, const QFont &font, QObject *parent)
+    : GraphicsItem(parent), m_text(text), m_font(font)
 {
-    m_item = m_textItem = new QGraphicsSimpleTextItem(text);
-    m_initialFontSize = m_lastFontSize = 100;
-    m_font = qApp->font();
-    m_font.setPixelSize(m_initialFontSize);
-    m_text = "jpkg";
-    setFont(m_font);
+    m_item = m_textItem = new GraphicsSimpleTextItem(text);
+    m_textItem->setFont(m_font);
+    updateLocalRect();
 }
 
 void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
@@ -35,8 +101,6 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     if (qRound(m_initialFontSize * sy) < 10) {
         return;
     }
-
-//    const QPointF &origin = this->oppositePos();
 
     QTransform trans;
     trans.translate(origin.x(),origin.y());
@@ -48,6 +112,8 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 
     //    prepareGeometryChange();
     m_localRect = trans.mapRect(m_initialRect);
+    m_textItem->setItemBoundingRect(m_localRect);
+
     qDebug () << "m_initialRect:" << m_initialRect;
     qDebug () << "m_localRect:" << m_localRect;
 
@@ -65,19 +131,10 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
         m_textItem->setFont(m_font);
     }
 
+    m_textItem->setScale(m_scaleX, m_scaleY);
+    m_textItem->update();
     qDebug () << "m_scaleX:" << m_scaleX;
 
-    QTransform transform;
-//    transform.scale(m_scaleX, 1);
-//    // 将变换应用到文本项上
-//    m_textItem->setTransformOriginPoint(m_textItem->boundingRect().width() / 2,
-//                                        m_textItem->boundingRect().height() / 2);
-//    transform.translate(-m_textItem->boundingRect().width() / 2, -m_textItem->boundingRect().height()/ 2);
-//    transform.translate(m_localRect.topLeft().x(), m_localRect.topLeft().y());
-    transform.scale(m_scaleX, 1);
-//    transform.translate(-m_localRect.bottomRight().x(), -m_localRect.bottomRight().y());
-//    transform.translate(m_textItem->boundingRect().width() / 2, m_textItem->boundingRect().height()/ 2);
-    m_textItem->setTransform(transform);
 }
 
 void GraphicsTextItem::updateCoordinate()
@@ -105,7 +162,7 @@ void GraphicsTextItem::updateCoordinate()
 
 QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
 {
-    GraphicsTextItem *item = new GraphicsTextItem(m_text);
+    GraphicsTextItem *item = new GraphicsTextItem(m_text, m_font);
     //    item->setFont(m_font);
     //    item->m_width = width();
     //    item->m_height = height();
@@ -147,33 +204,6 @@ QFont GraphicsTextItem::font() const
     return m_font;
 }
 
-//void GraphicsTextItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-//{
-////    qDebug () << "============= m_localRect:" << m_localRect;
-//    Q_UNUSED(widget)
-//    Q_UNUSED(option)
-////    painter->save();
-////    QPointF centerPos(0, 0);
-////    QRectF textRect =  QRectF(centerPos.x(), centerPos.y(), \
-////                                                           m_originSize.width(), m_originSize.height());
-//    painter->translate(m_localRect.topLeft().x(), m_localRect.topLeft().y());
-//    //scale
-//    painter->scale(m_scaleX, 1);
-//    painter->translate(-m_localRect.topLeft().x(), -m_localRect.topLeft().y());
-
-//    // 绘制
-//    painter->setFont(m_font);
-////    painter->drawText(m_localRect, 0, m_text);
-//    painter->drawStaticText(m_localRect.topLeft(), QStaticText(m_text));
-
-////    painter->drawText(QPointF(m_localRect.bottomLeft().x(), m_localRect.bottomLeft().y() - m_descent), m_text);
-
-////    painter->setPen(Qt::blue);
-////    painter->drawLine(QLine(QPoint(m_originPos.x()-6, m_originPos.y()),QPoint(m_originPos.x()+6, m_originPos.y())));
-////    painter->drawLine(QLine(QPoint(m_originPos.x(), m_originPos.y()-6),QPoint(m_originPos.x(), m_originPos.y()+6)));
-////    painter->restore();
-//}
-
 void GraphicsTextItem::updateLocalRect()
 {
     QFontMetricsF fm(m_font);
@@ -189,12 +219,9 @@ void GraphicsTextItem::updateLocalRect()
              << " width:" << m_width
              << " width:" << m_height;
 
-    m_initialRect = m_localRect = m_textItem->boundingRect();
-    //    m_initialRect = m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
-    //    m_startSize = m_size = QSizeF(rect.width(), rect.height());
-    //    m_originSize = m_startSize;
-    //    this->prepareGeometryChange();
-    //    this->update();
+    m_initialRect = m_localRect = QRectF(0, 0, m_width * m_scaleX, m_height * m_scaleY);
+    m_textItem->setItemBoundingRect(m_localRect);
+    m_textItem->setTransformOriginPoint(m_localRect.center());
 }
 
 QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
@@ -206,17 +233,8 @@ QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
     return QSizeF(rect.width(), rect.height());
 }
 
-qreal GraphicsTextItem::scaleX() const
-{
-    return m_scaleX;
-}
-
-void GraphicsTextItem::setScaleX(qreal newScaleX)
-{
-    m_scaleX = newScaleX;
-}
-
 int GraphicsTextItem::type() const
 {
     return GraphicsItemType::TextItem;
 }
+

@@ -19,7 +19,7 @@ GraphicsItem *GraphicsItemManager::createGraphicsItem(GraphicsItemType type)
         break;
     }
     case GraphicsItemType::TextItem: {
-        item = new GraphicsTextItem("jkpg");
+        item = new GraphicsTextItem();
         break;
     }
     case GraphicsItemType::BarcodeItem:

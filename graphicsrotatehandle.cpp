@@ -59,7 +59,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_lastScenePos = event->scenePos();
     //移动处理
     QPointF origin = m_item->item()->mapToScene(m_item->boundingRect().center());
-    m_item->item()->setTransformOriginPoint(m_item->boundingRect().center());
+//    m_item->item()->setTransformOriginPoint(m_item->boundingRect().center());
 
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();

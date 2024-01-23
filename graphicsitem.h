@@ -62,6 +62,10 @@ public:
     QPointF oppositePos() const;
     void setOppositePos(QPointF newOppositePos);
 
+    qreal scaleY() const;
+    qreal scaleX() const;
+    void setScale(qreal scaleX, qreal scaleY);
+
 protected:
     qreal m_width = 0;
     qreal m_height = 0;
@@ -72,6 +76,9 @@ protected:
     QRectF m_localRect;
     QRectF m_initialRect;
     QPointF m_oppositePos;
+    qreal m_scaleX = 1;
+    qreal m_scaleY = 1;
+
 };
 
 #endif // GRAPHICSITEM_H
