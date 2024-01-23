@@ -28,16 +28,16 @@ GraphicsTextItem::GraphicsTextItem(const QString &text, QObject *parent)
     m_font.setPixelSize(m_initialFontSize);
     m_text = "jpkg";
     setFont(m_font);
-    setRotation(30);
+//    setRotation(30);
 
-    QTransform transform;
-    qDebug() << "m_translationPos========:" << m_translationPos;
-    qDebug() << "boundingRect()========:" << boundingRect();
-    transform.translate(boundingRect().center().x(), boundingRect().center().y());
-    transform.rotate(30);
-    transform.scale(2, 1);
-      //  transform.translate(-boundingRect().center().x()*0.5, -boundingRect().center().y()*0.5);
-    this->item()->setTransform(transform);
+//    QTransform transform;
+//    qDebug() << "m_translationPos========:" << m_translationPos;
+//    qDebug() << "boundingRect()========:" << boundingRect();
+//    transform.translate(boundingRect().center().x(), boundingRect().center().y());
+//    transform.rotate(30);
+//    transform.scale(2, 1);
+//      //  transform.translate(-boundingRect().center().x()*0.5, -boundingRect().center().y()*0.5);
+//    this->item()->setTransform(transform);
 
 //    this->item()->setTransformOriginPoint(boundingRect().center()*2);
 //    this->item()->setRotation(30);

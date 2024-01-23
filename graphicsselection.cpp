@@ -162,6 +162,7 @@ void GraphicsSelection::updateGeometry()
     qDebug() << "updateGeometry pos:" << m_item->item()->pos();
     qDebug() << "updateGeometry r:" << r;
     qDebug() << "updateGeometry getRect:" << m_item->getRect();
+    qDebug() << "updateGeometry opaqueArea:" << m_item->item()->opaqueArea();
 //    qDebug() << "updateGeometry rect:" << rect;
     qDebug() << "updateGeometry mapRectToScene:" << m_item->item()->mapRectToScene(m_item->getRect());
     qDebug() << "updateGeometry boundingRect:" << m_item->item()->boundingRect();
