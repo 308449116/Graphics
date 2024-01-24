@@ -128,20 +128,20 @@ void GraphicsSelection::updateGeometry()
 //    transform.translate(-m_item->getRect().center().x(),-m_item->getRect().center().y());
 
     if (!m_item) return;
-    qreal angle = m_item->rotation();
+    qreal angle = 0;
 //    m_item->setRotation(0);
-    QTransform transform;
-    QPointF pos = m_item->originPos();
-    transform.translate(pos.x(), pos.y());
-    transform.rotate(-angle);
-//    transform.scale(m_item->scaleX(), m_item->scaleY());
-    transform.translate(-pos.x(), -pos.y());
+//    QTransform transform;
+//    QPointF pos = m_item->originPos();
+//    transform.translate(pos.x(), pos.y());
+//    transform.rotate(-angle);
+////    transform.scale(m_item->scaleX(), m_item->scaleY());
+//    transform.translate(-pos.x(), -pos.y());
 
-    const QRectF r =  m_item->item()->mapRectToScene(transform.mapRect(m_item->item()->boundingRect()));
+//    const QRectF r =  m_item->item()->mapRectToScene(transform.mapRect(m_item->item()->boundingRect()));
 //    const QRectF r =  m_item->item()->mapRectToScene(transform.mapRect(m_item->item()->boundingRect()));
 //    QRectF rect = QRectF(m_item->item()->scenePos(), QSizeF(m_item->width(), m_item->height()));
 //    const QRectF r =  rect;
-//    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());
+    const QRectF r =  m_item->item()->mapRectToScene(m_item->item()->boundingRect());
 //    transform.map()
 //    QPointF originPoint = transform.map(m_item->originPos());
     QPointF originPoint = r.center();

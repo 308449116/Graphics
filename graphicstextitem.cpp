@@ -52,7 +52,7 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     }
 
     //    const QPointF &origin = this->oppositePos();
-
+    m_oppositePos = origin;
     QTransform trans;
     trans.translate(origin.x(),origin.y());
     trans.rotate(this->rotation());
@@ -146,7 +146,6 @@ void GraphicsTextItem::updateCoordinate()
         qDebug () << "m_translationPos:" << m_translationPos;
         qDebug () << "boundingRect center:" << m_textItem->boundingRect().center();
         qDebug () << "sceneBoundingRect center:" <<m_textItem->sceneBoundingRect().center();
-//        m_translationPos = m_textItem->mapToScene(p1);
 //        qDebug () << "updateCoordinate sceneBoundingRect:" << m_textItem->sceneBoundingRect();
 //        qDebug () << "updateCoordinate m_translationPos:" << m_textItem->sceneBoundingRect();
     } else {
@@ -272,8 +271,8 @@ void GraphicsTextItem::updateLocalRect()
              << " width:" << m_height;
 
     m_initialRect = m_localRect = m_textItem->boundingRect();
-    m_translationPos = m_textItem->boundingRect().center();
-    //    m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
+//    m_translationPos = m_textItem->boundingRect().center();
+    m_textItem->setTransformOriginPoint(m_textItem->boundingRect().center());
     //    m_initialRect = m_localRect = QRectF(-m_width/2, -m_height/2, m_width, m_height);
     //    m_startSize = m_size = QSizeF(rect.width(), rect.height());
     //    m_originSize = m_startSize;

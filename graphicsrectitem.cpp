@@ -10,21 +10,20 @@ GraphicsRectItem::GraphicsRectItem(const QRectF &rect, QObject *parent)
     m_width = rect.width();
     m_height = rect.height();
     m_localRect = m_initialRect = rect;
-//    m_rectItem->setTransformOriginPoint(rect.center());
+    m_rectItem->setTransformOriginPoint(m_rectItem->boundingRect().center());
+
 //    m_rectItem->setRotation(30);
 //    m_originPoint = QPointF(0,0);
 //    m_ratio = m_width / m_height;
 
-    const double a = qDegreesToRadians(30);
-    double sina = sin(a);
-    double cosa = cos(a);
-
-    QTransform scale(2, 0, 0, 1.0, 0, 0);
-    QTransform rotate(cosa, sina, -sina, cosa, 0, 0);
-//    QTransform translate2(1, 0, 0, 1, -boundingRect().center().x(), -boundingRect().center().y());
-    QTransform translate(1, 0, 0, 1, boundingRect().center().x(), boundingRect().center().y());
-
-    QTransform transform = scale * rotate * translate;
+//    const double a = qDegreesToRadians(30);
+//    double sina = sin(a);
+//    double cosa = cos(a);
+//    QTransform scale(2, 0, 0, 1.0, 0, 0);
+//    QTransform rotate(cosa, sina, -sina, cosa, 0, 0);
+////    QTransform translate2(1, 0, 0, 1, -boundingRect().center().x(), -boundingRect().center().y());
+//    QTransform translate(1, 0, 0, 1, boundingRect().center().x(), boundingRect().center().y());
+//    QTransform transform = scale * rotate * translate;
 
 //    QTransform transform;
 //    qDebug() << "m_translationPos========:" << m_translationPos;
@@ -33,7 +32,8 @@ GraphicsRectItem::GraphicsRectItem(const QRectF &rect, QObject *parent)
 //    transform.rotate(30);
 //    transform.scale(2, 1);
 //    transform.translate(-boundingRect().center().x(), -boundingRect().center().y());
-    this->item()->setTransform(transform);
+
+//    this->item()->setTransform(transform);
 }
 
 void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)

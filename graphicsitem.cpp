@@ -37,6 +37,7 @@ void GraphicsItem::setRotation(qreal newAngle)
 {
     m_angle = newAngle;
 //    setTransform();
+//    m_item->setRotation(m_angle);
 }
 
 qreal GraphicsItem::rotation()

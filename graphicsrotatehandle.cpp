@@ -56,6 +56,9 @@ void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //    QGraphicsItem::mousePressEvent(event);
 }
 
+static inline double sdot(double a, double b, double c, double d) {
+    return a * b + c * d;
+}
 void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = event->scenePos();
@@ -81,22 +84,46 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_item->setRotation( angle );
 
 //    QTransform transform;
+////    QTransform transform2 = m_item->item()->transform();
+
 //    qDebug() << "m_translationPos========:" << m_item->originPos();
-//    transform.translate(m_item->originPos().x(), m_item->originPos().y());
+////    QPointF pivot = m_item->item()->mapFromScene(m_item->originPos());
+////    transform.translate(pivot.x(), pivot.y());
+//    QPointF pivot = m_item->originPos();
+//    transform.translate(pivot.x() * m_item->scaleX(), pivot.y() * m_item->scaleY());
+
 //    transform.rotate(m_item->rotation());
 //    transform.scale(m_item->scaleX(), m_item->scaleY());
-//    transform.translate(-m_item->originPos().x(), -m_item->originPos().y());
+//    transform.translate(-pivot.x(), -pivot.y());
+
+//    const double a = qDegreesToRadians(angle);
+//    double sina = sin(a);
+//    double cosa = cos(a);
+//    QTransform translate(1, 0, 0, 1, m_item->originPos().x(), m_item->originPos().y());
+//    QTransform scale(m_item->scaleX(), 0, 0,  m_item->scaleY(), 0, 0);
+//    QTransform rotate(cosa, sina, -sina, cosa, 0, 0);
+//    QTransform translate2(1, 0, 0, 1, -boundingRect().center().x(), -boundingRect().center().y());
+//    QTransform transform = scale * translate * rotate * translate2;
+
+    double px = m_item->width() / 2 - m_item->oppositePos().x();
+//    double px = m_item->oppositePos().x() + m_item->width() / 2;
+    double py = m_item->oppositePos().y();
+//    double px = m_item->originPos().x() * m_item->scaleX();
+//    double py = m_item->originPos().y() * m_item->scaleY();
+//    QPointF diff = m_item->getRect().center() - m_item->boundingRect().center();
+//    double px =  m_item->width() * 0.5;
+//    double py = m_item->height() * 0.5;
 
     const double a = qDegreesToRadians(angle);
     double sina = sin(a);
     double cosa = cos(a);
-    QTransform translate(1, 0, 0, 1, m_item->originPos().x(), m_item->originPos().y());
-    QTransform scale(m_item->scaleX(), 0, 0,  m_item->scaleY(), 0, 0);
-    QTransform rotate(cosa, sina, -sina, cosa, 0, 0);
-    QTransform translate2(1, 0, 0, 1, -boundingRect().center().x(), -boundingRect().center().y());
-    QTransform transform = scale * translate * rotate * translate2;
+    double oneMinusCosa = 1 - cosa;
 
-    m_item->item()->setTransform(transform);
+    QTransform rotate(cosa, sina, -sina, cosa, sdot(sina, py, oneMinusCosa, px), sdot(-sina, px, oneMinusCosa, py));
+    QTransform scale(m_item->scaleX(), 0, 0, m_item->scaleY(), 0, 0);
+
+    m_item->item()->setTransform(scale * rotate);
+//        m_item->item()->setTransform(transform);
     m_selection->updateGeometry();
 //    qDebug() << "GraphicsRotateHandle boundingRect" << m_item->boundingRect();
     QGraphicsItem::mouseMoveEvent(event);
