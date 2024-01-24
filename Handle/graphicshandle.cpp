@@ -16,7 +16,7 @@ GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGr
     hide();
 }
 
-//void GraphicsHandle::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+//void GraphicsHandle::updateHandle(QSharedPointer<GraphicsItem> item)
 //{
 //    Q_UNUSED(item);
 //}
@@ -64,7 +64,7 @@ void GraphicsHandle::setLocalRect(QRectF localRect)
     m_localRect = localRect;
 }
 
-void GraphicsHandle::setItem(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsHandle::setItem(QSharedPointer<GraphicsItem> item)
 {
 //    if (item) {
 //        connect(item, &GraphicsItem::selectedChange, [this](GraphicsItem *item, bool checked) {
@@ -75,7 +75,7 @@ void GraphicsHandle::setItem(QSharedPointer<GraphicsAbstractItem> item)
     m_item = item;
 }
 
-QSharedPointer<GraphicsAbstractItem> GraphicsHandle::item() const
+QSharedPointer<GraphicsItem> GraphicsHandle::item() const
 {
     return m_item;
 }

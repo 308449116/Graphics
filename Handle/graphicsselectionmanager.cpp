@@ -1,5 +1,6 @@
 #include "graphicsselectionmanager.h"
 #include "graphicsselection.h"
+#include "graphicsitem.h"
 #include "common.h"
 #include <QDebug>
 
@@ -24,7 +25,7 @@ void GraphicsSelectionManager::clearSelectionPool()
     m_selectionPool.clear();
 }
 
-GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QSharedPointer<GraphicsAbstractItem> item)
+GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item)
 {
     GraphicsSelection *gs = m_usedSelections.value(item);
     if (gs != nullptr) {
@@ -54,7 +55,7 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QShared
     return gs;
 }
 
-void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         foreach (auto childItem, item->getChildItems()) {
@@ -65,7 +66,7 @@ void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsAbstractItem> i
     deleteItem(item);
 }
 
-void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsItem> item)
 {
     if (m_usedSelections.isEmpty()) {
         return;
@@ -80,16 +81,16 @@ void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsAbstractItem> i
     m_usedSelections.remove(item);
 }
 
-bool GraphicsSelectionManager::isItemSelected(QSharedPointer<GraphicsAbstractItem> item) const{
+bool GraphicsSelectionManager::isItemSelected(QSharedPointer<GraphicsItem> item) const{
     return  m_usedSelections.contains(item);
 }
 
-QList<QSharedPointer<GraphicsAbstractItem> > GraphicsSelectionManager::selectedItems() const
+QList<QSharedPointer<GraphicsItem> > GraphicsSelectionManager::selectedItems() const
 {
     return m_usedSelections.keys();
 }
 
-void GraphicsSelectionManager::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsSelectionManager::updateHandle(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         foreach (auto childItem, item->getChildItems()) {
@@ -102,28 +103,28 @@ void GraphicsSelectionManager::updateHandle(QSharedPointer<GraphicsAbstractItem>
     }
 }
 
-void GraphicsSelectionManager::hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle)
+void GraphicsSelectionManager::hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->hide(isHideDragHandle);
     }
 }
 
-void GraphicsSelectionManager::show(QSharedPointer<GraphicsAbstractItem> item)
+void GraphicsSelectionManager::show(QSharedPointer<GraphicsItem> item)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->show();
     }
 }
 
-void GraphicsSelectionManager::setZValue(QSharedPointer<GraphicsAbstractItem> item, qreal z)
+void GraphicsSelectionManager::setZValue(QSharedPointer<GraphicsItem> item, qreal z)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         s->setZValue(z);
     }
 }
 
-qreal GraphicsSelectionManager::zValue(QSharedPointer<GraphicsAbstractItem> item)
+qreal GraphicsSelectionManager::zValue(QSharedPointer<GraphicsItem> item)
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         return s->zValue();
@@ -132,7 +133,7 @@ qreal GraphicsSelectionManager::zValue(QSharedPointer<GraphicsAbstractItem> item
     return 0;
 }
 
-int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsAbstractItem> item, const QPointF &point) const
+int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsItem> item, const QPointF &point) const
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         return s->collidesWithHandle(point);
@@ -141,7 +142,7 @@ int GraphicsSelectionManager::collidesWithHandle(QSharedPointer<GraphicsAbstract
     return 0;
 }
 
-QPointF GraphicsSelectionManager::opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const
+QPointF GraphicsSelectionManager::opposite(QSharedPointer<GraphicsItem> item, int handleType) const
 {
     if (GraphicsSelection *s = m_usedSelections.value(item)) {
         return s->opposite(handleType);

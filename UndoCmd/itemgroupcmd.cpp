@@ -1,7 +1,7 @@
 #include "itemgroupcmd.h"
 #include "viewgraphics.h"
 
-ItemGroupCmd::ItemGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items,
+ItemGroupCmd::ItemGroupCmd(QList<QSharedPointer<GraphicsItem>> items,
                            ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand{parent}, m_view{view}, m_childItems(items)
 {
@@ -10,7 +10,7 @@ ItemGroupCmd::ItemGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items,
 
 void ItemGroupCmd::undo()
 {
-    QList<QSharedPointer<GraphicsAbstractItem> > items;
+    QList<QSharedPointer<GraphicsItem> > items;
     items.append(m_itemGroup);
 
     m_view->ungroupItems(items);

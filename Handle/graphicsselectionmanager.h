@@ -6,8 +6,7 @@
 #include <QPointF>
 #include <QSharedPointer>
 
-#include "graphicsabstracttemplate.h"
-
+class GraphicsItem;
 class ViewGraphics;
 class GraphicsSelection;
 
@@ -24,35 +23,35 @@ public:
 
     void clearSelectionPool();
 
-    bool isItemSelected(QSharedPointer<GraphicsAbstractItem> item) const;
+    bool isItemSelected(QSharedPointer<GraphicsItem> item) const;
 
-    QList<QSharedPointer<GraphicsAbstractItem> > selectedItems() const;
+    QList<QSharedPointer<GraphicsItem> > selectedItems() const;
 
-    int collidesWithHandle(QSharedPointer<GraphicsAbstractItem> item, const QPointF & point) const;
+    int collidesWithHandle(QSharedPointer<GraphicsItem> item, const QPointF & point) const;
 
-    QPointF opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const;
+    QPointF opposite(QSharedPointer<GraphicsItem> item, int handleType) const;
 
-    GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsAbstractItem> item);
+    GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item);
 
-    void removeItem(QSharedPointer<GraphicsAbstractItem> item);
+    void removeItem(QSharedPointer<GraphicsItem> item);
 
-    void updateHandle(QSharedPointer<GraphicsAbstractItem> item);
+    void updateHandle(QSharedPointer<GraphicsItem> item);
 
-    void hide(QSharedPointer<GraphicsAbstractItem> item, bool isHideDragHandle);
+    void hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle);
 
-    void show(QSharedPointer<GraphicsAbstractItem> item);
+    void show(QSharedPointer<GraphicsItem> item);
 
-    void setZValue(QSharedPointer<GraphicsAbstractItem> item, qreal z);
+    void setZValue(QSharedPointer<GraphicsItem> item, qreal z);
 
-    qreal zValue(QSharedPointer<GraphicsAbstractItem> item);
+    qreal zValue(QSharedPointer<GraphicsItem> item);
 
 private:
-    void deleteItem(QSharedPointer<GraphicsAbstractItem> item);
+    void deleteItem(QSharedPointer<GraphicsItem> item);
 
 private:
     using SelectionPool = QList<GraphicsSelection *>;
     SelectionPool m_selectionPool;
-    QHash<QSharedPointer<GraphicsAbstractItem>, GraphicsSelection *> m_usedSelections;
+    QHash<QSharedPointer<GraphicsItem>, GraphicsSelection *> m_usedSelections;
 };
 
 #endif // GRAPHICSSELECTIONMANAGER_H

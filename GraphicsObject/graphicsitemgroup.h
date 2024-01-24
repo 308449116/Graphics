@@ -3,57 +3,54 @@
 
 #include <QGraphicsItemGroup>
 
-#include "graphicsabstracttemplate.h"
+#include "graphicsitem.h"
 
-class GraphicsItemGroup : public QObject, public GraphicsAbstractTemplate<QGraphicsItemGroup>
+class GraphicsItemGroup : public GraphicsItem
 {
     Q_OBJECT
 public:
-    explicit GraphicsItemGroup(QGraphicsItem *parent = nullptr);
+    explicit GraphicsItemGroup(QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
-    explicit GraphicsItemGroup(QList<QSharedPointer<GraphicsAbstractItem> > items, QGraphicsItem *parent = nullptr);
+    explicit GraphicsItemGroup(QList<QSharedPointer<GraphicsItem> > items, QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
     virtual ~GraphicsItemGroup();
 
     int  type() const override;
 
-    QRectF boundingRect() const override;
-
-    void updateCoordinate(bool isGroup = true) override;
+    void updateCoordinate() override;
 
     void setRotation(qreal newAngle)  override;
 
-    QSharedPointer<GraphicsAbstractItem> duplicate() const override;
+    QSharedPointer<GraphicsItem> duplicate() const override;
 
-    QSet<QSharedPointer<GraphicsAbstractItem > > getChildItems() const override;
+    QSet<QSharedPointer<GraphicsItem > > getChildItems() const override;
 
-    void stretch(qreal sx, qreal sy) override;
+    void stretch(qreal sx, qreal sy, const QPointF &origin) override;
 
-    void addToGroup(QSharedPointer<GraphicsAbstractItem> item) override;
+    void addToGroup(QSharedPointer<GraphicsItem> item) override;
 
-    void removeFromGroup(QSharedPointer<GraphicsAbstractItem> item) override;
+    void removeFromGroup(QSharedPointer<GraphicsItem> item) override;
 
 signals:
     void sendUpdateHandle();
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+//    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 //    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 
 private:
-    QList<QSharedPointer<GraphicsAbstractItem> > duplicateItems() const;
-    void setChildItemRotation(QSharedPointer<GraphicsAbstractItem> item);
-    void addToGroup(QGraphicsItem *item);
-    void removeFromGroup(QGraphicsItem *item);
-//    void setItemZValue(QSharedPointer<GraphicsAbstractItem> item);
+    QList<QSharedPointer<GraphicsItem> > duplicateItems() const;
+    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
+//    void setItemZValue(QSharedPointer<GraphicsItem> item);
 
 private:
-    QSet<QSharedPointer<GraphicsAbstractTemplate<QGraphicsItem> > > m_childItems;
+    QGraphicsItemGroup *m_itemGroup = nullptr;
+    QSet<QSharedPointer<GraphicsItem > > m_childItems;
     qreal m_currentAngle = 0;
     qreal m_lastAngle = 0;
 };
 
-extern template class GraphicsAbstractTemplate<QGraphicsItem>;
-extern template class GraphicsAbstractTemplate<QGraphicsItemGroup>;
+//extern template class GraphicsAbstractTemplate<QGraphicsItem>;
+//extern template class GraphicsAbstractTemplate<QGraphicsItemGroup>;
 
 #endif // GRAPHICSITEMGROUP_H

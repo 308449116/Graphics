@@ -13,7 +13,7 @@ public:
     GraphicsSizeHandle(int handleType, ViewGraphics *view, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 //    QRectF boundingRect() const override;
 
-//    void updateHandle(QSharedPointer<GraphicsAbstractItem> item) override;
+//    void updateHandle(QSharedPointer<GraphicsItem> item) override;
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -25,13 +25,13 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    void setItemsOpposite(QSharedPointer<GraphicsAbstractItem> item);
+    void setItemsOpposite(QSharedPointer<GraphicsItem> item);
 
 private:
 //    QPointF m_pressedScenePos;
 //    QPointF m_lastScenePos;
 //    QPointF m_initialPos;
-//    QPointF m_oppositePos;
+    QPointF m_oppositePos;
     ViewGraphics *m_view;
     qreal m_scaleX = 1.0;
     qreal m_scaleY = 1.0;

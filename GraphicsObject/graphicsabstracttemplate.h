@@ -103,7 +103,7 @@ protected:
     GraphicsSelection *m_selection = nullptr;
 };
 
-using GraphicsAbstractItem = GraphicsAbstractTemplate<QGraphicsItem>;
+using GraphicsItem = GraphicsAbstractTemplate<QGraphicsItem>;
 using GraphicsAbstractItemGroup = GraphicsAbstractTemplate<QGraphicsItemGroup>;
 
 #endif // GRAPHICSABSTRACTTEMPLATE_H

@@ -26,7 +26,7 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 //    if (getState() & GraphicsHandleState::HandleActive) {
         painter->save();
         painter->setPen(Qt::DashLine);
-        QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
+        QRectF rect = mapRectFromItem(m_item->subItem(), m_item->getRect());
 //        qDebug() << "GraphicsDragHandle customPaint rect:"
 //                 << rect;
 
@@ -46,14 +46,14 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     m_lastScenePos = m_pressedScenePos = event->scenePos();
 //    qDebug() << "m_pressedScenePos:" << m_lastScenePos;
-    m_initialPos = m_item->pos();
+    m_initialPos = m_item->subItem()->pos();
     m_items.clear();
 
     QList<QGraphicsItem *> items = m_view->scene()->selectedItems();
     foreach (auto item, items) {
         GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
         if (handle->handleType() == GraphicsHandle::Drag) {
-            m_items.push_back(qMakePair(handle->item()->pos(), handle->item()));
+            m_items.push_back(qMakePair(handle->item()->subItem()->pos(), handle->item()));
         }
     }
 }

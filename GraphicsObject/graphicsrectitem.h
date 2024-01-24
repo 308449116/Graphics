@@ -6,22 +6,20 @@
 class GraphicsRectItem : public GraphicsItem
 {
 public:
-    explicit GraphicsRectItem(const QRectF &rect, QGraphicsItem *parent = nullptr);
+    explicit GraphicsRectItem(const QRectF &rect, QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
-    int  type() const override;
+    void stretch(qreal sx, qreal sy, const QPointF &origin) override;
 
-    void updateCoordinate(bool isGroup = false) override;
+    void updateCoordinate() override;
 
-    void move(const QPointF &point) override;
+    QSharedPointer<GraphicsItem> duplicate() const override;
 
-    void stretch(qreal sx, qreal sy) override;
+    int type() const override;
 
-    QSharedPointer<GraphicsAbstractItem> duplicate() const override;
-
-protected:
-    void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-    QPointF m_originPoint;
-    QPointF m_oppositePos;
+private:
+    QGraphicsRectItem *m_rectItem = nullptr;
+//    QPointF m_originPoint;
+//    QPointF m_oppositePos;
 };
 
 #endif // GRAPHICSRECTITEM_H

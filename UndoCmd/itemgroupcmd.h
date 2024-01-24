@@ -2,15 +2,15 @@
 #define ITEMGROUPCMD_H
 
 #include <QUndoCommand>
+#include <QSharedPointer>
 
-#include "graphicsabstracttemplate.h"
-
+class GraphicsItem;
 class ViewGraphics;
 
 class ItemGroupCmd : public QUndoCommand
 {
 public:
-    explicit ItemGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items,
+    explicit ItemGroupCmd(QList<QSharedPointer<GraphicsItem>> items,
                           ViewGraphics *view, QUndoCommand *parent = nullptr);
 
     void undo() override;
@@ -19,8 +19,8 @@ public:
 
 private:
     ViewGraphics *m_view;
-    QSharedPointer<GraphicsAbstractItem> m_itemGroup;
-    QList<QSharedPointer<GraphicsAbstractItem> > m_childItems;
+    QSharedPointer<GraphicsItem> m_itemGroup;
+    QList<QSharedPointer<GraphicsItem> > m_childItems;
 };
 
 #endif // ITEMGROUPCMD_H

@@ -43,7 +43,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Delete: {
-//        QList<QSharedPointer<GraphicsAbstractItem> > items;
+//        QList<QSharedPointer<GraphicsItem> > items;
 //        foreach (auto *item, selectedItems()) {
 //            GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
 //            if (handle && handle->handleType() == GraphicsHandle::Drag) {
@@ -104,15 +104,15 @@ void SceneGraphics::setIsControlModifier(bool newIsControlModifier)
     m_isControlModifier = newIsControlModifier;
 }
 
-void SceneGraphics::addItem(QSharedPointer<GraphicsAbstractItem> item)
+void SceneGraphics::addItem(QSharedPointer<GraphicsItem> item)
 {
-    this->addItem(item.data());
+    this->addItem(item->subItem());
     m_items.insert(item);
 }
 
-void SceneGraphics::removeItem(QSharedPointer<GraphicsAbstractItem> item)
+void SceneGraphics::removeItem(QSharedPointer<GraphicsItem> item)
 {
-    this->removeItem(item.data());
+    this->removeItem(item->subItem());
     m_items.remove(item);
 }
 

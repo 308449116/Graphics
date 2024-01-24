@@ -1,7 +1,7 @@
 #include "itemmovecmd.h"
 #include "viewgraphics.h"
 
-ItemMoveCmd::ItemMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+ItemMoveCmd::ItemMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
                          const QPointF &offsetPos, ViewGraphics *view,
                          bool isMoved, QUndoCommand *parent)
     : QUndoCommand{parent},

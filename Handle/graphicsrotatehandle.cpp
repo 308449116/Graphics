@@ -48,7 +48,7 @@ void GraphicsRotateHandle::customPaint(QPainter *painter, const QStyleOptionGrap
 void GraphicsRotateHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     m_lastScenePos = m_pressedScenePos = event->scenePos();
-    QPointF origin = m_item->mapToScene(m_item->getRect().center());
+    QPointF origin = m_item->subItem()->mapToScene(m_item->getRect().center());
     qreal len_y = m_lastScenePos.y() - origin.y();
     qreal len_x = m_lastScenePos.x() - origin.x();
     qreal angle = qAtan2(len_y, len_x) * 180 / PI;
@@ -64,7 +64,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_selection->setOpacity(0);
 
     //移动处理
-    QPointF origin = m_item->mapToScene(m_item->getRect().center());
+    QPointF origin = m_item->subItem()->mapToScene(m_item->getRect().center());
 //  item->setTransformOriginPoint(item->getRect().center());
 
     qreal len_y = m_lastScenePos.y() - origin.y();
@@ -78,7 +78,7 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 //    qDebug() << "1111111 angle:" << angle;
     m_item->setRotation( angle );
-    m_item->update();
+//    m_item->subItem()->update();
     m_view->updateHandle(m_item);
 //    updateHandle(m_item);
     QGraphicsItem::mouseMoveEvent(event);
@@ -87,13 +87,14 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
-
-    m_selection->setOpacity(1);
-    m_view->rotateItemByCmd(m_item, m_initAngle);
+    if (m_lastScenePos != m_pressedScenePos) {
+        m_selection->setOpacity(1);
+        m_view->rotateItemByCmd(m_item, m_initAngle);
+    }
     //    QGraphicsItem::mouseReleaseEvent(event);
 }
 
-//void GraphicsRotateHandle::updateHandle(QSharedPointer<GraphicsAbstractItem> item)
+//void GraphicsRotateHandle::updateHandle(QSharedPointer<GraphicsItem> item)
 //{
 //    if (item->type() == GraphicsItemType::GroupItem) {
 //        foreach (auto childItem, item->getChildItems()) {

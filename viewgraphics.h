@@ -25,34 +25,34 @@ public:
     // Create Items
     void createItemByCmd(GraphicsItemType type);
 
-    QSharedPointer<GraphicsAbstractItem> createItem(GraphicsItemType type);
+    QSharedPointer<GraphicsItem> createItem(GraphicsItemType type);
 
-    void addItem(QSharedPointer<GraphicsAbstractItem> item);
+    void addItem(QSharedPointer<GraphicsItem> item);
 
     // remove Items
     void deleteItemsByCmd();
 
-    void deleteItem(QSharedPointer<GraphicsAbstractItem> item);
+    void deleteItem(QSharedPointer<GraphicsItem> item);
 
-    void deleteItems(const QList<QSharedPointer<GraphicsAbstractItem> > &items);
+    void deleteItems(const QList<QSharedPointer<GraphicsItem> > &items);
 
     // move Items
-    void moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+    void moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
                    const QPointF &pos, bool isMoved = true);
 
-    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
                    const QPointF &pos);
 
     // resize Items
-    void resizeItemByCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item,
+    void resizeItemByCmd(int handleType, QSharedPointer<GraphicsItem> item,
                          const QPointF &scale, bool isResized);
 
-    void resizeItem(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale);
+    void resizeItem(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale);
 
     // rotate Items
-    void rotateItemByCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal angle);
+    void rotateItemByCmd(QSharedPointer<GraphicsItem> item, const qreal angle);
 
-    void rotateItem(QSharedPointer<GraphicsAbstractItem> item, const qreal angle);
+    void rotateItem(QSharedPointer<GraphicsItem> item, const qreal angle);
 
     // duplicate Items
     void duplicateItemsByCmd();
@@ -60,12 +60,12 @@ public:
     // group Items
     void groupItemsByCmd();
 
-    QSharedPointer<GraphicsAbstractItem> groupItems(QList<QSharedPointer<GraphicsAbstractItem>> items);
+    QSharedPointer<GraphicsItem> groupItems(QList<QSharedPointer<GraphicsItem>> items);
 
     // ungroup Items
     void ungroupItemsByCmd();
 
-    void ungroupItems(QList<QSharedPointer<GraphicsAbstractItem>> items);
+    void ungroupItems(QList<QSharedPointer<GraphicsItem>> items);
 
     // align Items
     void alignItems(AlignType alignType);
@@ -90,11 +90,11 @@ public:
 
     void setIsControlModifier(bool newIsControlModifier);
 
-    QList<QSharedPointer<GraphicsAbstractItem>> selectedItems();
+    QList<QSharedPointer<GraphicsItem>> selectedItems();
 
-    QPointF opposite(QSharedPointer<GraphicsAbstractItem> item, int handleType) const;
+    QPointF opposite(QSharedPointer<GraphicsItem> item, int handleType) const;
 
-    void updateHandle(QSharedPointer<GraphicsAbstractItem> item);
+    void updateHandle(QSharedPointer<GraphicsItem> item);
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
@@ -102,16 +102,16 @@ protected:
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
-//    void removeItemsByCmd(const QList<QSharedPointer<GraphicsAbstractItem> > &items);
+//    void removeItemsByCmd(const QList<QSharedPointer<GraphicsItem> > &items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
-    void addGroupItems(QSharedPointer<GraphicsAbstractItem> item);
+    void addGroupItems(QSharedPointer<GraphicsItem> item);
 //    bool trySelectItem(GraphicsItem *item);
-    void addItemToSelectionManager(QSharedPointer<GraphicsAbstractItem> item);
-    void setZValue(QSharedPointer<GraphicsAbstractItem> item);
+    void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
+    void setZValue(QSharedPointer<GraphicsItem> item);
 
 private:
     bool m_isUndoCmdEnabled = true;

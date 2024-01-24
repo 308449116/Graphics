@@ -4,14 +4,14 @@
 #include <QPointF>
 #include <QUndoCommand>
 #include <QSharedPointer>
-#include "graphicsabstracttemplate.h"
 
+class GraphicsItem;
 class ViewGraphics;
 
 class ItemResizeCmd : public QUndoCommand
 {
 public:
-    explicit ItemResizeCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale,
+    explicit ItemResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
                            ViewGraphics *view, bool isResized,
                            QUndoCommand *parent = nullptr);
 
@@ -25,7 +25,7 @@ private:
     const QPointF m_scale;
 
     ViewGraphics *m_view;
-    QSharedPointer<GraphicsAbstractItem> m_item;
+    QSharedPointer<GraphicsItem> m_item;
 };
 
 #endif // ITEMRESIZECMD_H

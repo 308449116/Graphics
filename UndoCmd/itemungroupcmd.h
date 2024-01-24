@@ -1,16 +1,17 @@
 #ifndef ITEMUNGROUPCMD_H
 #define ITEMUNGROUPCMD_H
 
+#include <QSet>
 #include <QUndoCommand>
+#include <QSharedPointer>
 
-#include "graphicsabstracttemplate.h"
-
+class GraphicsItem;
 class ViewGraphics;
 
 class ItemUngroupCmd : public QUndoCommand
 {
 public:
-    explicit ItemUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items,
+    explicit ItemUngroupCmd(QList<QSharedPointer<GraphicsItem>> items,
                             ViewGraphics *view, QUndoCommand *parent = nullptr);
 
     void undo() override;
@@ -19,9 +20,9 @@ public:
 
 private:
     ViewGraphics *m_view;
-    QHash<QSharedPointer<GraphicsAbstractItem>, QSet<QSharedPointer<GraphicsAbstractItem>> > m_groupItemsHash;
-//    QHash<QSharedPointer<GraphicsAbstractItem>,
-//          QSet< std::tuple<QSharedPointer<GraphicsAbstractItem> , qreal, qreal> > > m_groupItemsHash;
+    QHash<QSharedPointer<GraphicsItem>, QSet<QSharedPointer<GraphicsItem>> > m_groupItemsHash;
+//    QHash<QSharedPointer<GraphicsItem>,
+//          QSet< std::tuple<QSharedPointer<GraphicsItem> , qreal, qreal> > > m_groupItemsHash;
 };
 
 #endif // ITEMUNGROUPCMD_H

@@ -1,100 +1,126 @@
 #include "graphicsitem.h"
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
 
-GraphicsItem::GraphicsItem(QGraphicsItem *parent)
-    : GraphicsAbstractTemplate<QGraphicsItem>(parent)
+GraphicsItem::GraphicsItem(QObject *parent)
+    : QObject(parent)
 {
-//    setFlag(QGraphicsItem::ItemIsMovable, true);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-//int GraphicsItem::type() const
-//{
-//    return Type;
-//}
-
-QRectF GraphicsItem::boundingRect() const
+GraphicsItem::~GraphicsItem()
 {
-    QRectF rect = getRect();
-//    if (isSelected()) {
-//        rect.adjust(-3.0, -3.0, 3.0, 3.0);
-//        rect.adjust(0, 0, 0, 20);
-//    }
-    return rect;
+    if (m_subItem) {
+        delete m_subItem;
+        m_subItem = nullptr;
+    }
+}
+
+QRectF GraphicsItem::getRect() const
+{
+    return m_localRect;
+}
+
+void GraphicsItem::addToGroup(QSharedPointer<GraphicsItem> item)
+{
+    Q_UNUSED(item);
+}
+
+void GraphicsItem::removeFromGroup(QSharedPointer<GraphicsItem> item)
+{
+    Q_UNUSED(item);
+}
+
+QSet<QSharedPointer<GraphicsItem> > GraphicsItem::getChildItems() const
+{
+    return QSet<QSharedPointer<GraphicsItem> >();
 }
 
 void GraphicsItem::setRotation(qreal newAngle)
 {
-    QGraphicsItem::setRotation(newAngle);
+    m_subItem->setRotation(newAngle);
 }
 
-//QSharedPointer<GraphicsAbstractItem> GraphicsItem::duplicate() const
-//{
-//    return QSharedPointer<GraphicsAbstractItem>(nullptr);
-//}
-
-//void GraphicsItem::setItemName(QString name)
-//{
-//    setData(type(), name);
-//}
-
-//QString GraphicsItem::getItemName() const
-//{
-//    return data(type()).toString();
-//}
-
-void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+qreal GraphicsItem::rotation()
 {
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-    painter->setRenderHint(QPainter::TextAntialiasing, true);
-
-    // 自定义绘制
-    customPaint(painter, option, widget);
-
-    //高亮选中
-//    if (m_state & GraphicsHandleState::HandleActive) {
-//        qt_graphicsItem_highlightSelected(this, painter, option);
-//    }
+    return m_subItem->rotation();
 }
 
-QVariant GraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+void GraphicsItem::move(const QPointF &point)
 {
-    if ( change == QGraphicsItem::ItemPositionChange ||
-        change == QGraphicsItem::ItemChildAddedChange ||
-        change == QGraphicsItem::ItemChildRemovedChange ||
-        change == QGraphicsItem::ItemRotationChange ||
-        change == QGraphicsItem::ItemScaleChange) {
-        if (!this->getItemParent().isNull()) {
-//            qDebug() << "change:" << change;
-//            qDebug() << "old rotation:" << this->rotation();
-//            qDebug() << "new rotation:" << value.toDouble();
-            emit this->sendPararenItemGeometryChange();
-        }
-    }
-
-    return QGraphicsItem::itemChange(change, value);
+    m_subItem->moveBy(point.x(),point.y());
 }
 
-//void GraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    QGraphicsItem::mousePressEvent(event);
-//}
+void GraphicsItem::setItemName(QString newName)
+{
+    m_itemName = newName;
+}
 
-//void GraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-//{
-////    if (!m_hideHandleSended) {
-////        emit handleStateSwitch(false);
-////        m_hideHandleSended = true;
-////    }
-//    QGraphicsItem::mouseMoveEvent(event);
-//}
+QString GraphicsItem::itemName() const
+{
+    return m_itemName;
+}
 
-//void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-//{
-////    m_hideHandleSended = false;
-////    emit handleStateSwitch(true);
-//    QGraphicsItem::mouseReleaseEvent(event);
-//}
+qreal GraphicsItem::width() const
+{
+    return m_width;
+}
+
+void GraphicsItem::setWidth(qreal newWidth)
+{
+    m_width = newWidth;
+}
+
+qreal GraphicsItem::height() const
+{
+    return m_height;
+}
+
+void GraphicsItem::setHeight(qreal newHeight)
+{
+    m_height = newHeight;
+}
+
+QGraphicsItem *GraphicsItem::subItem() const
+{
+    return m_subItem;
+}
+
+QRectF GraphicsItem::boundingRect() const
+{
+    return m_subItem->boundingRect();
+}
+
+qreal GraphicsItem::groupAngle() const
+{
+    return m_groupAngle;
+}
+
+void GraphicsItem::setGroupAngle(qreal newGroupAngle)
+{
+    m_groupAngle = newGroupAngle;
+}
+
+QPointF GraphicsItem::oppositePos() const
+{
+    return m_oppositePos;
+}
+
+void GraphicsItem::setOppositePos(QPointF newOppositePos)
+{
+    m_oppositePos = newOppositePos;
+}
+
+qreal GraphicsItem::scaleY() const
+{
+    return m_scaleY;
+}
+
+qreal GraphicsItem::scaleX() const
+{
+    return m_scaleX;
+}
+
+void GraphicsItem::setScale(qreal scaleX, qreal scaleY)
+{
+    m_scaleX = scaleX;
+    m_scaleY = scaleY;
+    stretch(scaleX, scaleY, QPointF(0, 0));
+}

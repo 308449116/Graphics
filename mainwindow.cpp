@@ -193,8 +193,8 @@ void MainWindow::on_textBtn_clicked()
 void MainWindow::on_barcodeBtn_clicked()
 {
 //    GraphicsItemManager *manager = new GraphicsItemManager(dynamic_cast<SceneGraphics *>(ui->graphicsView->scene()));
-//    QSharedPointer<GraphicsAbstractItem> item =
-//        QSharedPointer<GraphicsAbstractItem>( new GraphicsTextItem("jkpg") );
+//    QSharedPointer<GraphicsItem> item =
+//        QSharedPointer<GraphicsItem>( new GraphicsTextItem("jkpg") );
 //    ui->graphicsView->scene()->addItem(item.data());
 ;
 

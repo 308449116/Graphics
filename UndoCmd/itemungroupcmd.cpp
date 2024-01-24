@@ -1,7 +1,7 @@
 #include "itemungroupcmd.h"
 #include "viewgraphics.h"
 
-ItemUngroupCmd::ItemUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items,
+ItemUngroupCmd::ItemUngroupCmd(QList<QSharedPointer<GraphicsItem>> items,
                                ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand{parent}, m_view{view}
 {

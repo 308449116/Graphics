@@ -1,7 +1,7 @@
 #include "ItemDeleteCmd.h"
 #include "viewgraphics.h"
 
-ItemDeleteCmd::ItemDeleteCmd(QList<QSharedPointer<GraphicsAbstractItem> > items, ViewGraphics *view, QUndoCommand *parent)
+ItemDeleteCmd::ItemDeleteCmd(QList<QSharedPointer<GraphicsItem> > items, ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand(parent), m_items(items), m_view(view)
 {
     // 设置名字
@@ -9,7 +9,7 @@ ItemDeleteCmd::ItemDeleteCmd(QList<QSharedPointer<GraphicsAbstractItem> > items,
     QStringList strs;
 
     foreach (auto item, items) {
-        strs << item->getItemName();
+        strs << item->itemName();
     }
     this->setText(deleteItemString.arg(strs.join(",")));
 }

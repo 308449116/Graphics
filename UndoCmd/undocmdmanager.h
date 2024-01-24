@@ -4,8 +4,8 @@
 #include <QUndoStack>
 
 #include "common.h"
-#include "graphicsabstracttemplate.h"
 
+class GraphicsItem;
 class QUndoView;
 class ViewGraphics;
 
@@ -29,27 +29,27 @@ public:
     void runCreateCmd(GraphicsItemType type, ViewGraphics *view);
 
     // 添加 删除图元命令
-    void runDeleteCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view);
+    void runDeleteCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view);
 
     // 添加 移动图元命令
-    void runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem>>> &items,
+    void runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
                     const QPointF &offsetPos, ViewGraphics *view, bool isMoved);
 
     // 添加 拉伸图元命令
-    void runResizeCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale,
+    void runResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
                       ViewGraphics *view, bool isResized);
 
     // 添加 旋转图元命令
-    void runRotateCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal angle, ViewGraphics *view);
+    void runRotateCmd(QSharedPointer<GraphicsItem> item, const qreal angle, ViewGraphics *view);
 
     // 添加 拷贝图元命令
-    void runCopyCmd(QList<QSharedPointer<GraphicsAbstractItem> > items, ViewGraphics *view);
+    void runCopyCmd(QList<QSharedPointer<GraphicsItem> > items, ViewGraphics *view);
 
     // 添加 分组命令
-    void runGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view);
+    void runGroupCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view);
 
     // 添加 取消分组命令
-    void runUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view);
+    void runUngroupCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view);
 
     // 创建Redo Action
     QAction* createRedoAction();

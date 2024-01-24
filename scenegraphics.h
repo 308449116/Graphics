@@ -1,10 +1,10 @@
 #ifndef SCENEGRAPHICS_H
 #define SCENEGRAPHICS_H
 
+#include <QSet>
 #include <QGraphicsScene>
 
-#include "graphicsabstracttemplate.h"
-
+class GraphicsItem;
 class SceneGraphics : public QGraphicsScene
 {
     Q_OBJECT
@@ -19,16 +19,16 @@ public:
 
     void addItem(QGraphicsItem *item);
 
-    void addItem(QSharedPointer<GraphicsAbstractItem> item);
+    void addItem(QSharedPointer<GraphicsItem> item);
 
     void removeItem(QGraphicsItem *item);
 
-    void removeItem(QSharedPointer<GraphicsAbstractItem> item);
+    void removeItem(QSharedPointer<GraphicsItem> item);
 
 signals:
     void deleteGraphicsItems();
 
-//    void deleteGraphicsItems(QList<QSharedPointer<GraphicsAbstractItem> > items);
+//    void deleteGraphicsItems(QList<QSharedPointer<GraphicsItem> > items);
 
 //    void updateItemHandle(GraphicsItem *item);
 
@@ -47,7 +47,7 @@ private:
 
 private:
     bool m_isControlModifier = false;
-    QSet<QSharedPointer<GraphicsAbstractItem> > m_items;
+    QSet<QSharedPointer<GraphicsItem> > m_items;
 };
 
 #endif // SCENEGRAPHICS_H

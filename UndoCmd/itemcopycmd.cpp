@@ -1,7 +1,7 @@
 #include "itemcopycmd.h"
 #include "viewgraphics.h"
 
-ItemCopyCmd::ItemCopyCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view, QUndoCommand *parent)
+ItemCopyCmd::ItemCopyCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view, QUndoCommand *parent)
     : QUndoCommand{parent}, m_view(view), m_items{items}
 {
 
@@ -21,8 +21,8 @@ void ItemCopyCmd::redo()
             auto itemCopy = item->duplicate();
             m_view->addItem(itemCopy);
             m_itemsCopy.push_back(itemCopy);
-            qDebug() << "itemCopy->getItemName():" << itemCopy->getItemName();
-            strs << itemCopy->getItemName();
+            qDebug() << "itemCopy->getItemName():" << itemCopy->itemName();
+            strs << itemCopy->itemName();
         }
         m_strName = strs.join(",");
     } else {

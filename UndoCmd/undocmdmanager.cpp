@@ -22,45 +22,45 @@ void UndoCmdManager::runCreateCmd(GraphicsItemType type, ViewGraphics *view)
     m_undoStack->push(createCmd);
 }
 
-void UndoCmdManager::runDeleteCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view)
+void UndoCmdManager::runDeleteCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view)
 {
     ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(items, view);
     m_undoStack->push(deleteCmd);
 }
 
-void UndoCmdManager::runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsAbstractItem> > > &items,
+void UndoCmdManager::runMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem> > > &items,
                                 const QPointF &offsetPos, ViewGraphics *view, bool isMoved)
 {
     ItemMoveCmd *moveCmd = new ItemMoveCmd(items, offsetPos, view, isMoved);
     m_undoStack->push(moveCmd);
 }
 
-void UndoCmdManager::runResizeCmd(int handleType, QSharedPointer<GraphicsAbstractItem> item, const QPointF &scale,
+void UndoCmdManager::runResizeCmd(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale,
                                   ViewGraphics *view, bool isResized)
 {
     ItemResizeCmd *resizeCmd = new ItemResizeCmd(handleType, item, scale, view, isResized);
     m_undoStack->push(resizeCmd);
 }
 
-void UndoCmdManager::runRotateCmd(QSharedPointer<GraphicsAbstractItem> item, const qreal angle, ViewGraphics *view)
+void UndoCmdManager::runRotateCmd(QSharedPointer<GraphicsItem> item, const qreal angle, ViewGraphics *view)
 {
     ItemRotateCmd *rotateCmd = new ItemRotateCmd(item, angle, view);
     m_undoStack->push(rotateCmd);
 }
 
-void UndoCmdManager::runCopyCmd(QList<QSharedPointer<GraphicsAbstractItem> > items, ViewGraphics *view)
+void UndoCmdManager::runCopyCmd(QList<QSharedPointer<GraphicsItem> > items, ViewGraphics *view)
 {
     ItemCopyCmd *copyCmd = new ItemCopyCmd(items, view);
     m_undoStack->push(copyCmd);
 }
 
-void UndoCmdManager::runGroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view)
+void UndoCmdManager::runGroupCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view)
 {
     ItemGroupCmd *groupCmd = new ItemGroupCmd(items, view);
     m_undoStack->push(groupCmd);
 }
 
-void UndoCmdManager::runUngroupCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view)
+void UndoCmdManager::runUngroupCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view)
 {
     ItemUngroupCmd *ungroupCmd = new ItemUngroupCmd(items, view);
     m_undoStack->push(ungroupCmd);

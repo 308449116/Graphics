@@ -20,7 +20,6 @@ INCLUDEPATH += $$PWD/UndoCmd
 INCLUDEPATH += $$PWD/Handle
 
 SOURCES += \
-    GraphicsObject/graphicsabstracttemplate.cpp \
     GraphicsObject/graphicsitem.cpp \
     GraphicsObject/graphicsitemgroup.cpp \
     GraphicsObject/graphicsitemmanager.cpp \
@@ -50,7 +49,6 @@ SOURCES += \
 
 HEADERS += \
     Common/common.h \
-    GraphicsObject/graphicsabstracttemplate.h \
     GraphicsObject/graphicsitem.h \
     GraphicsObject/graphicsitemgroup.h \
     GraphicsObject/graphicsitemmanager.h \

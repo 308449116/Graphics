@@ -18,7 +18,7 @@ void GraphicsLineHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
     painter->save();
     painter->setPen(Qt::DashLine);
-    QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
+    QRectF rect = mapRectFromItem(m_item->subItem(), m_item->getRect());
     painter->drawLine(QPointF(rect.center().x(), rect.center().y() + rect.height() / 2),
                       QPointF(rect.center().x(), rect.center().y() + rect.height() / 2 + LINE_HANDLE_WIDTH));
     painter->restore();

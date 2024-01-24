@@ -4,14 +4,14 @@
 #include <QPointF>
 #include <QUndoCommand>
 #include <QSharedPointer>
-#include "graphicsabstracttemplate.h"
 
+class GraphicsItem;
 class ViewGraphics;
 
 class ItemCopyCmd : public QUndoCommand
 {
 public:
-    explicit ItemCopyCmd(QList<QSharedPointer<GraphicsAbstractItem>> items, ViewGraphics *view,
+    explicit ItemCopyCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view,
                          QUndoCommand *parent = nullptr);
 
     void undo() override;
@@ -20,8 +20,8 @@ public:
 
 private:
     ViewGraphics *m_view;
-    QList<QSharedPointer<GraphicsAbstractItem>> m_items;
-    QList<QSharedPointer<GraphicsAbstractItem>> m_itemsCopy;
+    QList<QSharedPointer<GraphicsItem>> m_items;
+    QList<QSharedPointer<GraphicsItem>> m_itemsCopy;
     QString m_strName;
 };
 
