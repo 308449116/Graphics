@@ -85,9 +85,9 @@ void GraphicsSelection::updateHandle()
     } else {
         angle = initAngle + groupAngle;
         m_item->setRotation(-groupAngle);
-//        qDebug() << "groupAngle:" << groupAngle;
-//        qDebug() << "initAngle:" << initAngle;
-//        qDebug() << "angle:" << angle;
+        qDebug() << "groupAngle:" << groupAngle;
+        qDebug() << "initAngle:" << initAngle;
+        qDebug() << "angle:" << angle;
     }
 
     const QRectF &r = m_item->subItem()->mapRectToScene(m_item->getRect());

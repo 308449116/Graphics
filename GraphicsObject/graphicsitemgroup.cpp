@@ -8,7 +8,7 @@
 GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem{parent}
 {
-    m_itemGroup = new QGraphicsItemGroup(parentItem);
+    m_subItem = m_itemGroup = new QGraphicsItemGroup(parentItem);
 //    setFlag(QGraphicsItem::ItemIsSelectable, true);
 //    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
@@ -16,11 +16,11 @@ GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parentItem, QObject *parent)
 GraphicsItemGroup::GraphicsItemGroup(QList<QSharedPointer<GraphicsItem> > items, QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem{parent}
 {
-    m_itemGroup = new QGraphicsItemGroup(parentItem);
+    m_subItem = m_itemGroup = new QGraphicsItemGroup(parentItem);
     foreach (auto item, items){
-    QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->subItem()->parentItem());
+        QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->subItem()->parentItem());
         if ( !g ) {
-            m_itemGroup->addToGroup(item->subItem());
+            GraphicsItemGroup::addToGroup(item);
         }
     }
 
@@ -97,25 +97,31 @@ void GraphicsItemGroup::updateCoordinate()
         qDebug() << "m_localRect:" << m_localRect;
     }
 
-    QPointF pt1,pt2,delta;
-    pt1 = m_itemGroup->mapToScene(m_itemGroup->transformOriginPoint());
-    pt2 = m_itemGroup->mapToScene(m_localRect.center());
-    delta = pt1 - pt2;
+    auto angle = qDegreesToRadians(m_itemGroup->rotation());
 
-//    qDebug() << "2222222222 transformOriginPoint:" << transformOriginPoint();
-//    qDebug() << "2222222222 m_localRect.center():" << m_localRect.center();
-//    qDebug() << "2222222222 delta:" << delta;
-    m_initialRect = m_localRect;
-    m_width = m_localRect.width();
-    m_height = m_localRect.height();
-    //    m_localRect = QRectF(-m_width/2,-m_height/2,m_width,m_height);
-    m_itemGroup->setTransform(m_itemGroup->transform().translate(delta.x(),delta.y()));
+    auto p1 = m_localRect.center();
+    auto origin = m_itemGroup->transformOriginPoint();
+    QPointF p2 = QPointF(0, 0);
+
+    p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
+    p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
+
+    auto diff = p1 - p2;
+    m_itemGroup->moveBy(-diff.x(), -diff.y());
     m_itemGroup->setTransformOriginPoint(m_localRect.center());
-    m_itemGroup->moveBy(-delta.x(),-delta.y());
-    m_oppositePos = m_localRect.center();
-    //   setTransform(transform().translate(-delta.x(),-delta.y()));
-//    qDebug() << "3333333333 transformOriginPoint:" << transformOriginPoint();
-//    qDebug() << "3333333333 delta:" << this->boundingRect();
+
+    m_initialRect = m_localRect;
+
+//    QPointF pt1,pt2,delta;
+//    pt1 = m_itemGroup->mapToScene(m_itemGroup->transformOriginPoint());
+//    pt2 = m_itemGroup->mapToScene(m_localRect.center());
+//    delta = pt1 - pt2;
+
+//    m_initialRect = m_localRect;
+//    m_itemGroup->setTransform(m_itemGroup->transform().translate(delta.x(),delta.y()));
+//    m_itemGroup->setTransformOriginPoint(m_localRect.center());
+//    m_itemGroup->moveBy(-delta.x(),-delta.y());
+//    m_oppositePos = m_localRect.center();
 }
 
 void GraphicsItemGroup::setRotation(qreal newAngle)
@@ -135,7 +141,8 @@ void GraphicsItemGroup::setRotation(qreal newAngle)
 void GraphicsItemGroup::setChildItemRotation(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
             setChildItemRotation(childItem);
         }
     }
@@ -150,7 +157,7 @@ QSharedPointer<GraphicsItem> GraphicsItemGroup::duplicate() const
 
     GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items);
     itemGroup->updateCoordinate();
-    itemGroup->subItem()->setPos(m_itemGroup->pos().x() + m_width, m_itemGroup->pos().y());
+    itemGroup->subItem()->setPos(m_itemGroup->pos().x() + width(), m_itemGroup->pos().y());
 //    itemGroup->subItem()->setPen(pen());
 //    itemGroup->subItem()->setBrush(brush());
     itemGroup->subItem()->setTransform(m_itemGroup->transform());
@@ -182,8 +189,6 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
     m_oppositePos = origin;
 
     m_localRect = trans.mapRect(m_initialRect);
-    m_width = m_localRect.width();
-    m_height = m_localRect.height();
 }
 
 void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
@@ -278,7 +283,6 @@ void GraphicsItemGroup::removeFromGroup(QSharedPointer<GraphicsItem> item)
 QList<QSharedPointer<GraphicsItem> > GraphicsItemGroup::duplicateItems() const
 {
     QList<QSharedPointer<GraphicsItem> > copylist;
-
     foreach (auto childItem, this->getChildItems()) {
         auto copyItem = childItem->duplicate();
         copyItem->subItem()->setPos(childItem->subItem()->pos());

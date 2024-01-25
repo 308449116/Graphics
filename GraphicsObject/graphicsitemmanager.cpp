@@ -95,7 +95,8 @@ void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsItem> item)
     if (item.isNull()) return;
 
     if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
             m_nameHash.remove(childItem->itemName());
         }
     }
@@ -141,11 +142,12 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSel
 
 //    qreal angle = item->rotation();
 //    item->setRotation(0);
-    foreach (auto childItem, item->getChildItems()) {
+    GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+    foreach (auto childItem, itemGroup->getChildItems()) {
 //        qDebug() << "itemGroup->getChildItems().pos:" << childItem->scenePos();
         qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
 //        QPointF originPoint = childItem->transformOriginPoint();
-        item->removeFromGroup(childItem);
+        itemGroup->removeFromGroup(childItem);
 //        childItem->setGroupAngle(childItem->groupAngle() + item->rotation());
 //        childItem->setTransformOriginPoint(childItem->mapFromItem(item.data(), item->transformOriginPoint()));
 //        for (const auto &[item, pos] : itemPosList) {
@@ -156,7 +158,7 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSel
 //        }
 //        childItem->setRotation(angle);
 //        item->updateCoordinate();
-//        childItem->setItemParent(nullptr);
+        childItem->setItemParent(nullptr);
         selectionManager->setZValue(childItem, selectionManager->zValue(childItem) - 1);
         selectionManager->show(childItem);
         selectionManager->updateHandle(childItem);

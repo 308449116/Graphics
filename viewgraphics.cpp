@@ -139,7 +139,7 @@ void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsItem> item,
 {
     const QPointF &oppositePos = item->subItem()->mapFromScene(m_selectionManager->opposite(item, handleType));
 //    item->setOppositePos(oppositePos);
-    item->stretch(scale.x(), scale.y(), item->subItem()->mapFromScene(oppositePos));
+    item->stretch(scale.x(), scale.y(), oppositePos);
     item->updateCoordinate();
     m_selectionManager->updateHandle(item);
 }
@@ -316,32 +316,29 @@ void ViewGraphics::addGroupItems(QSharedPointer<GraphicsItem> item)
 {
     //递归添加组的子图元
     if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
-//            childItem->setItemParent(item);
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            childItem->setItemParent(item);
             addGroupItems(childItem);
 //            m_selectionManager->hide(childItem, true);
         }
     }
 
     addItemToSelectionManager(item);
-//    if (!item->getItemParent().isNull()) {
-//        qDebug() << "========= m_selectionManager->zValue(item):" << m_selectionManager->zValue(item->getItemParent());
-//        m_selectionManager->setZValue(item, m_selectionManager->zValue(item->getItemParent()) + 1);
-//    }
 }
 
 void ViewGraphics::setZValue(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
             setZValue(childItem);
         }
     }
 
-//    if (!item->getItemParent().isNull()) {
-////        qDebug() << "========= m_selectionManager->zValue(item):" << m_selectionManager->zValue(item->getItemParent());
-//        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
-//    }
+    if (!item->itemParent().isNull()) {
+        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
+    }
 }
 
 QAction *ViewGraphics::createUndoAction()

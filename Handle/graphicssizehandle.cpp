@@ -80,16 +80,16 @@ void GraphicsSizeHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsSizeHandle::setItemsOpposite(QSharedPointer<GraphicsItem> item)
 {
-    if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
-            setItemsOpposite(childItem);
-        }
-    }
+//    if (item->type() == GraphicsItemType::GroupItem) {
+//        foreach (auto childItem, item->getChildItems()) {
+//            setItemsOpposite(childItem);
+//        }
+//    }
 
-//    QPointF oppositePos = m_view->opposite(item, m_handleType);
-//    qDebug() << "222222 oppositePos:" << oppositePos;
-    item->setOppositePos(item->subItem()->mapFromItem(m_item->subItem(), m_item->oppositePos()));
-//    item->setOppositePos(item->mapFromItem(m_item.data(), m_item->mapFromScene(oppositePos)));
+////    QPointF oppositePos = m_view->opposite(item, m_handleType);
+////    qDebug() << "222222 oppositePos:" << oppositePos;
+//    item->setOppositePos(item->subItem()->mapFromItem(m_item->subItem(), m_item->oppositePos()));
+////    item->setOppositePos(item->mapFromItem(m_item.data(), m_item->mapFromScene(oppositePos)));
 }
 
 void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

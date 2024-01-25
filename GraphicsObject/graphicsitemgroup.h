@@ -23,13 +23,13 @@ public:
 
     QSharedPointer<GraphicsItem> duplicate() const override;
 
-    QSet<QSharedPointer<GraphicsItem > > getChildItems() const override;
-
     void stretch(qreal sx, qreal sy, const QPointF &origin) override;
 
-    void addToGroup(QSharedPointer<GraphicsItem> item) override;
+    QSet<QSharedPointer<GraphicsItem > > getChildItems() const;
 
-    void removeFromGroup(QSharedPointer<GraphicsItem> item) override;
+    void addToGroup(QSharedPointer<GraphicsItem> item);
+
+    void removeFromGroup(QSharedPointer<GraphicsItem> item);
 
 signals:
     void sendUpdateHandle();

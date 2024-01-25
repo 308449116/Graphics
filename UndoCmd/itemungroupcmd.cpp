@@ -1,5 +1,6 @@
 #include "itemungroupcmd.h"
 #include "viewgraphics.h"
+#include "graphicsitemgroup.h"
 
 ItemUngroupCmd::ItemUngroupCmd(QList<QSharedPointer<GraphicsItem>> items,
                                ViewGraphics *view, QUndoCommand *parent)
@@ -7,7 +8,8 @@ ItemUngroupCmd::ItemUngroupCmd(QList<QSharedPointer<GraphicsItem>> items,
 {
     foreach (auto item, items) {
         if (item->type() == GraphicsItemType::GroupItem) {
-            m_groupItemsHash.insert(item, item->getChildItems());
+            GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+            m_groupItemsHash.insert(item, itemGroup->getChildItems());
         }
     }
 }
@@ -15,8 +17,9 @@ ItemUngroupCmd::ItemUngroupCmd(QList<QSharedPointer<GraphicsItem>> items,
 void ItemUngroupCmd::undo()
 {
     for (const auto &[groupItem, childItems] : m_groupItemsHash.asKeyValueRange()) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(groupItem.data());
         foreach (auto childItem, childItems) {
-            groupItem->addToGroup(childItem);
+            itemGroup->addToGroup(childItem);
         }
         m_view->addItem(groupItem);
     }

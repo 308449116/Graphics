@@ -18,27 +18,12 @@ QRectF GraphicsItem::getRect() const
     return m_localRect;
 }
 
-void GraphicsItem::addToGroup(QSharedPointer<GraphicsItem> item)
-{
-    Q_UNUSED(item);
-}
-
-void GraphicsItem::removeFromGroup(QSharedPointer<GraphicsItem> item)
-{
-    Q_UNUSED(item);
-}
-
-QSet<QSharedPointer<GraphicsItem> > GraphicsItem::getChildItems() const
-{
-    return QSet<QSharedPointer<GraphicsItem> >();
-}
-
 void GraphicsItem::setRotation(qreal newAngle)
 {
     m_subItem->setRotation(newAngle);
 }
 
-qreal GraphicsItem::rotation()
+qreal GraphicsItem::rotation() const
 {
     return m_subItem->rotation();
 }
@@ -60,22 +45,24 @@ QString GraphicsItem::itemName() const
 
 qreal GraphicsItem::width() const
 {
-    return m_width;
+    return m_localRect.width();
 }
 
 void GraphicsItem::setWidth(qreal newWidth)
 {
-    m_width = newWidth;
+    m_scaleX = newWidth / m_localRect.width();
+    stretch(m_scaleX, m_scaleY, QPointF(0, 0));
 }
 
 qreal GraphicsItem::height() const
 {
-    return m_height;
+    return m_localRect.height();
 }
 
 void GraphicsItem::setHeight(qreal newHeight)
 {
-    m_height = newHeight;
+    m_scaleY = newHeight / m_localRect.height();
+    stretch(m_scaleX, m_scaleY, QPointF(0, 0));
 }
 
 QGraphicsItem *GraphicsItem::subItem() const
@@ -122,5 +109,16 @@ void GraphicsItem::setScale(qreal scaleX, qreal scaleY)
 {
     m_scaleX = scaleX;
     m_scaleY = scaleY;
+    qDebug () << "setScale m_scaleX:" << m_scaleX;
     stretch(scaleX, scaleY, QPointF(0, 0));
+}
+
+QSharedPointer<GraphicsItem> GraphicsItem::itemParent() const
+{
+    return m_itemParent;
+}
+
+void GraphicsItem::setItemParent(QSharedPointer<GraphicsItem> newItemParent)
+{
+    m_itemParent = newItemParent;
 }

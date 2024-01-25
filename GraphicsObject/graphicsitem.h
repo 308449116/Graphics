@@ -33,14 +33,8 @@ public:
 
     virtual QRectF getRect() const;
 
-    virtual void addToGroup(QSharedPointer<GraphicsItem> item);
-
-    virtual void removeFromGroup(QSharedPointer<GraphicsItem> item);
-
-    virtual QSet<QSharedPointer<GraphicsItem>> getChildItems() const;
-
     virtual void setRotation(qreal newAngle);
-    qreal rotation();
+    qreal rotation() const;
 
     void move(const QPointF &point);
     QGraphicsItem *subItem() const;
@@ -50,10 +44,10 @@ public:
     QString itemName() const;
 
     qreal width() const;
-    void setWidth(qreal newWidth);
+    virtual void setWidth(qreal newWidth);
 
     qreal height() const;
-    void setHeight(qreal newHeight);
+    virtual void setHeight(qreal newHeight);
 
     qreal groupAngle() const;
     void setGroupAngle(qreal newGroupAngle);
@@ -65,12 +59,13 @@ public:
     qreal scaleX() const;
     void setScale(qreal scaleX, qreal scaleY);
 
+    QSharedPointer<GraphicsItem> itemParent() const;
+    void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
 
 protected:
-    qreal m_width = 0;
-    qreal m_height = 0;
     qreal m_groupAngle = 0;
     QGraphicsItem *m_subItem = nullptr;
+    QSharedPointer<GraphicsItem> m_itemParent = nullptr;
 
     QString m_itemName;
     QRectF m_localRect;

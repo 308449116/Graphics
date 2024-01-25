@@ -9,7 +9,7 @@ class GraphicsTextItem : public GraphicsItem
 {
 public:
     explicit GraphicsTextItem(QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
-    explicit GraphicsTextItem(const QString &text, const QFont &font,
+    explicit GraphicsTextItem(const QString &text, const QFont &font, qreal scaleX,
                               QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
     void stretch(qreal sx, qreal sy, const QPointF &origin) override;
@@ -36,13 +36,14 @@ private:
     class GraphicsSimpleTextItem;
     GraphicsSimpleTextItem *m_textItem = nullptr;
 
+    qreal m_fontWidth;
+    qreal m_fontHeight;
     QString m_text;
     QFont m_font;
     int m_initialFontSize;
     int m_lastFontSize;
-    int m_descent;
-    QPointF m_originPos;
-    QPointF m_textPos;
+//    int m_descent;
+//    QPointF m_originPos;
 };
 
 #endif // GRAPHICSTEXTITEM_H

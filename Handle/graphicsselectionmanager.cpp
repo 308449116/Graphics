@@ -1,6 +1,7 @@
 #include "graphicsselectionmanager.h"
 #include "graphicsselection.h"
 #include "graphicsitem.h"
+#include "graphicsitemgroup.h"
 #include "common.h"
 #include <QDebug>
 
@@ -58,7 +59,8 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QShared
 void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
             deleteItem(childItem);
         }
     }
@@ -93,7 +95,8 @@ QList<QSharedPointer<GraphicsItem> > GraphicsSelectionManager::selectedItems() c
 void GraphicsSelectionManager::updateHandle(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
-        foreach (auto childItem, item->getChildItems()) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
             this->updateHandle(childItem);
         }
     }
