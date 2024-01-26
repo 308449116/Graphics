@@ -49,8 +49,10 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QShared
 
     m_usedSelections.insert(item, gs);
     gs->setItem(item);
+
     qDebug("GraphicsSelection hide item:%p" , gs);
     qDebug("m_selectionPool insert item:%p" , item.data());
+    qDebug() << "m_selectionPool insert item sharedPoint:" << item;
     qDebug() << "m_selectionPool count:" << m_selectionPool.count();
     qDebug() << "m_usedSelections count:" << m_usedSelections.count();
     return gs;

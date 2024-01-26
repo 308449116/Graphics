@@ -164,7 +164,6 @@ QSharedPointer<GraphicsItem> GraphicsItemGroup::duplicate() const
     itemGroup->subItem()->setTransformOriginPoint(m_itemGroup->transformOriginPoint());
     itemGroup->subItem()->setZValue(m_itemGroup->zValue()+0.1);
     itemGroup->setItemName(this->itemName().append("_copy"));
-
     return QSharedPointer<GraphicsItem>(itemGroup);
 }
 
@@ -194,6 +193,13 @@ void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 //    setItemZValue(item);
     m_itemGroup->addToGroup(item->subItem());
     m_childItems.insert(item);
+    QObject::connect(item.data(), &GraphicsItem::sendGraphicsItemChange, this, [this](){
+        GraphicsItem *senderItem = dynamic_cast<GraphicsItem *>(sender());
+        QTransform itemTransform = senderItem->subItem()->itemTransform(m_itemGroup);
+        m_localRect |= itemTransform.mapRect(senderItem->subItem()->boundingRect() | senderItem->subItem()->childrenBoundingRect());
+        updateCoordinate();
+        emit sendUpdateHandle();
+    });
 
 //    GraphicsItem *childItem = dynamic_cast<GraphicsItem*>(item.data());
 //    QObject::connect(childItem, &GraphicsItem::sendPararenItemGeometryChange, this, [this](){
@@ -238,8 +244,7 @@ void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 
 void GraphicsItemGroup::removeFromGroup(QSharedPointer<GraphicsItem> item)
 {
-    GraphicsItem *childItem = dynamic_cast<GraphicsItem*>(item.data());
-    QObject::disconnect(childItem, nullptr, this, nullptr);
+    QObject::disconnect(item.data(), nullptr, this, nullptr);
     m_itemGroup->removeFromGroup(item->subItem());
     m_childItems.remove(item);
 //    m_localRect = childrenBoundingRect();

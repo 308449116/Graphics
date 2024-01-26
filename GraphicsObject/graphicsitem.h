@@ -33,7 +33,7 @@ public:
 
     virtual QRectF getRect() const;
 
-    virtual void setRotation(qreal newAngle);
+    void setRotation(qreal newAngle);
     qreal rotation() const;
 
     void move(const QPointF &point);
@@ -44,10 +44,10 @@ public:
     QString itemName() const;
 
     qreal width() const;
-    virtual void setWidth(qreal newWidth);
+    void setWidth(qreal newWidth);
 
     qreal height() const;
-    virtual void setHeight(qreal newHeight);
+    void setHeight(qreal newHeight);
 
     qreal groupAngle() const;
     void setGroupAngle(qreal newGroupAngle);
@@ -61,6 +61,11 @@ public:
 
     QSharedPointer<GraphicsItem> itemParent() const;
     void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
+
+signals:
+    void sendUpdateHandle();
+    void sendGraphicsItemChange();
+
 private:
     void setChildItemRotation(QSharedPointer<GraphicsItem> item);
 

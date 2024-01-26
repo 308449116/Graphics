@@ -31,9 +31,6 @@ public:
 
     void removeFromGroup(QSharedPointer<GraphicsItem> item);
 
-signals:
-    void sendUpdateHandle();
-
 protected:
 //    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 //    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;

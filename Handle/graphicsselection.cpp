@@ -33,6 +33,7 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
     if (item.isNull()) {
         hide(true);
 //        m_item->setSelection(nullptr);
+        disconnect(m_item.data(), nullptr, this, nullptr);
         m_item.clear();
         return;
     }
@@ -46,6 +47,10 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 
     updateHandle();
     show();
+
+    connect(item.data(), &GraphicsItem::sendUpdateHandle, this, [this](){
+        updateHandle();
+    });
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
 //        if (isShow) {
 //            show();
@@ -88,9 +93,9 @@ void GraphicsSelection::updateHandle()
 
     }
 
-    const QRectF &r = m_item->subItem()->mapRectToScene(m_item->boundingRect());
+    const QRectF &r = m_item->subItem()->mapRectToScene(m_item->getRect());
 //    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
-    QPointF originPoint = m_item->subItem()->mapToScene(m_item->boundingRect().center());
+    QPointF originPoint = m_item->subItem()->mapToScene(m_item->getRect().center());
     m_item->setRotation(initAngle);
     qDebug() << "updateHandle r:" << r;
     qDebug() << "updateHandle getRect():" << m_item->getRect();

@@ -79,6 +79,11 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     //Undo/Redo 移动处理
     if (m_items.count() > 0 && m_lastScenePos != m_pressedScenePos) {
         m_view->moveItemsByCmd(m_items, m_lastScenePos - m_pressedScenePos, true);
+        for (const auto &[pos, item] : m_items) {
+            if (!item->itemParent().isNull()) {
+                emit item->sendGraphicsItemChange();
+            }
+        }
     }
 
     QGraphicsItem::mouseReleaseEvent(event);

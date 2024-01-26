@@ -30,43 +30,18 @@ void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 void GraphicsRectItem::updateCoordinate()
 {
-    //    qDebug() << "transformOriginPoint111:" << m_rectItem->mapToScene(m_rectItem->transformOriginPoint());
-    //    qDebug() << "rotation11111:" << rotation();
+    auto angle = qDegreesToRadians(m_rectItem->rotation());
 
-    //    qDebug() << "transformOriginPoint:" << m_rectItem->transformOriginPoint();
-    //    qDebug() << "m_localRect.center:" << m_localRect.center();
-    //    qDebug() << "delta:" << delta;
-    if (!m_rectItem->parentItem()) {
-//                QPointF pt1, pt2, delta;
-//                pt1 = m_rectItem->mapToScene(m_rectItem->transformOriginPoint());
-//                pt2 = m_rectItem->mapToScene(m_localRect.center());
-//                delta = pt1 - pt2;
+    auto p1 = m_localRect.center();
+    auto origin = m_rectItem->transformOriginPoint();
+    QPointF p2 = QPointF(0, 0);
 
-//                m_localRect = m_rectItem->boundingRect();
-//                m_localRect = QRectF(0, 0, m_width, m_height);
-//                m_width = m_localRect.width();
-//                m_height = m_localRect.height();
-//                m_rectItem->setTransform(m_rectItem->transform().translate(delta.x(), delta.y()));
-//                m_rectItem->setTransformOriginPoint(m_localRect.center());
-//                m_rectItem->moveBy(-delta.x(), -delta.y());
-//                m_rectItem->setTransform(m_rectItem->transform().translate(-delta.x(), -delta.y()));
-//                m_oppositePos = QPointF(0,0);
-        //解决有旋转角度的矩形，拉伸之后，再次旋转，旋转中心该仍然为之前坐标，手动设置为中心，会产生漂移的问题
-        auto angle = qDegreesToRadians(m_rectItem->rotation());
+    p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
+    p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
 
-        auto p1 = m_localRect.center();
-        auto origin = m_rectItem->transformOriginPoint();
-        QPointF p2 = QPointF(0, 0);
-
-        p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
-        p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
-
-        auto diff = p1 - p2;
-        m_rectItem->moveBy(-diff.x(), -diff.y());
-        m_rectItem->setTransformOriginPoint(m_localRect.center());
-    }
-    //    qDebug() << "rotation2222:" << rotation();
-    //    qDebug() << "transformOriginPoint222:" << mapToScene(transformOriginPoint());
+    auto diff = p1 - p2;
+    m_rectItem->moveBy(-diff.x(), -diff.y());
+    m_rectItem->setTransformOriginPoint(m_localRect.center());
 
     m_initialRect = m_localRect;
 }
