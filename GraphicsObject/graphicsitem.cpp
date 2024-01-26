@@ -1,4 +1,6 @@
 #include "graphicsitem.h"
+#include "graphicsitemgroup.h"
+#include "common.h"
 
 GraphicsItem::GraphicsItem(QObject *parent)
     : QObject(parent)
@@ -20,12 +22,23 @@ QRectF GraphicsItem::getRect() const
 
 void GraphicsItem::setRotation(qreal newAngle)
 {
+//    m_subItem->setRotation(newAngle);
+    if (m_angle == newAngle) return;
+
+    m_angle = newAngle;
+    if (this->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            setChildItemRotation(childItem);
+        }
+    }
+
     m_subItem->setRotation(newAngle);
 }
 
 qreal GraphicsItem::rotation() const
 {
-    return m_subItem->rotation();
+    return m_angle;
 }
 
 void GraphicsItem::move(const QPointF &point)
@@ -121,4 +134,16 @@ QSharedPointer<GraphicsItem> GraphicsItem::itemParent() const
 void GraphicsItem::setItemParent(QSharedPointer<GraphicsItem> newItemParent)
 {
     m_itemParent = newItemParent;
+}
+
+void GraphicsItem::setChildItemRotation(QSharedPointer<GraphicsItem> item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            setChildItemRotation(childItem);
+        }
+    }
+
+    item->setGroupAngle(m_angle);
 }

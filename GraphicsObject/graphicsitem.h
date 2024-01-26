@@ -61,8 +61,11 @@ public:
 
     QSharedPointer<GraphicsItem> itemParent() const;
     void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
+private:
+    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
 
 protected:
+    qreal m_angle = 0;
     qreal m_groupAngle = 0;
     QGraphicsItem *m_subItem = nullptr;
     QSharedPointer<GraphicsItem> m_itemParent = nullptr;

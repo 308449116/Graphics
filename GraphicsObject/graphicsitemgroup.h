@@ -19,7 +19,7 @@ public:
 
     void updateCoordinate() override;
 
-    void setRotation(qreal newAngle)  override;
+//    void setRotation(qreal newAngle)  override;
 
     QSharedPointer<GraphicsItem> duplicate() const override;
 
@@ -40,7 +40,7 @@ protected:
 
 private:
     QList<QSharedPointer<GraphicsItem> > duplicateItems() const;
-    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
+//    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
 //    void setItemZValue(QSharedPointer<GraphicsItem> item);
 
 private:
