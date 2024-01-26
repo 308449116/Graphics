@@ -229,38 +229,8 @@ void ViewGraphics::groupItemsByCmd()
 
 QSharedPointer<GraphicsItem> ViewGraphics::groupItems(QList<QSharedPointer<GraphicsItem>> items)
 {
-//    foreach(auto item, items) {
-//        m_selectionManager->hide(item, true);
-//    }
-
     QSharedPointer<GraphicsItem> itemGroup = m_itemManager->createGraphicsItemGroup(items);
-
-//    GraphicsAbstractItemGroup *g = qgraphicsitem_cast<GraphicsAbstractItemGroup *>(itemGroup.data());
-//    GraphicsItemGroup *group = dynamic_cast<GraphicsItemGroup *>(itemGroup.data());
-//    QSharedPointer<GraphicsAbstractItemGroup> sharedGroup = itemGroup.dynamicCast<GraphicsAbstractItemGroup>();
-//    if(g) {
-//        qDebug() << "==========g==========";
-//    } else {
-//        qDebug() << "++++++++ g nullptr ++++++++";
-//    }
-
-//    if(group) {
-//        qDebug() << "==========group==========";
-//    } else {
-//        qDebug() << "++++++++ group nullptr ++++++++";
-//    }
-
-//    if(sharedGroup) {
-//        qDebug() << "==========sharedGroup==========";
-//    } else {
-//        qDebug() << "++++++++ sharedGroup nullptr ++++++++";
-//    }
-//    connect(group, &GraphicsItemGroup::sendUpdateHandle, this, [](){
-//        qDebug() << "====================";
-//    });
-//    m_selectionManager->addItem(this, itemGroup);
     addItem(itemGroup);
-
     return itemGroup;
 }
 

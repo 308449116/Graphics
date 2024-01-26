@@ -190,7 +190,6 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 {
-//    setItemZValue(item);
     m_itemGroup->addToGroup(item->subItem());
     m_childItems.insert(item);
     QObject::connect(item.data(), &GraphicsItem::sendGraphicsItemChange, this, [this](){
@@ -200,23 +199,6 @@ void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
         updateCoordinate();
         emit sendUpdateHandle();
     });
-
-//    GraphicsItem *childItem = dynamic_cast<GraphicsItem*>(item.data());
-//    QObject::connect(childItem, &GraphicsItem::sendPararenItemGeometryChange, this, [this](){
-//        GraphicsSelection *selection = this->selection();
-//        if (selection) {
-//            if (!selection->isActived()) {
-//                GraphicsItem *item = dynamic_cast<GraphicsItem *>(sender());
-//                qDebug() << "GraphicsItem::sendPararenItemGeometryChange 111111111" << QGraphicsItemGroup::boundingRect();
-//                QTransform itemTransform = item->itemTransform(this);
-//                m_localRect |= itemTransform.mapRect(item->boundingRect() | item->childrenBoundingRect());
-//                updateCoordinate(true);
-//                selection->updateHandle();
-////                item->selection()->updateHandle();
-////                emit sendUpdateHandle();
-//            }
-//        }
-//    });
 
 //    QTransform itemTransform = item->itemTransform(this);
 //    m_localRect |= itemTransform.mapRect(item->boundingRect() | item->childrenBoundingRect());
