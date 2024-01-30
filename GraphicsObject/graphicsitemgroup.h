@@ -11,7 +11,7 @@ class GraphicsItemGroup : public GraphicsItem
 public:
     explicit GraphicsItemGroup(QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
-    explicit GraphicsItemGroup(QList<QGraphicsItem *> items, QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
+    explicit GraphicsItemGroup(QList<QSharedPointer<GraphicsItem> > items, QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
     virtual ~GraphicsItemGroup();
 
@@ -27,9 +27,9 @@ public:
 
     QSet<QSharedPointer<GraphicsItem > > getChildItems() const;
 
-    void addToGroup(QGraphicsItem *item);
+    void addToGroup(QSharedPointer<GraphicsItem> item);
 
-    void removeFromGroup(QGraphicsItem *item);
+    void removeFromGroup(QSharedPointer<GraphicsItem> item);
 
 protected:
 //    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
