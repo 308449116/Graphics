@@ -118,6 +118,7 @@ void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsI
                              const QPointF &pos)
 {
     for (const auto &[initPos, item] : items) {
+//        item->subItem()->moveBy(pos.x(), pos.y());
         item->subItem()->setPos(initPos + pos);
         m_selectionManager->updateHandle(item);
         //  m_scene->update();

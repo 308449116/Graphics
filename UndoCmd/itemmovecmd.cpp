@@ -15,7 +15,11 @@ ItemMoveCmd::ItemMoveCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>
 
 void ItemMoveCmd::undo()
 {
-    m_view->moveItems(m_items, QPointF(0, 0));
+    for (const auto &[initPos, item] : m_items) {
+        item->subItem()->moveBy(-m_offsetPos.x(), -m_offsetPos.y());
+        m_view->updateHandle(item);
+    }
+//    m_view->moveItems(m_items, QPointF(0, 0));
     m_isMoved = false;
 
     const auto &[initPos, item] = m_items[0];
@@ -26,7 +30,10 @@ void ItemMoveCmd::undo()
 void ItemMoveCmd::redo()
 {
     if (!m_isMoved) {
-        m_view->moveItems(m_items, m_offsetPos);
+        for (const auto &[initPos, item] : m_items) {
+            item->subItem()->moveBy(m_offsetPos.x(), m_offsetPos.y());
+            m_view->updateHandle(item);
+        }
     }
 
     const auto &[initPos, item] = m_items[0];

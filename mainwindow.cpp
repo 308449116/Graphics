@@ -192,7 +192,22 @@ void MainWindow::on_textBtn_clicked()
 
 void MainWindow::on_barcodeBtn_clicked()
 {
-//    GraphicsItemManager *manager = new GraphicsItemManager(dynamic_cast<SceneGraphics *>(ui->graphicsView->scene()));
+    QGraphicsRectItem *rect1 = new QGraphicsRectItem(QRectF(0, 0, 100, 100));
+    QGraphicsRectItem *rect2 = new QGraphicsRectItem(QRectF(200, 200, 100, 100));
+    rect1->setPos(200, 200);
+    rect1->setTransformOriginPoint(rect1->boundingRect().center());
+    rect1->setRotation(30);
+    QGraphicsItemGroup* group = new QGraphicsItemGroup();
+    group->addToGroup(rect1);
+    group->addToGroup(rect2);
+    ui->graphicsView->scene()->addItem(group);
+
+
+    group->removeFromGroup(rect1);
+    group->removeFromGroup(rect2);
+    rect1->setRotation(0);
+//    rect1->moveBy(-200, -200);
+    rect1->setPos(0, 0);
 //    QSharedPointer<GraphicsItem> item =
 //        QSharedPointer<GraphicsItem>( new GraphicsTextItem("jkpg") );
 //    ui->graphicsView->scene()->addItem(item.data());

@@ -164,6 +164,7 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSel
 //        selectionManager->setZValue(childItem, selectionManager->zValue(childItem) - 1);
         selectionManager->show(childItem);
         selectionManager->updateHandle(childItem);
+//        childItem->setGroupAngle(0);
     }
 //    item->setRotation(angle);
     view->deleteItem(item);

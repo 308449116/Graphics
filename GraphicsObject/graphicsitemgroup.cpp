@@ -190,6 +190,7 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 {
+//    item->setGroupAngle(rotation());
     m_itemGroup->addToGroup(item->subItem());
     m_childItems.insert(item);
     QObject::connect(item.data(), &GraphicsItem::sendGraphicsItemChange, this, [this](){
