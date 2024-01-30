@@ -158,8 +158,10 @@ void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSel
 //        }
 //        childItem->setRotation(angle);
 //        item->updateCoordinate();
+//        childItem->setGroupAngle(0);
+        view->setZValue(childItem, -1);
         childItem->setItemParent(nullptr);
-        selectionManager->setZValue(childItem, selectionManager->zValue(childItem) - 1);
+//        selectionManager->setZValue(childItem, selectionManager->zValue(childItem) - 1);
         selectionManager->show(childItem);
         selectionManager->updateHandle(childItem);
     }

@@ -58,7 +58,7 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, QShared
     return gs;
 }
 
-void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
+void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsItem> item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
@@ -67,10 +67,10 @@ void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
         }
     }
 
-    deleteItem(item);
+    removeItem(item);
 }
 
-void GraphicsSelectionManager::deleteItem(QSharedPointer<GraphicsItem> item)
+void GraphicsSelectionManager::removeItem(QSharedPointer<GraphicsItem> item)
 {
     if (m_usedSelections.isEmpty()) {
         return;

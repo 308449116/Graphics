@@ -20,6 +20,18 @@ QRectF GraphicsItem::getRect() const
     return m_localRect;
 }
 
+void GraphicsItem::setChildItemRotation(QSharedPointer<GraphicsItem> item, qreal angleGroup)
+{
+    item->setGroupAngle(angleGroup);
+
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            setChildItemRotation(childItem, itemGroup->rotation() + itemGroup->groupAngle());
+        }
+    }
+}
+
 void GraphicsItem::setRotation(qreal newAngle)
 {
 //    m_subItem->setRotation(newAngle);
@@ -29,7 +41,7 @@ void GraphicsItem::setRotation(qreal newAngle)
     if (this->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
         foreach (auto childItem, itemGroup->getChildItems()) {
-            setChildItemRotation(childItem);
+            setChildItemRotation(childItem, newAngle + itemGroup->groupAngle());
         }
     }
 
@@ -134,16 +146,4 @@ QSharedPointer<GraphicsItem> GraphicsItem::itemParent() const
 void GraphicsItem::setItemParent(QSharedPointer<GraphicsItem> newItemParent)
 {
     m_itemParent = newItemParent;
-}
-
-void GraphicsItem::setChildItemRotation(QSharedPointer<GraphicsItem> item)
-{
-    if (item->type() == GraphicsItemType::GroupItem) {
-        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
-        foreach (auto childItem, itemGroup->getChildItems()) {
-            setChildItemRotation(childItem);
-        }
-    }
-
-    item->setGroupAngle(m_angle);
 }

@@ -67,7 +67,7 @@ signals:
     void sendGraphicsItemChange();
 
 private:
-    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
+    void setChildItemRotation(QSharedPointer<GraphicsItem> item, qreal angleGroup);
 
 protected:
     qreal m_angle = 0;

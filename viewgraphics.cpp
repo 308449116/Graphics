@@ -95,7 +95,7 @@ void ViewGraphics::deleteItems(const QList<QSharedPointer<GraphicsItem> > &items
 void ViewGraphics::deleteItem(QSharedPointer<GraphicsItem> item)
 {
     if (m_selectionManager->isItemSelected(item)) {
-        m_selectionManager->removeItem(item);
+        m_selectionManager->deleteItem(item);
     }
 
     m_scene->removeItem(item);
@@ -278,7 +278,7 @@ QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 void ViewGraphics::addItem(QSharedPointer<GraphicsItem> item)
 {
     addGroupItems(item);
-    setZValue(item);
+    setZValue(item, 1);
     m_scene->addItem(item);
 }
 
@@ -297,17 +297,17 @@ void ViewGraphics::addGroupItems(QSharedPointer<GraphicsItem> item)
     addItemToSelectionManager(item);
 }
 
-void ViewGraphics::setZValue(QSharedPointer<GraphicsItem> item)
+void ViewGraphics::setZValue(QSharedPointer<GraphicsItem> item, int increment)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
         foreach (auto childItem, itemGroup->getChildItems()) {
-            setZValue(childItem);
+            setZValue(childItem, increment);
         }
     }
 
     if (!item->itemParent().isNull()) {
-        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
+        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + increment);
     }
 }
 
