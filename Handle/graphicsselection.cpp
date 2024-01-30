@@ -98,6 +98,8 @@ void GraphicsSelection::updateHandle()
     QPointF originPoint = m_item->subItem()->mapToScene(m_item->getRect().center());
     m_item->setRotation(initAngle);
     qDebug() << "updateHandle r:" << r;
+    qDebug() << "updateHandle pos:" << m_item->subItem()->pos();
+    qDebug() << "updateHandle scenePos:" << m_item->subItem()->scenePos();
     qDebug() << "updateHandle getRect():" << m_item->getRect();
     qDebug() << "originPoint:" << originPoint;
     qDebug() << "groupAngle:" << groupAngle;

@@ -46,8 +46,8 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "========= mousePressEvent rotation:" << m_item->rotation();
     qDebug() << "========= mousePressEvent groupAngle:" << m_item->groupAngle();
 
-    m_lastScenePos = m_pressedScenePos = event->scenePos();
-//    qDebug() << "m_pressedScenePos:" << m_lastScenePos;
+    m_lastPos = m_pressedPos = event->pos();
+//    qDebug() << "m_pressedPos:" << m_lastPos;
     m_initialPos = m_item->subItem()->pos();
     m_items.clear();
 
@@ -62,14 +62,14 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_lastScenePos = event->scenePos();
+    m_lastPos = event->pos();
     m_selection->setOpacity(0);
-//    qDebug() << "m_lastScenePos:" << m_lastScenePos;
-//    qDebug() << "m_lastScenePos - m_pressedScenePos:" << m_lastScenePos - m_pressedScenePos;
+//    qDebug() << "m_lastPos:" << m_lastPos;
+//    qDebug() << "m_lastPos - m_pressedPos:" << m_lastPos - m_pressedPos;
 
     //移动处理
-    m_view->moveItems(m_items, m_lastScenePos - m_pressedScenePos);
-//    m_item->setPos(m_initialPos + m_lastScenePos - m_pressedScenePos);
+    m_view->moveItems(m_items, m_lastPos - m_pressedPos);
+//    m_item->setPos(m_initialPos + m_lastPos - m_pressedPos);
 //    m_selection->updateHandle();
     QGraphicsItem::mouseMoveEvent(event);
 }
@@ -79,8 +79,8 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     m_selection->setOpacity(1);
 
     //Undo/Redo 移动处理
-    if (m_items.count() > 0 && m_lastScenePos != m_pressedScenePos) {
-        m_view->moveItemsByCmd(m_items, m_lastScenePos - m_pressedScenePos, true);
+    if (m_items.count() > 0 && m_lastPos != m_pressedPos) {
+        m_view->moveItemsByCmd(m_items, m_lastPos - m_pressedPos, true);
         for (const auto &[pos, item] : m_items) {
             if (!item->itemParent().isNull()) {
                 emit item->sendGraphicsItemChange();

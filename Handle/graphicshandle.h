@@ -60,8 +60,8 @@ protected:
     const int m_handleType;
     QColor m_borderColor;
     QRectF m_localRect;
-    QPointF m_pressedScenePos;
-    QPointF m_lastScenePos;
+    QPointF m_pressedPos;
+    QPointF m_lastPos;
 
     GraphicsHandleState m_state;
     QSharedPointer<GraphicsItem> m_item;
