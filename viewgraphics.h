@@ -96,6 +96,8 @@ public:
 
     void updateHandle(QSharedPointer<GraphicsItem> item);
 
+    void setZValue(QSharedPointer<GraphicsItem> item, int increment);
+
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
@@ -111,7 +113,6 @@ private:
     void addGroupItems(QSharedPointer<GraphicsItem> item);
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
-    void setZValue(QSharedPointer<GraphicsItem> item);
 
 private:
     bool m_isUndoCmdEnabled = true;

@@ -43,6 +43,8 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
     QGraphicsItem::mousePressEvent(event);
     qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
+    qDebug() << "========= mousePressEvent rotation:" << m_item->rotation();
+    qDebug() << "========= mousePressEvent groupAngle:" << m_item->groupAngle();
 
     m_lastScenePos = m_pressedScenePos = event->scenePos();
 //    qDebug() << "m_pressedScenePos:" << m_lastScenePos;

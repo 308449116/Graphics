@@ -33,7 +33,7 @@ public:
 
     GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item);
 
-    void removeItem(QSharedPointer<GraphicsItem> item);
+    void deleteItem(QSharedPointer<GraphicsItem> item);
 
     void updateHandle(QSharedPointer<GraphicsItem> item);
 
@@ -46,7 +46,7 @@ public:
     qreal zValue(QSharedPointer<GraphicsItem> item);
 
 private:
-    void deleteItem(QSharedPointer<GraphicsItem> item);
+    void removeItem(QSharedPointer<GraphicsItem> item);
 
 private:
     using SelectionPool = QList<GraphicsSelection *>;
