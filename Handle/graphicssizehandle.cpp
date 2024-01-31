@@ -143,7 +143,7 @@ void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         m_selection->setOpacity(1);
         m_view->resizeItemByCmd(m_handleType, m_item, QPointF(m_scaleX, m_scaleY), true);
 
-        if (!m_item->itemParent().isNull()) {
+        if (m_item->subItem()->parentItem()) {
             emit m_item->sendGraphicsItemChange();
         }
     }

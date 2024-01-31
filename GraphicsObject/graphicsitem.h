@@ -54,8 +54,8 @@ public:
     qreal scaleX() const;
     void setScale(qreal scaleX, qreal scaleY);
 
-    QSharedPointer<GraphicsItem> itemParent() const;
-    void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
+//    QSharedPointer<GraphicsItem> itemParent() const;
+//    void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
 
     void setRotation(qreal newAngle);
     void setInitAngle(qreal newInitAngle);
@@ -78,7 +78,7 @@ protected:
     qreal m_groupAngle = 0;
     qreal m_rotationAngle = 0;
     QGraphicsItem *m_subItem = nullptr;
-    QSharedPointer<GraphicsItem> m_itemParent = nullptr;
+//    QSharedPointer<GraphicsItem> m_itemParent = nullptr;
 
     QString m_itemName;
     QRectF m_localRect;

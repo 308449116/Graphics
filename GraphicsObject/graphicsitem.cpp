@@ -146,12 +146,12 @@ void GraphicsItem::setScale(qreal scaleX, qreal scaleY)
     stretch(scaleX, scaleY, QPointF(0, 0));
 }
 
-QSharedPointer<GraphicsItem> GraphicsItem::itemParent() const
-{
-    return m_itemParent;
-}
+//QSharedPointer<GraphicsItem> GraphicsItem::itemParent() const
+//{
+//    return m_itemParent;
+//}
 
-void GraphicsItem::setItemParent(QSharedPointer<GraphicsItem> newItemParent)
-{
-    m_itemParent = newItemParent;
-}
+//void GraphicsItem::setItemParent(QSharedPointer<GraphicsItem> newItemParent)
+//{
+//    m_itemParent = newItemParent;
+//}

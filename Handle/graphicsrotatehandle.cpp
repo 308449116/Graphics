@@ -91,7 +91,7 @@ void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         m_selection->setOpacity(1);
         m_view->rotateItemByCmd(m_item, m_initAngle);
 
-        if (!m_item->itemParent().isNull()) {
+        if (m_item->subItem()->parentItem()) {
             emit m_item->sendGraphicsItemChange();
         }
     }

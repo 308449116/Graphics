@@ -272,7 +272,7 @@ void ViewGraphics::ungroupItems(QList<QSharedPointer<GraphicsItem>> items)
         foreach (auto childItem, itemGroup->getChildItems()) {
             itemGroup->removeFromGroup(childItem);
             this->setZValue(childItem, -1);
-            childItem->setItemParent(nullptr);
+//            childItem->setItemParent(nullptr);
             m_selectionManager->show(childItem);
             m_selectionManager->updateHandle(childItem);
         }
@@ -316,7 +316,7 @@ void ViewGraphics::addGroupItems(QSharedPointer<GraphicsItem> item)
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
         foreach (auto childItem, itemGroup->getChildItems()) {
-            childItem->setItemParent(item);
+//            childItem->setItemParent(item);
             addGroupItems(childItem);
 //            m_selectionManager->hide(childItem, true);
         }
@@ -334,7 +334,7 @@ void ViewGraphics::setZValue(QSharedPointer<GraphicsItem> item, int increment)
         }
     }
 
-    if (!item->itemParent().isNull()) {
+    if (item->subItem()->parentItem()) {
         m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + increment);
     }
 }
