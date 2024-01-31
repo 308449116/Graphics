@@ -132,10 +132,8 @@ void ViewGraphics::moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsI
                              const QPointF &pos)
 {
     for (const auto &[initPos, item] : items) {
-//        item->subItem()->moveBy(pos.x(), pos.y());
         item->subItem()->setPos(initPos + pos);
         m_selectionManager->updateHandle(item);
-        //  m_scene->update();
     }
 }
 
@@ -268,7 +266,17 @@ void ViewGraphics::ungroupItemsByCmd()
 void ViewGraphics::ungroupItems(QList<QSharedPointer<GraphicsItem>> items)
 {
     foreach (auto item, items) {
-        m_itemManager->ungroup(item, m_selectionManager, this);
+        if (item->type() != GraphicsItemType::GroupItem) return;
+
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            itemGroup->removeFromGroup(childItem);
+            this->setZValue(childItem, -1);
+            childItem->setItemParent(nullptr);
+            m_selectionManager->show(childItem);
+            m_selectionManager->updateHandle(childItem);
+        }
+        this->deleteItem(item);
     }
 }
 

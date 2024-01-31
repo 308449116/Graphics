@@ -37,7 +37,7 @@ public:
     int getItemCounts(GraphicsItemType type);
 
     // 取消分组
-    void ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view);
+//    void ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view);
 
     void cleanAll();
 

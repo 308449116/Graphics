@@ -25,7 +25,7 @@ protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
-    QPointF m_initialPos;
+//    QPointF m_initialPos;
     ViewGraphics *m_view;
     QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> m_items;
 };

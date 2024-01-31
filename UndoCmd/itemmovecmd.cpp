@@ -34,6 +34,7 @@ void ItemMoveCmd::redo()
             item->subItem()->moveBy(m_offsetPos.x(), m_offsetPos.y());
             m_view->updateHandle(item);
         }
+//        m_view->moveItems(m_items, m_offsetPos);
     }
 
     const auto &[initPos, item] = m_items[0];

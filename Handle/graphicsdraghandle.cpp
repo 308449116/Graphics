@@ -50,9 +50,13 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
     qDebug();
 
-    m_lastPos = m_pressedPos = event->scenePos();
-//    qDebug() << "m_pressedPos:" << m_lastPos;
-    m_initialPos = m_item->subItem()->pos();
+    if (m_item->itemParent().isNull()) {
+        m_lastPos = m_pressedPos = event->scenePos();
+    } else {
+        m_lastPos = m_pressedPos = m_item->itemParent()->subItem()->mapFromScene(event->scenePos());
+    }
+    qDebug() << "m_pressedPos:" << m_lastPos;
+//    m_initialPos = m_item->subItem()->pos();
     m_items.clear();
 
     QList<QGraphicsItem *> items = m_view->scene()->selectedItems();
@@ -67,7 +71,12 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_lastPos = event->scenePos();
+    if (m_item->itemParent().isNull()) {
+        m_lastPos = event->scenePos();
+    } else {
+        m_lastPos = m_item->itemParent()->subItem()->mapFromScene(event->scenePos());
+    }
+
     m_selection->setOpacity(0);
 //    qDebug() << "m_lastPos:" << m_lastPos;
 //    qDebug() << "m_pressedPos:" << m_pressedPos;
@@ -75,7 +84,7 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     //移动处理
     m_view->moveItems(m_items, m_lastPos - m_pressedPos);
-//    m_item->subItem()->setPos(m_initialPos + m_lastPos - m_pressedPos);
+//    m_item->subItem()->setPos(m_initialPos + (m_lastPos - m_pressedPos));
 //    m_selection->updateHandle();
     QGraphicsItem::mouseMoveEvent(event);
 }

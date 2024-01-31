@@ -129,61 +129,21 @@ int GraphicsItemManager::getItemCounts(GraphicsItemType type)
     return m_countMap[type];
 }
 
-void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view)
-{
-    if (item->type() != GraphicsItemType::GroupItem) return;
-
-//    qDebug() << "111 itemGroup->getChildItems().count:" << item->getChildItems().count();
-//    qDebug() << "111 itemGroup->getChildItems().rotation:" << item->rotation();
-//    QList<QPair<QSharedPointer<GraphicsItem>, QPointF>> itemPosList;
-//    foreach (auto childItem, item->getChildItems()) {
-//        itemPosList.append(qMakePair(childItem, childItem->scenePos()));
-//    }
-
-//    qreal angle = item->rotation();
-//    item->setRotation(0);
-    GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
-    foreach (auto childItem, itemGroup->getChildItems()) {
-//        qDebug() << "itemGroup->getChildItems().pos:" << childItem->scenePos();
-        qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
-//        QPointF originPoint = childItem->transformOriginPoint();
-        itemGroup->removeFromGroup(childItem);
-//        childItem->setGroupAngle(childItem->groupAngle() + item->rotation());
-//        childItem->setTransformOriginPoint(childItem->mapFromItem(item.data(), item->transformOriginPoint()));
-//        for (const auto &[item, pos] : itemPosList) {
-//            if (item == childItem) {
-//                childItem->setPos(pos);
-//                break;
-//            }
-//        }
-//        childItem->setRotation(angle);
-//        item->updateCoordinate();
-//        childItem->setGroupAngle(0);
-        view->setZValue(childItem, -1);
-        childItem->setItemParent(nullptr);
-//        selectionManager->setZValue(childItem, selectionManager->zValue(childItem) - 1);
-        selectionManager->show(childItem);
-        selectionManager->updateHandle(childItem);
-//        childItem->setGroupAngle(0);
-    }
-//    item->setRotation(angle);
-    view->deleteItem(item);
-}
-
-//void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectManager)
+//void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view)
 //{
-//    GraphicsItem *ab = item.data();
-//    GraphicsAbstractItemGroup *itemGroup  = dynamic_cast<GraphicsAbstractItemGroup *>(ab);
-//    if (itemGroup) {
-//        qDebug() << "itemGroup->getChildItems().count:" << itemGroup->getChildItems().count();
-//        foreach (auto childItem, itemGroup->getChildItems()) {
-//            //            itemGroup->removeFromGroup(childItem);
-//            selectManager->show(childItem);
-//        }
-//    } else {
-//        qDebug() << "itemGroup ============= ";
+//    if (item->type() != GraphicsItemType::GroupItem) return;
+
+//    GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+//    foreach (auto childItem, itemGroup->getChildItems()) {
+//        qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
+//        itemGroup->removeFromGroup(childItem);
+
+//        view->setZValue(childItem, -1);
+//        childItem->setItemParent(nullptr);
+//        selectionManager->show(childItem);
+//        selectionManager->updateHandle(childItem);
 //    }
-//    selectManager->removeItem(item);
+//    view->deleteItem(item);
 //}
 
 void GraphicsItemManager::cleanAll()
