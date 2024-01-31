@@ -40,7 +40,6 @@ SOURCES += \
     UndoCmd/itemresizecmd.cpp \
     UndoCmd/itemrotatecmd.cpp \
     UndoCmd/itemungroupcmd.cpp \
-    UndoCmd/undocmdmanager.cpp \
     Utils/utils.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -69,7 +68,6 @@ HEADERS += \
     UndoCmd/itemresizecmd.h \
     UndoCmd/itemrotatecmd.h \
     UndoCmd/itemungroupcmd.h \
-    UndoCmd/undocmdmanager.h \
     Utils/utils.h \
     mainwindow.h \
     scenegraphics.h \

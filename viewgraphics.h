@@ -118,9 +118,10 @@ private:
     bool m_isUndoCmdEnabled = true;
     SceneGraphics *m_scene;
     GraphicsItemManager *m_itemManager;
-    UndoCmdManager *m_undoCmdManager;
     GraphicsSelectionManager *m_selectionManager;
-//    QSet<GraphicsItem *> m_manageItem;
+    QUndoStack* m_undoStack = nullptr;
+
+    //    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;
     //    GraphicsItem  *m_currentItem = nullptr;
 };

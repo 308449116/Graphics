@@ -1,11 +1,21 @@
 #include "viewgraphics.h"
-#include "graphicsselectionmanager.h"
 #include "scenegraphics.h"
-#include "graphicsitemmanager.h"
-#include "graphicshandle.h"
-#include "graphicsitemgroup.h"
-#include "undocmdmanager.h"
 
+#include "graphicsselectionmanager.h"
+#include "graphicsitemmanager.h"
+#include "graphicsitemgroup.h"
+#include "graphicshandle.h"
+
+#include "itemcreatecmd.h"
+#include "itemdeletecmd.h"
+#include "itemmovecmd.h"
+#include "itemresizecmd.h"
+#include "itemrotatecmd.h"
+#include "itemcopycmd.h"
+#include "itemgroupcmd.h"
+#include "itemungroupcmd.h"
+
+#include <QUndoView>
 #include <QAction>
 #include <QDebug>
 #include <QGraphicsItemGroup>
@@ -27,9 +37,10 @@ ViewGraphics::ViewGraphics(QWidget* parent)
     this->setScene(m_scene);
 
     m_itemManager = new GraphicsItemManager(m_scene);
-    m_undoCmdManager = new UndoCmdManager(this);
+    m_undoStack = new QUndoStack(this);
+
     connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::deleteItemsByCmd);
-//    m_undoCmdManager->setUndoLimit(5);
+//    m_undoStack->setUndoLimit(5);
 
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
 
@@ -59,7 +70,8 @@ ViewGraphics::~ViewGraphics()
 void ViewGraphics::createItemByCmd(GraphicsItemType type)
 {
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runCreateCmd(type, this);
+        ItemCreateCmd *createCmd = new ItemCreateCmd(type, this);
+        m_undoStack->push(createCmd);
     } else {
         createItem(type);
     }
@@ -79,7 +91,8 @@ void ViewGraphics::deleteItemsByCmd()
     if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runDeleteCmd(items, this);
+        ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(items, this);
+        m_undoStack->push(deleteCmd);
     } else {
         deleteItems(items);
     }
@@ -108,7 +121,8 @@ void ViewGraphics::moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<Grap
     if (items.empty()) return;
 
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runMoveCmd(items, pos, this, isMoved);
+        ItemMoveCmd *moveCmd = new ItemMoveCmd(items, pos, this, isMoved);
+        m_undoStack->push(moveCmd);
     } else {
         moveItems(items, pos);
     }
@@ -129,7 +143,8 @@ void ViewGraphics::resizeItemByCmd(int handleType, QSharedPointer<GraphicsItem> 
                                    const QPointF &scale, bool isResized)
 {
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runResizeCmd(handleType, item, scale, this, isResized);
+        ItemResizeCmd *resizeCmd = new ItemResizeCmd(handleType, item, scale, this, isResized);
+        m_undoStack->push(resizeCmd);
     } else {
         resizeItem(handleType, item, scale);
     }
@@ -148,7 +163,8 @@ void ViewGraphics::resizeItem(int handleType, QSharedPointer<GraphicsItem> item,
 void ViewGraphics::rotateItemByCmd(QSharedPointer<GraphicsItem> item, const qreal angle)
 {
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runRotateCmd(item, angle, this);
+        ItemRotateCmd *rotateCmd = new ItemRotateCmd(item, angle, this);
+        m_undoStack->push(rotateCmd);
     } else {
         rotateItem(item, angle);
     }
@@ -222,7 +238,8 @@ void ViewGraphics::groupItemsByCmd()
     }
 
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runGroupCmd(items, this);
+        ItemGroupCmd *groupCmd = new ItemGroupCmd(items, this);
+        m_undoStack->push(groupCmd);
     } else {
         groupItems(items);
     }
@@ -241,7 +258,8 @@ void ViewGraphics::ungroupItemsByCmd()
     if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runUngroupCmd(items, this);
+        ItemUngroupCmd *ungroupCmd = new ItemUngroupCmd(items, this);
+        m_undoStack->push(ungroupCmd);
     } else {
         ungroupItems(items);
     }
@@ -261,7 +279,8 @@ void ViewGraphics::duplicateItemsByCmd()
     if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {
-        m_undoCmdManager->runCopyCmd(items, this);
+        ItemCopyCmd *copyCmd = new ItemCopyCmd(items, this);
+        m_undoStack->push(copyCmd);
     } else {
         foreach (auto item, items) {
             QSharedPointer<GraphicsItem> itemCopy = item->duplicate();
@@ -314,26 +333,26 @@ void ViewGraphics::setZValue(QSharedPointer<GraphicsItem> item, int increment)
 
 QAction *ViewGraphics::createUndoAction()
 {
-    QAction *undoAct = m_undoCmdManager->createUndoAction();
+    QAction *undoAct = m_undoStack->createUndoAction(this, tr("Undo"));
     undoAct->setIcon(QIcon(":/icons/undo.png"));
     return undoAct;
 }
 
 QAction *ViewGraphics::createRedoAction()
 {
-    QAction *redo = m_undoCmdManager->createRedoAction();
+    QAction *redo = m_undoStack->createRedoAction(this, tr("Redo"));
     redo->setIcon(QIcon(":/icons/redo.png"));
     return redo;
 }
 
 bool ViewGraphics::canUndo() const
 {
-    return m_undoCmdManager->canUndo();
+    return m_undoStack->canUndo();
 }
 
 bool ViewGraphics::canRedo() const
 {
-    return m_undoCmdManager->canRedo();
+    return m_undoStack->canUndo();
 }
 
 void ViewGraphics::addItemToSelectionManager(QSharedPointer<GraphicsItem> item)
@@ -355,7 +374,7 @@ void ViewGraphics::setUndoCmdEnabled(bool newIsUndoCmdEnabled)
 
 QUndoStack *ViewGraphics::getUndoStack() const
 {
-    return m_undoCmdManager->getUndoStack();
+    return m_undoStack;
 }
 
 bool ViewGraphics::isControlModifier() const
