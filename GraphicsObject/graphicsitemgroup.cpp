@@ -124,10 +124,10 @@ void GraphicsItemGroup::updateCoordinate()
 
 //void GraphicsItemGroup::setRotation(qreal newAngle)
 //{
-//    if (m_currentAngle == newAngle) return;
+//    if (m_rotationAngle == newAngle) return;
 
-//    m_lastAngle = m_currentAngle;
-//    m_currentAngle = newAngle;
+//    m_lastAngle = m_rotationAngle;
+//    m_rotationAngle = newAngle;
 
 //    foreach (auto childItem, this->getChildItems()) {
 //        setChildItemRotation(childItem);
@@ -145,8 +145,8 @@ void GraphicsItemGroup::updateCoordinate()
 //        }
 //    }
 
-//    item->setGroupAngle(m_currentAngle);
-////    item->setGroupAngle(item->groupAngle() + (m_currentAngle - m_lastAngle));
+//    item->setGroupAngle(m_rotationAngle);
+////    item->setGroupAngle(item->groupAngle() + (m_rotationAngle - m_lastAngle));
 //}
 
 QSharedPointer<GraphicsItem> GraphicsItemGroup::duplicate() const
@@ -190,7 +190,7 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 {
-//    item->setGroupAngle(rotation());
+    updateItemAngle(item, -this->rotation());
     m_itemGroup->addToGroup(item->subItem());
     m_childItems.insert(item);
     QObject::connect(item.data(), &GraphicsItem::sendGraphicsItemChange, this, [this](){
@@ -227,12 +227,25 @@ void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 
 void GraphicsItemGroup::removeFromGroup(QSharedPointer<GraphicsItem> item)
 {
+    updateItemAngle(item, this->rotation());
     QObject::disconnect(item.data(), nullptr, this, nullptr);
     m_itemGroup->removeFromGroup(item->subItem());
     m_childItems.remove(item);
 //    m_localRect = childrenBoundingRect();
 }
 
+void GraphicsItemGroup::updateItemAngle(QSharedPointer<GraphicsItem> item, qreal rotationAngel)
+{
+    item->setGroupAngle(item->groupAngle() - rotationAngel);
+    item->setInitAngle(item->initAngle() + rotationAngel);
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *group = dynamic_cast<GraphicsItemGroup *>(item.data());
+        foreach (auto childItem, group->getChildItems()) {
+            updateItemAngle(childItem, rotationAngel);
+        }
+    }
+
+}
 //QVariant GraphicsItemGroup::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 //{
 //    qDebug() << "111111111111111111";

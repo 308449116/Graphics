@@ -80,16 +80,16 @@ void GraphicsSelection::updateHandle()
 
     if (m_item.isNull()) return;
 
-    qreal groupAngle = m_item->groupAngle();
+    qreal startAngle = m_item->initAngle() + m_item->groupAngle();
     qreal initAngle = m_item->rotation();
 
     qreal angle = 0;
-    if (groupAngle == 0) {
+    if (startAngle == 0) {
         angle = initAngle;
         m_item->setRotation(0);
     } else {
-        angle = initAngle + groupAngle;
-        m_item->setRotation(-groupAngle);
+        angle = initAngle + startAngle;
+        m_item->setRotation(-startAngle);
 
     }
 
@@ -102,7 +102,7 @@ void GraphicsSelection::updateHandle()
     qDebug() << "updateHandle scenePos:" << m_item->subItem()->scenePos();
     qDebug() << "updateHandle getRect():" << m_item->getRect();
     qDebug() << "originPoint:" << originPoint;
-    qDebug() << "groupAngle:" << groupAngle;
+    qDebug() << "startAngle:" << startAngle;
     qDebug() << "initAngle:" << initAngle;
     qDebug() << "angle:" << angle;
     qDebug();

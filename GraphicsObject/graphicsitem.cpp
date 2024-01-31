@@ -20,10 +20,19 @@ QRectF GraphicsItem::getRect() const
     return m_localRect;
 }
 
+qreal GraphicsItem::initAngle() const
+{
+    return m_initAngle;
+}
+
+void GraphicsItem::setInitAngle(qreal newInitAngle)
+{
+    m_initAngle = newInitAngle;
+}
+
 void GraphicsItem::setChildItemRotation(QSharedPointer<GraphicsItem> item, qreal angleGroup)
 {
     item->setGroupAngle(angleGroup);
-
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
         foreach (auto childItem, itemGroup->getChildItems()) {
@@ -34,14 +43,13 @@ void GraphicsItem::setChildItemRotation(QSharedPointer<GraphicsItem> item, qreal
 
 void GraphicsItem::setRotation(qreal newAngle)
 {
-//    m_subItem->setRotation(newAngle);
-    if (m_angle == newAngle) return;
+    if (m_rotationAngle == newAngle) return;
 
-    m_angle = newAngle;
+    m_rotationAngle = newAngle;
     if (this->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
         foreach (auto childItem, itemGroup->getChildItems()) {
-            setChildItemRotation(childItem, newAngle + itemGroup->groupAngle());
+            setChildItemRotation(childItem, m_rotationAngle + itemGroup->groupAngle());
         }
     }
 
@@ -50,7 +58,7 @@ void GraphicsItem::setRotation(qreal newAngle)
 
 qreal GraphicsItem::rotation() const
 {
-    return m_angle;
+    return m_rotationAngle;
 }
 
 void GraphicsItem::move(const QPointF &point)

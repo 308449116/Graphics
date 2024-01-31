@@ -37,14 +37,15 @@ protected:
 
 private:
     QList<QSharedPointer<GraphicsItem> > duplicateItems() const;
+    void updateItemAngle(QSharedPointer<GraphicsItem> item, qreal rotationAngel);
 //    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
 //    void setItemZValue(QSharedPointer<GraphicsItem> item);
 
 private:
     QGraphicsItemGroup *m_itemGroup = nullptr;
     QSet<QSharedPointer<GraphicsItem > > m_childItems;
-    qreal m_currentAngle = 0;
-    qreal m_lastAngle = 0;
+//    qreal m_rotationAngle = 0;
+    //    qreal m_lastAngle = 0;
 };
 
 //extern template class GraphicsAbstractTemplate<QGraphicsItem>;

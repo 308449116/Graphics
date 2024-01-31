@@ -33,9 +33,6 @@ public:
 
     virtual QRectF getRect() const;
 
-    void setRotation(qreal newAngle);
-    qreal rotation() const;
-
     void move(const QPointF &point);
     QGraphicsItem *subItem() const;
     QRectF boundingRect() const;
@@ -49,8 +46,6 @@ public:
     qreal height() const;
     void setHeight(qreal newHeight);
 
-    qreal groupAngle() const;
-    void setGroupAngle(qreal newGroupAngle);
 
     QPointF oppositePos() const;
     void setOppositePos(QPointF newOppositePos);
@@ -62,6 +57,13 @@ public:
     QSharedPointer<GraphicsItem> itemParent() const;
     void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
 
+    void setRotation(qreal newAngle);
+    void setInitAngle(qreal newInitAngle);
+    void setGroupAngle(qreal newGroupAngle);
+    qreal rotation() const;
+    qreal initAngle() const;
+    qreal groupAngle() const;
+
 signals:
     void sendUpdateHandle();
     void sendGraphicsItemChange();
@@ -70,8 +72,11 @@ private:
     void setChildItemRotation(QSharedPointer<GraphicsItem> item, qreal angleGroup);
 
 protected:
-    qreal m_angle = 0;
+
+protected:
+    qreal m_initAngle = 0;
     qreal m_groupAngle = 0;
+    qreal m_rotationAngle = 0;
     QGraphicsItem *m_subItem = nullptr;
     QSharedPointer<GraphicsItem> m_itemParent = nullptr;
 
