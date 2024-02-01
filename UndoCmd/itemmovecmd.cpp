@@ -1,7 +1,7 @@
 #include "itemmovecmd.h"
 #include "viewgraphics.h"
 
-ItemMoveCmd::ItemMoveCmd(const QList<QPair<QPointF, GraphicsItem *>> &items,
+ItemMoveCmd::ItemMoveCmd(const QList<GraphicsItem *> &items,
                          const QPointF &offsetPos, ViewGraphics *view,
                          bool isMoved, QUndoCommand *parent)
     : QUndoCommand{parent},
@@ -15,30 +15,30 @@ ItemMoveCmd::ItemMoveCmd(const QList<QPair<QPointF, GraphicsItem *>> &items,
 
 void ItemMoveCmd::undo()
 {
-    for (const auto &[initPos, item] : m_items) {
-        item->subItem()->moveBy(-m_offsetPos.x(), -m_offsetPos.y());
-        m_view->updateHandle(item);
-    }
-//    m_view->moveItems(m_items, QPointF(0, 0));
+//    for (const auto &item : m_items) {
+//        item->subItem()->moveBy(-m_offsetPos.x(), -m_offsetPos.y());
+//        m_view->updateHandle(item);
+//    }
+    m_view->moveItems(m_items, -m_offsetPos);
     m_isMoved = false;
 
-    const auto &[initPos, item] = m_items[0];
+//    const auto &item = m_items.first();
     setText(QObject::tr("Undo Move %1,%2")
-            .arg(initPos.x()).arg(initPos.y()));
+            .arg(-m_offsetPos.x()).arg(-m_offsetPos.y()));
 }
 
 void ItemMoveCmd::redo()
 {
     if (!m_isMoved) {
-        for (const auto &[initPos, item] : m_items) {
-            item->subItem()->moveBy(m_offsetPos.x(), m_offsetPos.y());
-            m_view->updateHandle(item);
-        }
-//        m_view->moveItems(m_items, m_offsetPos);
+//        for (const auto &item : m_items) {
+//            item->subItem()->moveBy(m_offsetPos.x(), m_offsetPos.y());
+//            m_view->updateHandle(item);
+//        }
+        m_view->moveItems(m_items, m_offsetPos);
     }
 
-    const auto &[initPos, item] = m_items[0];
-    QPointF pos = initPos + m_offsetPos;
+//    const auto &item = m_items.first();
+//    QPointF pos = initPos + m_offsetPos;
     setText(QObject::tr("Redo Move %1,%2")
-                .arg(pos.x()).arg(pos.y()));
+                .arg(m_offsetPos.x()).arg(m_offsetPos.y()));
 }

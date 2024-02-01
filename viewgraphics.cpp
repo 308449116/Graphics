@@ -126,7 +126,7 @@ void ViewGraphics::deleteItem(GraphicsItem *item, bool isFreeMemory)
     }
 }
 
-void ViewGraphics::moveItemsByCmd(const QList<QPair<QPointF, GraphicsItem *>> &items,
+void ViewGraphics::moveItemsByCmd(const QList<GraphicsItem *> &items,
                              const QPointF &pos, bool isMoved)
 {
     if (items.empty()) return;
@@ -139,11 +139,11 @@ void ViewGraphics::moveItemsByCmd(const QList<QPair<QPointF, GraphicsItem *>> &i
     }
 }
 
-void ViewGraphics::moveItems(const QList<QPair<QPointF, GraphicsItem *>> &items,
+void ViewGraphics::moveItems(const QList<GraphicsItem *> &items,
                              const QPointF &pos)
 {
-    for (const auto &[initPos, item] : items) {
-        item->subItem()->setPos(initPos + pos);
+    for (const auto &item : items) {
+        item->subItem()->moveBy(pos.x(), pos.y());
         m_selectionManager->updateHandle(item);
     }
 }
@@ -194,7 +194,7 @@ void ViewGraphics::alignItems(AlignType alignType)
     QRectF refRect = refItem->subItem()->mapRectToScene(refItem->boundingRect());
     QPointF refCenterPos = refRect.center();
 
-    QList<QPair<QPointF, GraphicsItem *>> itemList;
+    QList<GraphicsItem *> itemList;
     foreach (auto item, items) {
         itemList.clear();
         QGraphicsItemGroup *g = qgraphicsitem_cast<QGraphicsItemGroup *>(item->subItem()->parentItem());
@@ -233,7 +233,7 @@ void ViewGraphics::alignItems(AlignType alignType)
         QPointF initPos = rect.center();
         QPointF movePos = lastPos - initPos;
         if ( !movePos.isNull() ) {
-            itemList.push_back(qMakePair(item->subItem()->pos(), item));
+            itemList.push_back(item);
             moveItemsByCmd(itemList, movePos, false);
         }
     }
@@ -244,6 +244,13 @@ void ViewGraphics::groupItemsByCmd()
     QList<GraphicsItem *> items = selectedItems();
     if (items.count() <= 1) {
         return;
+    }
+
+    foreach (auto item, items) {
+        if (item->subItem()->group()) {
+            //不允许和组中元素组合成新的组
+            return;
+        }
     }
 
     if (m_isUndoCmdEnabled) {

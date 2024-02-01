@@ -57,14 +57,13 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     qDebug() << "m_pressedPos:" << m_lastPos;
 //    m_initialPos = m_item->subItem()->pos();
-    m_items.clear();
+    m_itemPosHash.clear();
 
     QList<QGraphicsItem *> items = m_view->scene()->selectedItems();
     foreach (auto item, items) {
         GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
         if (handle->handleType() == GraphicsHandle::Drag) {
-            m_items.push_back(qMakePair(handle->item()->subItem()->pos(), handle->item()));
-
+            m_itemPosHash.insert(handle->item(), handle->item()->subItem()->pos());
         }
     }
 }
@@ -83,7 +82,11 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "m_lastPos - m_pressedPos:" << m_lastPos - m_pressedPos;
 
     //移动处理
-    m_view->moveItems(m_items, m_lastPos - m_pressedPos);
+    for (const auto &[item, initPos] : m_itemPosHash.asKeyValueRange()) {
+        item->subItem()->setPos(initPos + m_lastPos - m_pressedPos);
+        m_view->updateHandle(item);
+    }
+//    m_view->moveItems(m_itemPosHash, m_lastPos - m_pressedPos);
 //    m_item->subItem()->setPos(m_initialPos + (m_lastPos - m_pressedPos));
 //    m_selection->updateHandle();
     QGraphicsItem::mouseMoveEvent(event);
@@ -94,10 +97,10 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     m_selection->setOpacity(1);
 
     //Undo/Redo 移动处理
-    if (m_items.count() > 0 && m_lastPos != m_pressedPos) {
-        m_view->moveItemsByCmd(m_items, m_lastPos - m_pressedPos, true);
-        for (const auto &[pos, item] : m_items) {
-            if (m_item->subItem()->parentItem()) {
+    if (m_itemPosHash.count() > 0 && m_lastPos != m_pressedPos) {
+        m_view->moveItemsByCmd(m_itemPosHash.keys(), m_lastPos - m_pressedPos, true);
+        foreach (auto item, m_itemPosHash.keys()) {
+            if (item->subItem()->parentItem()) {
                 emit item->sendGraphicsItemChange();
             }
         }

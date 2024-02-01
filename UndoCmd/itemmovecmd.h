@@ -10,7 +10,7 @@ class ViewGraphics;
 class ItemMoveCmd : public QUndoCommand
 {
 public:
-    explicit ItemMoveCmd(const QList<QPair<QPointF, GraphicsItem *>> &items,
+    explicit ItemMoveCmd(const QList<GraphicsItem *> &items,
                          const QPointF &offsetPos, ViewGraphics *view,
                          bool isMoved, QUndoCommand *parent = nullptr);
 
@@ -20,7 +20,7 @@ public:
 
 private:
     ViewGraphics *m_view = nullptr;
-    QList<QPair<QPointF, GraphicsItem *>> m_items;
+    QList<GraphicsItem *> m_items;
     QPointF m_offsetPos;
     bool m_isMoved;
 };

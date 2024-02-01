@@ -37,10 +37,10 @@ public:
     void deleteItems(const QList<GraphicsItem *> &items, bool isFreeMemory = true);
 
     // move Items
-    void moveItemsByCmd(const QList<QPair<QPointF, GraphicsItem *>> &items,
+    void moveItemsByCmd(const QList<GraphicsItem *> &items,
                    const QPointF &pos, bool isMoved = true);
 
-    void moveItems(const QList<QPair<QPointF, GraphicsItem *>> &items,
+    void moveItems(const QList<GraphicsItem *> &items,
                    const QPointF &pos);
 
     // resize Items

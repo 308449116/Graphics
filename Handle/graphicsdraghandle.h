@@ -27,7 +27,7 @@ protected:
 private:
 //    QPointF m_initialPos;
     ViewGraphics *m_view = nullptr;
-    QList<QPair<QPointF, GraphicsItem *>> m_items;
+    QHash<GraphicsItem *, QPointF> m_itemPosHash;
 };
 
 #endif // GRAPHICSDRAGHANDLE_H
