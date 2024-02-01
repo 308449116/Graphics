@@ -47,7 +47,7 @@ void GraphicsRectItem::updateCoordinate()
 }
 
 
-QSharedPointer<GraphicsItem> GraphicsRectItem::duplicate() const
+GraphicsItem *GraphicsRectItem::duplicate() const
 {
     GraphicsRectItem *item = new GraphicsRectItem(m_localRect);
     item->setRotation(rotation());
@@ -57,7 +57,7 @@ QSharedPointer<GraphicsItem> GraphicsRectItem::duplicate() const
     item->subItem()->setPos(m_rectItem->pos().x() + width(), m_rectItem->pos().y());
     item->subItem()->setTransform(m_rectItem->transform());
     item->subItem()->setZValue(m_rectItem->zValue()+0.1);
-    return QSharedPointer<GraphicsItem>(item);
+    return item;
 }
 
 //void GraphicsRectItem::customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

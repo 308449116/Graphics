@@ -20,8 +20,9 @@ public:
 
 private:
     GraphicsItemType m_type;
-    ViewGraphics *m_view;
-    QSharedPointer<GraphicsItem> m_item;
+    ViewGraphics *m_view = nullptr;
+    GraphicsItem *m_item = nullptr;
+    bool m_isDeleteItem = false;
 };
 
 #endif

@@ -178,7 +178,7 @@ void GraphicsTextItem::updateCoordinate()
     m_initialFontSize = m_lastFontSize;
 }
 
-QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
+GraphicsItem *GraphicsTextItem::duplicate() const
 {
     GraphicsTextItem *item = new GraphicsTextItem(m_text, m_font, m_scaleX);
 //    GraphicsSimpleTextItem *textItem = qgraphicsitem_cast<GraphicsSimpleTextItem *>(item->subItem());
@@ -198,7 +198,7 @@ QSharedPointer<GraphicsItem> GraphicsTextItem::duplicate() const
     item->setRotation(rotation());
     item->setGroupAngle(groupAngle());
     item->updateCoordinate();
-    return QSharedPointer<GraphicsItem>(item);
+    return item;
 }
 
 void GraphicsTextItem::setText(const QString &text)

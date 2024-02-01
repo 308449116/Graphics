@@ -13,7 +13,7 @@ GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parentItem, QObject *parent)
 //    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-GraphicsItemGroup::GraphicsItemGroup(QList<QSharedPointer<GraphicsItem> > items, QGraphicsItem *parentItem, QObject *parent)
+GraphicsItemGroup::GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem{parent}
 {
     m_subItem = m_itemGroup = new QGraphicsItemGroup(parentItem);
@@ -32,6 +32,10 @@ GraphicsItemGroup::GraphicsItemGroup(QList<QSharedPointer<GraphicsItem> > items,
 
 GraphicsItemGroup::~GraphicsItemGroup()
 {
+    foreach (auto childItem, m_childItems) {
+        delete childItem;
+        childItem = nullptr;
+    }
     m_childItems.clear();
 }
 
@@ -59,7 +63,7 @@ int GraphicsItemGroup::type() const
 ////    qDebug() << "2222222222 transformOriginPoint:" << transformOriginPoint();
 ////    qDebug() << "2222222222 m_localRect.center():" << m_localRect.center();
 ////    qDebug() << "2222222222 delta:" << delta;
-//    if (m_localRect.isNull()) {
+//    if (m_localRect == nullptr) {
 //        m_localRect = QGraphicsItemGroup::boundingRect();
 //        qDebug() << "m_localRect:" << m_localRect;
 //    }
@@ -90,7 +94,7 @@ void GraphicsItemGroup::updateCoordinate()
         childItem->updateCoordinate();
     }
 
-//    if (m_localRect.isNull()) {
+//    if (m_localRect == nullptr) {
 //        m_localRect = m_itemGroup->boundingRect();
 //        qDebug() << "m_localRect:" << m_localRect;
 //    }
@@ -136,10 +140,10 @@ void GraphicsItemGroup::updateCoordinate()
 //    m_itemGroup->setRotation(newAngle);
 //}
 
-//void GraphicsItemGroup::setChildItemRotation(QSharedPointer<GraphicsItem> item)
+//void GraphicsItemGroup::setChildItemRotation(GraphicsItem *item)
 //{
 //    if (item->type() == GraphicsItemType::GroupItem) {
-//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
 //        foreach (auto childItem, itemGroup->getChildItems()) {
 //            setChildItemRotation(childItem);
 //        }
@@ -149,9 +153,9 @@ void GraphicsItemGroup::updateCoordinate()
 ////    item->setGroupAngle(item->groupAngle() + (m_rotationAngle - m_lastAngle));
 //}
 
-QSharedPointer<GraphicsItem> GraphicsItemGroup::duplicate() const
+GraphicsItem *GraphicsItemGroup::duplicate() const
 {
-    QList<QSharedPointer<GraphicsItem> > items = duplicateItems();
+    QList<GraphicsItem *> items = duplicateItems();
     qDebug() << "GraphicsItemGroup duplicateItems count:" << items.count();
 
     GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items);
@@ -164,10 +168,10 @@ QSharedPointer<GraphicsItem> GraphicsItemGroup::duplicate() const
     itemGroup->subItem()->setTransformOriginPoint(m_itemGroup->transformOriginPoint());
     itemGroup->subItem()->setZValue(m_itemGroup->zValue()+0.1);
     itemGroup->setItemName(this->itemName().append("_copy"));
-    return QSharedPointer<GraphicsItem>(itemGroup);
+    return itemGroup;
 }
 
-QSet<QSharedPointer<GraphicsItem> > GraphicsItemGroup::getChildItems() const
+QSet<GraphicsItem *> GraphicsItemGroup::getChildItems() const
 {
     return m_childItems;
 }
@@ -188,12 +192,12 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
     m_localRect = trans.mapRect(m_initialRect);
 }
 
-void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
+void GraphicsItemGroup::addToGroup(GraphicsItem *item)
 {
     updateItemAngle(item, -this->rotation());
     m_itemGroup->addToGroup(item->subItem());
     m_childItems.insert(item);
-    QObject::connect(item.data(), &GraphicsItem::sendGraphicsItemChange, this, [this](){
+    QObject::connect(item, &GraphicsItem::sendGraphicsItemChange, this, [this](){
         GraphicsItem *senderItem = dynamic_cast<GraphicsItem *>(sender());
         QTransform itemTransform = senderItem->subItem()->itemTransform(m_itemGroup);
         m_localRect |= itemTransform.mapRect(senderItem->subItem()->boundingRect() | senderItem->subItem()->childrenBoundingRect());
@@ -212,7 +216,7 @@ void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 //    m_initialRect = m_localRect;
 }
 
-//void GraphicsItemGroup::setItemZValue(QSharedPointer<GraphicsItem> item)
+//void GraphicsItemGroup::setItemZValue(GraphicsItem *item)
 //{
 //    if (item->type() == GraphicsItemType::GroupItem) {
 //        foreach (auto childItem, item->getChildItems()) {
@@ -225,21 +229,21 @@ void GraphicsItemGroup::addToGroup(QSharedPointer<GraphicsItem> item)
 //    }
 //}
 
-void GraphicsItemGroup::removeFromGroup(QSharedPointer<GraphicsItem> item)
+void GraphicsItemGroup::removeFromGroup(GraphicsItem *item)
 {
     updateItemAngle(item, this->rotation());
-    QObject::disconnect(item.data(), nullptr, this, nullptr);
+    QObject::disconnect(item, nullptr, this, nullptr);
     m_itemGroup->removeFromGroup(item->subItem());
     m_childItems.remove(item);
 //    m_localRect = childrenBoundingRect();
 }
 
-void GraphicsItemGroup::updateItemAngle(QSharedPointer<GraphicsItem> item, qreal rotationAngel)
+void GraphicsItemGroup::updateItemAngle(GraphicsItem *item, qreal rotationAngel)
 {
     item->setGroupAngle(item->groupAngle() - rotationAngel);
     item->setInitAngle(item->initAngle() + rotationAngel);
     if (item->type() == GraphicsItemType::GroupItem) {
-        GraphicsItemGroup *group = dynamic_cast<GraphicsItemGroup *>(item.data());
+        GraphicsItemGroup *group = dynamic_cast<GraphicsItemGroup *>(item);
         foreach (auto childItem, group->getChildItems()) {
             updateItemAngle(childItem, rotationAngel);
         }
@@ -270,7 +274,7 @@ void GraphicsItemGroup::updateItemAngle(QSharedPointer<GraphicsItem> item, qreal
 //        change == QGraphicsItem::ItemChildRemovedChange ||
 //        change == QGraphicsItem::ItemRotationChange ||
 //        change == QGraphicsItem::ItemScaleChange) {
-//        if (!this->getItemParent().isNull()) {
+//        if (!this->getItemParent() == nullptr) {
 //            emit this->sendPararenItemGeometryChange();
 //        }
 //    }
@@ -279,9 +283,9 @@ void GraphicsItemGroup::updateItemAngle(QSharedPointer<GraphicsItem> item, qreal
 //}
 
 
-QList<QSharedPointer<GraphicsItem> > GraphicsItemGroup::duplicateItems() const
+QList<GraphicsItem *> GraphicsItemGroup::duplicateItems() const
 {
-    QList<QSharedPointer<GraphicsItem> > copylist;
+    QList<GraphicsItem *> copylist;
     foreach (auto childItem, this->getChildItems()) {
         auto copyItem = childItem->duplicate();
         copyItem->subItem()->setPos(childItem->subItem()->pos());

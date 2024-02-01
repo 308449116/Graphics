@@ -19,16 +19,16 @@ public:
     ~GraphicsItemManager();
 
     // 创建图元
-    QSharedPointer<GraphicsItem> createGraphicsItem(
+    GraphicsItem *createGraphicsItem(
         GraphicsItemType type, const QString& itemName = "", QGraphicsItem *parent = nullptr);
 
     // 创建图元组
-    QSharedPointer<GraphicsItem> createGraphicsItemGroup(
-        QList<QSharedPointer<GraphicsItem> > items,
+    GraphicsItem *createGraphicsItemGroup(
+        QList<GraphicsItem *> items,
         const QString& itemName = "", QGraphicsItem *parent = nullptr);
 
     // 删除图元
-    void deleteGraphicsItem(QSharedPointer<GraphicsItem> item);
+    void deleteGraphicsItem(GraphicsItem *item);
 
     // 获取图元显示名
     QString getItemDisplayName(GraphicsItemType type);
@@ -37,15 +37,15 @@ public:
     int getItemCounts(GraphicsItemType type);
 
     // 取消分组
-//    void ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view);
+//    void ungroup(GraphicsItem *item, GraphicsSelectionManager *selectionManager, ViewGraphics *view);
 
     void cleanAll();
 
 private:
-    void manageItem(QSharedPointer<GraphicsItem> item, const QString& itemName);
+    void manageItem(GraphicsItem *item, const QString& itemName);
 
 private:
-    QHash<QString, QSharedPointer<GraphicsItem>> m_nameHash;
+    QHash<QString, GraphicsItem *> m_nameHash;
     QMap<GraphicsItemType, int> m_countMap;
 };
 

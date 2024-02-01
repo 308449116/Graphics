@@ -12,7 +12,7 @@ public:
 
     void updateCoordinate() override;
 
-    QSharedPointer<GraphicsItem> duplicate() const override;
+    GraphicsItem *duplicate() const override;
 
     int type() const override;
 

@@ -208,9 +208,9 @@ void MainWindow::on_barcodeBtn_clicked()
     rect1->setRotation(0);
 //    rect1->moveBy(-200, -200);
     rect1->setPos(0, 0);
-//    QSharedPointer<GraphicsItem> item =
-//        QSharedPointer<GraphicsItem>( new GraphicsTextItem("jkpg") );
-//    ui->graphicsView->scene()->addItem(item.data());
+//    GraphicsItem *item =
+//        GraphicsItem *( new GraphicsTextItem("jkpg") );
+//    ui->graphicsView->scene()->addItem(item);
 ;
 
 //    ui->graphicsView->createItemByCmd(GraphicsItemType::BarcodeItem);

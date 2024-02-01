@@ -11,7 +11,7 @@ class GraphicsItemGroup : public GraphicsItem
 public:
     explicit GraphicsItemGroup(QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
-    explicit GraphicsItemGroup(QList<QSharedPointer<GraphicsItem> > items, QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
+    explicit GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
     virtual ~GraphicsItemGroup();
 
@@ -21,29 +21,29 @@ public:
 
 //    void setRotation(qreal newAngle)  override;
 
-    QSharedPointer<GraphicsItem> duplicate() const override;
+    GraphicsItem *duplicate() const override;
 
     void stretch(qreal sx, qreal sy, const QPointF &origin) override;
 
-    QSet<QSharedPointer<GraphicsItem > > getChildItems() const;
+    QSet<GraphicsItem *> getChildItems() const;
 
-    void addToGroup(QSharedPointer<GraphicsItem> item);
+    void addToGroup(GraphicsItem *item);
 
-    void removeFromGroup(QSharedPointer<GraphicsItem> item);
+    void removeFromGroup(GraphicsItem *item);
 
 protected:
 //    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 //    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 
 private:
-    QList<QSharedPointer<GraphicsItem> > duplicateItems() const;
-    void updateItemAngle(QSharedPointer<GraphicsItem> item, qreal rotationAngel);
-//    void setChildItemRotation(QSharedPointer<GraphicsItem> item);
-//    void setItemZValue(QSharedPointer<GraphicsItem> item);
+    QList<GraphicsItem *> duplicateItems() const;
+    void updateItemAngle(GraphicsItem *item, qreal rotationAngel);
+//    void setChildItemRotation(GraphicsItem *item);
+//    void setItemZValue(GraphicsItem *item);
 
 private:
     QGraphicsItemGroup *m_itemGroup = nullptr;
-    QSet<QSharedPointer<GraphicsItem > > m_childItems;
+    QSet<GraphicsItem *> m_childItems;
 //    qreal m_rotationAngle = 0;
     //    qreal m_lastAngle = 0;
 };

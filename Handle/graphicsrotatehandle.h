@@ -12,7 +12,7 @@ class GraphicsRotateHandle : public GraphicsHandle
 public:
     GraphicsRotateHandle(int handleType, ViewGraphics *view, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
-//    void updateHandle(QSharedPointer<GraphicsItem> item) override;
+//    void updateHandle(GraphicsItem *item) override;
 
 protected:
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -24,12 +24,12 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    qreal m_lastAngle;
-    qreal m_initAngle;
+    qreal m_lastAngle = 0;
+    qreal m_initAngle = 0;
     int m_rotateIconWidth = 20;
     int m_lineLen = 20;
     QPixmap m_rotatePixmap;
-    ViewGraphics *m_view;
+    ViewGraphics *m_view = nullptr;
 };
 
 #endif // GRAPHICSROTATEHANDLE_H

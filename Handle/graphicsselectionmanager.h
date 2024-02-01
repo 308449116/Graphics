@@ -23,35 +23,35 @@ public:
 
     void clearSelectionPool();
 
-    bool isItemSelected(QSharedPointer<GraphicsItem> item) const;
+    bool isItemSelected(GraphicsItem *item) const;
 
-    QList<QSharedPointer<GraphicsItem> > selectedItems() const;
+    QList<GraphicsItem *> selectedItems() const;
 
-    int collidesWithHandle(QSharedPointer<GraphicsItem> item, const QPointF & point) const;
+    int collidesWithHandle(GraphicsItem *item, const QPointF & point) const;
 
-    QPointF opposite(QSharedPointer<GraphicsItem> item, int handleType) const;
+    QPointF opposite(GraphicsItem *item, int handleType) const;
 
-    GraphicsSelection *addItem(ViewGraphics *view, QSharedPointer<GraphicsItem> item);
+    GraphicsSelection *addItem(ViewGraphics *view, GraphicsItem *item);
 
-    void deleteItem(QSharedPointer<GraphicsItem> item);
+    void deleteItem(GraphicsItem *item);
 
-    void updateHandle(QSharedPointer<GraphicsItem> item);
+    void updateHandle(GraphicsItem *item);
 
-    void hide(QSharedPointer<GraphicsItem> item, bool isHideDragHandle);
+    void hide(GraphicsItem *item, bool isHideDragHandle);
 
-    void show(QSharedPointer<GraphicsItem> item);
+    void show(GraphicsItem *item);
 
-    void setZValue(QSharedPointer<GraphicsItem> item, qreal z);
+    void setZValue(GraphicsItem *item, qreal z);
 
-    qreal zValue(QSharedPointer<GraphicsItem> item);
+    qreal zValue(GraphicsItem *item);
 
 private:
-    void removeItem(QSharedPointer<GraphicsItem> item);
+    void removeItem(GraphicsItem *item);
 
 private:
     using SelectionPool = QList<GraphicsSelection *>;
     SelectionPool m_selectionPool;
-    QHash<QSharedPointer<GraphicsItem>, GraphicsSelection *> m_usedSelections;
+    QHash<GraphicsItem *, GraphicsSelection *> m_usedSelections;
 };
 
 #endif // GRAPHICSSELECTIONMANAGER_H

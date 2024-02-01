@@ -29,7 +29,7 @@ public:
 
     virtual void stretch(qreal sx, qreal sy, const QPointF &origin) = 0;
 
-    virtual QSharedPointer<GraphicsItem> duplicate() const = 0;
+    virtual GraphicsItem *duplicate() const = 0;
 
     virtual QRectF getRect() const;
 
@@ -54,8 +54,8 @@ public:
     qreal scaleX() const;
     void setScale(qreal scaleX, qreal scaleY);
 
-//    QSharedPointer<GraphicsItem> itemParent() const;
-//    void setItemParent(QSharedPointer<GraphicsItem> newItemParent);
+//    GraphicsItem *itemParent() const;
+//    void setItemParent(GraphicsItem *newItemParent);
 
     void setRotation(qreal newAngle);
     void setInitAngle(qreal newInitAngle);
@@ -69,7 +69,7 @@ signals:
     void sendGraphicsItemChange();
 
 private:
-    void setChildItemRotation(QSharedPointer<GraphicsItem> item, qreal angleGroup);
+    void setChildItemRotation(GraphicsItem *item, qreal angleGroup);
 
 protected:
 
@@ -78,7 +78,7 @@ protected:
     qreal m_groupAngle = 0;
     qreal m_rotationAngle = 0;
     QGraphicsItem *m_subItem = nullptr;
-//    QSharedPointer<GraphicsItem> m_itemParent = nullptr;
+//    GraphicsItem *m_itemParent = nullptr;
 
     QString m_itemName;
     QRectF m_localRect;

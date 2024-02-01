@@ -15,7 +15,7 @@ class GraphicsSelection : public QObject
 public:
     explicit GraphicsSelection(ViewGraphics *view);
 
-    void setItem(QSharedPointer<GraphicsItem> item);
+    void setItem(GraphicsItem *item);
 
     bool isUsed() const;
 
@@ -35,7 +35,7 @@ public:
 
     QPointF handlePos(int handleType) const;
 
-    QSharedPointer<GraphicsItem> item() const;
+    GraphicsItem *item() const;
 
     QPointF opposite(int handle) const;
 
@@ -46,8 +46,8 @@ public:
     qreal zValue();
 
 private:
-    ViewGraphics *m_view;
-    QSharedPointer<GraphicsItem> m_item;
+    ViewGraphics *m_view = nullptr;
+    GraphicsItem *m_item = nullptr;
     QList<GraphicsHandle *> m_handleList;
 };
 

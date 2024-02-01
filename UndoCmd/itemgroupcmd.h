@@ -10,17 +10,19 @@ class ViewGraphics;
 class ItemGroupCmd : public QUndoCommand
 {
 public:
-    explicit ItemGroupCmd(QList<QSharedPointer<GraphicsItem>> items,
+    explicit ItemGroupCmd(QList<GraphicsItem *> items,
                           ViewGraphics *view, QUndoCommand *parent = nullptr);
+    ~ItemGroupCmd();
 
     void undo() override;
 
     void redo() override;
 
 private:
-    ViewGraphics *m_view;
-    QSharedPointer<GraphicsItem> m_itemGroup;
-    QList<QSharedPointer<GraphicsItem> > m_childItems;
+    ViewGraphics *m_view = nullptr;
+    GraphicsItem *m_itemGroup = nullptr;
+    QList<GraphicsItem *> m_childItems;
+    bool m_isDeleteItem = false;
 };
 
 #endif // ITEMGROUPCMD_H

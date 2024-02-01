@@ -32,11 +32,11 @@ public:
 
     GraphicsHandle(int handleType, GraphicsSelection *selection, QGraphicsItem *parent = nullptr);
 
-//    virtual void updateHandle(QSharedPointer<GraphicsItem> item);
+//    virtual void updateHandle(GraphicsItem *item);
 
     QRectF boundingRect() const override;
 
-    QSharedPointer<GraphicsItem> item() const;
+    GraphicsItem *item() const;
 
     int handleType() const;
 
@@ -46,7 +46,7 @@ public:
 
     void setLocalRect(QRectF localRect);
 
-    void setItem(QSharedPointer<GraphicsItem> item);
+    void setItem(GraphicsItem *item);
 
     void move(qreal x, qreal y);
 
@@ -64,8 +64,8 @@ protected:
     QPointF m_lastPos;
 
     GraphicsHandleState m_state;
-    QSharedPointer<GraphicsItem> m_item;
-    GraphicsSelection *m_selection;
+    GraphicsItem *m_item = nullptr;
+    GraphicsSelection *m_selection = nullptr;
 };
 
 #endif // GRAPHICSHANDLE_H

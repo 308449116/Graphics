@@ -98,7 +98,7 @@ void GraphicsRotateHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     //    QGraphicsItem::mouseReleaseEvent(event);
 }
 
-//void GraphicsRotateHandle::updateHandle(QSharedPointer<GraphicsItem> item)
+//void GraphicsRotateHandle::updateHandle(GraphicsItem *item)
 //{
 //    if (item->type() == GraphicsItemType::GroupItem) {
 //        foreach (auto childItem, item->getChildItems()) {

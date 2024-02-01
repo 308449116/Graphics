@@ -24,7 +24,7 @@ void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
     painter->setPen(Qt::SolidLine);
     painter->setBrush(QBrush(m_borderColor));
     painter->drawRect(QRectF(m_localRect));
-//    QRectF rect = mapRectFromItem(m_item.data(), m_item->getRect());
+//    QRectF rect = mapRectFromItem(m_item, m_item->getRect());
 //    qDebug() << "GraphicsSizeHandle customPaint rect:"
 //             << rect;
 //    switch (m_handleType) {
@@ -78,7 +78,7 @@ void GraphicsSizeHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //    QGraphicsItem::mousePressEvent(event);
 }
 
-void GraphicsSizeHandle::setItemsOpposite(QSharedPointer<GraphicsItem> item)
+void GraphicsSizeHandle::setItemsOpposite(GraphicsItem *item)
 {
 //    if (item->type() == GraphicsItemType::GroupItem) {
 //        foreach (auto childItem, item->getChildItems()) {
@@ -89,7 +89,7 @@ void GraphicsSizeHandle::setItemsOpposite(QSharedPointer<GraphicsItem> item)
 ////    QPointF oppositePos = m_view->opposite(item, m_handleType);
 ////    qDebug() << "222222 oppositePos:" << oppositePos;
 //    item->setOppositePos(item->subItem()->mapFromItem(m_item->subItem(), m_item->oppositePos()));
-////    item->setOppositePos(item->mapFromItem(m_item.data(), m_item->mapFromScene(oppositePos)));
+////    item->setOppositePos(item->mapFromItem(m_item, m_item->mapFromScene(oppositePos)));
 }
 
 void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -150,7 +150,7 @@ void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-//void GraphicsSizeHandle::updateHandle(QSharedPointer<GraphicsItem> item)
+//void GraphicsSizeHandle::updateHandle(GraphicsItem *item)
 //{
 //    if (item->type() == GraphicsItemType::GroupItem) {
 //        foreach (auto childItem, item->getChildItems()) {

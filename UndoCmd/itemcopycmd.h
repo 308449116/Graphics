@@ -11,18 +11,21 @@ class ViewGraphics;
 class ItemCopyCmd : public QUndoCommand
 {
 public:
-    explicit ItemCopyCmd(QList<QSharedPointer<GraphicsItem>> items, ViewGraphics *view,
+    explicit ItemCopyCmd(QList<GraphicsItem *> items, ViewGraphics *view,
                          QUndoCommand *parent = nullptr);
+
+    ~ItemCopyCmd();
 
     void undo() override;
 
     void redo() override;
 
 private:
-    ViewGraphics *m_view;
-    QList<QSharedPointer<GraphicsItem>> m_items;
-    QList<QSharedPointer<GraphicsItem>> m_itemsCopy;
+    ViewGraphics *m_view = nullptr;
+    QList<GraphicsItem *> m_items;
+    QList<GraphicsItem *> m_itemsCopy;
     QString m_strName;
+    bool m_isDeleteItem = false;
 };
 
 #endif // ITEMCOPYCMD_H

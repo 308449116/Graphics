@@ -9,7 +9,7 @@ class ViewGraphics;
 class ItemDeleteCmd : public QUndoCommand
 {
 public:
-    explicit ItemDeleteCmd(QList<QSharedPointer<GraphicsItem> > items,
+    explicit ItemDeleteCmd(QList<GraphicsItem *> items,
                            ViewGraphics *view, QUndoCommand *parent = nullptr);
 
     ~ItemDeleteCmd();
@@ -19,8 +19,9 @@ public:
     void redo() override;
 
 private:
-    QList<QSharedPointer<GraphicsItem> > m_items;
-    ViewGraphics *m_view;
+    QList<GraphicsItem *> m_items;
+    ViewGraphics *m_view = nullptr;
+    bool m_isDeleteItem = false;
 };
 
 #endif

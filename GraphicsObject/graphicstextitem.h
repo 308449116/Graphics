@@ -14,7 +14,7 @@ public:
 
     void stretch(qreal sx, qreal sy, const QPointF &origin) override;
 
-    QSharedPointer<GraphicsItem> duplicate() const override;
+    GraphicsItem *duplicate() const override;
 
     void updateCoordinate() override;
 

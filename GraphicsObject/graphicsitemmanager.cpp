@@ -19,18 +19,18 @@ GraphicsItemManager::~GraphicsItemManager()
     m_countMap.clear();
 }
 
-QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(
+GraphicsItem *GraphicsItemManager::createGraphicsItem(
     GraphicsItemType type, const QString& itemName, QGraphicsItem *parent)
 {
-    QSharedPointer<GraphicsItem> item;
+    GraphicsItem *item = nullptr;
 
     switch (type) {
     case GraphicsItemType::RectItem: {
-        item = QSharedPointer<GraphicsItem>( new GraphicsRectItem(QRectF(0, 0, 100, 100), parent) );
+        item = new GraphicsRectItem(QRectF(0, 0, 100, 100), parent);
         break;
     }
     case GraphicsItemType::TextItem: {
-        item = QSharedPointer<GraphicsItem>( new GraphicsTextItem(parent) );
+        item = new GraphicsTextItem(parent);
         break;
     }
     case GraphicsItemType::BarcodeItem:
@@ -39,7 +39,7 @@ QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(
         break;
     }
 
-    if (item.isNull()) return item;
+    if (item == nullptr) return item;
 
 //    item->subItem()->moveBy(item->width()/2, item->height()/2);
 
@@ -47,32 +47,31 @@ QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItem(
     return item;
 }
 
-//QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItemGroup(
-//    QList<QSharedPointer<GraphicsItem> > items, const QString &itemName, QGraphicsItem *parent)
+//GraphicsItem *GraphicsItemManager::createGraphicsItemGroup(
+//    QList<GraphicsItem *> items, const QString &itemName, QGraphicsItem *parent)
 //{
 //    QSharedPointer<GraphicsAbstractItemGroup> itemGroup;
 //    itemGroup = QSharedPointer<GraphicsAbstractItemGroup> (new GraphicsItemGroup(items, parent));
 //    itemGroup->updateCoordinate();
 
-//    QSharedPointer<GraphicsItem> itemSharedPointer = itemGroup.dynamicCast<GraphicsItem>();
+//    GraphicsItem *itemSharedPointer = itemGroup.dynamicCast<GraphicsItem>();
 //    manageItem(itemSharedPointer, itemName);
 
 //    return itemSharedPointer;
 //}
 
-QSharedPointer<GraphicsItem> GraphicsItemManager::createGraphicsItemGroup(
-    QList<QSharedPointer<GraphicsItem> > items, const QString &itemName, QGraphicsItem *parent)
+GraphicsItem *GraphicsItemManager::createGraphicsItemGroup(
+    QList<GraphicsItem *> items, const QString &itemName, QGraphicsItem *parent)
 {
     GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items, parent);
     itemGroup->updateCoordinate();
 
-    QSharedPointer<GraphicsItem> itemSharedPointer = QSharedPointer<GraphicsItem>(itemGroup);
-    manageItem(itemSharedPointer, itemName);
+    manageItem(itemGroup, itemName);
 
-    return itemSharedPointer;
+    return itemGroup;
 }
 
-void GraphicsItemManager::manageItem(QSharedPointer<GraphicsItem> item, const QString& itemName)
+void GraphicsItemManager::manageItem(GraphicsItem *item, const QString& itemName)
 {
     // 获取图元名
     QString tempName = itemName;
@@ -90,20 +89,18 @@ void GraphicsItemManager::manageItem(QSharedPointer<GraphicsItem> item, const QS
     m_nameHash.insert(tempName, item);
 }
 
-void GraphicsItemManager::deleteGraphicsItem(QSharedPointer<GraphicsItem> item)
+void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
 {
-    if (item.isNull()) return;
+    if (item == nullptr) return;
 
     if (item->type() == GraphicsItemType::GroupItem) {
-        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
         foreach (auto childItem, itemGroup->getChildItems()) {
-            m_nameHash.remove(childItem->itemName());
+            deleteGraphicsItem(childItem);
         }
     }
 
     m_nameHash.remove(item->itemName());
-//    delete item;
-//    item = nullptr;
 }
 
 QString GraphicsItemManager::getItemDisplayName(GraphicsItemType type)
@@ -129,11 +126,11 @@ int GraphicsItemManager::getItemCounts(GraphicsItemType type)
     return m_countMap[type];
 }
 
-//void GraphicsItemManager::ungroup(QSharedPointer<GraphicsItem> item, GraphicsSelectionManager *selectionManager, ViewGraphics *view)
+//void GraphicsItemManager::ungroup(GraphicsItem *item, GraphicsSelectionManager *selectionManager, ViewGraphics *view)
 //{
 //    if (item->type() != GraphicsItemType::GroupItem) return;
 
-//    GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item.data());
+//    GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
 //    foreach (auto childItem, itemGroup->getChildItems()) {
 //        qDebug() << "itemGroup->getChildItems().rotation:" << childItem->rotation();
 //        itemGroup->removeFromGroup(childItem);

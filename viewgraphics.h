@@ -25,34 +25,34 @@ public:
     // Create Items
     void createItemByCmd(GraphicsItemType type);
 
-    QSharedPointer<GraphicsItem> createItem(GraphicsItemType type);
+    GraphicsItem *createItem(GraphicsItemType type);
 
-    void addItem(QSharedPointer<GraphicsItem> item);
+    void addItem(GraphicsItem *item);
 
     // remove Items
     void deleteItemsByCmd();
 
-    void deleteItem(QSharedPointer<GraphicsItem> item);
+    void deleteItem(GraphicsItem *item, bool isFreeMemory = true);
 
-    void deleteItems(const QList<QSharedPointer<GraphicsItem> > &items);
+    void deleteItems(const QList<GraphicsItem *> &items, bool isFreeMemory = true);
 
     // move Items
-    void moveItemsByCmd(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
+    void moveItemsByCmd(const QList<QPair<QPointF, GraphicsItem *>> &items,
                    const QPointF &pos, bool isMoved = true);
 
-    void moveItems(const QList<QPair<QPointF, QSharedPointer<GraphicsItem>>> &items,
+    void moveItems(const QList<QPair<QPointF, GraphicsItem *>> &items,
                    const QPointF &pos);
 
     // resize Items
-    void resizeItemByCmd(int handleType, QSharedPointer<GraphicsItem> item,
+    void resizeItemByCmd(int handleType, GraphicsItem *item,
                          const QPointF &scale, bool isResized);
 
-    void resizeItem(int handleType, QSharedPointer<GraphicsItem> item, const QPointF &scale);
+    void resizeItem(int handleType, GraphicsItem *item, const QPointF &scale);
 
     // rotate Items
-    void rotateItemByCmd(QSharedPointer<GraphicsItem> item, const qreal angle);
+    void rotateItemByCmd(GraphicsItem *item, const qreal angle);
 
-    void rotateItem(QSharedPointer<GraphicsItem> item, const qreal angle);
+    void rotateItem(GraphicsItem *item, const qreal angle);
 
     // duplicate Items
     void duplicateItemsByCmd();
@@ -60,12 +60,12 @@ public:
     // group Items
     void groupItemsByCmd();
 
-    QSharedPointer<GraphicsItem> groupItems(QList<QSharedPointer<GraphicsItem>> items);
+    GraphicsItem *groupItems(QList<GraphicsItem *> items);
 
     // ungroup Items
     void ungroupItemsByCmd();
 
-    void ungroupItems(QList<QSharedPointer<GraphicsItem>> items);
+    void ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory = true);
 
     // align Items
     void alignItems(AlignType alignType);
@@ -90,13 +90,13 @@ public:
 
     void setIsControlModifier(bool newIsControlModifier);
 
-    QList<QSharedPointer<GraphicsItem>> selectedItems();
+    QList<GraphicsItem *> selectedItems();
 
-    QPointF opposite(QSharedPointer<GraphicsItem> item, int handleType) const;
+    QPointF opposite(GraphicsItem *item, int handleType) const;
 
-    void updateHandle(QSharedPointer<GraphicsItem> item);
+    void updateHandle(GraphicsItem *item);
 
-    void setZValue(QSharedPointer<GraphicsItem> item, int increment);
+    void setZValue(GraphicsItem *item, int increment);
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
@@ -104,21 +104,21 @@ protected:
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
-//    void removeItemsByCmd(const QList<QSharedPointer<GraphicsItem> > &items);
+//    void removeItemsByCmd(const QList<GraphicsItem *> &items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
-    void addGroupItems(QSharedPointer<GraphicsItem> item);
+    void addGroupItems(GraphicsItem *item);
 //    bool trySelectItem(GraphicsItem *item);
-    void addItemToSelectionManager(QSharedPointer<GraphicsItem> item);
+    void addItemToSelectionManager(GraphicsItem *item);
 
 private:
     bool m_isUndoCmdEnabled = true;
-    SceneGraphics *m_scene;
-    GraphicsItemManager *m_itemManager;
-    GraphicsSelectionManager *m_selectionManager;
+    SceneGraphics *m_scene = nullptr;
+    GraphicsItemManager *m_itemManager = nullptr;
+    GraphicsSelectionManager *m_selectionManager = nullptr;
     QUndoStack* m_undoStack = nullptr;
 
     //    QSet<GraphicsItem *> m_manageItem;

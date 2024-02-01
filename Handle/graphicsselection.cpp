@@ -28,13 +28,13 @@ GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     m_handleList.push_back(linehandle);
 }
 
-void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
+void GraphicsSelection::setItem(GraphicsItem *item)
 {
-    if (item.isNull()) {
+    if (item == nullptr) {
         hide(true);
 //        m_item->setSelection(nullptr);
-        disconnect(m_item.data(), nullptr, this, nullptr);
-        m_item.clear();
+        disconnect(m_item, nullptr, this, nullptr);
+        m_item = nullptr;
         return;
     }
 
@@ -48,7 +48,7 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
     updateHandle();
     show();
 
-    connect(item.data(), &GraphicsItem::sendUpdateHandle, this, [this](){
+    connect(item, &GraphicsItem::sendUpdateHandle, this, [this](){
         updateHandle();
     });
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
@@ -63,7 +63,7 @@ void GraphicsSelection::setItem(QSharedPointer<GraphicsItem> item)
 
 bool GraphicsSelection::isUsed() const
 {
-    return m_item.data() != nullptr;
+    return m_item != nullptr;
 }
 
 bool GraphicsSelection::isActived() const
@@ -78,7 +78,7 @@ void GraphicsSelection::updateHandle()
 //    transform.rotate(0);
 //    transform.translate(-m_item->getRect().center().x(),-m_item->getRect().center().y());
 
-    if (m_item.isNull()) return;
+    if (m_item == nullptr) return;
 
     qreal startAngle = m_item->initAngle() + m_item->groupAngle();
     qreal initAngle = m_item->rotation();
@@ -94,7 +94,7 @@ void GraphicsSelection::updateHandle()
     }
 
     const QRectF &r = m_item->subItem()->mapRectToScene(m_item->getRect());
-//    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
+//    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item, m_item->getRect());
     QPointF originPoint = m_item->subItem()->mapToScene(m_item->getRect().center());
     m_item->setRotation(initAngle);
     qDebug() << "updateHandle r:" << r;
@@ -118,7 +118,7 @@ void GraphicsSelection::updateHandle()
 //    const int h = GRAPHICS_HANDLE_SIZE;
 
 //    m_handleList[GraphicsHandle::Drag]->setRotation(0);
-//    const QRectF &r = m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item.data(), m_item->getRect());
+//    const QRectF &r = m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item, m_item->getRect());
 
     foreach (auto *hndl, m_handleList) {
         if (!hndl)
@@ -156,7 +156,7 @@ void GraphicsSelection::updateHandle()
 //                     << "  rect:" << r
 //                     << "  originPoint:" << originPoint;
 //            qDebug() << "updateHandle setLocalRect rect:"
-//                     << hndl->mapRectFromItem(m_item.data(), m_item->getRect());
+//                     << hndl->mapRectFromItem(m_item, m_item->getRect());
 //            qDebug() << "updateHandle setLocalRect r:"
 //                     << r;
             hndl->setLocalRect(r);
@@ -427,7 +427,7 @@ qreal GraphicsSelection::zValue()
     return m_handleList[GraphicsHandle::Drag - 1]->zValue();
 }
 
-QSharedPointer<GraphicsItem> GraphicsSelection::item() const
+GraphicsItem *GraphicsSelection::item() const
 {
     return m_item;
 }

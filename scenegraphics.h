@@ -19,16 +19,16 @@ public:
 
     void addItem(QGraphicsItem *item);
 
-    void addItem(QSharedPointer<GraphicsItem> item);
+    void addItem(GraphicsItem *item);
 
     void removeItem(QGraphicsItem *item);
 
-    void removeItem(QSharedPointer<GraphicsItem> item);
+    void removeItem(GraphicsItem *item);
 
 signals:
     void deleteGraphicsItems();
 
-//    void deleteGraphicsItems(QList<QSharedPointer<GraphicsItem> > items);
+//    void deleteGraphicsItems(QList<GraphicsItem *> items);
 
 //    void updateItemHandle(GraphicsItem *item);
 
@@ -47,7 +47,7 @@ private:
 
 private:
     bool m_isControlModifier = false;
-    QSet<QSharedPointer<GraphicsItem> > m_items;
+    QSet<GraphicsItem *> m_items;
 };
 
 #endif // SCENEGRAPHICS_H
