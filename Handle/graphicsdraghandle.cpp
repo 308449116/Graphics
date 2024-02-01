@@ -51,7 +51,7 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug();
 
     if (m_item->subItem()->parentItem()) {
-        m_lastPos = m_pressedPos = m_item->subItem()->mapFromScene(event->scenePos());
+        m_lastPos = m_pressedPos = m_item->subItem()->parentItem()->mapFromScene(event->scenePos());
     } else {
         m_lastPos = m_pressedPos = event->scenePos();
     }
@@ -72,7 +72,7 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (m_item->subItem()->parentItem()) {
-        m_lastPos = m_item->subItem()->mapFromScene(event->scenePos());
+        m_lastPos = m_item->subItem()->parentItem()->mapFromScene(event->scenePos());
     } else {
         m_lastPos = event->scenePos();
     }
