@@ -28,13 +28,14 @@ void ItemCopyCmd::redo()
 {
     m_isDeleteItem = false;
     if (m_itemsCopy.isEmpty()) {
+        m_itemsCopy = m_view->duplicateItems(m_items);
         QStringList strs;
-        foreach (auto item, m_items) {
-            auto itemCopy = item->duplicate();
-            m_view->addItem(itemCopy);
-            m_itemsCopy.push_back(itemCopy);
-            qDebug() << "itemCopy->getItemName():" << itemCopy->itemName();
-            strs << itemCopy->itemName();
+        foreach (auto item, m_itemsCopy) {
+//            auto itemCopy = item->duplicate();
+//            m_view->addItem(itemCopy);
+//            m_itemsCopy.push_back(itemCopy);
+            qDebug() << "itemCopy->getItemName():" << item->itemName();
+            strs << item->itemName();
         }
         m_strName = strs.join(",");
     } else {

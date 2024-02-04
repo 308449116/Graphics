@@ -122,21 +122,21 @@ void GraphicsSelectionManager::show(GraphicsItem *item)
     }
 }
 
-void GraphicsSelectionManager::setZValue(GraphicsItem *item, qreal z)
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        s->setZValue(z);
-    }
-}
+//void GraphicsSelectionManager::setZValue(GraphicsItem *item, qreal z)
+//{
+//    if (GraphicsSelection *s = m_usedSelections.value(item)) {
+//        s->setZValue(z);
+//    }
+//}
 
-qreal GraphicsSelectionManager::zValue(GraphicsItem *item)
-{
-    if (GraphicsSelection *s = m_usedSelections.value(item)) {
-        return s->zValue();
-    }
+//qreal GraphicsSelectionManager::zValue(GraphicsItem *item)
+//{
+//    if (GraphicsSelection *s = m_usedSelections.value(item)) {
+//        return s->zValue();
+//    }
 
-    return 0;
-}
+//    return 0;
+//}
 
 int GraphicsSelectionManager::collidesWithHandle(GraphicsItem *item, const QPointF &point) const
 {

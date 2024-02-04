@@ -51,6 +51,10 @@ void GraphicsSelection::setItem(GraphicsItem *item)
     connect(item, &GraphicsItem::sendUpdateHandle, this, [this](){
         updateHandle();
     });
+
+    connect(item, &GraphicsItem::sendZValueChange, this, [this](){
+        setZValue(m_item->zValue() + 1);
+    });
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
 //        if (isShow) {
 //            show();

@@ -41,6 +41,19 @@ void GraphicsItem::setChildItemRotation(GraphicsItem *item, qreal angleGroup)
     }
 }
 
+qreal GraphicsItem::zValue() const
+{
+    return m_zValue;
+}
+
+void GraphicsItem::setZValue(qreal newZValue)
+{
+    if (m_zValue == newZValue) return;
+
+    m_zValue = newZValue;
+    emit sendZValueChange();
+}
+
 QGraphicsItemGroup *GraphicsItem::itemAncestor() const
 {
     return m_itemAncestor;

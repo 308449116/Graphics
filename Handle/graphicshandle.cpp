@@ -12,7 +12,6 @@ GraphicsHandle::GraphicsHandle(int handleType, GraphicsSelection *selection, QGr
 {
 //    setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
     setFlag(QGraphicsItem::ItemIsSelectable,true);
-    setZValue(1);
     hide();
 }
 
@@ -73,6 +72,11 @@ void GraphicsHandle::setItem(GraphicsItem *item)
 //    }
 
     m_item = item;
+    if (m_item) {
+        setZValue(m_item->zValue() + 1);
+    } else {
+        setZValue(0);
+    }
 }
 
 GraphicsItem *GraphicsHandle::item() const

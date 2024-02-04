@@ -56,6 +56,7 @@ public:
 
     // duplicate Items
     void duplicateItemsByCmd();
+    QList<GraphicsItem *> duplicateItems(QList<GraphicsItem *> items);
 
     // group Items
     void groupItemsByCmd();
@@ -96,7 +97,6 @@ public:
 
     void updateHandle(GraphicsItem *item);
 
-    void setZValue(GraphicsItem *item, int increment);
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;
@@ -110,6 +110,7 @@ public slots:
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
+//    void setZValue(GraphicsItem *item, int increment);
     void removeItem(GraphicsItem *item);
     void addGroupItems(GraphicsItem *item);
 //    bool trySelectItem(GraphicsItem *item);

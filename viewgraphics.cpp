@@ -292,8 +292,8 @@ void ViewGraphics::ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory)
 
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
         foreach (auto childItem, itemGroup->getChildItems()) {
+//            this->setZValue(childItem, -1);
             itemGroup->removeFromGroup(childItem);
-            this->setZValue(childItem, -1);
 //            childItem->setItemParent(nullptr);
             m_selectionManager->show(childItem);
             m_selectionManager->updateHandle(childItem);
@@ -312,11 +312,20 @@ void ViewGraphics::duplicateItemsByCmd()
         ItemCopyCmd *copyCmd = new ItemCopyCmd(items, this);
         m_undoStack->push(copyCmd);
     } else {
-        foreach (auto item, items) {
-            GraphicsItem *itemCopy = item->duplicate();
-            addItem(itemCopy);
-        }
+        duplicateItems(items);
     }
+}
+
+QList<GraphicsItem *> ViewGraphics::duplicateItems(QList<GraphicsItem *> items)
+{
+    QList<GraphicsItem *> itemCopyList;
+    foreach (auto item, items) {
+        GraphicsItem *itemCopy = item->duplicate();
+        addItem(itemCopy);
+        itemCopyList << itemCopy;
+    }
+
+    return itemCopyList;
 }
 
 QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
@@ -351,27 +360,27 @@ void ViewGraphics::addGroupItems(GraphicsItem *item)
         }
     }
 
-    if (item->subItem()->parentItem()) {
-        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
-    }
+//    if (item->subItem()->parentItem()) {
+//        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
+//    }
     addItemToSelectionManager(item);
     m_itemManager->addItem(item->itemName(), item);
     qDebug() << "=========== itemCount:" << m_itemManager->itemCount();
 }
 
-void ViewGraphics::setZValue(GraphicsItem *item, int increment)
-{
-    if (item->type() == GraphicsItemType::GroupItem) {
-        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
-            setZValue(childItem, increment);
-        }
-    }
+//void ViewGraphics::setZValue(GraphicsItem *item, int increment)
+//{
+//    if (item->type() == GraphicsItemType::GroupItem) {
+//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+//        foreach (auto childItem, itemGroup->getChildItems()) {
+//            setZValue(childItem, increment);
+//        }
+//    }
 
-    if (item->subItem()->parentItem()) {
-        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + increment);
-    }
-}
+//    if (item->subItem()->parentItem()) {
+//        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + increment);
+//    }
+//}
 
 void ViewGraphics::removeItem(GraphicsItem *item)
 {
@@ -382,6 +391,9 @@ void ViewGraphics::removeItem(GraphicsItem *item)
         }
     }
 
+//    if (item->subItem()->parentItem()) {
+//        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) - 1);
+//    }
     m_selectionManager->removeItem(item);
     m_itemManager->removeItem(item->itemName());
 }

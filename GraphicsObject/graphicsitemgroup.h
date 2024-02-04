@@ -36,6 +36,7 @@ protected:
 //    QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 
 private:
+    void setChildItemZValue(GraphicsItem *item, int increment);
     QList<GraphicsItem *> duplicateItems() const;
     void updateItemAngle(GraphicsItem *item, qreal rotationAngel);
 //    void setChildItemRotation(GraphicsItem *item);

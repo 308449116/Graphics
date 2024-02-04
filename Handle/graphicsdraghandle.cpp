@@ -44,10 +44,14 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mousePressEvent(event);
     qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
     qDebug() << "========= mousePressEvent rotation:" << m_item->rotation();
+//    qDebug() << "========= mousePressEvent subItem()->zValue:" << m_item->subItem()->zValue();
     qDebug() << "========= mousePressEvent groupAngle:" << m_item->groupAngle();
     qDebug() << "========= mousePressEvent initAngle:" << m_item->initAngle();
-    qDebug() << "========= mousePressEvent pos:" << m_item->subItem()->pos();
-    qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
+    qDebug("========= mousePressEvent parentItem:%p" , m_item->subItem()->parentItem());
+    qDebug("========= mousePressEvent group:%p" , m_item->subItem()->group());
+
+//    qDebug() << "========= mousePressEvent pos:" << m_item->subItem()->pos();
+//    qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
     qDebug();
 
     if (m_item->subItem()->parentItem()) {

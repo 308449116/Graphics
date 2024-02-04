@@ -166,7 +166,6 @@ GraphicsItem *GraphicsItemGroup::duplicate() const
 //    itemGroup->subItem()->setBrush(brush());
     itemGroup->subItem()->setTransform(m_group->transform());
     itemGroup->subItem()->setTransformOriginPoint(m_group->transformOriginPoint());
-    itemGroup->subItem()->setZValue(m_group->zValue()+0.1);
     itemGroup->setItemName(this->itemName().append("_copy"));
     return itemGroup;
 }
@@ -203,6 +202,7 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
 //    } else {
 //        m_group->addToGroup(item->subItem());
 //    }
+    setChildItemZValue(item, 1);
     m_group->addToGroup(item->subItem());
     m_childItems.insert(item);
     QObject::connect(item, &GraphicsItem::sendGraphicsItemChange, this, [this](){
@@ -224,21 +224,21 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
 //    m_initialRect = m_localRect;
 }
 
-//void GraphicsItemGroup::setItemZValue(GraphicsItem *item)
-//{
-//    if (item->type() == GraphicsItemType::GroupItem) {
-//        foreach (auto childItem, item->getChildItems()) {
-//            setItemZValue(childItem);
-//        }
-//    }
+void GraphicsItemGroup::setChildItemZValue(GraphicsItem *item, int increment)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            setChildItemZValue(childItem, increment);
+        }
+    }
 
-//    if (item->parentItem()) {
-//        item->setZValue(item->zValue() + 1);
-//    }
-//}
+    item->setZValue(item->zValue() + increment);
+}
 
 void GraphicsItemGroup::removeFromGroup(GraphicsItem *item)
 {
+    setChildItemZValue(item, -1);
     updateItemAngle(item, this->rotation());
     QObject::disconnect(item, nullptr, this, nullptr);
 //    if (item->itemAncestor()) {

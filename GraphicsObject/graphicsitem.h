@@ -71,9 +71,13 @@ public:
     QGraphicsItemGroup *itemAncestor() const;
     void setItemAncestor(QGraphicsItemGroup *newItemAncestor);
 
+    qreal zValue() const;
+    void setZValue(qreal newZValue);
+
 signals:
     void sendUpdateHandle();
     void sendGraphicsItemChange();
+    void sendZValueChange();
 
 private:
     void setChildItemRotation(GraphicsItem *item, qreal angleGroup);
@@ -84,6 +88,7 @@ protected:
     qreal m_initAngle = 0;
     qreal m_groupAngle = 0;
     qreal m_rotationAngle = 0;
+    qreal m_zValue = 0;
     QGraphicsItem *m_subItem = nullptr;
     QGraphicsItemGroup *m_itemAncestor = nullptr;
     GraphicsItemGroup *m_itemGroup = nullptr;

@@ -193,7 +193,6 @@ GraphicsItem *GraphicsTextItem::duplicate() const
         item->subItem()->setPos(m_textItem->pos().x() + width(), m_textItem->pos().y());
     }
     item->subItem()->setTransform(m_textItem->transform());
-    item->subItem()->setZValue(m_textItem->zValue()+0.1);
     item->setItemName(this->itemName().append("_copy"));
     item->setRotation(rotation());
     item->setGroupAngle(groupAngle());

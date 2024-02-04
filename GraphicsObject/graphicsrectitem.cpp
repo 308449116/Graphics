@@ -56,7 +56,6 @@ GraphicsItem *GraphicsRectItem::duplicate() const
     item->setItemName(this->itemName().append("_copy"));
     item->subItem()->setPos(m_rectItem->pos().x() + width(), m_rectItem->pos().y());
     item->subItem()->setTransform(m_rectItem->transform());
-    item->subItem()->setZValue(m_rectItem->zValue()+0.1);
     return item;
 }
 

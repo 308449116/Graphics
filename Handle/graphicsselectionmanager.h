@@ -41,9 +41,9 @@ public:
 
     void show(GraphicsItem *item);
 
-    void setZValue(GraphicsItem *item, qreal z);
+//    void setZValue(GraphicsItem *item, qreal z);
 
-    qreal zValue(GraphicsItem *item);
+//    qreal zValue(GraphicsItem *item);
 
     void removeItem(GraphicsItem *item);
 
