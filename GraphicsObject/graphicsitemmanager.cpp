@@ -2,8 +2,8 @@
 #include "graphicsrectitem.h"
 #include "graphicstextitem.h"
 #include "graphicsitemgroup.h"
-#include "graphicsselectionmanager.h"
-#include "viewgraphics.h"
+//#include "graphicsselectionmanager.h"
+//#include "viewgraphics.h"
 
 GraphicsItemManager::GraphicsItemManager(QObject *parent)
     : QObject{parent}
@@ -87,21 +87,38 @@ void GraphicsItemManager::manageItem(GraphicsItem *item, const QString& itemName
 
     // 添加到哈希表中
     m_nameHash.insert(tempName, item);
+    qDebug() << "keys:" << m_nameHash.keys();
+    qDebug() << "values:" << m_nameHash.values();
 }
 
-void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
+int GraphicsItemManager::itemCount()
 {
-    if (item == nullptr) return;
-
-    if (item->type() == GraphicsItemType::GroupItem) {
-        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
-            deleteGraphicsItem(childItem);
-        }
-    }
-
-    m_nameHash.remove(item->itemName());
+    return m_nameHash.count();
 }
+
+void GraphicsItemManager::addItem(const QString &name, GraphicsItem *item)
+{
+    m_nameHash.insert(name, item);
+}
+
+void GraphicsItemManager::removeItem(const QString &name)
+{
+    m_nameHash.remove(name);
+}
+
+//void GraphicsItemManager::deleteGraphicsItem(GraphicsItem *item)
+//{
+//    if (item == nullptr) return;
+
+//    if (item->type() == GraphicsItemType::GroupItem) {
+//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+//        foreach (auto childItem, itemGroup->getChildItems()) {
+//            deleteGraphicsItem(childItem);
+//        }
+//    }
+
+//    m_nameHash.remove(item->itemName());
+//}
 
 QString GraphicsItemManager::getItemDisplayName(GraphicsItemType type)
 {

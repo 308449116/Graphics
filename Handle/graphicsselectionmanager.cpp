@@ -58,17 +58,17 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, Graphic
     return gs;
 }
 
-void GraphicsSelectionManager::deleteItem(GraphicsItem *item)
-{
-    if (item->type() == GraphicsItemType::GroupItem) {
-        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
-            deleteItem(childItem);
-        }
-    }
+//void GraphicsSelectionManager::deleteItem(GraphicsItem *item)
+//{
+//    if (item->type() == GraphicsItemType::GroupItem) {
+//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+//        foreach (auto childItem, itemGroup->getChildItems()) {
+//            deleteItem(childItem);
+//        }
+//    }
 
-    removeItem(item);
-}
+//    removeItem(item);
+//}
 
 void GraphicsSelectionManager::removeItem(GraphicsItem *item)
 {

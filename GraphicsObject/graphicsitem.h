@@ -14,6 +14,7 @@
 //    ImageItem,
 //    TypeCount
 //};
+class GraphicsItemGroup;
 
 class GraphicsItem : public QObject
 {
@@ -64,6 +65,12 @@ public:
     qreal initAngle() const;
     qreal groupAngle() const;
 
+    GraphicsItemGroup *itemGroup() const;
+    void setItemGroup(GraphicsItemGroup *newItemGroup);
+
+    QGraphicsItemGroup *itemAncestor() const;
+    void setItemAncestor(QGraphicsItemGroup *newItemAncestor);
+
 signals:
     void sendUpdateHandle();
     void sendGraphicsItemChange();
@@ -78,7 +85,8 @@ protected:
     qreal m_groupAngle = 0;
     qreal m_rotationAngle = 0;
     QGraphicsItem *m_subItem = nullptr;
-//    GraphicsItem *m_itemParent = nullptr;
+    QGraphicsItemGroup *m_itemAncestor = nullptr;
+    GraphicsItemGroup *m_itemGroup = nullptr;
 
     QString m_itemName;
     QRectF m_localRect;

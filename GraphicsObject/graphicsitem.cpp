@@ -41,6 +41,40 @@ void GraphicsItem::setChildItemRotation(GraphicsItem *item, qreal angleGroup)
     }
 }
 
+QGraphicsItemGroup *GraphicsItem::itemAncestor() const
+{
+    return m_itemAncestor;
+}
+
+void GraphicsItem::setItemAncestor(QGraphicsItemGroup *newItemAncestor)
+{
+//    if (this->type() == GraphicsItemType::GroupItem) {
+//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
+//        foreach (auto childItem, itemGroup->getChildItems()) {
+//            childItem->setItemAncestor(newItemAncestor);
+//        }
+//    }
+
+    m_itemAncestor = newItemAncestor;
+}
+
+GraphicsItemGroup *GraphicsItem::itemGroup() const
+{
+    return m_itemGroup;
+}
+
+void GraphicsItem::setItemGroup(GraphicsItemGroup *newItemGroup)
+{
+    if (this->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            childItem->setItemGroup(newItemGroup);
+        }
+    }
+
+    m_itemGroup = newItemGroup;
+}
+
 void GraphicsItem::setRotation(qreal newAngle)
 {
     if (m_rotationAngle == newAngle) return;

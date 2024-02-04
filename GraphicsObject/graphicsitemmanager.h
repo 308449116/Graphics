@@ -28,7 +28,7 @@ public:
         const QString& itemName = "", QGraphicsItem *parent = nullptr);
 
     // 删除图元
-    void deleteGraphicsItem(GraphicsItem *item);
+//    void deleteGraphicsItem(GraphicsItem *item);
 
     // 获取图元显示名
     QString getItemDisplayName(GraphicsItemType type);
@@ -40,6 +40,12 @@ public:
 //    void ungroup(GraphicsItem *item, GraphicsSelectionManager *selectionManager, ViewGraphics *view);
 
     void cleanAll();
+
+    int itemCount();
+
+    void addItem(const QString &name, GraphicsItem *item);
+
+    void removeItem(const QString &name);
 
 private:
     void manageItem(GraphicsItem *item, const QString& itemName);

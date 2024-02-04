@@ -110,6 +110,7 @@ public slots:
 //    void handleStateSwitch(GraphicsItem *item, bool isHide);
 
 private:
+    void removeItem(GraphicsItem *item);
     void addGroupItems(GraphicsItem *item);
 //    bool trySelectItem(GraphicsItem *item);
     void addItemToSelectionManager(GraphicsItem *item);

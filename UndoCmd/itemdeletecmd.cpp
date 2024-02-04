@@ -35,5 +35,8 @@ void ItemDeleteCmd::undo()
 void ItemDeleteCmd::redo()
 {
     m_isDeleteItem = true;
+//    foreach (auto item, m_items) {
+//        item->setItemAncestor(item->subItem()->group());
+//    }
     m_view->deleteItems(m_items, false);
 }

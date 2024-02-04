@@ -42,7 +42,7 @@ private:
 //    void setItemZValue(GraphicsItem *item);
 
 private:
-    QGraphicsItemGroup *m_itemGroup = nullptr;
+    QGraphicsItemGroup *m_group = nullptr;
     QSet<GraphicsItem *> m_childItems;
 //    qreal m_rotationAngle = 0;
     //    qreal m_lastAngle = 0;

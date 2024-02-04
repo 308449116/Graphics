@@ -8,7 +8,7 @@
 GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem{parent}
 {
-    m_subItem = m_itemGroup = new QGraphicsItemGroup(parentItem);
+    m_subItem = m_group = new QGraphicsItemGroup(parentItem);
 //    setFlag(QGraphicsItem::ItemIsSelectable, true);
 //    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
@@ -16,7 +16,7 @@ GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parentItem, QObject *parent)
 GraphicsItemGroup::GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem{parent}
 {
-    m_subItem = m_itemGroup = new QGraphicsItemGroup(parentItem);
+    m_subItem = m_group = new QGraphicsItemGroup(parentItem);
     foreach (auto item, items){
         QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->subItem()->parentItem());
         if ( !g ) {
@@ -24,8 +24,8 @@ GraphicsItemGroup::GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem 
         }
     }
 
-    m_localRect = m_itemGroup->boundingRect();
-    m_itemGroup->setTransformOriginPoint(m_localRect.center());
+    m_localRect = m_group->boundingRect();
+    m_group->setTransformOriginPoint(m_localRect.center());
     m_oppositePos = m_localRect.center();
     m_initialRect = m_localRect;
 }
@@ -95,34 +95,34 @@ void GraphicsItemGroup::updateCoordinate()
     }
 
 //    if (m_localRect == nullptr) {
-//        m_localRect = m_itemGroup->boundingRect();
+//        m_localRect = m_group->boundingRect();
 //        qDebug() << "m_localRect:" << m_localRect;
 //    }
 
-    auto angle = qDegreesToRadians(m_itemGroup->rotation());
+    auto angle = qDegreesToRadians(m_group->rotation());
 
     auto p1 = m_localRect.center();
-    auto origin = m_itemGroup->transformOriginPoint();
+    auto origin = m_group->transformOriginPoint();
     QPointF p2 = QPointF(0, 0);
 
     p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
     p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
 
     auto diff = p1 - p2;
-    m_itemGroup->moveBy(-diff.x(), -diff.y());
-    m_itemGroup->setTransformOriginPoint(m_localRect.center());
+    m_group->moveBy(-diff.x(), -diff.y());
+    m_group->setTransformOriginPoint(m_localRect.center());
 
     m_initialRect = m_localRect;
 
 //    QPointF pt1,pt2,delta;
-//    pt1 = m_itemGroup->mapToScene(m_itemGroup->transformOriginPoint());
-//    pt2 = m_itemGroup->mapToScene(m_localRect.center());
+//    pt1 = m_group->mapToScene(m_group->transformOriginPoint());
+//    pt2 = m_group->mapToScene(m_localRect.center());
 //    delta = pt1 - pt2;
 
 //    m_initialRect = m_localRect;
-//    m_itemGroup->setTransform(m_itemGroup->transform().translate(delta.x(),delta.y()));
-//    m_itemGroup->setTransformOriginPoint(m_localRect.center());
-//    m_itemGroup->moveBy(-delta.x(),-delta.y());
+//    m_group->setTransform(m_group->transform().translate(delta.x(),delta.y()));
+//    m_group->setTransformOriginPoint(m_localRect.center());
+//    m_group->moveBy(-delta.x(),-delta.y());
 //    m_oppositePos = m_localRect.center();
 }
 
@@ -137,7 +137,7 @@ void GraphicsItemGroup::updateCoordinate()
 //        setChildItemRotation(childItem);
 //    }
 
-//    m_itemGroup->setRotation(newAngle);
+//    m_group->setRotation(newAngle);
 //}
 
 //void GraphicsItemGroup::setChildItemRotation(GraphicsItem *item)
@@ -161,12 +161,12 @@ GraphicsItem *GraphicsItemGroup::duplicate() const
     GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items);
     itemGroup->setRotation(rotation());
     itemGroup->setScale(m_scaleX, m_scaleY);
-    itemGroup->subItem()->setPos(m_itemGroup->pos().x() + width(), m_itemGroup->pos().y());
+    itemGroup->subItem()->setPos(m_group->pos().x() + width(), m_group->pos().y());
 //    itemGroup->subItem()->setPen(pen());
 //    itemGroup->subItem()->setBrush(brush());
-    itemGroup->subItem()->setTransform(m_itemGroup->transform());
-    itemGroup->subItem()->setTransformOriginPoint(m_itemGroup->transformOriginPoint());
-    itemGroup->subItem()->setZValue(m_itemGroup->zValue()+0.1);
+    itemGroup->subItem()->setTransform(m_group->transform());
+    itemGroup->subItem()->setTransformOriginPoint(m_group->transformOriginPoint());
+    itemGroup->subItem()->setZValue(m_group->zValue()+0.1);
     itemGroup->setItemName(this->itemName().append("_copy"));
     return itemGroup;
 }
@@ -179,7 +179,7 @@ QSet<GraphicsItem *> GraphicsItemGroup::getChildItems() const
 void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
     foreach (auto childItem, getChildItems()) {
-        childItem->stretch(sx, sy, childItem->subItem()->mapFromItem(m_itemGroup, origin));
+        childItem->stretch(sx, sy, childItem->subItem()->mapFromItem(m_group, origin));
     }
 
     QTransform trans;
@@ -194,12 +194,20 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 void GraphicsItemGroup::addToGroup(GraphicsItem *item)
 {
-    updateItemAngle(item, -this->rotation());
-    m_itemGroup->addToGroup(item->subItem());
+//    item->setItemAncestor(this);
+    item->setItemGroup(this);
+//    updateItemAngle(item, -this->rotation());
+//    if (item->itemAncestor()) {
+//        item->itemAncestor()->addToGroup(item->subItem());
+//        qDebug() << "1234567891234564";
+//    } else {
+//        m_group->addToGroup(item->subItem());
+//    }
+    m_group->addToGroup(item->subItem());
     m_childItems.insert(item);
     QObject::connect(item, &GraphicsItem::sendGraphicsItemChange, this, [this](){
         GraphicsItem *senderItem = dynamic_cast<GraphicsItem *>(sender());
-        QTransform itemTransform = senderItem->subItem()->itemTransform(m_itemGroup);
+        QTransform itemTransform = senderItem->subItem()->itemTransform(m_group);
         m_localRect |= itemTransform.mapRect(senderItem->subItem()->boundingRect() | senderItem->subItem()->childrenBoundingRect());
         updateCoordinate();
         emit sendUpdateHandle();
@@ -233,7 +241,12 @@ void GraphicsItemGroup::removeFromGroup(GraphicsItem *item)
 {
     updateItemAngle(item, this->rotation());
     QObject::disconnect(item, nullptr, this, nullptr);
-    m_itemGroup->removeFromGroup(item->subItem());
+//    if (item->itemAncestor()) {
+//        item->itemAncestor()->removeFromGroup(item->subItem());
+//    } else {
+//        m_group->removeFromGroup(item->subItem());
+//    }
+    m_group->removeFromGroup(item->subItem());
     m_childItems.remove(item);
 //    m_localRect = childrenBoundingRect();
 }

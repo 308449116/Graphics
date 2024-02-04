@@ -93,6 +93,14 @@ GraphicsItem *ViewGraphics::createItem(GraphicsItemType type)
 void ViewGraphics::deleteItemsByCmd()
 {
     QList<GraphicsItem *> items = selectedItems();
+//    QList<GraphicsItem *> items;
+//    QList<GraphicsItem *> itemTempList = selectedItems();
+//    foreach (auto item, itemTempList) {
+//        if (item->subItem()->group()) {
+//            continue;
+//        }
+//        items << item;
+//    }
 
     if (items.isEmpty()) return;
 
@@ -113,12 +121,8 @@ void ViewGraphics::deleteItems(const QList<GraphicsItem *> &items, bool isFreeMe
 
 void ViewGraphics::deleteItem(GraphicsItem *item, bool isFreeMemory)
 {
-    if (m_selectionManager->isItemSelected(item)) {
-        m_selectionManager->deleteItem(item);
-    }
-
+    removeItem(item);
     m_scene->removeItem(item);
-    m_itemManager->deleteGraphicsItem(item);
 
     if (isFreeMemory) {
         delete item;
@@ -325,7 +329,14 @@ void ViewGraphics::addItem(GraphicsItem *item)
 {
     addGroupItems(item);
 //    setZValue(item, 1);
+//    GraphicsItemGroup *group = item->itemGroup();
+//    if (group) {
+//        group->addToGroup(item);
+//    } else {
+//        m_scene->addItem(item);
+//    }
     m_scene->addItem(item);
+
 }
 
 void ViewGraphics::addGroupItems(GraphicsItem *item)
@@ -344,6 +355,8 @@ void ViewGraphics::addGroupItems(GraphicsItem *item)
         m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
     }
     addItemToSelectionManager(item);
+    m_itemManager->addItem(item->itemName(), item);
+    qDebug() << "=========== itemCount:" << m_itemManager->itemCount();
 }
 
 void ViewGraphics::setZValue(GraphicsItem *item, int increment)
@@ -358,6 +371,19 @@ void ViewGraphics::setZValue(GraphicsItem *item, int increment)
     if (item->subItem()->parentItem()) {
         m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + increment);
     }
+}
+
+void ViewGraphics::removeItem(GraphicsItem *item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+        foreach (auto childItem, itemGroup->getChildItems()) {
+            removeItem(childItem);
+        }
+    }
+
+    m_selectionManager->removeItem(item);
+    m_itemManager->removeItem(item->itemName());
 }
 
 QAction *ViewGraphics::createUndoAction()

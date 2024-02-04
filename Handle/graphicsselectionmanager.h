@@ -33,7 +33,7 @@ public:
 
     GraphicsSelection *addItem(ViewGraphics *view, GraphicsItem *item);
 
-    void deleteItem(GraphicsItem *item);
+//    void deleteItem(GraphicsItem *item);
 
     void updateHandle(GraphicsItem *item);
 
@@ -45,7 +45,6 @@ public:
 
     qreal zValue(GraphicsItem *item);
 
-private:
     void removeItem(GraphicsItem *item);
 
 private:
