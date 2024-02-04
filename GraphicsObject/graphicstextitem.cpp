@@ -164,15 +164,15 @@ void GraphicsTextItem::updateCoordinate()
     auto angle = qDegreesToRadians(m_textItem->rotation());
 
     auto p1 = m_localRect.center();
+    auto p2 = QPointF(0, 0);
     auto origin = m_textItem->transformOriginPoint();
-    QPointF p2 = QPointF(0, 0);
 
     p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
     p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
 
     auto diff = p1 - p2;
     m_textItem->moveBy(-diff.x(), -diff.y());
-    m_textItem->setTransformOriginPoint(m_localRect.center());
+    m_textItem->setTransformOriginPoint(p1);
 
     m_initialRect = m_localRect;
     m_initialFontSize = m_lastFontSize;

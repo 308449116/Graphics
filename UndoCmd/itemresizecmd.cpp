@@ -13,7 +13,7 @@ void ItemResizeCmd::undo()
 {
     m_isResized = false;
     m_view->resizeItem(m_handleType, m_item, QPointF(1.0/m_scale.x(), 1.0/m_scale.y()));
-    setText(QObject::tr("Undo Resize %1,%2 ,name:%3")
+    setText(QObject::tr("Undo Resize %1,%2, name:%3")
                 .arg(1.0/m_scale.x(), 8, 'f', 2)
                 .arg(1.0/m_scale.y(), 8, 'f', 2)
                 .arg(m_item->itemName()));
@@ -21,7 +21,7 @@ void ItemResizeCmd::undo()
 
 void ItemResizeCmd::redo()
 {
-    setText(QObject::tr("Redo Resize %1,%2 ,name:%3")
+    setText(QObject::tr("Redo Resize %1,%2, name:%3")
                 .arg(m_scale.x(), 8, 'f', 2)
                 .arg(m_scale.y(), 8, 'f', 2)
                 .arg(m_item->itemName()));

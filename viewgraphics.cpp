@@ -291,13 +291,19 @@ void ViewGraphics::ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory)
         if (item->type() != GraphicsItemType::GroupItem) continue;
 
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+        GraphicsItemGroup *parentGroup = itemGroup->itemGroup();
         foreach (auto childItem, itemGroup->getChildItems()) {
 //            this->setZValue(childItem, -1);
             itemGroup->removeFromGroup(childItem);
 //            childItem->setItemParent(nullptr);
             m_selectionManager->show(childItem);
             m_selectionManager->updateHandle(childItem);
+
+            if (parentGroup) {
+                parentGroup->addToGroup(childItem);
+            }
         }
+
         this->deleteItem(item, isFreeMemory);
     }
 }
