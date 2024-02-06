@@ -43,7 +43,7 @@ private:
     int m_initialFontSize;
     int m_lastFontSize;
 //    int m_descent;
-//    QPointF m_originPos;
+    QPointF m_referencePoint;
 };
 
 #endif // GRAPHICSTEXTITEM_H

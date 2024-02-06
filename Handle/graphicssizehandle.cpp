@@ -1,6 +1,7 @@
 #include "graphicssizehandle.h"
 #include "graphicsselection.h"
 #include "viewgraphics.h"
+#include "scenegraphics.h"
 #include "common.h"
 
 #include <QStyleOptionGraphicsItem>
@@ -99,11 +100,21 @@ void GraphicsSizeHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     QPointF beginOffset = m_item->subItem()->mapFromScene(m_pressedPos) - m_item->subItem()->mapFromScene(m_oppositePos);
     QPointF endOffset = m_item->subItem()->mapFromScene(m_lastPos) - m_item->subItem()->mapFromScene(m_oppositePos);
+
+    SceneGraphics* customScene = qobject_cast<SceneGraphics*> (scene());
+    int gridSize = customScene->gridSize();
+    qreal xBeginOffset = round(beginOffset.x()/gridSize)*gridSize;
+    qreal yBeginOffset = round(beginOffset.y()/gridSize)*gridSize;
+
+    qreal xEndOffset = round(endOffset.x()/gridSize)*gridSize;
+    qreal yEndOffset = round(endOffset.y()/gridSize)*gridSize;
 //    qDebug() << "m_pressedPos" << m_pressedPos
 //        << " m_lastPos" << m_lastPos;
 
-    m_scaleX = endOffset.x() / beginOffset.x();
-    m_scaleY = endOffset.y() / beginOffset.y();
+    m_scaleX = xEndOffset / xBeginOffset;
+    m_scaleY = yEndOffset / yBeginOffset;
+//    m_scaleX = endOffset.x() / beginOffset.x();
+//    m_scaleY = endOffset.y() / beginOffset.y();
 
     switch (m_handleType) {
     case GraphicsHandle::Right:

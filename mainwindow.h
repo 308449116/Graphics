@@ -7,7 +7,6 @@
 #include <QMainWindow>
 
 class SceneGraphics;
-class CanvasTextItem;
 class QGraphicsSimpleTextItem;
 
 QT_BEGIN_NAMESPACE
@@ -33,12 +32,9 @@ private slots:
 
     void updateActions();
 
-    void on_pushButton_clicked();
-
 private:
     Ui::MainWindow *ui;
     SceneGraphics *m_scene;
-    CanvasTextItem *textItem;
     QGraphicsSimpleTextItem *textitem2;
     QTimer m_timer;
 

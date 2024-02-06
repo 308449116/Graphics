@@ -1,9 +1,13 @@
 #include "graphicsdraghandle.h"
 #include "graphicsselection.h"
 #include "viewgraphics.h"
+#include "scenegraphics.h"
+#include "graphicstextitem.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QInputDialog>
+#include <QMessageBox>
 
 GraphicsDragHandle::GraphicsDragHandle(int handleType, ViewGraphics *view,
                                        GraphicsSelection *selection, QGraphicsItem *parent)
@@ -81,6 +85,9 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_lastPos = event->scenePos();
     }
 
+    SceneGraphics* customScene = qobject_cast<SceneGraphics*> (scene());
+    int gridSize = customScene->gridSize();
+
     m_selection->setOpacity(0);
 //    qDebug() << "m_lastPos:" << m_lastPos;
 //    qDebug() << "m_pressedPos:" << m_pressedPos;
@@ -88,7 +95,11 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     //移动处理
     for (const auto &[item, initPos] : m_itemPosHash.asKeyValueRange()) {
-        item->subItem()->setPos(initPos + m_lastPos - m_pressedPos);
+        QPointF pos = initPos + m_lastPos - m_pressedPos;
+        qreal xV = round(pos.x()/gridSize)*gridSize;
+        qreal yV = round(pos.y()/gridSize)*gridSize;
+        item->subItem()->setPos(xV, yV);
+//        item->subItem()->setPos(initPos + m_lastPos - m_pressedPos);
         m_view->updateHandle(item);
     }
 //    m_view->moveItems(m_itemPosHash, m_lastPos - m_pressedPos);
@@ -112,6 +123,27 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
 
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void GraphicsDragHandle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (m_item->type() == GraphicsItemType::TextItem) {
+        // 弹出文本输入框
+        bool ok;
+        QString text = QInputDialog::getText(nullptr, "输入对话框", "请输入文本:", QLineEdit::Normal, "", &ok);
+
+        if (ok && !text.isEmpty()) {
+            GraphicsTextItem *textItem = dynamic_cast<GraphicsTextItem *>(m_item);
+            if (textItem) {
+                QFont font = textItem->font();
+                font.setPixelSize(text.toInt());
+                textItem->setText(text);
+//                textItem->setFont(font);
+                m_selection->updateHandle();
+            }
+        }
+    }
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
 QVariant GraphicsDragHandle::itemChange(GraphicsItemChange change, const QVariant &value)

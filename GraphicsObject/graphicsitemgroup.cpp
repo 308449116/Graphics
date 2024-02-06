@@ -195,7 +195,7 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
 {
 //    item->setItemAncestor(this);
     item->setItemGroup(this);
-//    updateItemAngle(item, -this->rotation());
+    updateItemAngle(item, -this->rotation());
 //    if (item->itemAncestor()) {
 //        item->itemAncestor()->addToGroup(item->subItem());
 //        qDebug() << "1234567891234564";

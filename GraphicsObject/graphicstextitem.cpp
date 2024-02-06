@@ -1,4 +1,5 @@
 #include "graphicstextitem.h"
+#include "scenegraphics.h"
 #include "common.h"
 
 #include <QPainter>
@@ -98,14 +99,17 @@ GraphicsTextItem::GraphicsTextItem(QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem(parent)
 {
     m_subItem = m_textItem = new GraphicsSimpleTextItem(parentItem);
-    m_initialFontSize = m_lastFontSize = 100;
+    m_initialFontSize = m_lastFontSize = 60;
     m_font = qApp->font();
     m_font.setPixelSize(m_initialFontSize);
     m_text = "jpkg";
-
     m_textItem->setFont(m_font);
     m_textItem->setText(m_text);
-    updateLocalRect();
+
+    getSizeByFontSize(m_font.pixelSize());
+    m_initialRect = m_localRect = QRectF(0, 0, m_fontWidth * m_scaleX, m_fontHeight * m_scaleY);
+    m_textItem->setItemBoundingRect(m_localRect);
+    m_textItem->setTransformOriginPoint(m_localRect.center());
 }
 
 GraphicsTextItem::GraphicsTextItem(const QString &text, const QFont &font, qreal scaleX,
@@ -117,7 +121,11 @@ GraphicsTextItem::GraphicsTextItem(const QString &text, const QFont &font, qreal
     m_scaleX = scaleX;
     m_textItem->setFont(m_font);
     m_textItem->setScale(m_scaleX, m_scaleY);
-    updateLocalRect();
+
+    getSizeByFontSize(m_font.pixelSize());
+    m_initialRect = m_localRect = QRectF(0, 0, m_fontWidth * m_scaleX, m_fontHeight * m_scaleY);
+    m_textItem->setItemBoundingRect(m_localRect);
+    m_textItem->setTransformOriginPoint(m_localRect.center());
 }
 
 void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
@@ -132,7 +140,7 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     trans.translate(-origin.x(),-origin.y());
     qDebug () << "sx:" << sx << "sy:" << sy;
     qDebug () << "pos:" << m_textItem->pos();
-    //    qDebug () << "============= transformOriginPoint:" << this->transformOriginPoint();
+    qDebug () << "origin:" << origin;
     m_oppositePos = origin;
 
     //    prepareGeometryChange();
@@ -156,7 +164,7 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 
     m_textItem->setScale(m_scaleX, m_scaleY);
     m_textItem->update();
-    qDebug () << "m_scaleX:" << m_scaleX;
+    qDebug () << "m_scaleX:" << m_scaleX << " m_scaleY:" << m_scaleY;
 }
 
 void GraphicsTextItem::updateCoordinate()
@@ -215,7 +223,7 @@ QString GraphicsTextItem::text() const
 void GraphicsTextItem::setFont(const QFont &font)
 {
     m_font = font;
-    m_initialFontSize = m_lastFontSize = m_font.pixelSize();
+//    m_initialFontSize = m_lastFontSize = m_font.pixelSize();
     m_textItem->setFont(m_font);
     updateLocalRect();
 }
@@ -230,30 +238,53 @@ void GraphicsTextItem::updateLocalRect()
 //    QFontMetricsF fm(m_font);
 //    QRectF rect = fm.boundingRect(m_text);
 //    m_descent = fm.descent();
-    QSizeF size = getSizeByFontSize(m_font.pixelSize());
-    qDebug () << " ===========:" << m_font;
+    getSizeByFontSize(m_font.pixelSize());
+    qDebug () << " =========== pixelSize:" << m_font.pixelSize();
     qDebug () << " ===========:" << m_text;
-    qDebug () << " ===========:" << size;
+    qDebug () << " =========== getSizeByFontSize:" << getSizeByFontSize(m_font.pixelSize());
+    qDebug () << " =========== m_localRect:" << m_localRect;
 
-    m_fontWidth = size.width();
-    m_fontHeight = size.height();
+//    m_fontWidth = size.width();
+//    m_fontHeight = size.height();
 //    qDebug () << " pixelSize:" << m_font.pixelSize()
 //             << " width:" << m_fontWidth
 //             << " width:" << m_fontHeight;
 
-    m_initialRect = m_localRect = QRectF(0, 0, m_fontWidth * m_scaleX, m_fontHeight * m_scaleY);
-    m_textItem->setItemBoundingRect(m_localRect);
-    m_textItem->setTransformOriginPoint(m_localRect.center());
+//    m_initialRect = m_localRect = QRectF(0, 0, m_fontWidth * m_scaleX, m_fontHeight * m_scaleY);
+//    m_textItem->setItemBoundingRect(m_localRect);
+//    m_textItem->setTransformOriginPoint(m_localRect.center());
+
+    //参考点
+    //左 QPointF(0, 38) 右 QPointF(123, 38) 上 QPointF(61.5, 0) 下 QPointF(61.5, 76)
+    //左上 QPointF(0, 0) 左下 QPointF(0, 76) 右上 QPointF(123, 0) 右下 QPointF(123, 76)
+    //中心 QPointF(61.5, 38)
+    m_referencePoint = QPointF(61.5, 38);
+    stretch(m_fontWidth / m_localRect.width(), m_fontHeight / m_localRect.height(), m_referencePoint);
+    updateCoordinate();
 }
 
 QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
 {
     m_font.setPixelSize(fontSize);
+//    QTextOption textOption;
+//    textOption.setFlags(QTextOption::IncludeTrailingSpaces);
     QFontMetricsF fm(m_font);
-    QRectF rect = fm.boundingRect(m_text);
-    m_fontWidth = rect.width();
-    m_fontHeight = rect.height();
-    return QSizeF(m_fontWidth, m_fontHeight);
+//    QRectF rect = fm.boundingRect(m_text);
+//    qreal leftBearing = fm.leftBearing(m_text.front());
+//    qreal rightBearing = fm.rightBearing(m_text.back());
+//    qDebug() << "leftBearing:" << leftBearing << " rightBearing:" << rightBearing;
+//    qDebug() << "front:" << m_text.front() << " back:" << m_text.back();
+//    m_fontWidth = rect.width();
+//    m_fontHeight = rect.height();
+//    qDebug() << "boundingRect:" << fm.boundingRect(m_text) << " tightBoundingRect:" << fm.tightBoundingRect(m_text);
+//    qDebug() << "size:" << fm.size(Qt::TextSingleLine, m_text);
+    QSizeF size = fm.size(Qt::TextSingleLine, m_text);
+//    m_fontWidth = size.width();
+//    m_fontHeight = size.height();
+
+    m_fontWidth = round(size.width()/10)*10;
+    m_fontHeight = round(size.height()/10)*10;
+    return size;
 }
 
 int GraphicsTextItem::type() const

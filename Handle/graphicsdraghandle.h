@@ -20,6 +20,8 @@ protected:
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
     QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) override;
 
     void customPaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;

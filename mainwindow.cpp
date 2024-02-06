@@ -243,10 +243,3 @@ void MainWindow::updateActions()
     m_alignHCenterAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
     m_alignVCenterAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
 }
-
-void MainWindow::on_pushButton_clicked()
-{
-
-}
-
-

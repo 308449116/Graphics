@@ -33,6 +33,14 @@ void ItemUngroupCmd::undo()
             itemGroup->addToGroup(childItem);
         }
         m_view->addItem(groupItem);
+
+        if (itemGroup->itemGroup()) {
+            QGraphicsItemGroup *group =
+                qgraphicsitem_cast<QGraphicsItemGroup *>(itemGroup->itemGroup()->subItem());
+            if (group) {
+                group->addToGroup(itemGroup->subItem());
+            }
+        }
     }
     this->setText("Undo Ungroup");
 }
