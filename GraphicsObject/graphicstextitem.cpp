@@ -52,9 +52,12 @@ void GraphicsTextItem::GraphicsSimpleTextItem::paint(
     //    painter->save();
     //    QPointF centerPos(0, 0);
     //    QRectF textRect =  QRectF(centerPos.x(), centerPos.y(), m_originSize.width(), m_originSize.height());
-    painter->translate(m_itemBoundingRect.topLeft().x(), m_itemBoundingRect.topLeft().y());
+    qreal x = round(m_itemBoundingRect.topLeft().x() / GRID_SIZE) * GRID_SIZE;
+    qreal y = round(m_itemBoundingRect.topLeft().y() / GRID_SIZE) * GRID_SIZE;
+//    qDebug() << "x:" << x << " y:" << y;
+    painter->translate(x, y);
     painter->scale(m_scaleX, m_scaleY);
-    painter->translate(-m_itemBoundingRect.topLeft().x(), -m_itemBoundingRect.topLeft().y());
+    painter->translate(-x, -y);
 
     // 绘制
     painter->setFont(this->font());
@@ -255,12 +258,16 @@ void GraphicsTextItem::updateLocalRect()
 //    m_textItem->setTransformOriginPoint(m_localRect.center());
 
     //参考点
-    //左 QPointF(0, 38) 右 QPointF(123, 38) 上 QPointF(61.5, 0) 下 QPointF(61.5, 76)
-    //左上 QPointF(0, 0) 左下 QPointF(0, 76) 右上 QPointF(123, 0) 右下 QPointF(123, 76)
-    //中心 QPointF(61.5, 38)
-    m_referencePoint = QPointF(61.5, 38);
+    //左 QPointF(0, 40) 右 QPointF(60, 40) 上 QPointF(60, 0) 下 QPointF(60, 80)
+    //左上 QPointF(0, 0) 左下 QPointF(0, 80) 右上 QPointF(120, 0) 右下 QPointF(120, 80)
+    //中心 QPointF(60, 40)
+    m_referencePoint = QPointF(0, 0);
     stretch(m_fontWidth / m_localRect.width(), m_fontHeight / m_localRect.height(), m_referencePoint);
     updateCoordinate();
+
+//    qreal x = round(m_localRect.topLeft().x() / GRID_SIZE) * GRID_SIZE;
+//    qreal y = round(m_localRect.topLeft().y() / GRID_SIZE) * GRID_SIZE;
+
 }
 
 QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
@@ -282,8 +289,8 @@ QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
 //    m_fontWidth = size.width();
 //    m_fontHeight = size.height();
 
-    m_fontWidth = round(size.width()/10)*10;
-    m_fontHeight = round(size.height()/10)*10;
+    m_fontWidth = round(size.width() / GRID_SIZE) * GRID_SIZE;
+    m_fontHeight = round(size.height() / GRID_SIZE) * GRID_SIZE;
     return size;
 }
 

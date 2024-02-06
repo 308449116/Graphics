@@ -25,8 +25,6 @@ public:
 
     void removeItem(GraphicsItem *item);
 
-    int gridSize() const;
-
 signals:
     void deleteGraphicsItems();
 
@@ -53,7 +51,6 @@ private:
 private:
     bool m_isControlModifier = false;
     QSet<GraphicsItem *> m_items;
-    int m_gridSize = 10;
 };
 
 #endif // SCENEGRAPHICS_H

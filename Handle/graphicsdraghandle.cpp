@@ -1,7 +1,6 @@
 #include "graphicsdraghandle.h"
 #include "graphicsselection.h"
 #include "viewgraphics.h"
-#include "scenegraphics.h"
 #include "graphicstextitem.h"
 
 #include <QStyleOptionGraphicsItem>
@@ -46,14 +45,18 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent event->modifiers:" << event->modifiers();
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
     QGraphicsItem::mousePressEvent(event);
-    qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
-    qDebug() << "========= mousePressEvent rotation:" << m_item->rotation();
-    qDebug() << "========= mousePressEvent groupAngle:" << m_item->groupAngle();
-    qDebug() << "========= mousePressEvent initAngle:" << m_item->initAngle();
-    qDebug() << "========= mousePressEvent transformOriginPoint:" << m_item->subItem()->transformOriginPoint();
-    qDebug("========= mousePressEvent parentItem:%p" , m_item->subItem()->parentItem());
-    qDebug("========= mousePressEvent group:%p" , m_item->subItem()->group());
-    qDebug("========= mousePressEvent subItem:%p" , m_item->subItem());
+    qDebug() << "========= mousePressEvent getRect:" << m_item->getRect();
+    qDebug() << "========= mousePressEvent sceneBoundingRect:" << m_item->subItem()->sceneBoundingRect();
+    qDebug() << "========= mousePressEvent pos:" << m_item->subItem()->pos();
+    qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
+//    qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
+//    qDebug() << "========= mousePressEvent rotation:" << m_item->rotation();
+//    qDebug() << "========= mousePressEvent groupAngle:" << m_item->groupAngle();
+//    qDebug() << "========= mousePressEvent initAngle:" << m_item->initAngle();
+//    qDebug() << "========= mousePressEvent transformOriginPoint:" << m_item->subItem()->transformOriginPoint();
+//    qDebug("========= mousePressEvent parentItem:%p" , m_item->subItem()->parentItem());
+//    qDebug("========= mousePressEvent group:%p" , m_item->subItem()->group());
+//    qDebug("========= mousePressEvent subItem:%p" , m_item->subItem());
 
 //    qDebug() << "========= mousePressEvent pos:" << m_item->subItem()->pos();
 //    qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
@@ -64,7 +67,7 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     } else {
         m_lastPos = m_pressedPos = event->scenePos();
     }
-    qDebug() << "m_pressedPos:" << m_lastPos;
+//    qDebug() << "m_pressedPos:" << m_lastPos;
 //    m_initialPos = m_item->subItem()->pos();
     m_itemPosHash.clear();
 
@@ -85,9 +88,6 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         m_lastPos = event->scenePos();
     }
 
-    SceneGraphics* customScene = qobject_cast<SceneGraphics*> (scene());
-    int gridSize = customScene->gridSize();
-
     m_selection->setOpacity(0);
 //    qDebug() << "m_lastPos:" << m_lastPos;
 //    qDebug() << "m_pressedPos:" << m_pressedPos;
@@ -96,8 +96,8 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     //移动处理
     for (const auto &[item, initPos] : m_itemPosHash.asKeyValueRange()) {
         QPointF pos = initPos + m_lastPos - m_pressedPos;
-        qreal xV = round(pos.x()/gridSize)*gridSize;
-        qreal yV = round(pos.y()/gridSize)*gridSize;
+        qreal xV = round(pos.x() / GRID_SIZE) * GRID_SIZE;
+        qreal yV = round(pos.y() / GRID_SIZE) * GRID_SIZE;
         item->subItem()->setPos(xV, yV);
 //        item->subItem()->setPos(initPos + m_lastPos - m_pressedPos);
         m_view->updateHandle(item);
@@ -134,6 +134,8 @@ void GraphicsDragHandle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
         if (ok && !text.isEmpty()) {
             GraphicsTextItem *textItem = dynamic_cast<GraphicsTextItem *>(m_item);
+            qDebug() << "========= 11111111111111111111 pixelSize:" << textItem->font().pixelSize();
+
             if (textItem) {
                 QFont font = textItem->font();
                 font.setPixelSize(text.toInt());

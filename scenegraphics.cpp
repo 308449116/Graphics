@@ -1,5 +1,6 @@
 #include "scenegraphics.h"
 #include "graphicshandle.h"
+#include "common.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -86,11 +87,6 @@ void SceneGraphics::deselectItems()
     }
 }
 
-int SceneGraphics::gridSize() const
-{
-    return m_gridSize;
-}
-
 void SceneGraphics::addItem(QGraphicsItem *item)
 {
     QGraphicsScene::addItem(item);
@@ -127,12 +123,11 @@ void SceneGraphics::drawBackground(QPainter *painter, const QRectF &rect)
 {
     //    QPen pen;
     //    painter->setPen(pen);
-
-    qreal left = int(rect.left()) - (int(rect.left()) % m_gridSize);
-    qreal top = int(rect.top()) - (int(rect.top()) % m_gridSize);
+    int left = int(rect.left()) - (int(rect.left()) % GRID_SIZE);
+    int top = int(rect.top()) - (int(rect.top()) % GRID_SIZE);
     QVector<QPointF> points;
-    for (qreal x = left; x < rect.right(); x += m_gridSize) {
-        for (qreal y = top; y < rect.bottom(); y += m_gridSize) {
+    for (int x = left; x < rect.right(); x += GRID_SIZE) {
+        for (int y = top; y < rect.bottom(); y += GRID_SIZE) {
             points.append(QPointF(x, y));
         }
     }

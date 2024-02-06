@@ -40,12 +40,12 @@ ViewGraphics::ViewGraphics(QWidget* parent)
     m_undoStack = new QUndoStack(this);
 
     connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::deleteItemsByCmd);
-    connect(m_undoStack, &QUndoStack::canRedoChanged, this, [this](){
-        qDebug() << "canRedoChanged count:" << m_undoStack->count();
-    });
-    connect(m_undoStack, &QUndoStack::canUndoChanged, this, [this](){
-        qDebug() << "canUndoChanged count:" << m_undoStack->count();
-    });
+//    connect(m_undoStack, &QUndoStack::canRedoChanged, this, [this](){
+//        qDebug() << "canRedoChanged count:" << m_undoStack->count();
+//    });
+//    connect(m_undoStack, &QUndoStack::canUndoChanged, this, [this](){
+//        qDebug() << "canUndoChanged count:" << m_undoStack->count();
+//    });
 //    m_undoStack->setUndoLimit(5);
 
 //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
