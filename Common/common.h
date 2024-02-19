@@ -6,7 +6,7 @@
 const static int ROTATE_HANDLE_WIDTH = 14;
 const static int SIZE_HANDLE_WIDTH = 6;
 const static int LINE_HANDLE_WIDTH = 20;
-const static int GRID_SIZE = 5;
+const static int GRID_SIZE = 10;
 
 enum GraphicsItemType
 {

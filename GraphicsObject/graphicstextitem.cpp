@@ -52,8 +52,10 @@ void GraphicsTextItem::GraphicsSimpleTextItem::paint(
     //    painter->save();
     //    QPointF centerPos(0, 0);
     //    QRectF textRect =  QRectF(centerPos.x(), centerPos.y(), m_originSize.width(), m_originSize.height());
-    qreal x = round(m_itemBoundingRect.topLeft().x() / GRID_SIZE) * GRID_SIZE;
-    qreal y = round(m_itemBoundingRect.topLeft().y() / GRID_SIZE) * GRID_SIZE;
+    qreal x = m_itemBoundingRect.topLeft().x();
+    qreal y = m_itemBoundingRect.topLeft().y();
+//    qreal x = round(m_itemBoundingRect.topLeft().x() / GRID_SIZE) * GRID_SIZE;
+//    qreal y = round(m_itemBoundingRect.topLeft().y() / GRID_SIZE) * GRID_SIZE;
 //    qDebug() << "x:" << x << " y:" << y;
     painter->translate(x, y);
     painter->scale(m_scaleX, m_scaleY);

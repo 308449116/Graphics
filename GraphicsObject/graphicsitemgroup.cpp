@@ -211,6 +211,9 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
         m_localRect |= itemTransform.mapRect(senderItem->subItem()->boundingRect() | senderItem->subItem()->childrenBoundingRect());
         updateCoordinate();
         emit sendUpdateHandle();
+        if (this->itemGroup()) {
+            emit this->sendGraphicsItemChange();
+        }
     });
 
 //    QTransform itemTransform = item->itemTransform(this);

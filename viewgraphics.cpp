@@ -287,6 +287,7 @@ void ViewGraphics::ungroupItemsByCmd()
 
 void ViewGraphics::ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory)
 {
+    qDebug() << "ungroupItems count:" << items.count();
     foreach (auto item, items) {
         if (item->type() != GraphicsItemType::GroupItem) continue;
 
@@ -295,7 +296,7 @@ void ViewGraphics::ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory)
         foreach (auto childItem, itemGroup->getChildItems()) {
 //            this->setZValue(childItem, -1);
             itemGroup->removeFromGroup(childItem);
-//            childItem->setItemParent(nullptr);
+            childItem->setItemGroup(nullptr);
             m_selectionManager->show(childItem);
             m_selectionManager->updateHandle(childItem);
 
@@ -371,7 +372,7 @@ void ViewGraphics::addGroupItems(GraphicsItem *item)
 //    }
     addItemToSelectionManager(item);
     m_itemManager->addItem(item->itemName(), item);
-    qDebug() << "=========== itemCount:" << m_itemManager->itemCount();
+//    qDebug() << "=========== itemCount:" << m_itemManager->itemCount();
 }
 
 //void ViewGraphics::setZValue(GraphicsItem *item, int increment)

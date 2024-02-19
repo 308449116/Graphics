@@ -45,11 +45,12 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent event->modifiers:" << event->modifiers();
 //    qDebug() << "111 GraphicsDragHandle mousePressEvent multiSelect:" << ((event->modifiers() & Qt::ControlModifier) != 0);
     QGraphicsItem::mousePressEvent(event);
-    qDebug() << "========= mousePressEvent getRect:" << m_item->getRect();
-    qDebug() << "========= mousePressEvent sceneBoundingRect:" << m_item->subItem()->sceneBoundingRect();
-    qDebug() << "========= mousePressEvent pos:" << m_item->subItem()->pos();
-    qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
-//    qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
+//    qDebug() << "========= mousePressEvent getRect:" << m_item->getRect();
+//    qDebug() << "========= mousePressEvent sceneBoundingRect:" << m_item->subItem()->sceneBoundingRect();
+//    qDebug() << "========= mousePressEvent pos:" << m_item->subItem()->pos();
+//    qDebug() << "========= mousePressEvent scenePos:" << m_item->subItem()->scenePos();
+
+    qDebug() << "========= mousePressEvent zValue:" << m_selection->zValue();
 //    qDebug() << "========= mousePressEvent rotation:" << m_item->rotation();
 //    qDebug() << "========= mousePressEvent groupAngle:" << m_item->groupAngle();
 //    qDebug() << "========= mousePressEvent initAngle:" << m_item->initAngle();
@@ -94,11 +95,12 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "m_lastPos - m_pressedPos:" << m_lastPos - m_pressedPos;
 
     //移动处理
+    qreal xV = round((m_lastPos - m_pressedPos).x() / GRID_SIZE) * GRID_SIZE;
+    qreal yV = round((m_lastPos - m_pressedPos).y() / GRID_SIZE) * GRID_SIZE;
+    m_offsetPos = QPointF(xV, yV);
     for (const auto &[item, initPos] : m_itemPosHash.asKeyValueRange()) {
-        QPointF pos = initPos + m_lastPos - m_pressedPos;
-        qreal xV = round(pos.x() / GRID_SIZE) * GRID_SIZE;
-        qreal yV = round(pos.y() / GRID_SIZE) * GRID_SIZE;
-        item->subItem()->setPos(xV, yV);
+        QPointF pos = initPos + m_offsetPos;
+        item->subItem()->setPos(pos);
 //        item->subItem()->setPos(initPos + m_lastPos - m_pressedPos);
         m_view->updateHandle(item);
     }
@@ -114,7 +116,7 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     //Undo/Redo 移动处理
     if (m_itemPosHash.count() > 0 && m_lastPos != m_pressedPos) {
-        m_view->moveItemsByCmd(m_itemPosHash.keys(), m_lastPos - m_pressedPos, true);
+        m_view->moveItemsByCmd(m_itemPosHash.keys(), m_offsetPos, true);
         foreach (auto item, m_itemPosHash.keys()) {
             if (item->subItem()->parentItem()) {
                 emit item->sendGraphicsItemChange();

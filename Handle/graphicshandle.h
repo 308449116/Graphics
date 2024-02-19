@@ -62,6 +62,7 @@ protected:
     QRectF m_localRect;
     QPointF m_pressedPos;
     QPointF m_lastPos;
+    QPointF m_offsetPos;
 
     GraphicsHandleState m_state;
     GraphicsItem *m_item = nullptr;
