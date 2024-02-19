@@ -55,9 +55,6 @@ public:
     qreal scaleX() const;
     void setScale(qreal scaleX, qreal scaleY);
 
-//    GraphicsItem *itemParent() const;
-//    void setItemParent(GraphicsItem *newItemParent);
-
     void setRotation(qreal newAngle);
     void setInitAngle(qreal newInitAngle);
     void setGroupAngle(qreal newGroupAngle);
@@ -68,8 +65,8 @@ public:
     GraphicsItemGroup *itemGroup() const;
     void setItemGroup(GraphicsItemGroup *newItemGroup);
 
-    QGraphicsItemGroup *itemAncestor() const;
-    void setItemAncestor(QGraphicsItemGroup *newItemAncestor);
+//    QGraphicsItemGroup *itemAncestor() const;
+//    void setItemAncestor(QGraphicsItemGroup *newItemAncestor);
 
     qreal zValue() const;
     void setZValue(qreal newZValue);
@@ -83,14 +80,12 @@ private:
     void setChildItemRotation(GraphicsItem *item, qreal angleGroup);
 
 protected:
-
-protected:
     qreal m_initAngle = 0;
     qreal m_groupAngle = 0;
     qreal m_rotationAngle = 0;
     qreal m_zValue = 0;
     QGraphicsItem *m_subItem = nullptr;
-    QGraphicsItemGroup *m_itemAncestor = nullptr;
+//    QGraphicsItemGroup *m_itemAncestor = nullptr;
     GraphicsItemGroup *m_itemGroup = nullptr;
 
     QString m_itemName;

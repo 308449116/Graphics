@@ -1,6 +1,5 @@
 #include "graphicsitemgroup.h"
 #include "graphicsitem.h"
-//#include "graphicsselection.h"
 #include "common.h"
 
 #include <QPainter>

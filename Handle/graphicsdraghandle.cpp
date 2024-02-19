@@ -99,8 +99,7 @@ void GraphicsDragHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal yV = round((m_lastPos - m_pressedPos).y() / GRID_SIZE) * GRID_SIZE;
     m_offsetPos = QPointF(xV, yV);
     for (const auto &[item, initPos] : m_itemPosHash.asKeyValueRange()) {
-        QPointF pos = initPos + m_offsetPos;
-        item->subItem()->setPos(pos);
+        item->subItem()->setPos(initPos + m_offsetPos);
 //        item->subItem()->setPos(initPos + m_lastPos - m_pressedPos);
         m_view->updateHandle(item);
     }

@@ -1,5 +1,4 @@
 #include "graphicstextitem.h"
-#include "scenegraphics.h"
 #include "common.h"
 
 #include <QPainter>

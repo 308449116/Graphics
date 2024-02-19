@@ -46,7 +46,7 @@ private:
     QGraphicsItemGroup *m_group = nullptr;
     QSet<GraphicsItem *> m_childItems;
 //    qreal m_rotationAngle = 0;
-    //    qreal m_lastAngle = 0;
+//    qreal m_lastAngle = 0;
 };
 
 //extern template class GraphicsAbstractTemplate<QGraphicsItem>;

@@ -54,22 +54,22 @@ void GraphicsItem::setZValue(qreal newZValue)
     emit sendZValueChange();
 }
 
-QGraphicsItemGroup *GraphicsItem::itemAncestor() const
-{
-    return m_itemAncestor;
-}
+//QGraphicsItemGroup *GraphicsItem::itemAncestor() const
+//{
+//    return m_itemAncestor;
+//}
 
-void GraphicsItem::setItemAncestor(QGraphicsItemGroup *newItemAncestor)
-{
-//    if (this->type() == GraphicsItemType::GroupItem) {
-//        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
-//        foreach (auto childItem, itemGroup->getChildItems()) {
-//            childItem->setItemAncestor(newItemAncestor);
-//        }
-//    }
+//void GraphicsItem::setItemAncestor(QGraphicsItemGroup *newItemAncestor)
+//{
+////    if (this->type() == GraphicsItemType::GroupItem) {
+////        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
+////        foreach (auto childItem, itemGroup->getChildItems()) {
+////            childItem->setItemAncestor(newItemAncestor);
+////        }
+////    }
 
-    m_itemAncestor = newItemAncestor;
-}
+//    m_itemAncestor = newItemAncestor;
+//}
 
 GraphicsItemGroup *GraphicsItem::itemGroup() const
 {
@@ -192,13 +192,3 @@ void GraphicsItem::setScale(qreal scaleX, qreal scaleY)
     qDebug () << "setScale m_scaleX:" << m_scaleX;
     stretch(scaleX, scaleY, QPointF(0, 0));
 }
-
-//GraphicsItem *GraphicsItem::itemParent() const
-//{
-//    return m_itemParent;
-//}
-
-//void GraphicsItem::setItemParent(GraphicsItem *newItemParent)
-//{
-//    m_itemParent = newItemParent;
-//}
