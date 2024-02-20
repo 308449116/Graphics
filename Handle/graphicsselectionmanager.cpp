@@ -50,9 +50,8 @@ GraphicsSelection *GraphicsSelectionManager::addItem(ViewGraphics *view, Graphic
     m_usedSelections.insert(item, gs);
     gs->setItem(item);
 
-    qDebug("GraphicsSelection hide item:%p" , gs);
+    qDebug("GraphicsSelection gs:%p" , gs);
     qDebug("m_selectionPool insert item:%p" , item);
-    qDebug() << "m_selectionPool insert item sharedPoint:" << item;
     qDebug() << "m_selectionPool count:" << m_selectionPool.count();
     qDebug() << "m_usedSelections count:" << m_usedSelections.count();
     return gs;
@@ -85,7 +84,8 @@ void GraphicsSelectionManager::removeItem(GraphicsItem *item)
     m_usedSelections.remove(item);
 }
 
-bool GraphicsSelectionManager::isItemSelected(GraphicsItem *item) const{
+bool GraphicsSelectionManager::isItemSelected(GraphicsItem *item) const
+{
     return  m_usedSelections.contains(item);
 }
 

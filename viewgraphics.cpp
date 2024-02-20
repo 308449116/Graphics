@@ -92,15 +92,15 @@ GraphicsItem *ViewGraphics::createItem(GraphicsItemType type)
 
 void ViewGraphics::deleteItemsByCmd()
 {
-    QList<GraphicsItem *> items = selectedItems();
-//    QList<GraphicsItem *> items;
-//    QList<GraphicsItem *> itemTempList = selectedItems();
-//    foreach (auto item, itemTempList) {
-//        if (item->subItem()->group()) {
-//            continue;
-//        }
-//        items << item;
-//    }
+//    QList<GraphicsItem *> items = selectedItems();
+    QList<GraphicsItem *> items;
+    QList<GraphicsItem *> itemTempList = selectedItems();
+    foreach (auto item, itemTempList) {
+        if (item->subItem()->group()) {
+            continue;
+        }
+        items << item;
+    }
 
     if (items.isEmpty()) return;
 
@@ -149,6 +149,10 @@ void ViewGraphics::moveItems(const QList<GraphicsItem *> &items,
     for (const auto &item : items) {
         item->subItem()->moveBy(pos.x(), pos.y());
         m_selectionManager->updateHandle(item);
+
+        if (item->subItem()->parentItem()) {
+            emit item->sendGraphicsItemChange();
+        }
     }
 }
 
@@ -171,6 +175,10 @@ void ViewGraphics::resizeItem(int handleType, GraphicsItem *item,
     item->stretch(scale.x(), scale.y(), oppositePos);
     item->updateCoordinate();
     m_selectionManager->updateHandle(item);
+
+    if (item->subItem()->parentItem()) {
+        emit item->sendGraphicsItemChange();
+    }
 }
 
 void ViewGraphics::rotateItemByCmd(GraphicsItem *item, const qreal angle)
@@ -187,6 +195,10 @@ void ViewGraphics::rotateItem(GraphicsItem *item, const qreal angle)
 {
     item->setRotation(angle);
     m_selectionManager->updateHandle(item);
+
+    if (item->subItem()->parentItem()) {
+        emit item->sendGraphicsItemChange();
+    }
 }
 
 void ViewGraphics::alignItems(AlignType alignType)
@@ -274,7 +286,16 @@ GraphicsItem *ViewGraphics::groupItems(QList<GraphicsItem *> items)
 
 void ViewGraphics::ungroupItemsByCmd()
 {
-    QList<GraphicsItem *> items = selectedItems();
+//    QList<GraphicsItem *> items = selectedItems();
+    QList<GraphicsItem *> items;
+    QList<GraphicsItem *> itemTempList = selectedItems();
+    foreach (auto item, itemTempList) {
+        if (item->subItem()->group()) {
+            continue;
+        }
+        items << item;
+    }
+
     if (items.isEmpty()) return;
 
     if (m_isUndoCmdEnabled) {

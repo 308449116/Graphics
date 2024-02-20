@@ -34,8 +34,6 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 //                 << rect;
 
         painter->drawRect(rect);
-//        painter->drawLine(QPointF(rect.center().x(), rect.center().y() + rect.height() / 2),
-//                          QPointF(rect.center().x(), rect.center().y() + rect.height() / 2 + 14));
         painter->restore();
 //    }
 }

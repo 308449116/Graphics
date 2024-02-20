@@ -23,7 +23,7 @@ void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 //    m_oppositePos = origin;
 
-    //    prepareGeometryChange();
+//    prepareGeometryChange();
     m_localRect = trans.mapRect(m_initialRect);
     m_rectItem->setRect(m_localRect);
 }
