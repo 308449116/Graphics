@@ -139,9 +139,9 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
     }
 
     QTransform trans;
-    trans.translate(origin.x(),origin.y());
-    trans.scale(sx,sy);
-    trans.translate(-origin.x(),-origin.y());
+    trans.translate(origin.x(), origin.y());
+    trans.scale(sx, sy);
+    trans.translate(-origin.x(), -origin.y());
     qDebug () << "sx:" << sx << "sy:" << sy;
     qDebug () << "pos:" << m_textItem->pos();
     qDebug () << "origin:" << origin;
@@ -259,7 +259,7 @@ void GraphicsTextItem::updateLocalRect()
 //    m_textItem->setTransformOriginPoint(m_localRect.center());
 
     //参考点
-    //左 QPointF(0, 40) 右 QPointF(60, 40) 上 QPointF(60, 0) 下 QPointF(60, 80)
+    //左 QPointF(0, 40) 右 QPointF(120, 40) 上 QPointF(60, 0) 下 QPointF(60, 80)
     //左上 QPointF(0, 0) 左下 QPointF(0, 80) 右上 QPointF(120, 0) 右下 QPointF(120, 80)
     //中心 QPointF(60, 40)
     m_referencePoint = QPointF(0, 0);

@@ -204,11 +204,8 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
     setChildItemZValue(item, 1);
     m_group->addToGroup(item->subItem());
     m_childItems.insert(item);
+
     QObject::connect(item, &GraphicsItem::sendGraphicsItemChange, this, [this](){
-//        GraphicsItem *senderItem = dynamic_cast<GraphicsItem *>(sender());
-//        QTransform itemTransform = senderItem->subItem()->itemTransform(m_group);
-//        m_localRect = itemTransform.mapRect(senderItem->subItem()->boundingRect() |
-//                                             senderItem->subItem()->childrenBoundingRect());
         QRectF rect;
         foreach (auto childItem, m_childItems) {
             QTransform itemTransform = childItem->subItem()->itemTransform(m_group);
@@ -217,6 +214,7 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
         }
         m_localRect = rect;
         updateCoordinate();
+
         emit sendUpdateHandle();
         if (this->itemGroup()) {
             emit this->sendGraphicsItemChange();
@@ -271,8 +269,8 @@ void GraphicsItemGroup::updateItemAngle(GraphicsItem *item, qreal rotationAngel)
             updateItemAngle(childItem, rotationAngel);
         }
     }
-
 }
+
 //QVariant GraphicsItemGroup::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 //{
 //    qDebug() << "111111111111111111";
