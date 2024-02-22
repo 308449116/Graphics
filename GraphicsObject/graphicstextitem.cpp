@@ -268,7 +268,6 @@ void GraphicsTextItem::updateLocalRect()
 
 //    qreal x = round(m_localRect.topLeft().x() / GRID_SIZE) * GRID_SIZE;
 //    qreal y = round(m_localRect.topLeft().y() / GRID_SIZE) * GRID_SIZE;
-
 }
 
 QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)
@@ -299,4 +298,3 @@ int GraphicsTextItem::type() const
 {
     return GraphicsItemType::TextItem;
 }
-
