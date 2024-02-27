@@ -25,6 +25,8 @@ void GraphicsRectItem::stretch(qreal sx, qreal sy, const QPointF &origin)
 
 //    prepareGeometryChange();
     m_localRect = trans.mapRect(m_initialRect);
+    qDebug() << "m_localRect:" << m_localRect;
+    qDebug() << "mapRectToScene m_localRect:" << m_rectItem->mapRectToScene(m_localRect);
     m_rectItem->setRect(m_localRect);
 }
 
@@ -45,7 +47,6 @@ void GraphicsRectItem::updateCoordinate()
 
     m_initialRect = m_localRect;
 }
-
 
 GraphicsItem *GraphicsRectItem::duplicate() const
 {

@@ -110,7 +110,7 @@ qreal GraphicsItem::rotation() const
 
 void GraphicsItem::move(const QPointF &point)
 {
-    m_subItem->moveBy(point.x(),point.y());
+    m_subItem->moveBy(point.x(), point.y());
 }
 
 void GraphicsItem::setItemName(QString newName)

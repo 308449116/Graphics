@@ -86,7 +86,7 @@ GraphicsItem *GraphicsHandle::item() const
 
 void GraphicsHandle::move(qreal x, qreal y)
 {
-    setPos(x,y);
+    setPos(x, y);
 }
 
 QRectF GraphicsHandle::boundingRect() const

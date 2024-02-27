@@ -181,9 +181,9 @@ void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
     }
 
     QTransform trans;
-    trans.translate(origin.x(),origin.y());
-    trans.scale(sx,sy);
-    trans.translate(-origin.x(),-origin.y());
+    trans.translate(origin.x(), origin.y());
+    trans.scale(sx, sy);
+    trans.translate(-origin.x(), -origin.y());
 
     m_oppositePos = origin;
 
