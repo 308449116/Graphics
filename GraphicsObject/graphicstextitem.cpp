@@ -239,38 +239,18 @@ QFont GraphicsTextItem::font() const
 
 void GraphicsTextItem::updateLocalRect()
 {
-//    QFontMetricsF fm(m_font);
-//    QRectF rect = fm.boundingRect(m_text);
-//    m_descent = fm.descent();
     getSizeByFontSize(m_font.pixelSize());
-//    qDebug () << " =========== pixelSize:" << m_font.pixelSize();
-//    qDebug () << " ===========:" << m_text;
-//    qDebug () << " =========== getSizeByFontSize:" << getSizeByFontSize(m_font.pixelSize());
-//    qDebug () << " =========== m_localRect:" << m_localRect;
-
-//    m_fontWidth = size.width();
-//    m_fontHeight = size.height();
-//    qDebug () << " pixelSize:" << m_font.pixelSize()
-//             << " width:" << m_fontWidth
-//             << " width:" << m_fontHeight;
-
-//    m_initialRect = m_localRect = QRectF(0, 0, m_fontWidth * m_scaleX, m_fontHeight * m_scaleY);
-//    m_textItem->setItemBoundingRect(m_localRect);
-//    m_textItem->setTransformOriginPoint(m_localRect.center());
 
     //参考点,对参考点进行拉伸后，需要获取新的参考点位置
     //左 QPointF(0, 40) 右 QPointF(120, 40) 上 QPointF(60, 0) 下 QPointF(60, 80)
     //左上 QPointF(0, 0) 左下 QPointF(0, 80) 右上 QPointF(120, 0) 右下 QPointF(120, 80)
     //中心 QPointF(60, 40)
-    m_referencePoint = m_localRect.bottomRight();
-//    m_referencePoint = QPointF(m_localRect.topRight().x(), m_localRect.topRight().y() + m_localRect.height() / 2);
+//    m_referencePoint = m_localRect.bottomRight();
+    m_referencePoint = QPointF(m_localRect.topRight().x(), m_localRect.topRight().y() + m_localRect.height() / 2);
     qDebug () << " =========== m_referencePoint:" << m_referencePoint;
 
     stretch(m_fontWidth / m_localRect.width(), m_fontHeight / m_localRect.height(), m_referencePoint);
     updateCoordinate();
-
-//    qreal x = round(m_localRect.topLeft().x() / GRID_SIZE) * GRID_SIZE;
-//    qreal y = round(m_localRect.topLeft().y() / GRID_SIZE) * GRID_SIZE;
 }
 
 QSizeF GraphicsTextItem::getSizeByFontSize(int fontSize)

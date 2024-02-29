@@ -138,8 +138,8 @@ void GraphicsDragHandle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
             if (textItem) {
                 QFont font = textItem->font();
                 font.setPixelSize(text.toInt());
-                textItem->setText(text);
-//                textItem->setFont(font);
+//                textItem->setText(text);
+                textItem->setFont(font);
                 m_selection->updateHandle();
             }
         }

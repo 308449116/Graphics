@@ -78,6 +78,11 @@ void GraphicsRotateHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //    qDebug() << "1111111 angle:" << angle;
     m_item->setRotation( angle );
 //    m_item->subItem()->update();
+    if (angle == 0 || angle == 90 || angle == 180 || angle == 360) {
+        int x = floor(m_item->subItem()->pos().x() / GRID_SIZE) * GRID_SIZE;
+        int y = floor(m_item->subItem()->pos().y() / GRID_SIZE) * GRID_SIZE;
+        m_item->subItem()->setPos(x, y);
+    }
     m_view->updateHandle(m_item);
 //    updateHandle(m_item);
     QGraphicsItem::mouseMoveEvent(event);

@@ -24,30 +24,6 @@ void GraphicsSizeHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
     painter->setPen(Qt::SolidLine);
     painter->setBrush(QBrush(m_borderColor));
     painter->drawRect(QRectF(m_localRect));
-//    QRectF rect = mapRectFromItem(m_item, m_item->getRect());
-//    qDebug() << "GraphicsSizeHandle customPaint rect:"
-//             << rect;
-//    switch (m_handleType) {
-//    case GraphicsHandle::LeftTop:
-//        setPos(rect.topLeft());
-//        break;
-//    case GraphicsHandle::Top:
-//        break;
-//    case GraphicsHandle::RightTop:
-//        break;
-//    case GraphicsHandle::Right:
-//        break;
-//    case GraphicsHandle::RightBottom:
-//        break;
-//    case GraphicsHandle::Bottom:
-//        break;
-//    case GraphicsHandle::LeftBottom:
-//        break;
-//    case GraphicsHandle::Left:
-//        break;
-//    default:
-//        break;
-//    }
     painter->restore();
 }
 
