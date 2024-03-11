@@ -179,8 +179,8 @@ void GraphicsTextItem::updateCoordinate()
     auto p2 = QPointF(0, 0);
     auto origin = m_textItem->transformOriginPoint();
 
-    p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
-    p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
+    p2.setX(origin.x() + qCos(angle) * (p1.x() - origin.x()) - qSin(angle) * (p1.y() - origin.y()));
+    p2.setY(origin.y() + qSin(angle) * (p1.x() - origin.x()) + qCos(angle) * (p1.y() - origin.y()));
 
     auto diff = p1 - p2;
     m_textItem->moveBy(-diff.x(), -diff.y());

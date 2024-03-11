@@ -104,8 +104,8 @@ void GraphicsItemGroup::updateCoordinate()
     auto origin = m_group->transformOriginPoint();
     QPointF p2 = QPointF(0, 0);
 
-    p2.setX(origin.x() + qCos(angle)*(p1.x() - origin.x()) - qSin(angle)*(p1.y() - origin.y()));
-    p2.setY(origin.y() + qSin(angle)*(p1.x() - origin.x()) + qCos(angle)*(p1.y() - origin.y()));
+    p2.setX(origin.x() + qCos(angle) * (p1.x() - origin.x()) - qSin(angle) * (p1.y() - origin.y()));
+    p2.setY(origin.y() + qSin(angle) * (p1.x() - origin.x()) + qCos(angle) * (p1.y() - origin.y()));
 
     auto diff = p1 - p2;
     m_group->moveBy(-diff.x(), -diff.y());
