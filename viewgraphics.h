@@ -97,6 +97,9 @@ public:
 
     void updateHandle(GraphicsItem *item);
 
+    NodeBase *getCurrentSelectedNode();
+signals:
+    void itemSelectedChanged();
 
 protected:
 //    void mouseMoveEvent(QMouseEvent *event) override;

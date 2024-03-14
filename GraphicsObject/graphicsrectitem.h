@@ -12,6 +12,8 @@ public:
 
     void updateCoordinate() override;
 
+    bool loadFromXml(QXmlStreamReader *xml) override;
+
     GraphicsItem *duplicate() const override;
 
     int type() const override;

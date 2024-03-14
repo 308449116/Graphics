@@ -122,7 +122,12 @@ void GraphicsItemGroup::updateCoordinate()
 //    m_group->setTransform(m_group->transform().translate(delta.x(),delta.y()));
 //    m_group->setTransformOriginPoint(m_localRect.center());
 //    m_group->moveBy(-delta.x(),-delta.y());
-//    m_oppositePos = m_localRect.center();
+    //    m_oppositePos = m_localRect.center();
+}
+
+bool GraphicsItemGroup::loadFromXml(QXmlStreamReader *xml)
+{
+
 }
 
 //void GraphicsItemGroup::setRotation(qreal newAngle)
@@ -160,7 +165,7 @@ GraphicsItem *GraphicsItemGroup::duplicate() const
     GraphicsItemGroup *itemGroup = new GraphicsItemGroup(items);
     itemGroup->setRotation(rotation());
     itemGroup->setScale(m_scaleX, m_scaleY);
-    itemGroup->subItem()->setPos(m_group->pos().x() + width(), m_group->pos().y());
+    itemGroup->setPos(m_group->pos().x() + width(), m_group->pos().y());
 //    itemGroup->subItem()->setPen(pen());
 //    itemGroup->subItem()->setBrush(brush());
     itemGroup->subItem()->setTransform(m_group->transform());
@@ -309,7 +314,7 @@ QList<GraphicsItem *> GraphicsItemGroup::duplicateItems() const
     QList<GraphicsItem *> copylist;
     foreach (auto childItem, this->getChildItems()) {
         auto copyItem = childItem->duplicate();
-        copyItem->subItem()->setPos(childItem->subItem()->pos());
+        copyItem->setPos(childItem->pos());
         copylist.append(copyItem);
     }
 

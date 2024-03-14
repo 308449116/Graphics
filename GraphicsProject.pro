@@ -19,8 +19,54 @@ INCLUDEPATH += $$PWD/Common
 INCLUDEPATH += $$PWD/GraphicsObject
 INCLUDEPATH += $$PWD/UndoCmd
 INCLUDEPATH += $$PWD/Handle
+INCLUDEPATH += $$PWD/AttributeControl
+INCLUDEPATH += $$PWD/AttributeModel
+INCLUDEPATH += $$PWD/AttributeView
+INCLUDEPATH += $$PWD/CustomUI/CustomControls
+INCLUDEPATH += $$PWD/CustomUI
 
 SOURCES += \
+    AttributeControl/UIAttrBoolControl.cpp \
+    AttributeControl/UIAttrFloatControl.cpp \
+    AttributeControl/UIAttrIntControl.cpp \
+    AttributeControl/UIAttrTextControl.cpp \
+    AttributeModel/AttributeBase.cpp \
+    AttributeModel/AttributeGroup.cpp \
+    AttributeModel/BoolAttribute.cpp \
+    AttributeModel/IntAttribute.cpp \
+    AttributeModel/NodeBase.cpp \
+    AttributeModel/NodeManager.cpp \
+    AttributeModel/PositionAttribute.cpp \
+    AttributeModel/RealAttribute.cpp \
+    AttributeModel/StringAttribute.cpp \
+    AttributeModel/TextNode.cpp \
+    AttributeView/UIAttributeWidget.cpp \
+    AttributeView/UINodeAttrControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomCombineControlBase.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomComboBoxControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomDateEditControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomDoubleControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomFontComboBoxControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomGroupControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomIntControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomLineEditControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomOrientationControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomPositionControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomSwitchControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomTextEditTagControl.cpp \
+    CustomUI/CustomControls/CustomCombineControl/UICustomTimeEditControl.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomCalendarWidget.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomComboBox.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomDateEdit.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomDoubleSpinBox.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomImageViewer.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomIntSpinBox.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomLineEdit.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomPositionWidget.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomSwitchWidget.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomTextEdit.cpp \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomTimeEdit.cpp \
+    CustomUI/UICustomWidgtes/CustomWidget.cpp \
     GraphicsObject/graphicsitem.cpp \
     GraphicsObject/graphicsitemgroup.cpp \
     GraphicsObject/graphicsitemmanager.cpp \
@@ -48,7 +94,48 @@ SOURCES += \
     viewgraphics.cpp
 
 HEADERS += \
+    AttributeControl/UIAttrBoolControl.h \
+    AttributeControl/UIAttrFloatControl.h \
+    AttributeControl/UIAttrIntControl.h \
+    AttributeControl/UIAttrTextControl.h \
+    AttributeModel/AttributeBase.h \
+    AttributeModel/AttributeGroup.h \
+    AttributeModel/BoolAttribute.h \
+    AttributeModel/IntAttribute.h \
+    AttributeModel/NodeBase.h \
+    AttributeModel/NodeManager.h \
+    AttributeModel/PositionAttribute.h \
+    AttributeModel/RealAttribute.h \
+    AttributeModel/StringAttribute.h \
+    AttributeModel/TextNode.h \
+    AttributeView/UIAttributeWidget.h \
+    AttributeView/UINodeAttrControl.h \
     Common/common.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomCombineControlBase.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomComboBoxControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomDateEditControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomDoubleControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomFontComboBoxControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomGroupControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomIntControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomLineEditControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomOrientationControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomPositionControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomSwitchControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomTextEditTagControl.h \
+    CustomUI/CustomControls/CustomCombineControl/UICustomTimeEditControl.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomCalendarWidget.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomComboBox.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomDateEdit.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomDoubleSpinBox.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomImageViewer.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomIntSpinBox.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomLineEdit.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomPositionWidget.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomSwitchWidget.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomTextEdit.h \
+    CustomUI/CustomControls/UICustomSingleControl/UICustomTimeEdit.h \
+    CustomUI/UICustomWidgtes/CustomWidget.h \
     GraphicsObject/graphicsitem.h \
     GraphicsObject/graphicsitemgroup.h \
     GraphicsObject/graphicsitemmanager.h \
@@ -84,4 +171,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
 

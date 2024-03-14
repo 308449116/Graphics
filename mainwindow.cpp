@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "scenegraphics.h"
+#include "UIAttributeWidget.h"
 //#include "graphicsitemmanager.h"
 //#include "graphicstextitem.h"
 #include <QGraphicsItem>
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
+#include <QDockWidget>
+#include <QUndoView>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -124,7 +127,31 @@ MainWindow::MainWindow(QWidget *parent)
     ui->editToolBar->addSeparator();
 
     ui->editToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    ui->undoView->setStack(ui->graphicsView->getUndoStack());
+//    ui->undoView->setStack(ui->graphicsView->getUndoStack());
+    // 添加属性界面
+
+    m_pAttributeDockWidget = new QDockWidget(tr("Attribute"));
+    m_pAttributeDockWidget->setFeatures(QDockWidget::DockWidgetMovable |
+                                        QDockWidget::DockWidgetClosable);
+    m_pAttributeDockWidget->setFloating(true);
+    m_pAttributeWidget = new UIAttributeWidget;
+//    m_pScrollArea = new QScrollArea;
+//    scrollArea->setBackgroundRole(QPalette::Dark);
+//    m_pScrollArea->setWidget(m_pAttributeWidget);
+    m_pAttributeDockWidget->setWidget(m_pAttributeWidget);
+    this->addDockWidget(Qt::RightDockWidgetArea, m_pAttributeDockWidget);
+
+    // Undo View
+    m_pUndoViewDockWidget = new QDockWidget(tr("UndoStack"));
+    m_pUndoViewDockWidget->setFeatures(QDockWidget::DockWidgetMovable |
+                                       QDockWidget::DockWidgetClosable);
+    m_pUndoViewDockWidget->setFloating(true);
+    m_pUndoView = new QUndoView(ui->graphicsView->getUndoStack());
+    m_pUndoViewDockWidget->setWidget(m_pUndoView);
+    this->addDockWidget(Qt::RightDockWidgetArea, m_pUndoViewDockWidget);
+
+    QObject::connect(ui->graphicsView, &ViewGraphics::itemSelectedChanged, \
+                     this, &MainWindow::onSelectedItemChanged);
 
     updateActions();
     connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateActions);
@@ -242,4 +269,10 @@ void MainWindow::updateActions()
     m_alignRightAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
     m_alignHCenterAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
     m_alignVCenterAct->setEnabled(ui->graphicsView->selectedItems().count() > 1);
+}
+
+void MainWindow::onSelectedItemChanged()
+{
+    NodeBase* node = ui->graphicsView->getCurrentSelectedNode();
+    m_pAttributeWidget->setCurrentAttrNode(node);
 }

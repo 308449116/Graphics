@@ -44,8 +44,13 @@ void GraphicsRectItem::updateCoordinate()
     auto diff = p1 - p2;
     m_rectItem->moveBy(-diff.x(), -diff.y());
     m_rectItem->setTransformOriginPoint(m_localRect.center());
-
     m_initialRect = m_localRect;
+    updateAttribute();
+}
+
+bool GraphicsRectItem::loadFromXml(QXmlStreamReader *xml)
+{
+
 }
 
 GraphicsItem *GraphicsRectItem::duplicate() const
@@ -55,7 +60,7 @@ GraphicsItem *GraphicsRectItem::duplicate() const
     item->setScale(m_scaleX, m_scaleY);
     item->setGroupAngle(groupAngle());
     item->setItemName(this->itemName().append("_copy"));
-    item->subItem()->setPos(m_rectItem->pos().x() + width(), m_rectItem->pos().y());
+    item->setPos(m_rectItem->pos().x() + width(), m_rectItem->pos().y());
     item->subItem()->setTransform(m_rectItem->transform());
     return item;
 }

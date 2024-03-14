@@ -6,7 +6,10 @@
 #include <QToolBar>
 #include <QMainWindow>
 
+class QUndoView;
+class QScrollArea;
 class SceneGraphics;
+class UIAttributeWidget;
 class QGraphicsSimpleTextItem;
 
 QT_BEGIN_NAMESPACE
@@ -21,7 +24,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
+    void onSelectedItemChanged();
+
     void on_shpeBtn_clicked();
 
     void on_textBtn_clicked();
@@ -59,5 +64,14 @@ private:
     QAction *m_ungroupAct;
     // edit toolbar;
     QToolBar *m_editToolBar;
+
+    // 属性界面
+    UIAttributeWidget* m_pAttributeWidget = nullptr;
+    QDockWidget* m_pAttributeDockWidget = nullptr;
+//    QScrollArea *m_pScrollArea = nullptr;
+
+    // Undo View
+    QUndoView* m_pUndoView = nullptr;
+    QDockWidget* m_pUndoViewDockWidget = nullptr;
 };
 #endif // MAINWINDOW_H

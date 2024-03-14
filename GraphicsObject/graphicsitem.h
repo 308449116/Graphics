@@ -14,7 +14,9 @@
 //    ImageItem,
 //    TypeCount
 //};
+class NodeBase;
 class GraphicsItemGroup;
+class QXmlStreamReader;
 
 class GraphicsItem : public QObject
 {
@@ -28,11 +30,17 @@ public:
 
     virtual void updateCoordinate() = 0;
 
+    virtual bool loadFromXml(QXmlStreamReader *xml) = 0;
+
     virtual void stretch(qreal sx, qreal sy, const QPointF &origin) = 0;
 
     virtual GraphicsItem *duplicate() const = 0;
 
     virtual QRectF getRect() const;
+
+    void setPos(const QPointF &pos);
+    void setPos(qreal x, qreal y);
+    QPointF pos() const;
 
     void move(const QPointF &point);
     QGraphicsItem *subItem() const;
@@ -71,10 +79,22 @@ public:
     qreal zValue() const;
     void setZValue(qreal newZValue);
 
+    NodeBase *getCurrentNode() const;
+
+    void updateAttribute();
+
 signals:
     void sendUpdateHandle();
     void sendGraphicsItemChange();
     void sendZValueChange();
+
+public slots:
+    void onXPositionAttributeValueChanged(const QVariant& value);
+    void onYPositionAttributeValueChanged(const QVariant& value);
+    void onZPositionAttributeValueChanged(const QVariant& value);
+    void onWidthAttributeValueChanged(const QVariant& value);
+    void onHeightAttributeValueChanged(const QVariant& value);
+    void onRotateAttributeValueChanged(const QVariant& value);
 
 private:
     void setChildItemRotation(GraphicsItem *item, qreal angleGroup);
@@ -87,6 +107,8 @@ protected:
     QGraphicsItem *m_subItem = nullptr;
 //    QGraphicsItemGroup *m_itemAncestor = nullptr;
     GraphicsItemGroup *m_itemGroup = nullptr;
+    // 属性
+    NodeBase* m_AtrributeNode = nullptr;
 
     QString m_itemName;
     QRectF m_localRect;

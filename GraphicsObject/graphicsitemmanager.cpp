@@ -41,6 +41,7 @@ GraphicsItem *GraphicsItemManager::createGraphicsItem(
 
     if (item == nullptr) return item;
 
+    item->loadFromXml(nullptr);
 //    item->subItem()->moveBy(item->width()/2, item->height()/2);
 
     manageItem(item, itemName);

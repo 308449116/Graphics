@@ -9,14 +9,16 @@ class GraphicsTextItem : public GraphicsItem
 {
 public:
     explicit GraphicsTextItem(QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
-    explicit GraphicsTextItem(const QString &text, const QFont &font, qreal scaleX,
-                              QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
+//    explicit GraphicsTextItem(const QString &text, const QFont &font, qreal scaleX,
+//                              QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
     void stretch(qreal sx, qreal sy, const QPointF &origin) override;
 
     GraphicsItem *duplicate() const override;
 
     void updateCoordinate() override;
+
+    bool loadFromXml(QXmlStreamReader *xml) override;
 
     int type() const override;
 
@@ -28,9 +30,13 @@ public:
     void setFont(const QFont& font);
     QFont font() const;
 
+public slots:
+    void onTextValueChanged(const QVariant& text);
+    void onFontSizeValueChanged(const QVariant& fontSize);
+
 private:
     void updateLocalRect();
-    QSizeF getSizeByFontSize(int fontSize);
+    QSizeF getTextSize();
 
 private:
     class GraphicsSimpleTextItem;

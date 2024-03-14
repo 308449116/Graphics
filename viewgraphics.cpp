@@ -40,6 +40,7 @@ ViewGraphics::ViewGraphics(QWidget* parent)
     m_undoStack = new QUndoStack(this);
 
     connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::deleteItemsByCmd);
+    connect(m_scene, &SceneGraphics::selectionChanged, this, &ViewGraphics::itemSelectedChanged);
 //    connect(m_undoStack, &QUndoStack::canRedoChanged, this, [this](){
 //        qDebug() << "canRedoChanged count:" << m_undoStack->count();
 //    });
@@ -508,6 +509,20 @@ void ViewGraphics::updateHandle(GraphicsItem *item)
     m_selectionManager->updateHandle(item);
 }
 
+NodeBase* ViewGraphics::getCurrentSelectedNode()
+{
+    QList<GraphicsItem*> items = selectedItems();
+    if (items.size() == 1)
+    {
+        GraphicsItem* canvasItem = items.first();
+        if (canvasItem == nullptr)
+            return nullptr;
+
+        return canvasItem->getCurrentNode();
+    }
+
+    return nullptr;
+}
 //void ViewGraphics::createTextItem()
 //{
 //    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);

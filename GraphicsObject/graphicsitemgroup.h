@@ -19,6 +19,8 @@ public:
 
     void updateCoordinate() override;
 
+    bool loadFromXml(QXmlStreamReader *xml) override;
+
 //    void setRotation(qreal newAngle)  override;
 
     GraphicsItem *duplicate() const override;
