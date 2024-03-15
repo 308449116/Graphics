@@ -11,11 +11,11 @@ class UICustomOrientationControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomOrientationControl(QWidget* parent = nullptr);
+    UICustomOrientationControl(QWidget *parent = nullptr);
     ~UICustomOrientationControl();
 
 private:
-    UICustomOrientationWidget* m_pOrientationWidget = nullptr;
+    UICustomOrientationWidget *m_pOrientationWidget = nullptr;
 };
 
 // -----------------------------------------------------------------
@@ -30,8 +30,8 @@ public:
     void setPressedStatus(bool status);
 
 protected:
-    virtual void customPaint(QPainter* painter) override;
-    virtual void mousePressEvent(QMouseEvent* event) override;
+    virtual void customPaint(QPainter *painter) override;
+    virtual void mousePressEvent(QMouseEvent *event) override;
     virtual QSize sizeHint() const override;
 
 private:
@@ -48,7 +48,7 @@ class UICustomOrientationWidget : public CustomWidget
     Q_OBJECT
 
 public:
-    UICustomOrientationWidget(QWidget* parent = nullptr);
+    UICustomOrientationWidget(QWidget *parent = nullptr);
     ~UICustomOrientationWidget();
 
 private:

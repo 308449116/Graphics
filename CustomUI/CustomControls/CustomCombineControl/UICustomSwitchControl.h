@@ -10,7 +10,7 @@ class UICustomSwitchControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomSwitchControl(QWidget* parent = nullptr);
+    UICustomSwitchControl(QWidget *parent = nullptr);
     ~UICustomSwitchControl();
 
     // 设置/获取当前值
@@ -21,8 +21,8 @@ public:
     void setRightText(const QString& text);
 
 private:
-    UICustomSwitchWidget* m_pSwitchWidget = nullptr;
-    QLabel* m_pLabel = nullptr;
+    UICustomSwitchWidget *m_pSwitchWidget = nullptr;
+    QLabel *m_pLabel = nullptr;
 
 signals:
     void valueChanged(bool isOn, bool cmd = false);

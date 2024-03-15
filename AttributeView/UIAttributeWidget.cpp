@@ -2,7 +2,7 @@
 #include "NodeBase.h"
 #include "UINodeAttrControl.h"
 
-UIAttributeWidget::UIAttributeWidget(QWidget* parent)
+UIAttributeWidget::UIAttributeWidget(QWidget *parent)
     :QWidget(parent)
 {
     m_pMainLayout = new QVBoxLayout(this);
@@ -15,17 +15,17 @@ UIAttributeWidget::~UIAttributeWidget()
 }
 
 // 设置当前显示的节点
-void UIAttributeWidget::setCurrentAttrNode(NodeBase* node)
+void UIAttributeWidget::setCurrentAttrNode(NodeBase *node)
 {
-    if (m_pWidget)
-    {
+    if (m_pWidget) {
         m_pWidget->deleteLater();
         m_pWidget = nullptr;
     }
 
-    QWidget* widget = UINodeAttrControl::createNodeWidget(node);
-    if (widget == nullptr)
+    QWidget *widget = UINodeAttrControl::createNodeWidget(node);
+    if (widget == nullptr) {
         return;
+    }
 
     m_pWidget = widget;
 

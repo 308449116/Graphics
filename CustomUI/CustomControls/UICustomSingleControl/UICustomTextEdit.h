@@ -8,7 +8,7 @@ class UICustomTextEdit : public QTextEdit
 {
     Q_OBJECT
 public:
-    UICustomTextEdit(QWidget* parent = nullptr);
+    UICustomTextEdit(QWidget *parent = nullptr);
     ~UICustomTextEdit() override;
 
 protected:

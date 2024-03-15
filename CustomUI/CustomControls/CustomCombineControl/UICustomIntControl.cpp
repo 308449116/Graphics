@@ -2,7 +2,7 @@
 #include "UICustomSingleControl/UICustomIntSpinBox.h"
 #include <QDebug>
 
-UICustomIntControl::UICustomIntControl(QWidget* parent)
+UICustomIntControl::UICustomIntControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pIntValue = new UICustomIntSpinBox;

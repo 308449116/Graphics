@@ -1,6 +1,6 @@
 #include "UIAttrBoolControl.h"
 
-UIAttrBoolControl::UIAttrBoolControl(AttributeBase* attribute, QWidget* parent)
+UIAttrBoolControl::UIAttrBoolControl(AttributeBase *attribute, QWidget *parent)
     :UICustomSwitchControl(parent)
 {
     setAttribute(attribute);
@@ -11,7 +11,7 @@ UIAttrBoolControl::~UIAttrBoolControl()
 
 }
 
-void UIAttrBoolControl::setAttribute(AttributeBase* attribute)
+void UIAttrBoolControl::setAttribute(AttributeBase *attribute)
 {
     if (attribute == nullptr || attribute->Type() != AttributeBase::SWITCH_TYPE)
         return;
@@ -31,7 +31,10 @@ void UIAttrBoolControl::onAttrValueChanged(const QVariant& value)
 
 void UIAttrBoolControl::onControlValueChanged(bool value, bool cmd)
 {
-    QObject::disconnect(m_attribute, &BoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);
+    if (m_attribute->getValue().toBool() == value) {
+        return;
+    }
+//    QObject::disconnect(m_attribute, &BoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);
     m_attribute->setValue(value, cmd);
-    QObject::connect(m_attribute, &BoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);
+//    QObject::connect(m_attribute, &BoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);
 }

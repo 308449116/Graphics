@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QDebug>
 
-UICustomGroupTitleItem::UICustomGroupTitleItem(QWidget* parent)
+UICustomGroupTitleItem::UICustomGroupTitleItem(QWidget *parent)
     :CustomWidget(parent)
 {
 //    g_StyleConfig->setCurrentStyle(this, "GroupTitle");
@@ -16,7 +16,7 @@ UICustomGroupTitleItem::~UICustomGroupTitleItem()
 
 }
 
-void UICustomGroupTitleItem::mousePressEvent(QMouseEvent* event)
+void UICustomGroupTitleItem::mousePressEvent(QMouseEvent *event)
 {
     m_isExpanding = !m_isExpanding;
     this->update();
@@ -24,7 +24,7 @@ void UICustomGroupTitleItem::mousePressEvent(QMouseEvent* event)
     emit clickedTitle(m_isExpanding);
 }
 
-void UICustomGroupTitleItem::customPaint(QPainter* painter)
+void UICustomGroupTitleItem::customPaint(QPainter *painter)
 {
     QTextOption option;
     option.setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -69,7 +69,7 @@ QSize UICustomGroupTitleItem::sizeHint() const
 
 // -----------------------------------------------------------------------------
 // 组件内容
-UICustomGroupContentItem::UICustomGroupContentItem(QWidget* parent)
+UICustomGroupContentItem::UICustomGroupContentItem(QWidget *parent)
     :CustomWidget(parent)
 {
     m_pLayout = new QVBoxLayout(this);
@@ -84,12 +84,12 @@ UICustomGroupContentItem::~UICustomGroupContentItem()
 
 }
 
-void UICustomGroupContentItem::addWidget(QWidget* widget)
+void UICustomGroupContentItem::addWidget(QWidget *widget)
 {
     m_pLayout->addWidget(widget);
 }
 
-void UICustomGroupContentItem::insertWidget(int index, QWidget* widget)
+void UICustomGroupContentItem::insertWidget(int index, QWidget *widget)
 {
     m_pLayout->insertWidget(index, widget);
 }
@@ -102,20 +102,20 @@ QSize UICustomGroupContentItem::sizeHint() const
     int height = 0;
     for (int i=0; i<count; ++i)
     {
-        QWidget* pWidget = m_pLayout->itemAt(i)->widget();
+        QWidget *pWidget = m_pLayout->itemAt(i)->widget();
         if (pWidget == nullptr)
             continue;
 
         height += pWidget->sizeHint().height();
     }
 
-    height += 4 + 2 * count;
+    height += 4 + 2  *count;
     QSize size(400, height);
     return size;
 }
 
 // -----------------------------------------------------------------------------
-UICustomGroupControl::UICustomGroupControl(QWidget* parent)
+UICustomGroupControl::UICustomGroupControl(QWidget *parent)
     :CustomWidget(parent)
 {
     m_pMainLayout = new QVBoxLayout(this);
@@ -139,12 +139,12 @@ UICustomGroupControl::~UICustomGroupControl()
 
 }
 
-void UICustomGroupControl::addContentWidget(QWidget* widget)
+void UICustomGroupControl::addContentWidget(QWidget *widget)
 {
     m_pContentItemWidget->addWidget(widget);
 }
 
-void UICustomGroupControl::insertContentWidget(int index, QWidget* widget)
+void UICustomGroupControl::insertContentWidget(int index, QWidget *widget)
 {
     m_pContentItemWidget->insertWidget(index, widget);
 }

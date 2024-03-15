@@ -2,7 +2,7 @@
 //#include "Utils.h"
 //#include "NodeManager.h"
 
-RealAttribute::RealAttribute(AttributeType type, NodeBase* parentNode)
+RealAttribute::RealAttribute(AttributeType type, NodeBase *parentNode)
     :AttributeBase(type, parentNode)
 {
     m_value = 0;

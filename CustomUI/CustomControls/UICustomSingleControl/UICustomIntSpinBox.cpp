@@ -1,7 +1,7 @@
 #include "UICustomIntSpinBox.h"
 #include <QKeyEvent>
 
-UICustomIntSpinBox::UICustomIntSpinBox(QWidget* parent)
+UICustomIntSpinBox::UICustomIntSpinBox(QWidget *parent)
     :QSpinBox(parent)
 {
 
@@ -18,7 +18,7 @@ QSize UICustomIntSpinBox::sizeHint() const
     return size;
 }
 
-void UICustomIntSpinBox::keyPressEvent(QKeyEvent* event)
+void UICustomIntSpinBox::keyPressEvent(QKeyEvent *event)
 {
     QSpinBox::keyPressEvent(event);
     event->accept();

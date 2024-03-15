@@ -2,7 +2,7 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-UICustomTextEdit::UICustomTextEdit(QWidget* parent)
+UICustomTextEdit::UICustomTextEdit(QWidget *parent)
     :QTextEdit(parent)
 {
 

@@ -8,7 +8,7 @@ class UICustomPositionWidget : public CustomWidget
     Q_OBJECT
 
 public:
-    UICustomPositionWidget(QWidget* parent = nullptr);
+    UICustomPositionWidget(QWidget *parent = nullptr);
     ~UICustomPositionWidget();
 
     // 设置位置
@@ -23,12 +23,12 @@ public:
 
 protected:
     // Custom Paint Event
-    void customPaint(QPainter* painter) override;
+    void customPaint(QPainter *painter) override;
     QSize sizeHint() const override;
 
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     bool m_isPressed = false;

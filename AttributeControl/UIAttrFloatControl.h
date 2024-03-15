@@ -9,14 +9,14 @@ class UIAttrFloatControl : public UICustomDoubleControl
     Q_OBJECT
 
 public:
-    UIAttrFloatControl(AttributeBase* attribute = nullptr, QWidget* parent = nullptr);
+    UIAttrFloatControl(AttributeBase *attribute = nullptr, QWidget *parent = nullptr);
     ~UIAttrFloatControl();
 
     // 设置属性
-    void setAttribute(AttributeBase* attribute);
+    void setAttribute(AttributeBase *attribute);
 
 private:
-    RealAttribute* m_attribute = nullptr;
+    RealAttribute *m_attribute = nullptr;
 
 private slots:
     void onValueChanged(const QVariant& value);

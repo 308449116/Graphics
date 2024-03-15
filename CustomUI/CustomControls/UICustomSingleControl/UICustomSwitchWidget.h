@@ -10,7 +10,7 @@ class UICustomSwitchWidget : public CustomWidget
     Q_OBJECT
 
 public:
-    UICustomSwitchWidget(QWidget* parent = nullptr);
+    UICustomSwitchWidget(QWidget *parent = nullptr);
     ~UICustomSwitchWidget();
 
     void setSwitchStatus(bool isOn, bool hasAnimation = true, bool cmd = false);
@@ -18,9 +18,9 @@ public:
 
 protected:
     // Custom Paint Event
-    virtual void customPaint(QPainter* painter) override;
+    virtual void customPaint(QPainter *painter) override;
     virtual QSize sizeHint() const override;
-    virtual void mousePressEvent(QMouseEvent* event) override;
+    virtual void mousePressEvent(QMouseEvent *event) override;
 
 private:
     bool m_isSwitchOn = false;
@@ -39,7 +39,7 @@ private:
     QColor m_cOffBgColor;           // 关闭时背景颜色
     QColor m_cOffSliderColor;       // 关闭时滑块颜色
 
-    QTimer* m_pTimer = nullptr;
+    QTimer *m_pTimer = nullptr;
 
 private slots:
     void onTimeout();

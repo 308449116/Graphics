@@ -1,7 +1,7 @@
 #include "UICustomFontComboBoxControl.h"
 #include <QFontComboBox>
 
-UICustomFontComboBoxControl::UICustomFontComboBoxControl(QWidget* parent)
+UICustomFontComboBoxControl::UICustomFontComboBoxControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pComboBox = new QFontComboBox;

@@ -9,15 +9,15 @@ class UIAttributeWidget : public QWidget
 {
     Q_OBJECT
 public:
-    UIAttributeWidget(QWidget* parent = nullptr);
+    UIAttributeWidget(QWidget *parent = nullptr);
     ~UIAttributeWidget();
 
     // 设置当前显示的节点
-    void setCurrentAttrNode(NodeBase* node);
+    void setCurrentAttrNode(NodeBase *node);
 
-protected:
-    QVBoxLayout* m_pMainLayout = nullptr;
-    QWidget* m_pWidget = nullptr;
+private:
+    QVBoxLayout *m_pMainLayout = nullptr;
+    QWidget *m_pWidget = nullptr;
 };
 
 #endif

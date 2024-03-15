@@ -1,6 +1,6 @@
 #include "UICustomCalendarWidget.h"
 
-UICustomCalendarWidget::UICustomCalendarWidget(QWidget* parent)
+UICustomCalendarWidget::UICustomCalendarWidget(QWidget *parent)
     :QCalendarWidget(parent)
 {
 

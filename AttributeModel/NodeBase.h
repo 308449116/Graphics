@@ -4,6 +4,13 @@
 #include "AttributeBase.h"
 #include "AttributeGroup.h"
 
+static constexpr const char *X = "xPt";
+static constexpr const char *Y = "yPt";
+static constexpr const char *Z = "zPt";
+static constexpr const char *WIDTH = "width";
+static constexpr const char *HEIGHT = "height";
+static constexpr const char *ROTATE = "rotate";
+
 class GraphicsItem;
 class AttributeBase;
 class RealAttribute;
@@ -32,14 +39,14 @@ public:
 
     // 设置/获取节点类型
     void setNodeType(int type);
-    virtual int getNodeType();
+    virtual int getNodeType() const;
 
     // 设置节点名字
     void setNodeName(const QString& nodeName);
-    QString getNodeName();
+    QString getNodeName() const;
 
     // 获取属性组
-    void getAllAttributeGroups(QList<AttributeGroup*>& groups);
+    const QList<AttributeGroup*> &getAllAttributeGroups();
 
     // 添加属性组
     void addAttributeGroup(AttributeGroup *group);
@@ -60,7 +67,7 @@ public:
     bool deleteAttribute(const QString& name);
 
     // 查找属性
-    AttributeBase *getAttribute(const QString& attrName);
+    AttributeBase *getAttribute(const QString& attrName) const;
 
 protected:
     void initNodeBase();
@@ -71,8 +78,8 @@ protected:
     RealAttribute *m_pZPositionAttribute = nullptr;
 
     // 宽度和高度属性
-    IntAttribute *m_pWidthAttribute = nullptr;
-    IntAttribute *m_pHeightAttribute = nullptr;
+    RealAttribute *m_pWidthAttribute = nullptr;
+    RealAttribute *m_pHeightAttribute = nullptr;
 
     // 旋转属性
     RealAttribute *m_pRotateAttribute = nullptr;

@@ -9,7 +9,7 @@ class StringAttribute : public AttributeBase
     Q_OBJECT
 
 public:
-    StringAttribute(AttributeType type, NodeBase* parentNode = nullptr);
+    StringAttribute(AttributeType type, NodeBase *parentNode = nullptr);
     ~StringAttribute();
 
     // 设置/获取是否显示按钮

@@ -1,6 +1,6 @@
 #include "UICustomLineEditControl.h"
 
-UICustomLineEditControl::UICustomLineEditControl(QWidget* parent)
+UICustomLineEditControl::UICustomLineEditControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pLineEdit = new UICustomLineEdit;

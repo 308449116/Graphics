@@ -18,7 +18,7 @@ class UICustomIntControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomIntControl(QWidget* parent = nullptr);
+    UICustomIntControl(QWidget *parent = nullptr);
     ~UICustomIntControl();
 
     // 设置/获取当前的值
@@ -29,8 +29,8 @@ public:
     void setRangeValue(int minValue, int maxValue);
 
 private:
-    UICustomIntSpinBox* m_pIntValue = nullptr;
-    QSlider* m_pSlider = nullptr;
+    UICustomIntSpinBox *m_pIntValue = nullptr;
+    QSlider *m_pSlider = nullptr;
 
     int m_MaxValue = 100;
     int m_MinValue = 0;

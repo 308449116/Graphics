@@ -9,7 +9,7 @@ class UICustomTimeEdit : public QTimeEdit
     Q_OBJECT
 
 public:
-    UICustomTimeEdit(QWidget* parent = nullptr);
+    UICustomTimeEdit(QWidget *parent = nullptr);
     ~UICustomTimeEdit();
 };
 

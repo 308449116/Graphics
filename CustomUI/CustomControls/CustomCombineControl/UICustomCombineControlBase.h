@@ -2,7 +2,6 @@
 #define UICUSTOMCOMBINECONTROLBASE_H
 
 #include "UICustomWidgtes/CustomWidget.h"
-#include <QWidget>
 #include <QHBoxLayout>
 #include <QLabel>
 
@@ -11,7 +10,7 @@ class UICustomCombineControlBase : public CustomWidget
     Q_OBJECT
 
 public:
-    UICustomCombineControlBase(QWidget* parent = nullptr);
+    UICustomCombineControlBase(QWidget *parent = nullptr);
     ~UICustomCombineControlBase();
 
     // 设置某一列的宽度
@@ -34,10 +33,11 @@ public:
     void setHeight(int height);
 
 protected:
-    QHBoxLayout *m_pMainLayout = nullptr;
-    QLabel* m_pTagLabel = nullptr;
-
     QSize sizeHint() const override;
+
+protected:
+    QHBoxLayout *m_pMainLayout = nullptr;
+    QLabel *m_pTagLabel = nullptr;
 
 private:
     int m_nWidth = 400;

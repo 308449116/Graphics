@@ -12,7 +12,7 @@ class UICustomDoubleControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomDoubleControl(QWidget* parent = nullptr);
+    UICustomDoubleControl(QWidget *parent = nullptr);
     ~UICustomDoubleControl();
 
     // 设置/获取当前值
@@ -23,8 +23,8 @@ public:
     void setRangeValue(qreal minValue, qreal maxValue);
 
 private:
-    UICustomDoubleSpinBox* m_pDoubleSpinBox = nullptr;
-    QSlider* m_pSlider = nullptr;
+    UICustomDoubleSpinBox *m_pDoubleSpinBox = nullptr;
+    QSlider *m_pSlider = nullptr;
 
     qreal m_beforeValue = 0;
     qreal m_qMaxValue = 0;

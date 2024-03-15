@@ -18,7 +18,7 @@ class ViewGraphics : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit ViewGraphics(QWidget* parent = nullptr);
+    explicit ViewGraphics(QWidget *parent = nullptr);
 
     ~ViewGraphics();
 
@@ -124,7 +124,7 @@ private:
     SceneGraphics *m_scene = nullptr;
     GraphicsItemManager *m_itemManager = nullptr;
     GraphicsSelectionManager *m_selectionManager = nullptr;
-    QUndoStack* m_undoStack = nullptr;
+    QUndoStack *m_undoStack = nullptr;
 
     //    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;

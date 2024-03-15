@@ -1,6 +1,6 @@
 #include "UICustomTimeEdit.h"
 
-UICustomTimeEdit::UICustomTimeEdit(QWidget* parent)
+UICustomTimeEdit::UICustomTimeEdit(QWidget *parent)
     :QTimeEdit(parent)
 {
 

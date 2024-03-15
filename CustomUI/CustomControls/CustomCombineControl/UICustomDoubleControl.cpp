@@ -1,7 +1,7 @@
 #include "UICustomDoubleControl.h"
 #include "UICustomSingleControl/UICustomDoubleSpinBox.h"
 
-UICustomDoubleControl::UICustomDoubleControl(QWidget* parent)
+UICustomDoubleControl::UICustomDoubleControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     // Double

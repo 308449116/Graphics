@@ -8,7 +8,7 @@ class UICustomCalendarWidget : public QCalendarWidget
     Q_OBJECT
 
 public:
-    UICustomCalendarWidget(QWidget* parent = nullptr);
+    UICustomCalendarWidget(QWidget *parent = nullptr);
     ~UICustomCalendarWidget();
 };
 

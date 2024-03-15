@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-UICustomPositionWidget::UICustomPositionWidget(QWidget* parent)
+UICustomPositionWidget::UICustomPositionWidget(QWidget *parent)
     :CustomWidget(parent)
 {
     this->setMouseTracking(true);
@@ -15,7 +15,7 @@ UICustomPositionWidget::~UICustomPositionWidget()
 
 }
 
-void UICustomPositionWidget::customPaint(QPainter* painter)
+void UICustomPositionWidget::customPaint(QPainter *painter)
 {
     QPoint pos = transToThisPosition();
 
@@ -40,7 +40,7 @@ QSize UICustomPositionWidget::sizeHint() const
     return size;
 }
 
-void UICustomPositionWidget::mousePressEvent(QMouseEvent* event)
+void UICustomPositionWidget::mousePressEvent(QMouseEvent *event)
 {
     m_isPressed = true;
 
@@ -49,7 +49,7 @@ void UICustomPositionWidget::mousePressEvent(QMouseEvent* event)
     this->update();
 }
 
-void UICustomPositionWidget::mouseMoveEvent(QMouseEvent* event)
+void UICustomPositionWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_isPressed)
         return;
@@ -59,7 +59,7 @@ void UICustomPositionWidget::mouseMoveEvent(QMouseEvent* event)
     this->update();
 }
 
-void UICustomPositionWidget::mouseReleaseEvent(QMouseEvent* event)
+void UICustomPositionWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (!m_isPressed)
         return;

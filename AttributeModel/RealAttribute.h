@@ -9,7 +9,7 @@ class RealAttribute : public AttributeBase
     Q_OBJECT
 
 public:
-    RealAttribute(AttributeType type, NodeBase* parentNode = nullptr);
+    RealAttribute(AttributeType type, NodeBase *parentNode = nullptr);
     ~RealAttribute();
 
     // 设置/获取 取值范围

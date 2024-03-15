@@ -11,17 +11,17 @@ class UICustomLineEdit : public QLineEdit
     Q_OBJECT
 
 public:
-    UICustomLineEdit(QWidget* parent = nullptr);
+    UICustomLineEdit(QWidget *parent = nullptr);
     ~UICustomLineEdit() override;
 
     // Close Button Visible
     void setCloseButtonEnable(bool isEnabled);
 
 protected:
-    void keyPressEvent(QKeyEvent* event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
-    UICustomCloseButton* m_pButton = nullptr;
+    UICustomCloseButton *m_pButton = nullptr;
     bool m_isToolButtonEnable = false;
 
 signals:
@@ -38,11 +38,11 @@ class UICustomCloseButton : public CustomWidget
     Q_OBJECT
 
 public:
-    UICustomCloseButton(QWidget* parent = nullptr);
+    UICustomCloseButton(QWidget *parent = nullptr);
     ~UICustomCloseButton();
 
 protected:
-    void customPaint(QPainter* painter) override;
+    void customPaint(QPainter *painter) override;
     void mousePressEvent(QMouseEvent *event) override;
     void enterEvent(QEnterEvent *event) override;
     void leaveEvent(QEvent *event) override;

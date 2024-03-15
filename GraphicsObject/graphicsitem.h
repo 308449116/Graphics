@@ -108,7 +108,7 @@ protected:
 //    QGraphicsItemGroup *m_itemAncestor = nullptr;
     GraphicsItemGroup *m_itemGroup = nullptr;
     // 属性
-    NodeBase* m_AtrributeNode = nullptr;
+    NodeBase *m_AtrributeNode = nullptr;
 
     QString m_itemName;
     QRectF m_localRect;

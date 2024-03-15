@@ -10,7 +10,7 @@ class UICustomTextEditTagControl : public UICustomCombineControlBase
 {
     Q_OBJECT
 public:
-    UICustomTextEditTagControl(QWidget* parent = nullptr);
+    UICustomTextEditTagControl(QWidget *parent = nullptr);
     ~UICustomTextEditTagControl();
 
     // 获取当前文本
@@ -18,7 +18,7 @@ public:
     void setCurrentText(const QString& text);
 
 private:
-    UICustomTextEdit* m_pTextEdit = nullptr;
+    UICustomTextEdit *m_pTextEdit = nullptr;
 };
 
 #endif

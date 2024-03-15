@@ -1,6 +1,6 @@
 #include "UIAttrTextControl.h"
 
-UIAttrTextControl::UIAttrTextControl(AttributeBase* attribute, QWidget* parent)
+UIAttrTextControl::UIAttrTextControl(AttributeBase *attribute, QWidget *parent)
     :UICustomLineEditControl(parent)
 {
     m_tempString = "EasyCanvas";
@@ -20,7 +20,7 @@ UIAttrTextControl::~UIAttrTextControl()
 
 }
 
-void UIAttrTextControl::setAttribute(AttributeBase* attribute)
+void UIAttrTextControl::setAttribute(AttributeBase *attribute)
 {
     if (attribute == nullptr || attribute->Type() != AttributeBase::LINEEDIT_TYPE)
         return;
@@ -46,9 +46,13 @@ void UIAttrTextControl::onTextAttrValueChanged(const QVariant& value)
 
 void UIAttrTextControl::onControlTextChanged(const QString& value)
 {
-    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &UIAttrTextControl::onTextAttrValueChanged);
+    if (m_attribute->getValue().toString() == value) {
+        return;
+    }
+
+//    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &UIAttrTextControl::onTextAttrValueChanged);
     m_attribute->setValue(value);
-    QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &UIAttrTextControl::onTextAttrValueChanged);
+//    QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &UIAttrTextControl::onTextAttrValueChanged);
 }
 
 void UIAttrTextControl::onControlEditFinished()

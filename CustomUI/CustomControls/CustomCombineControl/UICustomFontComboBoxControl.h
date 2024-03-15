@@ -10,11 +10,11 @@ class UICustomFontComboBoxControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomFontComboBoxControl(QWidget* parent = nullptr);
+    UICustomFontComboBoxControl(QWidget *parent = nullptr);
     ~UICustomFontComboBoxControl();
 
 private:
-    QFontComboBox* m_pComboBox = nullptr;
+    QFontComboBox *m_pComboBox = nullptr;
 };
 
 #endif

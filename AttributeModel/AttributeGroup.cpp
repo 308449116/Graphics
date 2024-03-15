@@ -2,7 +2,7 @@
 #include "AttributeBase.h"
 #include "NodeBase.h"
 
-AttributeGroup::AttributeGroup(QObject* parent)
+AttributeGroup::AttributeGroup(QObject *parent)
     :QObject(parent)
 {
 
@@ -14,7 +14,7 @@ AttributeGroup::~AttributeGroup()
 }
 
 // 添加删除属性
-void AttributeGroup::addAttribute(AttributeBase* attribute)
+void AttributeGroup::addAttribute(AttributeBase *attribute)
 {
     if (attribute == nullptr)
         return;
@@ -24,7 +24,7 @@ void AttributeGroup::addAttribute(AttributeBase* attribute)
 }
 
 // 删除属性
-void AttributeGroup::deleteAttribute(AttributeBase* attribute)
+void AttributeGroup::deleteAttribute(AttributeBase *attribute)
 {
     for (auto iter = m_attributes.constBegin(); iter != m_attributes.constEnd(); ++iter)
     {
@@ -37,12 +37,12 @@ void AttributeGroup::deleteAttribute(AttributeBase* attribute)
     }
 }
 
-void AttributeGroup::getAttributes(QList<AttributeBase*>& attributes)
+const QList<AttributeBase*> &AttributeGroup::getAttributes()
 {
-    attributes = m_attributes;
+    return  m_attributes;
 }
 
-AttributeBase* AttributeGroup::getAttribute(const QString& name)
+AttributeBase *AttributeGroup::getAttribute(const QString& name) const
 {
     foreach (auto item, m_attributes)
         if (item->getName() == name)
@@ -52,13 +52,13 @@ AttributeBase* AttributeGroup::getAttribute(const QString& name)
 }
 
 // 设置父节点
-void AttributeGroup::setParentNode(NodeBase* node)
+void AttributeGroup::setParentNode(NodeBase *node)
 {
     m_pParentNode = node;
     this->setParent(node);
 }
 
-NodeBase* AttributeGroup::getParentNode()
+NodeBase *AttributeGroup::getParentNode() const
 {
     return m_pParentNode;
 }
@@ -69,7 +69,7 @@ void AttributeGroup::setName(const QString& name)
     m_groupName = name;
 }
 
-QString AttributeGroup::getName()
+QString AttributeGroup::getName() const
 {
     return m_groupName;
 }
@@ -79,7 +79,7 @@ void AttributeGroup::setDisplayName(const QString& name)
     m_displayName = name;
 }
 
-QString AttributeGroup::getDisplayName()
+QString AttributeGroup::getDisplayName() const
 {
     return m_displayName;
 }

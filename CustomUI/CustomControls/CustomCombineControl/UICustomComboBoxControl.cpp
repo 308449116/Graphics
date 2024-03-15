@@ -1,6 +1,6 @@
 #include "UICustomComboBoxControl.h"
 
-UICustomComboBoxControl::UICustomComboBoxControl(QWidget* parent)
+UICustomComboBoxControl::UICustomComboBoxControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pCustomComboBox = new UICustomComboBox;
@@ -19,7 +19,6 @@ UICustomComboBoxControl::~UICustomComboBoxControl()
 
 }
 
-// 添加元素
 void UICustomComboBoxControl::addItem(const QString& item)
 {
     m_pCustomComboBox->addItem(item);
@@ -30,7 +29,6 @@ void UICustomComboBoxControl::addItem(const QString& name, const QVariant& data)
     m_pCustomComboBox->addItem(name, data);
 }
 
-// 获取当前元素
 QString UICustomComboBoxControl::getCurrentItem()
 {
     return m_pCustomComboBox->currentText();

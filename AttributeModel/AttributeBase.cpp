@@ -51,7 +51,7 @@ QString AttributeBase::getFullName() const
 }
 
 // 设置/获取父节点
-void AttributeBase::setParentGroup(AttributeGroup* group)
+void AttributeBase::setParentGroup(AttributeGroup *group)
 {
     if (group == nullptr)
         return;
@@ -60,18 +60,18 @@ void AttributeBase::setParentGroup(AttributeGroup* group)
     m_pParentGroup = group;
 }
 
-AttributeGroup* AttributeBase::getParentGroup() const
+AttributeGroup *AttributeBase::getParentGroup() const
 {
     return m_pParentGroup;
 }
 
 // 设置/获取父节点
-void AttributeBase::setParentNode(NodeBase* node)
+void AttributeBase::setParentNode(NodeBase *node)
 {
     m_pParentNode = node;
 }
 
-NodeBase* AttributeBase::getParentNode() const
+NodeBase *AttributeBase::getParentNode() const
 {
     return m_pParentNode;
 }
@@ -90,10 +90,10 @@ bool AttributeBase::isEnable() const
     return m_isEnabled;
 }
 
-AttributeBase* AttributeBase::createAttribute(const QString& name, AttributeType type, \
+AttributeBase *AttributeBase::createAttribute(const QString& name, AttributeType type, \
                                                   const QString& displayName)
 {
-    AttributeBase* attribute = nullptr;
+    AttributeBase *attribute = nullptr;
 
     switch (type) {
         case SWITCH_TYPE: {

@@ -9,7 +9,7 @@ class UICustomDateEditControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomDateEditControl(QWidget* parent = nullptr);
+    UICustomDateEditControl(QWidget *parent = nullptr);
     ~UICustomDateEditControl();
 
     // 设置/获取日期
@@ -17,7 +17,7 @@ public:
     QDate getCurrentDate();
 
 private:
-    UICutomDateEdit* m_pDateEdit = nullptr;
+    UICutomDateEdit *m_pDateEdit = nullptr;
 };
 
 #endif

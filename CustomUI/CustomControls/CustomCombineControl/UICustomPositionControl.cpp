@@ -1,6 +1,6 @@
 #include "UICustomPositionControl.h"
 
-UICustomPositionControl::UICustomPositionControl(QWidget* parent)
+UICustomPositionControl::UICustomPositionControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pPositionWidget = new UICustomPositionWidget;

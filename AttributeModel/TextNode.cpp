@@ -2,7 +2,6 @@
 #include "IntAttribute.h"
 #include "StringAttribute.h"
 #include "graphicstextitem.h"
-#include "common.h"
 
 TextNode::TextNode(GraphicsItem *item)
     :NodeBase(item, t_textNode)

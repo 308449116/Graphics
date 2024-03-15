@@ -2,7 +2,7 @@
 //#include "UICustomCore/CustomStyleConfig.h"
 #include <QPainter>
 
-UICustomSwitchWidget::UICustomSwitchWidget(QWidget* parent)
+UICustomSwitchWidget::UICustomSwitchWidget(QWidget *parent)
     :CustomWidget(parent)
     ,m_margin(1, 1, 1, 1)
     ,m_cBgColor(223, 105, 20)
@@ -57,7 +57,7 @@ bool UICustomSwitchWidget::getSwitchStatus()
     return m_isSwitchOn;
 }
 
-void UICustomSwitchWidget::customPaint(QPainter* painter)
+void UICustomSwitchWidget::customPaint(QPainter *painter)
 {
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
@@ -84,7 +84,7 @@ QSize UICustomSwitchWidget::sizeHint() const
     return size;
 }
 
-void UICustomSwitchWidget::mousePressEvent(QMouseEvent* event)
+void UICustomSwitchWidget::mousePressEvent(QMouseEvent *event)
 {
     setSwitchStatus(!m_isSwitchOn, true, true);
 }

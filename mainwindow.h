@@ -66,12 +66,12 @@ private:
     QToolBar *m_editToolBar;
 
     // 属性界面
-    UIAttributeWidget* m_pAttributeWidget = nullptr;
-    QDockWidget* m_pAttributeDockWidget = nullptr;
+    UIAttributeWidget *m_pAttributeWidget = nullptr;
+    QDockWidget *m_pAttributeDockWidget = nullptr;
 //    QScrollArea *m_pScrollArea = nullptr;
 
     // Undo View
-    QUndoView* m_pUndoView = nullptr;
-    QDockWidget* m_pUndoViewDockWidget = nullptr;
+    QUndoView *m_pUndoView = nullptr;
+    QDockWidget *m_pUndoViewDockWidget = nullptr;
 };
 #endif // MAINWINDOW_H

@@ -7,7 +7,7 @@ class UICutomDateEdit : public QDateEdit
     Q_OBJECT
 
 public:
-    UICutomDateEdit(QWidget* parent = nullptr);
+    UICutomDateEdit(QWidget *parent = nullptr);
     ~UICutomDateEdit();
 };
 

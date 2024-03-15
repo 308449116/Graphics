@@ -1,7 +1,7 @@
 #include "IntAttribute.h"
 //#include "NodeManager.h"
 
-IntAttribute::IntAttribute(AttributeType type, NodeBase* parentNode)
+IntAttribute::IntAttribute(AttributeType type, NodeBase *parentNode)
     :AttributeBase(type, parentNode)
 {
     m_value = 0;
@@ -19,7 +19,7 @@ void IntAttribute::setValueRange(int minValue, int maxValue)
     m_MaxValue = maxValue;
 }
 
-void IntAttribute::getValueRange(int& minValue, int& maxValue)
+void IntAttribute::getValueRange(int& minValue, int& maxValue) const
 {
     minValue = m_MinValue;
     maxValue = m_MaxValue;

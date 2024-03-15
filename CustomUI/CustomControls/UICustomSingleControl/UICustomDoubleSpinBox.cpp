@@ -1,7 +1,7 @@
 #include "UICustomDoubleSpinBox.h"
 #include <QKeyEvent>
 
-UICustomDoubleSpinBox::UICustomDoubleSpinBox(QWidget* parent)
+UICustomDoubleSpinBox::UICustomDoubleSpinBox(QWidget *parent)
     :QDoubleSpinBox(parent)
 {
 
@@ -18,7 +18,7 @@ QSize UICustomDoubleSpinBox::sizeHint() const
     return size;
 }
 
-void UICustomDoubleSpinBox::keyPressEvent(QKeyEvent* event)
+void UICustomDoubleSpinBox::keyPressEvent(QKeyEvent *event)
 {
     QDoubleSpinBox::keyPressEvent(event);
     event->accept();

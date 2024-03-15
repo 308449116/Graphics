@@ -23,7 +23,7 @@ public:
     AttributeBase(AttributeType type, NodeBase *parentNode = nullptr);
     virtual ~AttributeBase();
 
-    static AttributeBase* createAttribute(const QString& name, AttributeType type, const QString& displayName = "");
+    static AttributeBase *createAttribute(const QString& name, AttributeType type, const QString& displayName = "");
 
     AttributeType Type() const;
 
@@ -49,12 +49,12 @@ public:
     QString getFullName() const;
 
     // 设置/获取父节点组
-    void setParentGroup(AttributeGroup* group);
-    AttributeGroup* getParentGroup() const;
+    void setParentGroup(AttributeGroup *group);
+    AttributeGroup *getParentGroup() const;
 
     // 设置/获取父节点
-    void setParentNode(NodeBase* node);
-    NodeBase* getParentNode() const;
+    void setParentNode(NodeBase *node);
+    NodeBase *getParentNode() const;
 
     // 设置/获取使能
     void setEnable(bool isEnabled);

@@ -1,6 +1,6 @@
 #include "UICustomSwitchControl.h"
 
-UICustomSwitchControl::UICustomSwitchControl(QWidget* parent)
+UICustomSwitchControl::UICustomSwitchControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pSwitchWidget = new UICustomSwitchWidget;

@@ -1,6 +1,6 @@
 #include "UICustomDateEditControl.h"
 
-UICustomDateEditControl::UICustomDateEditControl(QWidget* parent)
+UICustomDateEditControl::UICustomDateEditControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pDateEdit = new UICutomDateEdit;

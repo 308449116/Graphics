@@ -9,14 +9,14 @@ class UIAttrIntControl : public UICustomIntControl
     Q_OBJECT
 
 public:
-    UIAttrIntControl(AttributeBase* attribute = nullptr, QWidget* parent = nullptr);
+    UIAttrIntControl(AttributeBase *attribute = nullptr, QWidget *parent = nullptr);
     ~UIAttrIntControl();
 
     // 设置属性
-    void setAttribute(AttributeBase* attribute);
+    void setAttribute(AttributeBase *attribute);
 
 private:
-    IntAttribute* m_attribute = nullptr;
+    IntAttribute *m_attribute = nullptr;
 
 private slots:
     void onAttrValueChanged(const QVariant& value);

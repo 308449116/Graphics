@@ -9,7 +9,7 @@ class UICustomComboBoxControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomComboBoxControl(QWidget* parent = nullptr);
+    UICustomComboBoxControl(QWidget *parent = nullptr);
     ~UICustomComboBoxControl();
 
     // 添加元素
@@ -24,6 +24,7 @@ public:
 
     // 获取当前数据
     QVariant getCurrentItemData();
+
     // 获取当前个数
     int getItemCount();
 
@@ -31,7 +32,7 @@ public:
     void clearAllItems();
 
 private:
-    UICustomComboBox* m_pCustomComboBox = nullptr;
+    UICustomComboBox *m_pCustomComboBox = nullptr;
 
 signals:
     void currentTextChanged(const QString& str);

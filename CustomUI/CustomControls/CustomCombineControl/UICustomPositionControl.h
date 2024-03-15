@@ -10,7 +10,7 @@ class UICustomPositionControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomPositionControl(QWidget* parent = nullptr);
+    UICustomPositionControl(QWidget *parent = nullptr);
     ~UICustomPositionControl();
 
     // 设置当前映射的尺寸
@@ -27,7 +27,7 @@ public:
     void getCurrentPosition(int& xValue, int& yValue);
 
 private:
-    UICustomPositionWidget* m_pPositionWidget = nullptr;
+    UICustomPositionWidget *m_pPositionWidget = nullptr;
 
     int m_nMapWidth = 100;
     int m_nMapHeight = 100;

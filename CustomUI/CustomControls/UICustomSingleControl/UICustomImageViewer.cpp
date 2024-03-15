@@ -3,7 +3,7 @@
 #include <QWheelEvent>
 #include <QMouseEvent>
 
-UICustomImageViewer::UICustomImageViewer(QWidget* parent)
+UICustomImageViewer::UICustomImageViewer(QWidget *parent)
     :QWidget(parent)
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -29,13 +29,13 @@ void UICustomImageViewer::loadImage(const QImage& image)
     this->update();
 }
 
-void UICustomImageViewer::paintEvent(QPaintEvent* event)
+void UICustomImageViewer::paintEvent(QPaintEvent *event)
 {
     if (m_pixmap.isNull())
         return;
 
     QPainter npainter(this);
-    QPainter* painter = &npainter;
+    QPainter *painter = &npainter;
 
     QRect rect = this->rect().adjusted(m_nMargin, m_nMargin, -m_nMargin, -m_nMargin);
 
@@ -74,13 +74,13 @@ void UICustomImageViewer::paintEvent(QPaintEvent* event)
 //    this->update();
 //}
 
-void UICustomImageViewer::mousePressEvent(QMouseEvent* event)
+void UICustomImageViewer::mousePressEvent(QMouseEvent *event)
 {
     m_isMousePressed = true;
     m_tempPos = event->pos();
 }
 
-void UICustomImageViewer::mouseMoveEvent(QMouseEvent* event)
+void UICustomImageViewer::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_isMousePressed)
         return;
@@ -95,7 +95,7 @@ void UICustomImageViewer::mouseMoveEvent(QMouseEvent* event)
     this->update();
 }
 
-void UICustomImageViewer::mouseReleaseEvent(QMouseEvent* event)
+void UICustomImageViewer::mouseReleaseEvent(QMouseEvent *event)
 {
     m_isMousePressed = false;
     this->setCursor(Qt::ArrowCursor);

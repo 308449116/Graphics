@@ -3,7 +3,6 @@
 #include "RealAttribute.h"
 #include "AttributeGroup.h"
 #include "graphicsitem.h"
-#include "common.h"
 
 NodeBase::NodeBase(GraphicsItem *item, NodeType type)
     :QObject(item)
@@ -31,7 +30,7 @@ void NodeBase::setNodeType(int type)
     m_nodeType = type;
 }
 
-int NodeBase::getNodeType()
+int NodeBase::getNodeType() const
 {
     return m_nodeType;
 }
@@ -98,7 +97,7 @@ bool NodeBase::deleteAttribute(const QString& name)
 
 
 // 查找属性
-AttributeBase *NodeBase::getAttribute(const QString& attrName)
+AttributeBase *NodeBase::getAttribute(const QString& attrName) const
 {
     foreach (auto item, m_groupList) {
         if (AttributeBase *attribute = item->getAttribute(attrName)) {
@@ -141,14 +140,14 @@ void NodeBase::initNodeBase()
     this->addAttribute(group, m_pZPositionAttribute);
 
     // 宽度
-    m_pWidthAttribute = new IntAttribute(AttributeBase::SPINBOX_TYPE);
+    m_pWidthAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pWidthAttribute->setDisplayName(tr("width: "));
     m_pWidthAttribute->setName(WIDTH);
     m_pWidthAttribute->setValueRange(10, 5000);
     this->addAttribute(group, m_pWidthAttribute);
 
     // 高度
-    m_pHeightAttribute = new IntAttribute(AttributeBase::SPINBOX_TYPE);
+    m_pHeightAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pHeightAttribute->setDisplayName(tr("height: "));
     m_pHeightAttribute->setName(HEIGHT);
     m_pHeightAttribute->setValueRange(10, 5000);
@@ -166,8 +165,8 @@ void NodeBase::initNodeBase()
     QObject::connect(m_pXPositionAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onXPositionAttributeValueChanged);
     QObject::connect(m_pYPositionAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onYPositionAttributeValueChanged);
     QObject::connect(m_pZPositionAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onZPositionAttributeValueChanged);
-    QObject::connect(m_pWidthAttribute, &IntAttribute::valueChanged, m_item, &GraphicsItem::onWidthAttributeValueChanged);
-    QObject::connect(m_pHeightAttribute, &IntAttribute::valueChanged, m_item, &GraphicsItem::onHeightAttributeValueChanged);
+    QObject::connect(m_pWidthAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onWidthAttributeValueChanged);
+    QObject::connect(m_pHeightAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onHeightAttributeValueChanged);
     QObject::connect(m_pRotateAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onRotateAttributeValueChanged);
 }
 
@@ -177,14 +176,14 @@ void NodeBase::setNodeName(const QString& nodeName)
     m_name = nodeName;
 }
 
-QString NodeBase::getNodeName()
+QString NodeBase::getNodeName() const
 {
     return m_name;
 }
 
-void NodeBase::getAllAttributeGroups(QList<AttributeGroup*>& groups)
+const QList<AttributeGroup*> &NodeBase::getAllAttributeGroups()
 {
-    groups = m_groupList;
+    return m_groupList;
 }
 
 void NodeBase::addAttributeGroup(AttributeGroup *group)
@@ -202,7 +201,6 @@ AttributeGroup *NodeBase::addAttributeGroup(const QString& name)
     group->setName(name);
     group->setDisplayName(name);
     addAttributeGroup(group);
-
     return group;
 }
 
@@ -212,7 +210,6 @@ AttributeGroup *NodeBase::addAttributeGroup(const QString& name, const QString& 
     group->setName(name);
     group->setDisplayName(displayName);
     addAttributeGroup(group);
-
     return group;
 }
 

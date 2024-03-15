@@ -3,7 +3,7 @@
 #include <QStyleOption>
 #include <QPainter>
 
-CustomWidget::CustomWidget(QWidget* parent)
+CustomWidget::CustomWidget(QWidget *parent)
     :QWidget(parent)
 {
 //    g_StyleConfig->setCurrentStyle(this, "DefaultWidget");
@@ -14,7 +14,7 @@ CustomWidget::~CustomWidget()
 
 }
 
-void CustomWidget::paintEvent(QPaintEvent* event)
+void CustomWidget::paintEvent(QPaintEvent *event)
 {
     QStyleOption opt;
     opt.initFrom(this);
@@ -25,7 +25,7 @@ void CustomWidget::paintEvent(QPaintEvent* event)
     return QWidget::paintEvent(event);
 }
 
-void CustomWidget::customPaint(QPainter* painter)
+void CustomWidget::customPaint(QPainter *painter)
 {
 
 }

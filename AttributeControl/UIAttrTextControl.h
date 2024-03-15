@@ -10,14 +10,14 @@ class UIAttrTextControl : public UICustomLineEditControl
     Q_OBJECT
 
 public:
-    UIAttrTextControl(AttributeBase* attribute = nullptr, QWidget* parent = nullptr);
+    UIAttrTextControl(AttributeBase *attribute = nullptr, QWidget *parent = nullptr);
     ~UIAttrTextControl();
 
     // 设置属性
-    void setAttribute(AttributeBase* attribute);
+    void setAttribute(AttributeBase *attribute);
 
 private:
-    StringAttribute* m_attribute = nullptr;
+    StringAttribute *m_attribute = nullptr;
     QString m_tempString;
 
 private slots:

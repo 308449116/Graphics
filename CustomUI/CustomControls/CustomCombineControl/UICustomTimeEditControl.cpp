@@ -1,6 +1,6 @@
 #include "UICustomTimeEditControl.h"
 
-UICustomTimeEditControl::UICustomTimeEditControl(QWidget* parent)
+UICustomTimeEditControl::UICustomTimeEditControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pTimeEdit = new UICustomTimeEdit;

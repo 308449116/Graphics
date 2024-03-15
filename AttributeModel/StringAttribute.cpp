@@ -1,7 +1,7 @@
 #include "StringAttribute.h"
 //#include "NodeManager.h"
 
-StringAttribute::StringAttribute(AttributeType type, NodeBase* parentNode)
+StringAttribute::StringAttribute(AttributeType type, NodeBase *parentNode)
     :AttributeBase(type, parentNode)
 {
     m_value = "";

@@ -7,7 +7,7 @@ class UICustomComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    UICustomComboBox(QWidget* parent = nullptr);
+    UICustomComboBox(QWidget *parent = nullptr);
     ~UICustomComboBox() override;
 
 protected:

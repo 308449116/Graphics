@@ -8,12 +8,12 @@ class UICustomIntSpinBox : public QSpinBox
     Q_OBJECT
 
 public:
-    UICustomIntSpinBox(QWidget* parent = nullptr);
+    UICustomIntSpinBox(QWidget *parent = nullptr);
     ~UICustomIntSpinBox();
 
 protected:
     virtual QSize sizeHint() const override;
-    void keyPressEvent(QKeyEvent* event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 };
 
 #endif

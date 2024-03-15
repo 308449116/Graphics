@@ -12,7 +12,7 @@ class UICustomLineEditControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomLineEditControl(QWidget* parent = nullptr);
+    UICustomLineEditControl(QWidget *parent = nullptr);
     ~UICustomLineEditControl();
 
     // 设置按钮相关
@@ -25,8 +25,8 @@ public:
     QString getText();
 
 private:
-    UICustomLineEdit* m_pLineEdit = nullptr;
-    QToolButton* m_pToolButton = nullptr;
+    UICustomLineEdit *m_pLineEdit = nullptr;
+    QToolButton *m_pToolButton = nullptr;
 
 signals:
     void clickedToolButton();

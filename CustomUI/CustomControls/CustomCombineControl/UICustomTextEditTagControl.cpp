@@ -1,7 +1,7 @@
 #include "UICustomTextEditTagControl.h"
 #include <QLabel>
 
-UICustomTextEditTagControl::UICustomTextEditTagControl(QWidget* parent)
+UICustomTextEditTagControl::UICustomTextEditTagControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pTextEdit = new UICustomTextEdit;

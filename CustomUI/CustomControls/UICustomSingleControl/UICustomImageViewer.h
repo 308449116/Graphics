@@ -8,7 +8,7 @@ class UICustomImageViewer : public QWidget
     Q_OBJECT
 
 public:
-    UICustomImageViewer(QWidget* parent = nullptr);
+    UICustomImageViewer(QWidget *parent = nullptr);
     ~UICustomImageViewer();
 
     // 加载图片
@@ -23,11 +23,11 @@ public:
     void rest();
 
 protected:
-    void paintEvent(QPaintEvent* event) override;
-//    void wheelEvent(QWheelEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
+    void paintEvent(QPaintEvent *event) override;
+//    void wheelEvent(QWheelEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
     QSize sizeHint() const override;
 
 private:

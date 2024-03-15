@@ -1,7 +1,7 @@
 #include "UICustomDateEdit.h"
 #include "UICustomCalendarWidget.h"
 
-UICutomDateEdit::UICutomDateEdit(QWidget* parent)
+UICutomDateEdit::UICutomDateEdit(QWidget *parent)
     :QDateEdit(parent)
 {
     this->setCalendarPopup(true);

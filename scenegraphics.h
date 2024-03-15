@@ -9,7 +9,7 @@ class SceneGraphics : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit SceneGraphics(QObject* parent = nullptr);
+    explicit SceneGraphics(QObject *parent = nullptr);
 
     ~SceneGraphics();
 

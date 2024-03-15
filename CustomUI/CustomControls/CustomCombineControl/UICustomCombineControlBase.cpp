@@ -1,7 +1,7 @@
 #include "UICustomCombineControlBase.h"
 //#include "UICustomCore/CustomStyleConfig.h"
 
-UICustomCombineControlBase::UICustomCombineControlBase(QWidget* parent)
+UICustomCombineControlBase::UICustomCombineControlBase(QWidget *parent)
     :CustomWidget(parent)
 {
     m_pMainLayout = new QHBoxLayout(this);
@@ -28,14 +28,13 @@ void UICustomCombineControlBase::setColumnWidth(int column, int width)
 {
     int count = m_pMainLayout->count();
     int number = 0;
-    for (int i=0; i<count; ++i)
-    {
-        QWidget* pWidget = m_pMainLayout->itemAt(i)->widget();
-        if (pWidget == nullptr)
+    for (int i=0; i<count; ++i) {
+        QWidget *pWidget = m_pMainLayout->itemAt(i)->widget();
+        if (pWidget == nullptr) {
             continue;
+        }
 
-        if (number == column)
-        {
+        if (number == column) {
             pWidget->setFixedWidth(width);
             return;
         }
@@ -43,19 +42,17 @@ void UICustomCombineControlBase::setColumnWidth(int column, int width)
     }
 }
 
-// 设置某一列显示/隐藏
 void UICustomCombineControlBase::setColumnVisible(int column, bool visible)
 {
     int count = m_pMainLayout->count();
     int number = 0;
-    for (int i=0; i<count; ++i)
-    {
-        QWidget* pWidget = m_pMainLayout->itemAt(i)->widget();
-        if (pWidget == nullptr)
+    for (int i=0; i<count; ++i) {
+        QWidget *pWidget = m_pMainLayout->itemAt(i)->widget();
+        if (pWidget == nullptr) {
             continue;
+        }
 
-        if (number == column)
-        {
+        if (number == column) {
             pWidget->setHidden(!visible);
             return;
         }
@@ -69,17 +66,17 @@ void UICustomCombineControlBase::setColumnExpingVisible(int column, bool isExpin
     int number = 0;
     for (int i=0; i<count; ++i)
     {
-        QWidget* pWidget = m_pMainLayout->itemAt(i)->widget();
-        if (pWidget == nullptr)
+        QWidget *pWidget = m_pMainLayout->itemAt(i)->widget();
+        if (pWidget == nullptr) {
             continue;
+        }
 
-        if (number == column)
-        {
-            if (isExping)
+        if (number == column) {
+            if (isExping){
                 pWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            else
+            } else {
                 pWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
+            }
             return;
         }
         number++;
@@ -96,7 +93,6 @@ void UICustomCombineControlBase::setTextAlign(Qt::Alignment alignment)
     m_pTagLabel->setAlignment(alignment);
 }
 
-// 设置宽度和高度
 void UICustomCombineControlBase::setWidth(int width)
 {
     m_nWidth = width;

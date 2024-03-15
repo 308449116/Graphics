@@ -16,7 +16,7 @@ UICustomOrientationItemWidget::~UICustomOrientationItemWidget()
 
 }
 
-void UICustomOrientationItemWidget::customPaint(QPainter* painter)
+void UICustomOrientationItemWidget::customPaint(QPainter *painter)
 {
     painter->setRenderHint(QPainter::Antialiasing);
     painter->fillRect(this->rect(), QBrush(m_color));
@@ -29,7 +29,7 @@ void UICustomOrientationItemWidget::customPaint(QPainter* painter)
         painter->drawEllipse(this->rect().adjusted(2, 2, -2, -2));
 }
 
-void UICustomOrientationItemWidget::mousePressEvent(QMouseEvent* event)
+void UICustomOrientationItemWidget::mousePressEvent(QMouseEvent *event)
 {
     m_isPressed = true;
     emit clickedItem();
@@ -55,16 +55,16 @@ QSize UICustomOrientationItemWidget::sizeHint() const
 }
 
 // -----------------------------------------------------------------
-UICustomOrientationWidget::UICustomOrientationWidget(QWidget* parent)
+UICustomOrientationWidget::UICustomOrientationWidget(QWidget *parent)
     :CustomWidget(parent)
 {
-    QGridLayout* layout = new QGridLayout(this);
+    QGridLayout *layout = new QGridLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
     for (int i=0; i<9; ++i)
     {
-        UICustomOrientationItemWidget* itemWidget = new UICustomOrientationItemWidget;
+        UICustomOrientationItemWidget *itemWidget = new UICustomOrientationItemWidget;
         m_items << itemWidget;
 
         layout->addWidget(itemWidget, i / 3, i % 3);
@@ -87,7 +87,7 @@ UICustomOrientationWidget::~UICustomOrientationWidget()
 
 void UICustomOrientationWidget::onClickedItem()
 {
-    UICustomOrientationItemWidget* pW = dynamic_cast<UICustomOrientationItemWidget*>(sender());
+    UICustomOrientationItemWidget *pW = dynamic_cast<UICustomOrientationItemWidget*>(sender());
     if (pW == nullptr)
         return;
 
@@ -101,7 +101,7 @@ void UICustomOrientationWidget::cleanAllItemsStatus()
         (*iter)->setPressedStatus(false);
 }
 // -----------------------------------------------------------------
-UICustomOrientationControl::UICustomOrientationControl(QWidget* parent)
+UICustomOrientationControl::UICustomOrientationControl(QWidget *parent)
     :UICustomCombineControlBase(parent)
 {
     m_pOrientationWidget = new UICustomOrientationWidget;

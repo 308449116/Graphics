@@ -1,7 +1,7 @@
 #include "UIAttrFloatControl.h"
 #include <QDebug>
 
-UIAttrFloatControl::UIAttrFloatControl(AttributeBase* attribute, QWidget* parent)
+UIAttrFloatControl::UIAttrFloatControl(AttributeBase *attribute, QWidget *parent)
     :UICustomDoubleControl(parent)
 {
     setAttribute(attribute);
@@ -18,7 +18,7 @@ UIAttrFloatControl::~UIAttrFloatControl()
 
 }
 
-void UIAttrFloatControl::setAttribute(AttributeBase* attribute)
+void UIAttrFloatControl::setAttribute(AttributeBase *attribute)
 {
     if (attribute == nullptr || attribute->Type() != AttributeBase::DOUBLESPINBOX_TYPE)
         return;
@@ -44,7 +44,11 @@ void UIAttrFloatControl::onValueChanged(const QVariant& value)
 
 void UIAttrFloatControl::onControlValueChanged(qreal value, bool cmd)
 {
-    QObject::disconnect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
+    if (m_attribute->getValue().toDouble() == value) {
+        return;
+    }
+
+//    QObject::disconnect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
     m_attribute->setValue(value, cmd);
-    QObject::connect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
+//    QObject::connect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
 }

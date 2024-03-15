@@ -5,13 +5,13 @@
 #include <QPainter>
 //#include "UICustomCore/CustomStyleConfig.h"
 
-UICustomLineEdit::UICustomLineEdit(QWidget* parent)
+UICustomLineEdit::UICustomLineEdit(QWidget *parent)
     :QLineEdit(parent)
 {
     m_pButton = new UICustomCloseButton;
     m_pButton->setFixedSize(12, 12);
 
-    QHBoxLayout* mainLayout = new QHBoxLayout(this);
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->addStretch();
     mainLayout->addWidget(m_pButton, 0, Qt::AlignRight | Qt::AlignVCenter);
 
@@ -27,7 +27,7 @@ UICustomLineEdit::~UICustomLineEdit()
 
 }
 
-void UICustomLineEdit::keyPressEvent(QKeyEvent* event)
+void UICustomLineEdit::keyPressEvent(QKeyEvent *event)
 {
     QLineEdit::keyPressEvent(event);
     event->accept();
@@ -60,7 +60,7 @@ void UICustomLineEdit::onCloseButtonClicked()
     this->setText("");
 }
 // ==============================================================
-UICustomCloseButton::UICustomCloseButton(QWidget* parent)
+UICustomCloseButton::UICustomCloseButton(QWidget *parent)
     :CustomWidget(parent)
 {
     this->setMouseTracking(true);
@@ -72,7 +72,7 @@ UICustomCloseButton::~UICustomCloseButton()
 
 }
 
-void UICustomCloseButton::customPaint(QPainter* painter)
+void UICustomCloseButton::customPaint(QPainter *painter)
 {
     QColor penColor(200, 80, 80);
     if (m_isHoveredOn)

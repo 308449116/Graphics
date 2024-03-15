@@ -29,14 +29,7 @@ void GraphicsItem::setPos(const QPointF &pos)
 void GraphicsItem::setPos(qreal x, qreal y)
 {
     m_subItem->setPos(x, y);
-
-    if (m_AtrributeNode->getAttribute(X)->getValue().toDouble() != m_subItem->scenePos().x()) {
-        m_AtrributeNode->getAttribute(X)->setValue(m_subItem->scenePos().x());
-    }
-
-    if (m_AtrributeNode->getAttribute(Y)->getValue().toDouble() != m_subItem->scenePos().y()) {
-        m_AtrributeNode->getAttribute(Y)->setValue(m_subItem->scenePos().y());
-    }
+    updateAttribute();
 }
 
 QPointF GraphicsItem::pos() const
@@ -72,12 +65,29 @@ NodeBase *GraphicsItem::getCurrentNode() const
 
 void GraphicsItem::updateAttribute()
 {
-    QPointF pos = m_subItem->scenePos();
-    if (m_AtrributeNode->getAttribute(X)->getValue().toDouble() != pos.x()) {
-        m_AtrributeNode->getAttribute(X)->setValue(pos.x());
+    if (m_AtrributeNode == nullptr) {
+        return;
     }
-    if (m_AtrributeNode->getAttribute(Y)->getValue().toDouble() != pos.y()) {
-        m_AtrributeNode->getAttribute(Y)->setValue(pos.y());
+
+    QPointF topLeft = m_subItem->sceneBoundingRect().topLeft();
+    if (topLeft.x() < 0) {
+        m_subItem->moveBy(-topLeft.x(), 0);
+        topLeft.setX(0);
+    }
+    if (topLeft.y() < 0) {
+        m_subItem->moveBy(0, -topLeft.y());
+        topLeft.setY(0);
+    }
+
+    if (m_AtrributeNode->getAttribute(X)->getValue().toDouble() != topLeft.x()) {
+        m_AtrributeNode->getAttribute(X)->setValue(topLeft.x());
+    }
+    if (m_AtrributeNode->getAttribute(Y)->getValue().toDouble() != topLeft.y()) {
+        m_AtrributeNode->getAttribute(Y)->setValue(topLeft.y());
+    }
+
+    if (m_AtrributeNode->getAttribute(Z)->getValue().toDouble() != m_zValue) {
+        m_AtrributeNode->getAttribute(Z)->setValue(m_zValue);
     }
 
     if (m_AtrributeNode->getAttribute(WIDTH)->getValue().toDouble() != m_localRect.width()) {
@@ -85,6 +95,10 @@ void GraphicsItem::updateAttribute()
     }
     if (m_AtrributeNode->getAttribute(HEIGHT)->getValue().toDouble() != m_localRect.height()) {
         m_AtrributeNode->getAttribute(HEIGHT)->setValue(m_localRect.height());
+    }
+
+    if (m_AtrributeNode->getAttribute(ROTATE)->getValue().toDouble() != m_rotationAngle) {
+        m_AtrributeNode->getAttribute(ROTATE)->setValue(m_rotationAngle);
     }
 }
 
@@ -99,6 +113,7 @@ void GraphicsItem::setZValue(qreal newZValue)
 
     m_zValue = newZValue;
     emit sendZValueChange();
+    updateAttribute();
 }
 
 //QGraphicsItemGroup *GraphicsItem::itemAncestor() const
@@ -148,9 +163,10 @@ void GraphicsItem::setRotation(qreal newAngle)
     }
     m_subItem->setRotation(newAngle);
 
-    if (m_AtrributeNode->getAttribute(ROTATE)->getValue().toDouble() != newAngle) {
-        m_AtrributeNode->getAttribute(ROTATE)->setValue(newAngle);
-    }
+    updateAttribute();
+//    if (m_AtrributeNode->getAttribute(ROTATE)->getValue().toDouble() != newAngle) {
+//        m_AtrributeNode->getAttribute(ROTATE)->setValue(newAngle);
+//    }
 }
 
 qreal GraphicsItem::rotation() const
@@ -245,33 +261,36 @@ void GraphicsItem::setScale(qreal scaleX, qreal scaleY)
 
 void GraphicsItem::onXPositionAttributeValueChanged(const QVariant& value)
 {
-    QPointF scenePos = m_subItem->scenePos();
-    qreal x = value.toDouble();
-    if (x == scenePos.x())
+    if (m_AtrributeNode == nullptr ||
+        value.toDouble() == m_subItem->sceneBoundingRect().topLeft().x()) {
         return;
+    }
 
-    scenePos.setX(x);
-    m_subItem->setPos(m_subItem->mapFromScene(scenePos));
+    qreal offset = m_AtrributeNode->getAttribute(X)->getValue().toDouble() -
+                   m_AtrributeNode->getAttribute(X)->getLastValue().toDouble();
+    m_subItem->moveBy(offset, 0);
     emit sendUpdateHandle();
 }
 
 void GraphicsItem::onYPositionAttributeValueChanged(const QVariant& value)
 {
-    QPointF scenePos = m_subItem->scenePos();
-    qreal y = value.toDouble();
-    if (y == scenePos.y())
+    if (m_AtrributeNode == nullptr ||
+        value.toDouble() == m_subItem->sceneBoundingRect().topLeft().y()) {
         return;
+    }
 
-    scenePos.setY(y);
-    m_subItem->setPos(m_subItem->mapFromScene(scenePos));
+    qreal offset = m_AtrributeNode->getAttribute(Y)->getValue().toDouble() -
+                   m_AtrributeNode->getAttribute(Y)->getLastValue().toDouble();
+    m_subItem->moveBy(0, offset);
     emit sendUpdateHandle();
 }
 
 void GraphicsItem::onZPositionAttributeValueChanged(const QVariant& value)
 {
     qreal itemZValue = value.toDouble();
-    if (itemZValue == zValue())
+    if (itemZValue == zValue()) {
         return;
+    }
 
     setZValue(value.toDouble());
     emit sendUpdateHandle();
@@ -279,9 +298,10 @@ void GraphicsItem::onZPositionAttributeValueChanged(const QVariant& value)
 
 void GraphicsItem::onWidthAttributeValueChanged(const QVariant& value)
 {
-    qreal itemWidth = value.toInt();
-    if (itemWidth == width())
+    qreal itemWidth = value.toDouble();
+    if (itemWidth == width()) {
         return;
+    }
 
     setWidth(itemWidth);
     emit sendUpdateHandle();
@@ -289,9 +309,10 @@ void GraphicsItem::onWidthAttributeValueChanged(const QVariant& value)
 
 void GraphicsItem::onHeightAttributeValueChanged(const QVariant& value)
 {
-    qreal itemHeight = value.toInt();
-    if (itemHeight == height())
+    qreal itemHeight = value.toDouble();
+    if (itemHeight == height()) {
         return;
+    }
 
     setHeight(itemHeight);
     emit sendUpdateHandle();
@@ -300,8 +321,9 @@ void GraphicsItem::onHeightAttributeValueChanged(const QVariant& value)
 void GraphicsItem::onRotateAttributeValueChanged(const QVariant& value)
 {
     qreal roatateAngle = value.toDouble();
-    if (roatateAngle == rotation())
+    if (roatateAngle == rotation()) {
         return;
+    }
 
     setRotation(roatateAngle);
     emit sendUpdateHandle();

@@ -1,6 +1,6 @@
 #include "UIAttrIntControl.h"
 
-UIAttrIntControl::UIAttrIntControl(AttributeBase* attribute, QWidget* parent)
+UIAttrIntControl::UIAttrIntControl(AttributeBase *attribute, QWidget *parent)
     :UICustomIntControl(parent)
 {
     setAttribute(attribute);
@@ -18,7 +18,7 @@ UIAttrIntControl::~UIAttrIntControl()
 }
 
 // 设置属性
-void UIAttrIntControl::setAttribute(AttributeBase* attribute)
+void UIAttrIntControl::setAttribute(AttributeBase *attribute)
 {
     if (attribute == nullptr || attribute->Type() != AttributeBase::SPINBOX_TYPE)
         return;
@@ -44,7 +44,10 @@ void UIAttrIntControl::onAttrValueChanged(const QVariant& value)
 
 void UIAttrIntControl::onControlValueChanged(int value, bool cmd)
 {
-    QObject::disconnect(m_attribute, &IntAttribute::valueChanged, this, &UIAttrIntControl::onAttrValueChanged);
+    if (m_attribute->getValue().toInt() == value) {
+        return;
+    }
+//    QObject::disconnect(m_attribute, &IntAttribute::valueChanged, this, &UIAttrIntControl::onAttrValueChanged);
     m_attribute->setValue(value, cmd);
-    QObject::connect(m_attribute, &IntAttribute::valueChanged, this, &UIAttrIntControl::onAttrValueChanged);
+//    QObject::connect(m_attribute, &IntAttribute::valueChanged, this, &UIAttrIntControl::onAttrValueChanged);
 }

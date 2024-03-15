@@ -10,7 +10,7 @@ class UICustomTimeEditControl : public UICustomCombineControlBase
     Q_OBJECT
 
 public:
-    UICustomTimeEditControl(QWidget* parent = nullptr);
+    UICustomTimeEditControl(QWidget *parent = nullptr);
     ~UICustomTimeEditControl();
 
     // 设置/获取当前时间
@@ -18,7 +18,7 @@ public:
     QTime getCurrentTime();
 
 private:
-    UICustomTimeEdit* m_pTimeEdit = nullptr;
+    UICustomTimeEdit *m_pTimeEdit = nullptr;
 };
 
 #endif
