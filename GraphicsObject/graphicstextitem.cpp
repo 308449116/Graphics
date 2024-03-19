@@ -157,9 +157,10 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
         m_scaleX = m_localRect.width() / getTextSize().width();
         m_textItem->setFont(m_font);
 
-        if (m_AtrributeNode->getAttribute(FONTSIZE)->getValue().toInt() != m_font.pixelSize()) {
-            m_AtrributeNode->getAttribute(FONTSIZE)->setValue(m_font.pixelSize());
-        }
+        m_AtrributeNode->getAttribute(FONTSIZE)->setValue(m_font.pixelSize());
+//        if (m_AtrributeNode->getAttribute(FONTSIZE)->getValue().toInt() != m_font.pixelSize()) {
+//            m_AtrributeNode->getAttribute(FONTSIZE)->setValue(m_font.pixelSize());
+//        }
     }
 
     m_textItem->setScale(m_scaleX, m_scaleY);
@@ -250,9 +251,10 @@ void GraphicsTextItem::setText(const QString &text)
     m_textItem->setText(m_text);
     updateLocalRect();
 
-    if (m_AtrributeNode->getAttribute(TEXT)->getValue().toString() != m_text) {
-        m_AtrributeNode->getAttribute(TEXT)->setValue(m_text);
-    }
+    m_AtrributeNode->getAttribute(TEXT)->setValue(m_text);
+//    if (m_AtrributeNode->getAttribute(TEXT)->getValue().toString() != m_text) {
+//        m_AtrributeNode->getAttribute(TEXT)->setValue(m_text);
+//    }
 }
 
 QString GraphicsTextItem::text() const
@@ -266,9 +268,10 @@ void GraphicsTextItem::setFont(const QFont &font)
     m_textItem->setFont(m_font);
     updateLocalRect();
 
-    if (m_AtrributeNode->getAttribute(FONTSIZE)->getValue().toInt() != font.pixelSize()) {
-        m_AtrributeNode->getAttribute(FONTSIZE)->setValue(font.pixelSize());
-    }
+    m_AtrributeNode->getAttribute(FONTSIZE)->setValue(font.pixelSize());
+//    if (m_AtrributeNode->getAttribute(FONTSIZE)->getValue().toInt() != font.pixelSize()) {
+//        m_AtrributeNode->getAttribute(FONTSIZE)->setValue(font.pixelSize());
+//    }
 }
 
 QFont GraphicsTextItem::font() const

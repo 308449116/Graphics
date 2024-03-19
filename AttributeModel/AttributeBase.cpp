@@ -158,24 +158,32 @@ QString AttributeBase::getTypeName() const
 // 设置/获取属性值
 void AttributeBase::setValue(const QVariant& value, bool cmd)
 {
-    // 处理第一次
-    if (m_isFirstSetValue) {
-        m_lastValue = value;
-        m_isFirstSetValue = false;
+    if (m_value == value) {
+        return;
     }
 
-    // 判断是否需要发送信号
-    bool needSendSignal = true;
-    if (m_value == value)
-        needSendSignal = false;
-
-    QVariant tempValue = m_value;
+    m_lastValue = m_value;
     m_value = value;
+    emit valueChanged(value, cmd);
 
-    if (needSendSignal) {
-        m_lastValue = tempValue;
-        emit valueChanged(value, cmd);
-    }
+//    // 处理第一次
+//    if (m_isFirstSetValue) {
+//        m_lastValue = value;
+//        m_isFirstSetValue = false;
+//    }
+
+//    // 判断是否需要发送信号
+//    bool needSendSignal = true;
+//    if (m_value == value)
+//        needSendSignal = false;
+
+//    QVariant tempValue = m_value;
+//    m_value = value;
+
+//    if (needSendSignal) {
+//        m_lastValue = tempValue;
+//        emit valueChanged(value, cmd);
+//    }
 }
 
 QVariant AttributeBase::getValue() const

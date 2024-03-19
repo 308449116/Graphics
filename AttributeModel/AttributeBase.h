@@ -74,7 +74,7 @@ protected:
     QVariant m_value;
     QVariant m_lastValue;
     bool m_isEnabled = true;
-    bool m_isFirstSetValue = true;
+//    bool m_isFirstSetValue = true;
 
     AttributeType m_type;
     NodeBase *m_pParentNode = nullptr;

@@ -7,6 +7,7 @@ UICustomIntControl::UICustomIntControl(QWidget *parent)
 {
     m_pIntValue = new UICustomIntSpinBox;
     m_pMainLayout->addWidget(m_pIntValue);
+    m_pIntValue->setSuffix(" px");
 
     m_pSlider = new QSlider(Qt::Horizontal);
     m_pMainLayout->addWidget(m_pSlider);

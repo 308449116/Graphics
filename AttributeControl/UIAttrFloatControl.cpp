@@ -44,9 +44,9 @@ void UIAttrFloatControl::onValueChanged(const QVariant& value)
 
 void UIAttrFloatControl::onControlValueChanged(qreal value, bool cmd)
 {
-    if (m_attribute->getValue().toDouble() == value) {
-        return;
-    }
+//    if (m_attribute->getValue().toDouble() == value) {
+//        return;
+//    }
 
 //    QObject::disconnect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
     m_attribute->setValue(value, cmd);

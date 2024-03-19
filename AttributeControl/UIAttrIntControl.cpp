@@ -44,9 +44,9 @@ void UIAttrIntControl::onAttrValueChanged(const QVariant& value)
 
 void UIAttrIntControl::onControlValueChanged(int value, bool cmd)
 {
-    if (m_attribute->getValue().toInt() == value) {
-        return;
-    }
+//    if (m_attribute->getValue().toInt() == value) {
+//        return;
+//    }
 //    QObject::disconnect(m_attribute, &IntAttribute::valueChanged, this, &UIAttrIntControl::onAttrValueChanged);
     m_attribute->setValue(value, cmd);
 //    QObject::connect(m_attribute, &IntAttribute::valueChanged, this, &UIAttrIntControl::onAttrValueChanged);

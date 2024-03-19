@@ -31,9 +31,9 @@ void UIAttrBoolControl::onAttrValueChanged(const QVariant& value)
 
 void UIAttrBoolControl::onControlValueChanged(bool value, bool cmd)
 {
-    if (m_attribute->getValue().toBool() == value) {
-        return;
-    }
+//    if (m_attribute->getValue().toBool() == value) {
+//        return;
+//    }
 //    QObject::disconnect(m_attribute, &BoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);
     m_attribute->setValue(value, cmd);
 //    QObject::connect(m_attribute, &BoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);

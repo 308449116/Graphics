@@ -79,27 +79,34 @@ void GraphicsItem::updateAttribute()
         topLeft.setY(0);
     }
 
-    if (m_AtrributeNode->getAttribute(X)->getValue().toDouble() != topLeft.x()) {
-        m_AtrributeNode->getAttribute(X)->setValue(topLeft.x());
-    }
-    if (m_AtrributeNode->getAttribute(Y)->getValue().toDouble() != topLeft.y()) {
-        m_AtrributeNode->getAttribute(Y)->setValue(topLeft.y());
-    }
+    m_AtrributeNode->getAttribute(X)->setValue(topLeft.x());
+    m_AtrributeNode->getAttribute(Y)->setValue(topLeft.y());
+    m_AtrributeNode->getAttribute(Z)->setValue(m_zValue);
+    m_AtrributeNode->getAttribute(WIDTH)->setValue(m_localRect.width());
+    m_AtrributeNode->getAttribute(HEIGHT)->setValue(m_localRect.height());
+    m_AtrributeNode->getAttribute(ROTATE)->setValue(m_rotationAngle);
 
-    if (m_AtrributeNode->getAttribute(Z)->getValue().toDouble() != m_zValue) {
-        m_AtrributeNode->getAttribute(Z)->setValue(m_zValue);
-    }
+//    if (m_AtrributeNode->getAttribute(X)->getValue().toDouble() != topLeft.x()) {
+//        m_AtrributeNode->getAttribute(X)->setValue(topLeft.x());
+//    }
+//    if (m_AtrributeNode->getAttribute(Y)->getValue().toDouble() != topLeft.y()) {
+//        m_AtrributeNode->getAttribute(Y)->setValue(topLeft.y());
+//    }
 
-    if (m_AtrributeNode->getAttribute(WIDTH)->getValue().toDouble() != m_localRect.width()) {
-        m_AtrributeNode->getAttribute(WIDTH)->setValue(m_localRect.width());
-    }
-    if (m_AtrributeNode->getAttribute(HEIGHT)->getValue().toDouble() != m_localRect.height()) {
-        m_AtrributeNode->getAttribute(HEIGHT)->setValue(m_localRect.height());
-    }
+//    if (m_AtrributeNode->getAttribute(Z)->getValue().toDouble() != m_zValue) {
+//        m_AtrributeNode->getAttribute(Z)->setValue(m_zValue);
+//    }
 
-    if (m_AtrributeNode->getAttribute(ROTATE)->getValue().toDouble() != m_rotationAngle) {
-        m_AtrributeNode->getAttribute(ROTATE)->setValue(m_rotationAngle);
-    }
+//    if (m_AtrributeNode->getAttribute(WIDTH)->getValue().toDouble() != m_localRect.width()) {
+//        m_AtrributeNode->getAttribute(WIDTH)->setValue(m_localRect.width());
+//    }
+//    if (m_AtrributeNode->getAttribute(HEIGHT)->getValue().toDouble() != m_localRect.height()) {
+//        m_AtrributeNode->getAttribute(HEIGHT)->setValue(m_localRect.height());
+//    }
+
+//    if (m_AtrributeNode->getAttribute(ROTATE)->getValue().toDouble() != m_rotationAngle) {
+//        m_AtrributeNode->getAttribute(ROTATE)->setValue(m_rotationAngle);
+//    }
 }
 
 qreal GraphicsItem::zValue() const

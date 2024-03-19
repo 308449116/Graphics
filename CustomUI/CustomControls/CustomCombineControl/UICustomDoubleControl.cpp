@@ -7,6 +7,7 @@ UICustomDoubleControl::UICustomDoubleControl(QWidget *parent)
     // Double
     m_pDoubleSpinBox = new UICustomDoubleSpinBox;
     m_pMainLayout->addWidget(m_pDoubleSpinBox);
+    m_pDoubleSpinBox->setSuffix(" px");
 
     m_pSlider = new QSlider(Qt::Horizontal);
     m_pSlider->setMinimum(0);

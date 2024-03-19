@@ -46,9 +46,9 @@ void UIAttrTextControl::onTextAttrValueChanged(const QVariant& value)
 
 void UIAttrTextControl::onControlTextChanged(const QString& value)
 {
-    if (m_attribute->getValue().toString() == value) {
-        return;
-    }
+//    if (m_attribute->getValue().toString() == value) {
+//        return;
+//    }
 
 //    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &UIAttrTextControl::onTextAttrValueChanged);
     m_attribute->setValue(value);
