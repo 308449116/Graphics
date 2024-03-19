@@ -18,7 +18,7 @@ public:
     void setCloseButtonEnable(bool isEnabled);
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
+//    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     UICustomCloseButton *m_pButton = nullptr;

@@ -27,11 +27,11 @@ UICustomLineEdit::~UICustomLineEdit()
 
 }
 
-void UICustomLineEdit::keyPressEvent(QKeyEvent *event)
-{
-    QLineEdit::keyPressEvent(event);
-    event->accept();
-}
+//void UICustomLineEdit::keyPressEvent(QKeyEvent *event)
+//{
+//    QLineEdit::keyPressEvent(event);
+//    event->accept();
+//}
 
 void UICustomLineEdit::setCloseButtonEnable(bool isEnabled)
 {
