@@ -1,4 +1,4 @@
-#include "PositionAttribute.h"
+#include "positionattribute.h"
 
 PositionAttribute::PositionAttribute(AttributeType type, NodeBase *parentNode)
     :AttributeBase(type, parentNode)

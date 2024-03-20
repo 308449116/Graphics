@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "UIAttributeWidget.h"
+#include "AttributeWidget.h"
 //#include "graphicsitemmanager.h"
 //#include "graphicstextitem.h"
 #include <QGraphicsItem>
@@ -134,7 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_pAttributeDockWidget->setFeatures(QDockWidget::DockWidgetMovable |
                                         QDockWidget::DockWidgetClosable);
     m_pAttributeDockWidget->setFloating(true);
-    m_pAttributeWidget = new UIAttributeWidget;
+    m_pAttributeWidget = new AttributeWidget;
 //    m_pScrollArea = new QScrollArea;
 //    scrollArea->setBackgroundRole(QPalette::Dark);
 //    m_pScrollArea->setWidget(m_pAttributeWidget);

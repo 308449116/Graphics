@@ -1,10 +1,10 @@
-#include "AttributeBase.h"
-#include "BoolAttribute.h"
-#include "RealAttribute.h"
-#include "IntAttribute.h"
-#include "StringAttribute.h"
-#include "NodeBase.h"
-#include "NodeManager.h"
+#include "attributebase.h"
+#include "boolattribute.h"
+#include "realattribute.h"
+#include "intattribute.h"
+#include "stringattribute.h"
+#include "nodebase.h"
+#include "nodemanager.h"
 
 AttributeBase::AttributeBase(AttributeType type, NodeBase *parentNode)
     :QObject (parentNode), m_type(type)

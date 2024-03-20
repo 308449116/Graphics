@@ -1,5 +1,5 @@
-#include "BoolAttribute.h"
-//#include "NodeManager.h"
+#include "boolattribute.h"
+//#include "nodemanager.h"
 
 BoolAttribute::BoolAttribute(AttributeType type, NodeBase *parentNode)
     :AttributeBase(type, parentNode)

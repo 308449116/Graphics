@@ -1,8 +1,8 @@
 #ifndef NODEBASE_H
 #define NODEBASE_H
 
-#include "AttributeBase.h"
-#include "AttributeGroup.h"
+#include "attributebase.h"
+#include "attributegroup.h"
 
 static constexpr const char *X = "xPt";
 static constexpr const char *Y = "yPt";

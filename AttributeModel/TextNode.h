@@ -1,7 +1,7 @@
 #ifndef TEXTNODE_H
 #define TEXTNODE_H
 
-#include "NodeBase.h"
+#include "nodebase.h"
 
 constexpr const char *TEXT = "text";
 constexpr const char *FONTSIZE = "fontSize";

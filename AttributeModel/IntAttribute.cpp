@@ -1,5 +1,5 @@
-#include "IntAttribute.h"
-//#include "NodeManager.h"
+#include "intattribute.h"
+//#include "nodemanager.h"
 
 IntAttribute::IntAttribute(AttributeType type, NodeBase *parentNode)
     : NumericAttribute(type, parentNode)

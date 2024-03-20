@@ -1,4 +1,4 @@
-#include "NodeManager.h"
+#include "nodemanager.h"
 
 NodeManager::NodeManager(QObject *parent)
     :QObject(parent)

@@ -1,7 +1,7 @@
 #ifndef POSITIONATTRIBUTE_H
 #define POSITIONATTRIBUTE_H
 
-#include "AttributeBase.h"
+#include "attributebase.h"
 #include <QPoint>
 
 class PositionAttribute : public AttributeBase

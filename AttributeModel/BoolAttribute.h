@@ -1,7 +1,7 @@
 #ifndef BOOLATTRIBTE_H
 #define BOOLATTRIBTE_H
 
-#include "AttributeBase.h"
+#include "attributebase.h"
 
 class BoolAttribute : public AttributeBase
 {

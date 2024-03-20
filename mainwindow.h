@@ -9,7 +9,7 @@
 class QUndoView;
 class QScrollArea;
 class SceneGraphics;
-class UIAttributeWidget;
+class AttributeWidget;
 class QGraphicsSimpleTextItem;
 
 QT_BEGIN_NAMESPACE
@@ -66,7 +66,7 @@ private:
     QToolBar *m_editToolBar;
 
     // 属性界面
-    UIAttributeWidget *m_pAttributeWidget = nullptr;
+    AttributeWidget *m_pAttributeWidget = nullptr;
     QDockWidget *m_pAttributeDockWidget = nullptr;
 //    QScrollArea *m_pScrollArea = nullptr;
 

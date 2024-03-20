@@ -1,4 +1,4 @@
-#include "StringAttribute.h"
+#include "stringattribute.h"
 //#include "NodeManager.h"
 
 StringAttribute::StringAttribute(AttributeType type, NodeBase *parentNode)

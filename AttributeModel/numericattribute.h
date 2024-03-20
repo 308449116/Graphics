@@ -1,7 +1,7 @@
 #ifndef NUMERICATTRIBUTE_H
 #define NUMERICATTRIBUTE_H
 
-#include "AttributeBase.h"
+#include "attributebase.h"
 
 class NumericAttribute : public AttributeBase
 {

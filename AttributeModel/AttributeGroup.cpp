@@ -1,6 +1,6 @@
-#include "AttributeGroup.h"
-#include "AttributeBase.h"
-#include "NodeBase.h"
+#include "attributegroup.h"
+#include "attributebase.h"
+#include "nodebase.h"
 
 AttributeGroup::AttributeGroup(QObject *parent)
     :QObject(parent)

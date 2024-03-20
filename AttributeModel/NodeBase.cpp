@@ -1,7 +1,7 @@
-#include "NodeBase.h"
-#include "IntAttribute.h"
-#include "RealAttribute.h"
-#include "AttributeGroup.h"
+#include "nodebase.h"
+//#include "intattribute.h"
+#include "realattribute.h"
+#include "attributegroup.h"
 #include "graphicsitem.h"
 
 NodeBase::NodeBase(GraphicsItem *item, NodeType type)

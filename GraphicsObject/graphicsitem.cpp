@@ -1,6 +1,6 @@
 #include "graphicsitem.h"
 #include "graphicsitemgroup.h"
-#include "NodeBase.h"
+#include "nodebase.h"
 #include "common.h"
 
 GraphicsItem::GraphicsItem(QObject *parent)

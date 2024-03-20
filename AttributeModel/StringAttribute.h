@@ -1,7 +1,7 @@
 #ifndef STRINGATTRIBUTE_H
 #define STRINGATTRIBUTE_H
 
-#include "AttributeBase.h"
+#include "attributebase.h"
 #include <functional>
 
 class StringAttribute : public AttributeBase

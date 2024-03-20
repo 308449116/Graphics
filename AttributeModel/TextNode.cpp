@@ -1,6 +1,6 @@
-#include "TextNode.h"
-#include "IntAttribute.h"
-#include "StringAttribute.h"
+#include "textnode.h"
+#include "intattribute.h"
+#include "stringattribute.h"
 #include "graphicstextitem.h"
 
 TextNode::TextNode(GraphicsItem *item)

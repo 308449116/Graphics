@@ -26,37 +26,37 @@ INCLUDEPATH += $$PWD/CustomUI/CustomControls
 INCLUDEPATH += $$PWD/CustomUI
 
 SOURCES += \
-    AttributeControl/UIAttrBoolControl.cpp \
-    AttributeControl/UIAttrFloatControl.cpp \
-    AttributeControl/UIAttrIntControl.cpp \
-    AttributeControl/UIAttrTextControl.cpp \
-    AttributeModel/AttributeBase.cpp \
-    AttributeModel/AttributeGroup.cpp \
-    AttributeModel/BoolAttribute.cpp \
-    AttributeModel/IntAttribute.cpp \
-    AttributeModel/NodeBase.cpp \
-    AttributeModel/NodeManager.cpp \
-    AttributeModel/PositionAttribute.cpp \
-    AttributeModel/RealAttribute.cpp \
-    AttributeModel/StringAttribute.cpp \
-    AttributeModel/TextNode.cpp \
+    AttributeControl/attrboolcontrol.cpp \
+    AttributeControl/attrfloatcontrol.cpp \
+    AttributeControl/attrintcontrol.cpp \
+    AttributeControl/attrtextcontrol.cpp \
+    AttributeModel/attributebase.cpp \
+    AttributeModel/attributegroup.cpp \
+    AttributeModel/boolattribute.cpp \
+    AttributeModel/intattribute.cpp \
+    AttributeModel/nodebase.cpp \
+    AttributeModel/nodemanager.cpp \
     AttributeModel/numericattribute.cpp \
-    AttributeView/UIAttributeWidget.cpp \
-    AttributeView/UINodeAttrControl.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomCombineControlBase.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomComboBoxControl.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomDoubleControl.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomGroupControl.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomIntControl.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomLineEditControl.cpp \
-    CustomUI/CustomControls/CustomCombineControl/UICustomSwitchControl.cpp \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomComboBox.cpp \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomDoubleSpinBox.cpp \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomIntSpinBox.cpp \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomLineEdit.cpp \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomSwitchWidget.cpp \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomTextEdit.cpp \
-    CustomUI/UICustomWidgtes/CustomWidget.cpp \
+    AttributeModel/positionattribute.cpp \
+    AttributeModel/realattribute.cpp \
+    AttributeModel/stringattribute.cpp \
+    AttributeModel/textnode.cpp \
+    AttributeView/attributewidget.cpp \
+    AttributeView/nodeattrcontrol.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customcombinecontrolbase.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customcomboboxcontrol.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customdoublecontrol.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customgroupcontrol.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customintcontrol.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customlineeditcontrol.cpp \
+    CustomUI/CustomControls/CustomCombineControl/customswitchcontrol.cpp \
+    CustomUI/CustomControls/CustomSingleControl/customcombobox.cpp \
+    CustomUI/CustomControls/CustomSingleControl/customdoublespinbox.cpp \
+    CustomUI/CustomControls/CustomSingleControl/customintspinbox.cpp \
+    CustomUI/CustomControls/CustomSingleControl/customlineedit.cpp \
+    CustomUI/CustomControls/CustomSingleControl/customswitchwidget.cpp \
+    CustomUI/CustomControls/CustomSingleControl/customtextedit.cpp \
+    CustomUI/CustomWidgtes/customwidget.cpp \
     GraphicsObject/graphicsitem.cpp \
     GraphicsObject/graphicsitemgroup.cpp \
     GraphicsObject/graphicsitemmanager.cpp \
@@ -84,38 +84,38 @@ SOURCES += \
     viewgraphics.cpp
 
 HEADERS += \
-    AttributeControl/UIAttrBoolControl.h \
-    AttributeControl/UIAttrFloatControl.h \
-    AttributeControl/UIAttrIntControl.h \
-    AttributeControl/UIAttrTextControl.h \
-    AttributeModel/AttributeBase.h \
-    AttributeModel/AttributeGroup.h \
-    AttributeModel/BoolAttribute.h \
-    AttributeModel/IntAttribute.h \
-    AttributeModel/NodeBase.h \
-    AttributeModel/NodeManager.h \
-    AttributeModel/PositionAttribute.h \
-    AttributeModel/RealAttribute.h \
-    AttributeModel/StringAttribute.h \
-    AttributeModel/TextNode.h \
+    AttributeControl/attrboolcontrol.h \
+    AttributeControl/attrfloatcontrol.h \
+    AttributeControl/attrintcontrol.h \
+    AttributeControl/attrtextcontrol.h \
+    AttributeModel/attributebase.h \
+    AttributeModel/attributegroup.h \
+    AttributeModel/boolattribute.h \
+    AttributeModel/intattribute.h \
+    AttributeModel/nodebase.h \
+    AttributeModel/nodemanager.h \
     AttributeModel/numericattribute.h \
-    AttributeView/UIAttributeWidget.h \
-    AttributeView/UINodeAttrControl.h \
+    AttributeModel/positionattribute.h \
+    AttributeModel/realattribute.h \
+    AttributeModel/stringattribute.h \
+    AttributeModel/textnode.h \
+    AttributeView/attributewidget.h \
+    AttributeView/nodeattrcontrol.h \
     Common/common.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomCombineControlBase.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomComboBoxControl.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomDoubleControl.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomGroupControl.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomIntControl.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomLineEditControl.h \
-    CustomUI/CustomControls/CustomCombineControl/UICustomSwitchControl.h \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomComboBox.h \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomDoubleSpinBox.h \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomIntSpinBox.h \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomLineEdit.h \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomSwitchWidget.h \
-    CustomUI/CustomControls/UICustomSingleControl/UICustomTextEdit.h \
-    CustomUI/UICustomWidgtes/CustomWidget.h \
+    CustomUI/CustomControls/CustomCombineControl/customcombinecontrolbase.h \
+    CustomUI/CustomControls/CustomCombineControl/customcomboboxcontrol.h \
+    CustomUI/CustomControls/CustomCombineControl/customdoublecontrol.h \
+    CustomUI/CustomControls/CustomCombineControl/customgroupcontrol.h \
+    CustomUI/CustomControls/CustomCombineControl/customintcontrol.h \
+    CustomUI/CustomControls/CustomCombineControl/customlineeditcontrol.h \
+    CustomUI/CustomControls/CustomCombineControl/customswitchcontrol.h \
+    CustomUI/CustomControls/CustomSingleControl/customcombobox.h \
+    CustomUI/CustomControls/CustomSingleControl/customdoublespinbox.h \
+    CustomUI/CustomControls/CustomSingleControl/customintspinbox.h \
+    CustomUI/CustomControls/CustomSingleControl/customlineedit.h \
+    CustomUI/CustomControls/CustomSingleControl/customswitchwidget.h \
+    CustomUI/CustomControls/CustomSingleControl/customtextedit.h \
+    CustomUI/CustomWidgtes/customwidget.h \
     GraphicsObject/graphicsitem.h \
     GraphicsObject/graphicsitemgroup.h \
     GraphicsObject/graphicsitemmanager.h \
