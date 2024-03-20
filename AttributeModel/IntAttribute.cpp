@@ -2,9 +2,8 @@
 //#include "NodeManager.h"
 
 IntAttribute::IntAttribute(AttributeType type, NodeBase *parentNode)
-    :AttributeBase(type, parentNode)
+    : NumericAttribute(type, parentNode)
 {
-    m_value = 0;
 }
 
 IntAttribute::~IntAttribute()
@@ -12,7 +11,6 @@ IntAttribute::~IntAttribute()
 
 }
 
-// 设置/获取 取值范围
 void IntAttribute::setValueRange(int minValue, int maxValue)
 {
     m_MinValue = minValue;

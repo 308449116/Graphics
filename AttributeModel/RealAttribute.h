@@ -1,10 +1,10 @@
 #ifndef REALATTRIBUTE_H
 #define REALATTRIBUTE_H
 
-#include "AttributeBase.h"
+#include "numericattribute.h"
 
 class NodeBase;
-class RealAttribute : public AttributeBase
+class RealAttribute : public NumericAttribute
 {
     Q_OBJECT
 

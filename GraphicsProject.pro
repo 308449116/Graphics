@@ -40,6 +40,7 @@ SOURCES += \
     AttributeModel/RealAttribute.cpp \
     AttributeModel/StringAttribute.cpp \
     AttributeModel/TextNode.cpp \
+    AttributeModel/numericattribute.cpp \
     AttributeView/UIAttributeWidget.cpp \
     AttributeView/UINodeAttrControl.cpp \
     CustomUI/CustomControls/CustomCombineControl/UICustomCombineControlBase.cpp \
@@ -97,6 +98,7 @@ HEADERS += \
     AttributeModel/RealAttribute.h \
     AttributeModel/StringAttribute.h \
     AttributeModel/TextNode.h \
+    AttributeModel/numericattribute.h \
     AttributeView/UIAttributeWidget.h \
     AttributeView/UINodeAttrControl.h \
     Common/common.h \

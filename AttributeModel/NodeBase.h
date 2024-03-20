@@ -86,6 +86,8 @@ protected:
 
     GraphicsItem *m_item = nullptr;
 
+private slots:
+    void onXYSuffixChanged(const QVariant &value);
 private:
     QList<AttributeGroup*> m_groupList;
     int m_nodeType;

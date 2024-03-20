@@ -3,9 +3,8 @@
 //#include "NodeManager.h"
 
 RealAttribute::RealAttribute(AttributeType type, NodeBase *parentNode)
-    :AttributeBase(type, parentNode)
+    : NumericAttribute(type, parentNode)
 {
-    m_value = 0;
 }
 
 RealAttribute::~RealAttribute()

@@ -43,10 +43,17 @@ void UICustomIntControl::setRangeValue(int minValue, int maxValue)
     m_pIntValue->setMaximum(m_MaxValue);
 }
 
+void UICustomIntControl::setSuffix(const QString &suffix)
+{
+    m_pIntValue->setSuffix(suffix);
+}
+
 
 void UICustomIntControl::setCurrentValue(int value)
 {
-    if (value < m_MinValue || value > m_MaxValue)
+    if (value == m_pIntValue->value() ||
+        value < m_MinValue ||
+        value > m_MaxValue)
         return;
 
     m_pIntValue->setValue(value);

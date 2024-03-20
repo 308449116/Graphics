@@ -168,6 +168,9 @@ void NodeBase::initNodeBase()
     QObject::connect(m_pWidthAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onWidthAttributeValueChanged);
     QObject::connect(m_pHeightAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onHeightAttributeValueChanged);
     QObject::connect(m_pRotateAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onRotateAttributeValueChanged);
+
+    //测试使用
+    QObject::connect(m_pZPositionAttribute, &RealAttribute::valueChanged, this, &NodeBase::onXYSuffixChanged);
 }
 
 // 设置节点名字
@@ -234,4 +237,10 @@ void NodeBase::deleteAttributeGroup(const QString& name)
             break;
         }
     }
+}
+
+void NodeBase::onXYSuffixChanged(const QVariant& value)
+{
+    m_pXPositionAttribute->setSuffixType((NumericAttribute::SuffixType)value.toInt());
+    m_pYPositionAttribute->setSuffixType((NumericAttribute::SuffixType)value.toInt());
 }

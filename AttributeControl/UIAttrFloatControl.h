@@ -21,6 +21,7 @@ private:
 private slots:
     void onValueChanged(const QVariant& value);
     void onControlValueChanged(qreal value, bool cmd = false);
+    void onSuffixTypeChanged(NumericAttribute::SuffixType type);
 };
 
 #endif

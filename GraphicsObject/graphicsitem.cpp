@@ -116,7 +116,9 @@ qreal GraphicsItem::zValue() const
 
 void GraphicsItem::setZValue(qreal newZValue)
 {
-    if (m_zValue == newZValue) return;
+    if (m_zValue == newZValue) {
+        return;
+    }
 
     m_zValue = newZValue;
     emit sendZValueChange();

@@ -1,9 +1,9 @@
 #ifndef INTATTRIBUTE_H
 #define INTATTRIBUTE_H
 
-#include "AttributeBase.h"
+#include "numericattribute.h"
 
-class IntAttribute : public AttributeBase
+class IntAttribute : public NumericAttribute
 {
     Q_OBJECT
 

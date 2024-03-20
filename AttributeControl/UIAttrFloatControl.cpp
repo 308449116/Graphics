@@ -6,11 +6,11 @@ UIAttrFloatControl::UIAttrFloatControl(AttributeBase *attribute, QWidget *parent
 {
     setAttribute(attribute);
 
-    if (m_attribute == nullptr)
-        return;
-
     QObject::connect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
     QObject::connect(this, &UIAttrFloatControl::valueChanged, this, &UIAttrFloatControl::onControlValueChanged);
+
+    NumericAttribute *numericAttr = dynamic_cast<NumericAttribute *>(m_attribute);
+    QObject::connect(numericAttr, &NumericAttribute::suffixTypeChanged, this, &UIAttrFloatControl::onSuffixTypeChanged);
 }
 
 UIAttrFloatControl::~UIAttrFloatControl()
@@ -20,12 +20,14 @@ UIAttrFloatControl::~UIAttrFloatControl()
 
 void UIAttrFloatControl::setAttribute(AttributeBase *attribute)
 {
-    if (attribute == nullptr || attribute->Type() != AttributeBase::DOUBLESPINBOX_TYPE)
+    if (attribute == nullptr || attribute->Type() != AttributeBase::DOUBLESPINBOX_TYPE) {
         return;
+    }
 
     m_attribute = qobject_cast<RealAttribute*>(attribute);
-    if (m_attribute == nullptr)
+    if (m_attribute == nullptr) {
         return;
+    }
 
     // 设置范围
     qreal startValue, endValue;
@@ -33,13 +35,21 @@ void UIAttrFloatControl::setAttribute(AttributeBase *attribute)
     this->setRangeValue(startValue, endValue);
 
     // 设置值
-    this->setCurrentValue(m_attribute->getValue().toDouble());
+    NumericAttribute *numericAttr = dynamic_cast<NumericAttribute *>(m_attribute);
+    onSuffixTypeChanged(numericAttr->suffixType());
+//    setSuffixByType(numericAttr->suffixType());
+//    int newValue = NumericAttribute::convertFormPixels(m_attribute->getValue().toDouble(), numericAttr->suffixType());
+//    this->setCurrentValue(newValue);
+
+//    this->setCurrentValue(m_attribute->getValue().toDouble());
     this->setTagText(m_attribute->getDisplayName());
 }
 
 void UIAttrFloatControl::onValueChanged(const QVariant& value)
 {
-    this->setCurrentValue(value.toDouble());
+    NumericAttribute *numericAttr = dynamic_cast<NumericAttribute *>(m_attribute);
+    qreal newValue = NumericAttribute::convertFormPixels(value.toInt(), numericAttr->suffixType());
+    this->setCurrentValue(newValue);
 }
 
 void UIAttrFloatControl::onControlValueChanged(qreal value, bool cmd)
@@ -49,6 +59,49 @@ void UIAttrFloatControl::onControlValueChanged(qreal value, bool cmd)
 //    }
 
 //    QObject::disconnect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
-    m_attribute->setValue(value, cmd);
+    NumericAttribute *numericAttr = dynamic_cast<NumericAttribute *>(m_attribute);
+    qreal newValue = NumericAttribute::convertToPixels(value, numericAttr->suffixType());
+    m_attribute->setValue(newValue, cmd);
 //    QObject::connect(m_attribute, &RealAttribute::valueChanged, this, &UIAttrFloatControl::onValueChanged);
+}
+
+void UIAttrFloatControl::onSuffixTypeChanged(NumericAttribute::SuffixType type)
+{
+    switch(type) {
+        case NumericAttribute::ST_PERCENT: {
+            this->setSuffix(tr("%"));
+            break;
+        }
+        case NumericAttribute::ST_PX: {
+            this->setSuffix(tr("px"));
+            break;
+        }
+        case NumericAttribute::ST_PC: {
+            this->setSuffix(tr("pc"));
+            break;
+        }
+        case NumericAttribute::ST_PT: {
+            this->setSuffix(tr("pt"));
+            break;
+        }
+        case NumericAttribute::ST_MM: {
+            this->setSuffix(tr("mm"));
+            break;
+        }
+        case NumericAttribute::ST_CM: {
+            this->setSuffix(tr("cm"));
+            break;
+        }
+        case NumericAttribute::ST_IN: {
+            this->setSuffix(tr("in"));
+            break;
+        }
+        default: {
+            this->setSuffix(tr(""));
+            break;
+        }
+    }
+
+    qreal newValue = NumericAttribute::convertFormPixels(m_attribute->getValue().toDouble(), type);
+    this->setCurrentValue(newValue);
 }

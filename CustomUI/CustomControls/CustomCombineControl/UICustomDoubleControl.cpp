@@ -7,7 +7,7 @@ UICustomDoubleControl::UICustomDoubleControl(QWidget *parent)
     // Double
     m_pDoubleSpinBox = new UICustomDoubleSpinBox;
     m_pMainLayout->addWidget(m_pDoubleSpinBox);
-    m_pDoubleSpinBox->setSuffix(" px");
+    m_pDoubleSpinBox->setSuffix("px");
 
     m_pSlider = new QSlider(Qt::Horizontal);
     m_pSlider->setMinimum(0);
@@ -36,11 +36,14 @@ UICustomDoubleControl::~UICustomDoubleControl()
 
 void UICustomDoubleControl::setCurrentValue(qreal value)
 {
-    if (value < m_qMinValue || value > m_qMaxValue)
+    if (value == m_pDoubleSpinBox->value() ||
+        value < m_MinValue ||
+        value > m_MaxValue) {
         return;
+    }
 
     m_pDoubleSpinBox->setValue(value);
-    int val = (value - m_qMinValue) * 1.0 / (m_qMaxValue - m_qMinValue) * 100;
+    int val = (value - m_MinValue) * 1.0 / (m_MaxValue - m_MinValue) * 100;
 
     m_pSlider->blockSignals(true);
     m_pSlider->setValue(val);
@@ -54,11 +57,16 @@ qreal UICustomDoubleControl::getCurrentValue()
 
 void UICustomDoubleControl::setRangeValue(qreal minValue, qreal maxValue)
 {
-    m_qMinValue = minValue;
-    m_qMaxValue = maxValue;
+    m_MinValue = minValue;
+    m_MaxValue = maxValue;
 
-    m_pDoubleSpinBox->setMinimum(m_qMinValue);
-    m_pDoubleSpinBox->setMaximum(m_qMaxValue);
+    m_pDoubleSpinBox->setMinimum(m_MinValue);
+    m_pDoubleSpinBox->setMaximum(m_MaxValue);
+}
+
+void UICustomDoubleControl::setSuffix(const QString &suffix)
+{
+    m_pDoubleSpinBox->setSuffix(suffix);
 }
 
 void UICustomDoubleControl::onSliderPressed()
@@ -99,13 +107,13 @@ void UICustomDoubleControl::onSliderValueChanged(int value)
 qreal UICustomDoubleControl::getValuesBySlider()
 {
     int value = m_pSlider->value();
-    return m_qMinValue + (m_qMaxValue - m_qMinValue) * value * 1.0 / 100;
+    return m_MinValue + (m_MaxValue - m_MinValue) * value * 1.0 / 100;
 }
 
 void UICustomDoubleControl::onDoubleValueChanged()
 {
     qreal value = m_pDoubleSpinBox->value();
-    int val = (value - m_qMinValue) * 1.0 / (m_qMaxValue - m_qMinValue) * 100;
+    int val = (value - m_MinValue) * 1.0 / (m_MaxValue - m_MinValue) * 100;
 
     m_pSlider->blockSignals(true);
     m_pSlider->setValue(val);

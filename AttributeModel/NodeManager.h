@@ -11,7 +11,7 @@ class NodeManager : public QObject
     Q_OBJECT
 
 public:
-    NodeManager(QObject *parent = nullptr)  ;
+    NodeManager(QObject *parent = nullptr);
     ~NodeManager();
 
     static NodeManager *getInstance();
