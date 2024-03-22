@@ -2,7 +2,7 @@
 #define CUSTOMSWITCHCONTROL_H
 
 #include "customcombinecontrolbase.h"
-#include "CustomSingleControl/customswitchwidget.h"
+#include "customswitchwidget.h"
 #include <QLabel>
 
 class CustomSwitchControl : public CustomCombineControlBase

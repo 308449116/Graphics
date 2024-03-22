@@ -22,8 +22,9 @@ INCLUDEPATH += $$PWD/Handle
 INCLUDEPATH += $$PWD/AttributeControl
 INCLUDEPATH += $$PWD/AttributeModel
 INCLUDEPATH += $$PWD/AttributeView
-INCLUDEPATH += $$PWD/CustomUI/CustomControls
-INCLUDEPATH += $$PWD/CustomUI
+INCLUDEPATH += $$PWD/CustomUI/
+INCLUDEPATH += $$PWD/CustomUI/CustomControls/CustomCombineControl
+INCLUDEPATH += $$PWD/CustomUI/CustomControls/CustomSingleControl
 
 SOURCES += \
     AttributeControl/attrboolcontrol.cpp \
@@ -151,5 +152,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    CustomUI/CustomControls/CustomCombineControl/test.qmodel
 
 

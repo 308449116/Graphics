@@ -2,7 +2,7 @@
 #define CUSTOMLINEEDITCONTROL_H
 
 #include "customcombinecontrolbase.h"
-#include "CustomSingleControl/customlineedit.h"
+#include "customlineedit.h"
 #include <QLineEdit>
 #include <QToolButton>
 #include <QWidget>

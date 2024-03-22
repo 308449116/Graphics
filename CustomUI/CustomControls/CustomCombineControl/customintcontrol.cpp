@@ -1,5 +1,5 @@
 #include "customintcontrol.h"
-#include "CustomSingleControl/customintspinbox.h"
+#include "customintspinbox.h"
 #include <QDebug>
 
 CustomIntControl::CustomIntControl(QWidget *parent)

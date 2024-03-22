@@ -1,7 +1,7 @@
 #ifndef ATTRFLOATCONTROL_H
 #define ATTRFLOATCONTROL_H
 
-#include "CustomCombineControl/customdoublecontrol.h"
+#include "customdoublecontrol.h"
 #include "realattribute.h"
 
 class AttrFloatControl : public CustomDoubleControl

@@ -1,7 +1,7 @@
 #ifndef ATTRTEXTCONTROL_H
 #define ATTRTEXTCONTROL_H
 
-#include "CustomCombineControl/customlineeditcontrol.h"
+#include "customlineeditcontrol.h"
 #include "stringattribute.h"
 #include <QString>
 

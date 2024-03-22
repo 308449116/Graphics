@@ -1,5 +1,5 @@
 #include "customdoublecontrol.h"
-#include "CustomSingleControl/customdoublespinbox.h"
+#include "customdoublespinbox.h"
 
 CustomDoubleControl::CustomDoubleControl(QWidget *parent)
     :CustomCombineControlBase(parent)
@@ -98,9 +98,10 @@ void CustomDoubleControl::onSliderReleased()
 
 void CustomDoubleControl::onSliderValueChanged(int value)
 {
+    Q_UNUSED(value)
+
     qreal valus = getValuesBySlider();
     m_pDoubleSpinBox->setValue(valus);
-
     emit valueChanged(valus);
 }
 

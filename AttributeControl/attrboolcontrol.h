@@ -1,7 +1,7 @@
 #ifndef ATTRBOOLCONTROL_H
 #define ATTRBOOLCONTROL_H
 
-#include "CustomCombineControl/customswitchcontrol.h"
+#include "customswitchcontrol.h"
 #include "boolattribute.h"
 
 class AttrBoolControl : public CustomSwitchControl

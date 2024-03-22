@@ -4,7 +4,7 @@
 #include "attrintcontrol.h"
 #include "attrboolcontrol.h"
 #include "nodebase.h"
-#include "CustomCombineControl/customgroupcontrol.h"
+#include "customgroupcontrol.h"
 #include <QVBoxLayout>
 
 NodeAttrControl::NodeAttrControl(QObject *parent)
