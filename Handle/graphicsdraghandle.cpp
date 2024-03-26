@@ -1,7 +1,7 @@
 #include "graphicsdraghandle.h"
 #include "graphicsselection.h"
 #include "viewgraphics.h"
-#include "graphicstextitem.h"
+#include "graphicsobject/graphicstextitem.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -76,7 +76,7 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     m_itemPosHash.clear();
 
     QList<QGraphicsItem *> items = m_view->scene()->selectedItems();
-    foreach (auto item, items) {
+    for (auto item : items) {
         GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
         if (handle->handleType() == GraphicsHandle::Drag) {
             m_itemPosHash.insert(handle->item(), handle->item()->pos());
@@ -119,7 +119,7 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     //Undo/Redo 移动处理
     if (m_itemPosHash.count() > 0 && m_lastPos != m_pressedPos) {
         m_view->moveItemsByCmd(m_itemPosHash.keys(), m_offsetPos, true);
-        foreach (auto item, m_itemPosHash.keys()) {
+        for (auto item : m_itemPosHash.keys()) {
             if (item->subItem()->parentItem()) {
                 emit item->sendGraphicsItemChange();
             }

@@ -1,5 +1,5 @@
 #include "customdoublecontrol.h"
-#include "customdoublespinbox.h"
+#include "custom_ui/customcontrols/customsinglecontrol/customdoublespinbox.h"
 
 CustomDoubleControl::CustomDoubleControl(QWidget *parent)
     :CustomCombineControlBase(parent)

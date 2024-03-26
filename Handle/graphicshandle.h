@@ -2,10 +2,13 @@
 #define GRAPHICSHANDLE_H
 
 #include <QGraphicsItem>
-#include "graphicsitem.h"
+#include "graphicsobject/graphicsitem.h"
+
+const static int ROTATE_HANDLE_WIDTH = 14;
+const static int SIZE_HANDLE_WIDTH = 6;
+const static int LINE_HANDLE_WIDTH = 20;
 
 class GraphicsSelection;
-
 class GraphicsHandle : public QGraphicsItem
 {
 public:

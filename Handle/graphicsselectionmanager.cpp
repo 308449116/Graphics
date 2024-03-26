@@ -1,8 +1,8 @@
 #include "graphicsselectionmanager.h"
 #include "graphicsselection.h"
-#include "graphicsitem.h"
-#include "graphicsitemgroup.h"
-#include "common.h"
+#include "graphicsobject/graphicsitem.h"
+#include "graphicsobject/graphicsitemgroup.h"
+
 #include <QDebug>
 
 GraphicsSelectionManager::~GraphicsSelectionManager()
@@ -98,7 +98,7 @@ void GraphicsSelectionManager::updateHandle(GraphicsItem *item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
             this->updateHandle(childItem);
         }
     }

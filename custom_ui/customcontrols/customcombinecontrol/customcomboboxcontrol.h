@@ -2,7 +2,7 @@
 #define CUSTOMCOMBOBOXCONTROL_H
 
 #include "customcombinecontrolbase.h"
-#include "customcombobox.h"
+#include "custom_ui/customcontrols/customsinglecontrol/customcombobox.h"
 
 class CustomComboBoxControl : public CustomCombineControlBase
 {

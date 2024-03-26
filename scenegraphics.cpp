@@ -1,6 +1,6 @@
 #include "scenegraphics.h"
-#include "graphicshandle.h"
-#include "common.h"
+#include "handle/graphicshandle.h"
+
 
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -63,7 +63,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
     }
     case Qt::Key_A: {
         if(QApplication::keyboardModifiers() & Qt::ControlModifier){
-            foreach (auto *item, items()) {
+            for (auto *item : items()) {
                 GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
                 if (handle && handle->handleType() == GraphicsHandle::Drag) {
                     handle->setSelected(true);
@@ -81,7 +81,7 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
 
 void SceneGraphics::deselectItems()
 {
-    foreach (auto *item, selectedItems()) {
+    for (auto item : selectedItems()) {
         removeItem(item);
         item->setSelected(false);
     }

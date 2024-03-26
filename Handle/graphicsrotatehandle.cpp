@@ -1,7 +1,7 @@
 #include "graphicsrotatehandle.h"
 #include "graphicsselection.h"
 #include "viewgraphics.h"
-#include "common.h"
+
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>

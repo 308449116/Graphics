@@ -3,7 +3,7 @@
 
 #include <QLineEdit>
 #include <QWidget>
-#include "CustomWidgtes/customwidget.h"
+#include "custom_ui/customwidgtes/customwidget.h"
 
 class CustomCloseButton;
 class CustomLineEdit : public QLineEdit

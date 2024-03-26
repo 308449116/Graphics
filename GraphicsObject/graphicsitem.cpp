@@ -1,7 +1,6 @@
 #include "graphicsitem.h"
 #include "graphicsitemgroup.h"
-#include "nodebase.h"
-#include "common.h"
+#include "attributemodel/nodebase.h"
 
 GraphicsItem::GraphicsItem(QObject *parent)
     : QObject(parent)
@@ -52,7 +51,7 @@ void GraphicsItem::setChildItemRotation(GraphicsItem *item, qreal angleGroup)
     item->setGroupAngle(angleGroup);
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
             setChildItemRotation(childItem, itemGroup->rotation() + itemGroup->groupAngle());
         }
     }
@@ -79,12 +78,12 @@ void GraphicsItem::updateAttribute()
         topLeft.setY(0);
     }
 
-    m_AtrributeNode->getAttribute(X)->setValue(topLeft.x());
-    m_AtrributeNode->getAttribute(Y)->setValue(topLeft.y());
-    m_AtrributeNode->getAttribute(Z)->setValue(m_zValue);
-    m_AtrributeNode->getAttribute(WIDTH)->setValue(m_localRect.width());
-    m_AtrributeNode->getAttribute(HEIGHT)->setValue(m_localRect.height());
-    m_AtrributeNode->getAttribute(ROTATE)->setValue(m_rotationAngle);
+    m_AtrributeNode->getAttribute(QString::fromUtf8(X))->setValue(topLeft.x());
+    m_AtrributeNode->getAttribute(QString::fromUtf8(Y))->setValue(topLeft.y());
+    m_AtrributeNode->getAttribute(QString::fromUtf8(Z))->setValue(m_zValue);
+    m_AtrributeNode->getAttribute(QString::fromUtf8(WIDTH))->setValue(m_localRect.width());
+    m_AtrributeNode->getAttribute(QString::fromUtf8(HEIGHT))->setValue(m_localRect.height());
+    m_AtrributeNode->getAttribute(QString::fromUtf8(ROTATE))->setValue(m_rotationAngle);
 
 //    if (m_AtrributeNode->getAttribute(X)->getValue().toDouble() != topLeft.x()) {
 //        m_AtrributeNode->getAttribute(X)->setValue(topLeft.x());
@@ -151,7 +150,7 @@ void GraphicsItem::setItemGroup(GraphicsItemGroup *newItemGroup)
 {
     if (this->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
             childItem->setItemGroup(newItemGroup);
         }
     }
@@ -166,7 +165,7 @@ void GraphicsItem::setRotation(qreal newAngle)
     m_rotationAngle = newAngle;
     if (this->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(this);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
             setChildItemRotation(childItem, m_rotationAngle + itemGroup->groupAngle());
         }
     }
@@ -275,8 +274,8 @@ void GraphicsItem::onXPositionAttributeValueChanged(const QVariant& value)
         return;
     }
 
-    qreal offset = m_AtrributeNode->getAttribute(X)->getValue().toDouble() -
-                   m_AtrributeNode->getAttribute(X)->getLastValue().toDouble();
+    qreal offset = m_AtrributeNode->getAttribute(QString::fromUtf8(X))->getValue().toDouble() -
+                   m_AtrributeNode->getAttribute(QString::fromUtf8(X))->getLastValue().toDouble();
     m_subItem->moveBy(offset, 0);
     emit sendUpdateHandle();
 }
@@ -288,8 +287,8 @@ void GraphicsItem::onYPositionAttributeValueChanged(const QVariant& value)
         return;
     }
 
-    qreal offset = m_AtrributeNode->getAttribute(Y)->getValue().toDouble() -
-                   m_AtrributeNode->getAttribute(Y)->getLastValue().toDouble();
+    qreal offset = m_AtrributeNode->getAttribute(QString::fromUtf8(Y))->getValue().toDouble() -
+                   m_AtrributeNode->getAttribute(QString::fromUtf8(Y))->getLastValue().toDouble();
     m_subItem->moveBy(0, offset);
     emit sendUpdateHandle();
 }

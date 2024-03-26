@@ -6,6 +6,8 @@
 #include <QToolBar>
 #include <QMainWindow>
 
+#include "viewgraphics.h"
+
 class QUndoView;
 class QScrollArea;
 class SceneGraphics;
@@ -27,7 +29,7 @@ public:
 public slots:
     void onSelectedItemChanged();
 
-    void on_shpeBtn_clicked();
+    void on_shapeBtn_clicked();
 
     void on_textBtn_clicked();
 
@@ -68,7 +70,7 @@ private:
     // 属性界面
     AttributeWidget *m_pAttributeWidget = nullptr;
     QDockWidget *m_pAttributeDockWidget = nullptr;
-//    QScrollArea *m_pScrollArea = nullptr;
+    //    QScrollArea *m_pScrollArea = nullptr;
 
     // Undo View
     QUndoView *m_pUndoView = nullptr;

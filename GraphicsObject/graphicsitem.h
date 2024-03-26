@@ -4,16 +4,19 @@
 #include <QObject>
 #include <QGraphicsItem>
 
-//enum GraphicsItemType
-//{
-//    GroupItem = QGraphicsItem::UserType + 1,
-//    RectItem,
-//    TextItem,
-//    BarcodeItem,
-//    EllipseItem,
-//    ImageItem,
-//    TypeCount
-//};
+const static int GRID_SIZE = 10;
+
+enum GraphicsItemType
+{
+    GroupItem = QGraphicsItem::UserType + 1,
+    RectItem,
+    TextItem,
+    BarcodeItem,
+    EllipseItem,
+    ImageItem,
+    TypeCount
+};
+
 class NodeBase;
 class GraphicsItemGroup;
 class QXmlStreamReader;

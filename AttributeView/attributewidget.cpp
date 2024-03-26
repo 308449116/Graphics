@@ -1,5 +1,5 @@
 #include "attributewidget.h"
-#include "nodebase.h"
+#include "attributemodel/nodebase.h"
 #include "nodeattrcontrol.h"
 
 AttributeWidget::AttributeWidget(QWidget *parent)

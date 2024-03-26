@@ -1,7 +1,7 @@
 #ifndef UICUSTOMCOMBINECONTROLBASE_H
 #define UICUSTOMCOMBINECONTROLBASE_H
 
-#include "CustomWidgtes/customwidget.h"
+#include "custom_ui/customwidgtes/customwidget.h"
 #include <QHBoxLayout>
 #include <QLabel>
 

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
-#include "CustomWidgtes/customwidget.h"
+#include "custom_ui/customwidgtes/customwidget.h"
 
 class CustomGroupTitleItem;
 class CustomGroupContentItem;

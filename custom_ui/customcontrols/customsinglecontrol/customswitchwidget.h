@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QTimer>
-#include "CustomWidgtes/customwidget.h"
+#include "custom_ui/customwidgtes/customwidget.h"
 
 class CustomSwitchWidget : public CustomWidget
 {

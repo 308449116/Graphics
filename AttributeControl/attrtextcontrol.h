@@ -1,8 +1,8 @@
 #ifndef ATTRTEXTCONTROL_H
 #define ATTRTEXTCONTROL_H
 
-#include "customlineeditcontrol.h"
-#include "stringattribute.h"
+#include "custom_ui/customcontrols/customcombinecontrol/customlineeditcontrol.h"
+#include "attributemodel/stringattribute.h"
 #include <QString>
 
 class AttrTextControl : public CustomLineEditControl

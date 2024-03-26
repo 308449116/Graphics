@@ -2,7 +2,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
-#include "common.h"
+
 
 GraphicsRectItem::GraphicsRectItem(const QRectF &rect, QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem(parent)

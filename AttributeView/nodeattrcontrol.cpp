@@ -1,10 +1,10 @@
 #include "nodeattrcontrol.h"
-#include "attrtextcontrol.h"
-#include "attrfloatcontrol.h"
-#include "attrintcontrol.h"
-#include "attrboolcontrol.h"
-#include "nodebase.h"
-#include "customgroupcontrol.h"
+#include "attributecontrol/attrtextcontrol.h"
+#include "attributecontrol/attrfloatcontrol.h"
+#include "attributecontrol/attrintcontrol.h"
+#include "attributecontrol/attrboolcontrol.h"
+#include "attributemodel/nodebase.h"
+#include "custom_ui/customcontrols/customcombinecontrol/customgroupcontrol.h"
 #include <QVBoxLayout>
 
 NodeAttrControl::NodeAttrControl(QObject *parent)
@@ -36,7 +36,7 @@ QWidget *NodeAttrControl::createNodeWidget(NodeBase *node)
     mainLayout->setSpacing(8);
 
     // 添加属性组
-    foreach(auto group, attributeGroupList) {
+    for (auto group : attributeGroupList) {
         QWidget *groupControl = createAttributeGroupControl(group);
         mainLayout->addWidget(groupControl, 0, Qt::AlignTop);
     }
@@ -84,7 +84,7 @@ QWidget *NodeAttrControl::createAttributeGroupControl(AttributeGroup *group)
 
     // 添加属性控件
     const QList<AttributeBase*> &attributes = group->getAttributes();
-    foreach(auto attribute, attributes) {
+    for (auto attribute : attributes) {
         QWidget *pWidget = createAttributeControl(attribute);
         if (pWidget == nullptr) {
             continue;

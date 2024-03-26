@@ -2,7 +2,7 @@
 //#include "intattribute.h"
 #include "realattribute.h"
 #include "attributegroup.h"
-#include "graphicsitem.h"
+#include "graphicsobject/graphicsitem.h"
 
 NodeBase::NodeBase(GraphicsItem *item, NodeType type)
     :QObject(item)
@@ -52,7 +52,7 @@ bool NodeBase::addAttribute(const QString& groupName, AttributeBase *attribute)
         return false;
 
     AttributeGroup *attributeGroup = nullptr;
-    foreach(auto goup, m_groupList) {
+    for (auto goup : m_groupList) {
         if (groupName == goup->getName()) {
             attributeGroup = goup;
             break;
@@ -85,7 +85,7 @@ bool NodeBase::deleteAttribute(AttributeBase *attribute)
 
 bool NodeBase::deleteAttribute(const QString& name)
 {
-    foreach (auto item, m_groupList) {
+    for (auto item : m_groupList) {
         if (AttributeBase *attribute = item->getAttribute(name)) {
             deleteAttribute(attribute);
             return true;
@@ -99,7 +99,7 @@ bool NodeBase::deleteAttribute(const QString& name)
 // 查找属性
 AttributeBase *NodeBase::getAttribute(const QString& attrName) const
 {
-    foreach (auto item, m_groupList) {
+    for (auto item : m_groupList) {
         if (AttributeBase *attribute = item->getAttribute(attrName)) {
             return attribute;
         }
@@ -121,42 +121,42 @@ void NodeBase::initNodeBase()
     // X坐标
     m_pXPositionAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pXPositionAttribute->setDisplayName(tr("X Position: "));
-    m_pXPositionAttribute->setName(X);
+    m_pXPositionAttribute->setName(QString::fromUtf8(X));
     m_pXPositionAttribute->setValueRange(0, 5000);
     this->addAttribute(group, m_pXPositionAttribute);
 
     // Y坐标
     m_pYPositionAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pYPositionAttribute->setDisplayName(tr("Y Position: "));
-    m_pYPositionAttribute->setName(Y);
+    m_pYPositionAttribute->setName(QString::fromUtf8(Y));
     m_pYPositionAttribute->setValueRange(0, 5000);
     this->addAttribute(group, m_pYPositionAttribute);
 
     // Z坐标
     m_pZPositionAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pZPositionAttribute->setDisplayName(tr("Z Position: "));
-    m_pZPositionAttribute->setName(Z);
+    m_pZPositionAttribute->setName(QString::fromUtf8(Z));
     m_pZPositionAttribute->setValueRange(0, 10);
     this->addAttribute(group, m_pZPositionAttribute);
 
     // 宽度
     m_pWidthAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pWidthAttribute->setDisplayName(tr("width: "));
-    m_pWidthAttribute->setName(WIDTH);
+    m_pWidthAttribute->setName(QString::fromUtf8(WIDTH));
     m_pWidthAttribute->setValueRange(10, 5000);
     this->addAttribute(group, m_pWidthAttribute);
 
     // 高度
     m_pHeightAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pHeightAttribute->setDisplayName(tr("height: "));
-    m_pHeightAttribute->setName(HEIGHT);
+    m_pHeightAttribute->setName(QString::fromUtf8(HEIGHT));
     m_pHeightAttribute->setValueRange(10, 5000);
     this->addAttribute(group, m_pHeightAttribute);
 
     // 旋转
     m_pRotateAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
     m_pRotateAttribute->setDisplayName(tr("Rotate Angle: "));
-    m_pRotateAttribute->setName(ROTATE);
+    m_pRotateAttribute->setName(QString::fromUtf8(ROTATE));
     m_pRotateAttribute->setValueRange(0, 360);
     m_pRotateAttribute->setValue(0);
     this->addAttribute(group, m_pRotateAttribute);

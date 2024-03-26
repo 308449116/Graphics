@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "AttributeWidget.h"
+#include "attributeview/attributewidget.h"
 //#include "graphicsitemmanager.h"
 //#include "graphicstextitem.h"
 #include <QGraphicsItem>
@@ -127,7 +127,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->editToolBar->addSeparator();
 
     ui->editToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
-//    ui->undoView->setStack(ui->graphicsView->getUndoStack());
+    //    ui->undoView->setStack(ui->graphicsView->getUndoStack());
     // 添加属性界面
 
     m_pAttributeDockWidget = new QDockWidget(tr("Attribute"));
@@ -135,9 +135,9 @@ MainWindow::MainWindow(QWidget *parent)
                                         QDockWidget::DockWidgetClosable);
     m_pAttributeDockWidget->setFloating(true);
     m_pAttributeWidget = new AttributeWidget;
-//    m_pScrollArea = new QScrollArea;
-//    scrollArea->setBackgroundRole(QPalette::Dark);
-//    m_pScrollArea->setWidget(m_pAttributeWidget);
+    //    m_pScrollArea = new QScrollArea;
+    //    scrollArea->setBackgroundRole(QPalette::Dark);
+    //    m_pScrollArea->setWidget(m_pAttributeWidget);
     m_pAttributeDockWidget->setWidget(m_pAttributeWidget);
     this->addDockWidget(Qt::RightDockWidgetArea, m_pAttributeDockWidget);
 
@@ -156,47 +156,47 @@ MainWindow::MainWindow(QWidget *parent)
     updateActions();
     connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateActions);
     m_timer.start(1000);
-//    int width = 600;
-//    int height = 400;
-//    QRectF rect(-width/2, -height/2, width, height);
-//    QRectF rect(0, 0, width, height);
-//    m_scene = new SceneGraphics(this);
-//    m_scene->setSceneRect(rect);
-//    m_scene = dynamic_cast<SceneGraphics*>(ui->graphicsView->scene());
-//    if (!m_scene) {
-//        qDebug("=============");
-//    }
-//    QGraphicsTextItem * testitem = new QGraphicsTextItem("test");
-//    QGraphicsItem * item = qgraphicsitem_cast<QGraphicsItem *>(testitem);
-//    m_scene->addItem(item);
+    //    int width = 600;
+    //    int height = 400;
+    //    QRectF rect(-width/2, -height/2, width, height);
+    //    QRectF rect(0, 0, width, height);
+    //    m_scene = new SceneGraphics(this);
+    //    m_scene->setSceneRect(rect);
+    //    m_scene = dynamic_cast<SceneGraphics*>(ui->graphicsView->scene());
+    //    if (!m_scene) {
+    //        qDebug("=============");
+    //    }
+    //    QGraphicsTextItem * testitem = new QGraphicsTextItem("test");
+    //    QGraphicsItem * item = qgraphicsitem_cast<QGraphicsItem *>(testitem);
+    //    m_scene->addItem(item);
 
-//    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
-//    rectItem->setFlags(QGraphicsItem::ItemIsSelectable |
-//                       QGraphicsItem::ItemSendsGeometryChanges);
+    //    QGraphicsRectItem *rectItem = new QGraphicsRectItem(rect);
+    //    rectItem->setFlags(QGraphicsItem::ItemIsSelectable |
+    //                       QGraphicsItem::ItemSendsGeometryChanges);
 
-//    QPen pen;
-//    pen.setWidth(2);
-//    pen.setStyle(Qt::DashLine);
-//    QGraphicsLineItem *lineItemX = new QGraphicsLineItem(rect.left(), 0, rect.left() + rect.width(), 0);
-//    QGraphicsLineItem *lineItemY = new QGraphicsLineItem(0, rect.top(), 0, rect.top() + rect.height());
-//    lineItemX->setPen(pen);
-//    lineItemY->setPen(pen);
-//    m_scene->addItem(rectItem);
-//    m_scene->addItem(lineItemX);
-//    m_scene->addItem(lineItemY);
+    //    QPen pen;
+    //    pen.setWidth(2);
+    //    pen.setStyle(Qt::DashLine);
+    //    QGraphicsLineItem *lineItemX = new QGraphicsLineItem(rect.left(), 0, rect.left() + rect.width(), 0);
+    //    QGraphicsLineItem *lineItemY = new QGraphicsLineItem(0, rect.top(), 0, rect.top() + rect.height());
+    //    lineItemX->setPen(pen);
+    //    lineItemY->setPen(pen);
+    //    m_scene->addItem(rectItem);
+    //    m_scene->addItem(lineItemX);
+    //    m_scene->addItem(lineItemY);
 
-//    qDebug() << "ui->graphicsView->rect"<< ui->graphicsView->rect();
-//    ui->graphicsView->setScene(m_scene);
-//    ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-//    ui->graphicsView->setGeometry(0, 0, width, height);
-//    qDebug() << "ui->graphicsView->geometry:"<< ui->graphicsView->geometry();
-//    qDebug() << "ui->graphicsView->pos:"<< ui->graphicsView->pos();
+    //    qDebug() << "ui->graphicsView->rect"<< ui->graphicsView->rect();
+    //    ui->graphicsView->setScene(m_scene);
+    //    ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    //    ui->graphicsView->setGeometry(0, 0, width, height);
+    //    qDebug() << "ui->graphicsView->geometry:"<< ui->graphicsView->geometry();
+    //    qDebug() << "ui->graphicsView->pos:"<< ui->graphicsView->pos();
 
-//    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-//    ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+    //    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //    ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 
-//    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-//    ui->graphicsView->setCursor(QCursor());
+    //    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+    //    ui->graphicsView->setCursor(QCursor());
 }
 
 MainWindow::~MainWindow()
@@ -205,7 +205,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_shpeBtn_clicked()
+void MainWindow::on_shapeBtn_clicked()
 {
     ui->graphicsView->createItemByCmd(GraphicsItemType::RectItem);
 }
@@ -233,26 +233,26 @@ void MainWindow::on_barcodeBtn_clicked()
     group->removeFromGroup(rect1);
     group->removeFromGroup(rect2);
     rect1->setRotation(0);
-//    rect1->moveBy(-200, -200);
+    //    rect1->moveBy(-200, -200);
     rect1->setPos(0, 0);
-//    GraphicsItem *item =
-//        GraphicsItem *( new GraphicsTextItem("jkpg") );
-//    ui->graphicsView->scene()->addItem(item);
-;
+    //    GraphicsItem *item =
+    //        GraphicsItem *( new GraphicsTextItem("jkpg") );
+    //    ui->graphicsView->scene()->addItem(item);
+    ;
 
-//    ui->graphicsView->createItemByCmd(GraphicsItemType::BarcodeItem);
+    //    ui->graphicsView->createItemByCmd(GraphicsItemType::BarcodeItem);
 }
 
 void MainWindow::on_underLineBtn_clicked(bool checked)
 {
-//    qDebug() << "checked:"<< checked;
-//    QFont font = textItem->getCurrentFont();
-//    font.setUnderline(true);
-//    font.setOverline(true);
-//    font.setItalic(true);
-//    font.setStrikeOut(true);
-//    font.setBold(true);
-//    textItem->setCurrentFont(font);
+    //    qDebug() << "checked:"<< checked;
+    //    QFont font = textItem->getCurrentFont();
+    //    font.setUnderline(true);
+    //    font.setOverline(true);
+    //    font.setItalic(true);
+    //    font.setStrikeOut(true);
+    //    font.setBold(true);
+    //    textItem->setCurrentFont(font);
 }
 
 void MainWindow::updateActions()

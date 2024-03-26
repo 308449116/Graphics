@@ -1,6 +1,5 @@
 #include "graphicstextitem.h"
-#include "TextNode.h"
-#include "common.h"
+#include "attributemodel/textnode.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -157,7 +156,7 @@ void GraphicsTextItem::stretch(qreal sx, qreal sy, const QPointF &origin)
         m_scaleX = m_localRect.width() / getTextSize().width();
         m_textItem->setFont(m_font);
 
-        m_AtrributeNode->getAttribute(FONTSIZE)->setValue(m_font.pixelSize());
+        m_AtrributeNode->getAttribute(QString::fromUtf8(FONTSIZE))->setValue(m_font.pixelSize());
 //        if (m_AtrributeNode->getAttribute(FONTSIZE)->getValue().toInt() != m_font.pixelSize()) {
 //            m_AtrributeNode->getAttribute(FONTSIZE)->setValue(m_font.pixelSize());
 //        }
@@ -251,7 +250,7 @@ void GraphicsTextItem::setText(const QString &text)
     m_textItem->setText(m_text);
     updateLocalRect();
 
-    m_AtrributeNode->getAttribute(TEXT)->setValue(m_text);
+    m_AtrributeNode->getAttribute(QString::fromUtf8(TEXT))->setValue(m_text);
 //    if (m_AtrributeNode->getAttribute(TEXT)->getValue().toString() != m_text) {
 //        m_AtrributeNode->getAttribute(TEXT)->setValue(m_text);
 //    }
@@ -268,7 +267,7 @@ void GraphicsTextItem::setFont(const QFont &font)
     m_textItem->setFont(m_font);
     updateLocalRect();
 
-    m_AtrributeNode->getAttribute(FONTSIZE)->setValue(font.pixelSize());
+    m_AtrributeNode->getAttribute(QString::fromUtf8(FONTSIZE))->setValue(font.pixelSize());
 //    if (m_AtrributeNode->getAttribute(FONTSIZE)->getValue().toInt() != font.pixelSize()) {
 //        m_AtrributeNode->getAttribute(FONTSIZE)->setValue(font.pixelSize());
 //    }

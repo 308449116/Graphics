@@ -44,9 +44,11 @@ const QList<AttributeBase*> &AttributeGroup::getAttributes()
 
 AttributeBase *AttributeGroup::getAttribute(const QString& name) const
 {
-    foreach (auto item, m_attributes)
-        if (item->getName() == name)
+    for (auto item : m_attributes) {
+        if (item->getName() == name) {
             return item;
+        }
+    }
 
     return nullptr;
 }

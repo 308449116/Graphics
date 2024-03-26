@@ -1,19 +1,19 @@
 #include "viewgraphics.h"
 #include "scenegraphics.h"
 
-#include "graphicsselectionmanager.h"
-#include "graphicsitemmanager.h"
-#include "graphicsitemgroup.h"
-#include "graphicshandle.h"
+#include "handle/graphicshandle.h"
+#include "handle/graphicsselectionmanager.h"
+#include "graphicsobject/graphicsitemgroup.h"
+#include "graphicsobject/graphicsitemmanager.h"
 
-#include "itemcreatecmd.h"
-#include "itemdeletecmd.h"
-#include "itemmovecmd.h"
-#include "itemresizecmd.h"
-#include "itemrotatecmd.h"
-#include "itemcopycmd.h"
-#include "itemgroupcmd.h"
-#include "itemungroupcmd.h"
+#include "undocmd/itemcreatecmd.h"
+#include "undocmd/itemdeletecmd.h"
+#include "undocmd/itemmovecmd.h"
+#include "undocmd/itemresizecmd.h"
+#include "undocmd/itemrotatecmd.h"
+#include "undocmd/itemcopycmd.h"
+#include "undocmd/itemgroupcmd.h"
+#include "undocmd/itemungroupcmd.h"
 
 #include <QUndoView>
 #include <QAction>
@@ -96,7 +96,7 @@ void ViewGraphics::deleteItemsByCmd()
 //    QList<GraphicsItem *> items = selectedItems();
     QList<GraphicsItem *> items;
     QList<GraphicsItem *> itemTempList = selectedItems();
-    foreach (auto item, itemTempList) {
+    for (auto item : itemTempList) {
         if (item->subItem()->group()) {
             continue;
         }
@@ -115,7 +115,7 @@ void ViewGraphics::deleteItemsByCmd()
 
 void ViewGraphics::deleteItems(const QList<GraphicsItem *> &items, bool isFreeMemory)
 {
-    foreach (auto item, items) {
+    for (auto item : items) {
         deleteItem(item, isFreeMemory);
     }
 }
@@ -212,7 +212,7 @@ void ViewGraphics::alignItems(AlignType alignType)
     QPointF refCenterPos = refRect.center();
 
     QList<GraphicsItem *> itemList;
-    foreach (auto item, items) {
+    for (auto item : items) {
         itemList.clear();
         QGraphicsItemGroup *g = qgraphicsitem_cast<QGraphicsItemGroup *>(item->subItem()->parentItem());
         if (g) {
@@ -263,7 +263,7 @@ void ViewGraphics::groupItemsByCmd()
         return;
     }
 
-    foreach (auto item, items) {
+    for (auto item : items) {
         if (item->subItem()->group()) {
             //不允许和组中元素组合成新的组
             return;
@@ -290,7 +290,7 @@ void ViewGraphics::ungroupItemsByCmd()
 //    QList<GraphicsItem *> items = selectedItems();
     QList<GraphicsItem *> items;
     QList<GraphicsItem *> itemTempList = selectedItems();
-    foreach (auto item, itemTempList) {
+    for (auto item : itemTempList) {
         if (item->subItem()->group()) {
             continue;
         }
@@ -310,12 +310,12 @@ void ViewGraphics::ungroupItemsByCmd()
 void ViewGraphics::ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory)
 {
     qDebug() << "ungroupItems count:" << items.count();
-    foreach (auto item, items) {
+    for (auto item : items) {
         if (item->type() != GraphicsItemType::GroupItem) continue;
 
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
         GraphicsItemGroup *parentGroup = itemGroup->itemGroup();
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
 //            this->setZValue(childItem, -1);
             itemGroup->removeFromGroup(childItem);
             childItem->setItemGroup(nullptr);
@@ -348,7 +348,7 @@ void ViewGraphics::duplicateItemsByCmd()
 QList<GraphicsItem *> ViewGraphics::duplicateItems(QList<GraphicsItem *> items)
 {
     QList<GraphicsItem *> itemCopyList;
-    foreach (auto item, items) {
+    for (auto item : items) {
         GraphicsItem *itemCopy = item->duplicate();
         addItem(itemCopy);
         itemCopyList << itemCopy;
@@ -382,7 +382,7 @@ void ViewGraphics::addGroupItems(GraphicsItem *item)
     //递归添加组的子图元
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
 //            childItem->setItemParent(item);
             addGroupItems(childItem);
 //            m_selectionManager->hide(childItem, true);
@@ -415,7 +415,7 @@ void ViewGraphics::removeItem(GraphicsItem *item)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
             removeItem(childItem);
         }
     }
@@ -489,7 +489,7 @@ QList<GraphicsItem *> ViewGraphics::selectedItems()
     QList<GraphicsItem *> itemList;
 
     QList<QGraphicsItem *> items = m_scene->selectedItems();
-    foreach (auto item, items) {
+    for (auto item : items) {
         GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
         if (handle->handleType() == GraphicsHandle::Drag) {
             itemList << handle->item();

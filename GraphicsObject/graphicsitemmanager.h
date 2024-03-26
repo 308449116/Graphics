@@ -5,7 +5,7 @@
 #include <QHash>
 #include <QSharedPointer>
 
-#include "common.h"
+
 #include "graphicsitem.h"
 
 class ViewGraphics;

@@ -1,8 +1,8 @@
 #ifndef ATTRINTCONTROL_H
 #define ATTRINTCONTROL_H
 
-#include "customintcontrol.h"
-#include "intattribute.h"
+#include "custom_ui/customcontrols/customcombinecontrol/customintcontrol.h"
+#include "attributemodel/intattribute.h"
 
 class AttrIntControl : public CustomIntControl
 {

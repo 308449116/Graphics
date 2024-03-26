@@ -1,5 +1,5 @@
 #include "attrintcontrol.h"
-#include "numericattribute.h"
+#include "attributemodel/numericattribute.h"
 
 AttrIntControl::AttrIntControl(AttributeBase *attribute, QWidget *parent)
     :CustomIntControl(parent)

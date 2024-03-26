@@ -1,7 +1,7 @@
 #include "textnode.h"
 #include "intattribute.h"
 #include "stringattribute.h"
-#include "graphicstextitem.h"
+#include "graphicsobject/graphicstextitem.h"
 
 TextNode::TextNode(GraphicsItem *item)
     :NodeBase(item, t_textNode)
@@ -27,7 +27,7 @@ void TextNode::initAttribute()
     m_pTextValueAttribute = new StringAttribute(AttributeBase::LINEEDIT_TYPE);
     m_pTextValueAttribute->setValue("test");
     m_pTextValueAttribute->setDisplayName(tr("Text: "));
-    m_pTextValueAttribute->setName(TEXT);
+    m_pTextValueAttribute->setName(QString::fromUtf8(TEXT));
     m_pTextValueAttribute->setShowButton(false);
     this->addAttribute(groupName, m_pTextValueAttribute);
 
@@ -36,7 +36,7 @@ void TextNode::initAttribute()
     m_pFontSizeAttribute->setValue(100);
     m_pFontSizeAttribute->setValueRange(1, 200);
     m_pFontSizeAttribute->setDisplayName(tr("Font Size: "));
-    m_pFontSizeAttribute->setName(FONTSIZE);
+    m_pFontSizeAttribute->setName(QString::fromUtf8(FONTSIZE));
     this->addAttribute(groupName, m_pFontSizeAttribute);
 
     GraphicsTextItem *textItem = dynamic_cast<GraphicsTextItem *>(m_item);

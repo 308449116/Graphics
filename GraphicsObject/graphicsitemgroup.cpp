@@ -1,6 +1,6 @@
 #include "graphicsitemgroup.h"
 #include "graphicsitem.h"
-#include "common.h"
+
 
 #include <QPainter>
 
@@ -16,7 +16,7 @@ GraphicsItemGroup::GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem 
     : GraphicsItem{parent}
 {
     m_subItem = m_group = new QGraphicsItemGroup(parentItem);
-    foreach (auto item, items){
+    for (auto item : items){
         QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->subItem()->parentItem());
         if ( !g ) {
             GraphicsItemGroup::addToGroup(item);
@@ -31,7 +31,7 @@ GraphicsItemGroup::GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem 
 
 GraphicsItemGroup::~GraphicsItemGroup()
 {
-    foreach (auto childItem, m_childItems) {
+    for (auto childItem : m_childItems) {
         delete childItem;
         childItem = nullptr;
     }
@@ -89,7 +89,7 @@ int GraphicsItemGroup::type() const
 
 void GraphicsItemGroup::updateCoordinate()
 {
-    foreach (auto childItem , this->getChildItems()) {
+    for (auto childItem : this->getChildItems()) {
         childItem->updateCoordinate();
     }
 
@@ -181,7 +181,7 @@ QSet<GraphicsItem *> GraphicsItemGroup::getChildItems() const
 
 void GraphicsItemGroup::stretch(qreal sx, qreal sy, const QPointF &origin)
 {
-    foreach (auto childItem, getChildItems()) {
+    for (auto childItem : getChildItems()) {
         childItem->stretch(sx, sy, childItem->subItem()->mapFromItem(m_group, origin));
     }
 
@@ -212,7 +212,7 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
 
     QObject::connect(item, &GraphicsItem::sendGraphicsItemChange, this, [this](){
         QRectF rect;
-        foreach (auto childItem, m_childItems) {
+        for (auto childItem : m_childItems) {
             QTransform itemTransform = childItem->subItem()->itemTransform(m_group);
             rect |= itemTransform.mapRect(childItem->subItem()->boundingRect() |
                                           childItem->subItem()->childrenBoundingRect());
@@ -241,7 +241,7 @@ void GraphicsItemGroup::setChildItemZValue(GraphicsItem *item, int increment)
 {
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, itemGroup->getChildItems()) {
+        for (auto childItem : itemGroup->getChildItems()) {
             setChildItemZValue(childItem, increment);
         }
     }
@@ -270,7 +270,7 @@ void GraphicsItemGroup::updateItemAngle(GraphicsItem *item, qreal rotationAngel)
     item->setInitAngle(item->initAngle() + rotationAngel);
     if (item->type() == GraphicsItemType::GroupItem) {
         GraphicsItemGroup *group = dynamic_cast<GraphicsItemGroup *>(item);
-        foreach (auto childItem, group->getChildItems()) {
+        for (auto childItem : group->getChildItems()) {
             updateItemAngle(childItem, rotationAngel);
         }
     }
@@ -312,7 +312,7 @@ void GraphicsItemGroup::updateItemAngle(GraphicsItem *item, qreal rotationAngel)
 QList<GraphicsItem *> GraphicsItemGroup::duplicateItems() const
 {
     QList<GraphicsItem *> copylist;
-    foreach (auto childItem, this->getChildItems()) {
+    for (auto childItem : this->getChildItems()) {
         auto copyItem = childItem->duplicate();
         copyItem->setPos(childItem->pos());
         copylist.append(copyItem);

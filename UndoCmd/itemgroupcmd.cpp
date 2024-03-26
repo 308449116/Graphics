@@ -1,6 +1,6 @@
 #include "itemgroupcmd.h"
 #include "viewgraphics.h"
-#include "graphicsitemgroup.h"
+#include "graphicsobject/graphicsitemgroup.h"
 
 ItemGroupCmd::ItemGroupCmd(QList<GraphicsItem *> items,
                            ViewGraphics *view, QUndoCommand *parent)
@@ -34,7 +34,7 @@ void ItemGroupCmd::redo()
         m_itemGroup = m_view->groupItems(m_childItems);
     } else {
         GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(m_itemGroup);
-        foreach (auto item, m_childItems) {
+        for (auto item : m_childItems) {
             itemGroup->addToGroup(item);
         }
         m_view->addItem(m_itemGroup);

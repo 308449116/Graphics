@@ -10,7 +10,7 @@ ItemCopyCmd::ItemCopyCmd(QList<GraphicsItem *> items, ViewGraphics *view, QUndoC
 ItemCopyCmd::~ItemCopyCmd()
 {
     if (m_isDeleteItem) {
-        foreach (auto item, m_itemsCopy) {
+        for (auto item : m_itemsCopy) {
             delete item;
             item = nullptr;
         }
@@ -30,7 +30,7 @@ void ItemCopyCmd::redo()
     if (m_itemsCopy.isEmpty()) {
         m_itemsCopy = m_view->duplicateItems(m_items);
         QStringList strs;
-        foreach (auto item, m_itemsCopy) {
+        for (auto item : m_itemsCopy) {
 //            auto itemCopy = item->duplicate();
 //            m_view->addItem(itemCopy);
 //            m_itemsCopy.push_back(itemCopy);
@@ -39,7 +39,7 @@ void ItemCopyCmd::redo()
         }
         m_strName = strs.join(",");
     } else {
-        foreach (auto item, m_itemsCopy) {
+        for (auto item : m_itemsCopy) {
             m_view->addItem(item);
         }
     }

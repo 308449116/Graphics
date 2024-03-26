@@ -4,7 +4,7 @@
 #include "graphicsrotatehandle.h"
 #include "graphicslinehandle.h"
 #include "viewgraphics.h"
-#include "common.h"
+
 
 GraphicsSelection::GraphicsSelection(ViewGraphics *view)
     : m_view(view), m_item(nullptr)
@@ -41,7 +41,7 @@ void GraphicsSelection::setItem(GraphicsItem *item)
     m_view->scene()->clearSelection();
     m_item = item;
 //    m_item->setSelection(this);
-    foreach (auto *h ,m_handleList) {
+    for (auto *h : m_handleList) {
         h->setItem(m_item);
     }
 
@@ -124,7 +124,7 @@ void GraphicsSelection::updateHandle()
 //    m_handleList[GraphicsHandle::Drag]->setRotation(0);
 //    const QRectF &r = m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item, m_item->getRect());
 
-    foreach (auto *hndl, m_handleList) {
+    for (auto *hndl : m_handleList) {
         if (!hndl)
             continue;
         hndl->setRotation(0);
@@ -304,7 +304,7 @@ void GraphicsSelection::update()
 
 int GraphicsSelection::collidesWithHandle(const QPointF &point) const
 {
-    foreach (auto *handle, m_handleList) {
+    for (auto *handle : m_handleList) {
 //        qDebug() << "handleType:" << handle->handleType()
 //             << "  pos:" << handle->pos()
 //            << "  scene pos:" << point;
@@ -317,7 +317,7 @@ int GraphicsSelection::collidesWithHandle(const QPointF &point) const
 
 QPointF GraphicsSelection::handlePos(int handleType) const
 {
-    foreach (auto *handle, m_handleList) {
+    for (auto *handle : m_handleList) {
         if (handle->handleType() == handleType) {
             return handle->pos();
         }
@@ -417,7 +417,7 @@ int GraphicsSelection::swapHandle(int handle, const QPointF& scale ) const
 
 void GraphicsSelection::setZValue(qreal z)
 {
-    foreach (auto handle, m_handleList) {
+    for (auto handle : m_handleList) {
         handle->setZValue(z);
     }
 }
