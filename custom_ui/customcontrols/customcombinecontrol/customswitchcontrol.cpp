@@ -3,18 +3,18 @@
 CustomSwitchControl::CustomSwitchControl(QWidget *parent)
     :CustomCombineControlBase(parent)
 {
-    m_pSwitchWidget = new CustomSwitchWidget;
-    m_pMainLayout->addWidget(m_pSwitchWidget);
+    m_switchWidget = new CustomSwitchWidget;
+    m_mainLayout->addWidget(m_switchWidget);
 
-    m_pLabel = new QLabel;
-    m_pMainLayout->addWidget(m_pLabel);
+    m_label = new QLabel;
+    m_mainLayout->addWidget(m_label);
 
-    m_pMainLayout->addStretch();
+    m_mainLayout->addStretch();
 
     this->setWidth(400);
     this->setHeight(30);
 
-    QObject::connect(m_pSwitchWidget, &CustomSwitchWidget::valueChanged, \
+    QObject::connect(m_switchWidget, &CustomSwitchWidget::valueChanged, \
                      this, &CustomSwitchControl::valueChanged);
 }
 
@@ -26,15 +26,15 @@ CustomSwitchControl::~CustomSwitchControl()
 // 设置/获取当前值
 void CustomSwitchControl::setCurrentValue(bool isOn, bool hasAnim)
 {
-    m_pSwitchWidget->setSwitchStatus(isOn, hasAnim);
+    m_switchWidget->setSwitchStatus(isOn, hasAnim);
 }
 
 bool CustomSwitchControl::getCurrentValue()
 {
-    return m_pSwitchWidget->getSwitchStatus();
+    return m_switchWidget->getSwitchStatus();
 }
 
 void CustomSwitchControl::setRightText(const QString& text)
 {
-    m_pLabel->setText(text);
+    m_label->setText(text);
 }

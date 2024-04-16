@@ -4,6 +4,7 @@
 #include <QSet>
 #include <QGraphicsScene>
 
+class NodeBase;
 class GraphicsItem;
 class SceneGraphics : public QGraphicsScene
 {
@@ -25,9 +26,12 @@ public:
 
     void removeItem(GraphicsItem *item);
 
+    NodeBase *getCurrentNode();
+
+    QSet<GraphicsItem *> itemSet() const;
+
 signals:
     void deleteGraphicsItems();
-
     //    void deleteGraphicsItems(QList<GraphicsItem *> items);
 
     //    void updateItemHandle(GraphicsItem *item);
@@ -46,11 +50,17 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 private:
-    void deselectItems();
+    void itemInsert(GraphicsItem *item);
+    void itemRemove(GraphicsItem *item);
+
+public slots:
+    void onWidthAttributeValueChanged(const QVariant& value);
+    void onHeightAttributeValueChanged(const QVariant& value);
 
 private:
     bool m_isControlModifier = false;
     QSet<GraphicsItem *> m_items;
+    NodeBase *m_AtrributeNode = nullptr;
 };
 
 #endif // SCENEGRAPHICS_H

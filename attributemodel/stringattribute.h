@@ -25,7 +25,6 @@ public:
     std::function<bool(QString&)> getButtonFunction();
 
 private:
-
     bool m_isShowButton = false;
     QString m_buttonString = "";
     std::function<bool(QString&)> m_buttonFunc;

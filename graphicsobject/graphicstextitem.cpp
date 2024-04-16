@@ -1,12 +1,16 @@
 #include "graphicstextitem.h"
 #include "attributemodel/textnode.h"
+#include "utils/attribute_constants.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QStaticText>
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QXmlStreamWriter>
 #include <QDebug>
+
+using namespace Utils::Constants;
 
 class GraphicsTextItem::GraphicsSimpleTextItem : public QGraphicsSimpleTextItem
 {
@@ -102,7 +106,6 @@ QRectF GraphicsTextItem::GraphicsSimpleTextItem::boundingRect() const
 GraphicsTextItem::GraphicsTextItem(QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem(parent)
 {
-    m_AtrributeNode = new TextNode(this);
     m_subItem = m_textItem = new GraphicsSimpleTextItem(parentItem);
 }
 
@@ -189,29 +192,32 @@ void GraphicsTextItem::updateCoordinate()
 
     m_initialRect = m_localRect;
     m_initialFontSize = m_lastFontSize;
-    updateAttribute();
-    qDebug() << "m_textItem->pos:" << m_textItem->pos();
-    qDebug() << "diff:" << diff;
+    updateBaseAttribute();
+//    qDebug() << "============= m_textItem->pos:" << m_textItem->pos();
+//    qDebug() << "diff:" << diff;
 }
 
 bool GraphicsTextItem::loadFromXml(QXmlStreamReader *xml)
 {
-    if (xml) {
-
-    } else {
-        m_text = "jpkg";
-        m_initialFontSize = m_lastFontSize = 60;
-        m_font = qApp->font();
-        m_font.setPixelSize(m_initialFontSize);
-        QSizeF size = getTextSize();
-        m_initialRect = m_localRect = QRectF(0, 0, size.width() * m_scaleX, size.height() * m_scaleY);
-
-        setFont(m_font);
-        setText(m_text);
-//        m_textItem->setItemBoundingRect(m_localRect);
-//        m_textItem->setTransformOriginPoint(m_localRect.center());
+    if (xml == nullptr) {
+        return false;
     }
 
+    readBaseAttributes(xml);
+    m_AtrributeNode->loadFromXml(xml);
+    return true;
+}
+
+bool GraphicsTextItem::saveToXml(QXmlStreamWriter *xml)
+{
+    if (xml == nullptr) {
+        return false;
+    }
+
+    xml->writeStartElement(TEXT);
+    writeBaseAttributes(xml);
+    m_AtrributeNode->saveToXml(xml);
+    xml->writeEndElement();
     return true;
 }
 
@@ -250,9 +256,9 @@ void GraphicsTextItem::setText(const QString &text)
     m_textItem->setText(m_text);
     updateLocalRect();
 
-    m_AtrributeNode->getAttribute(QString::fromUtf8(TEXT))->setValue(m_text);
-//    if (m_AtrributeNode->getAttribute(TEXT)->getValue().toString() != m_text) {
-//        m_AtrributeNode->getAttribute(TEXT)->setValue(m_text);
+    m_AtrributeNode->getAttribute(QString::fromUtf8(TEXTCONTENT))->setValue(m_text);
+//    if (m_AtrributeNode->getAttribute(TEXTCONTENT)->getValue().toString() != m_text) {
+//        m_AtrributeNode->getAttribute(TEXTCONTENT)->setValue(m_text);
 //    }
 }
 
@@ -342,4 +348,20 @@ QSizeF GraphicsTextItem::getTextSize()
 int GraphicsTextItem::type() const
 {
     return GraphicsItemType::TextItem;
+}
+
+void GraphicsTextItem::init()
+{
+    m_AtrributeNode = new TextNode(this);
+    m_text = "jpkg";
+    m_initialFontSize = m_lastFontSize = 60;
+    m_font = qApp->font();
+    m_font.setPixelSize(m_initialFontSize);
+    QSizeF size = getTextSize();
+    m_initialRect = m_localRect = QRectF(0, 0, size.width() * m_scaleX, size.height() * m_scaleY);
+
+    setFont(m_font);
+    setText(m_text);
+    //        m_textItem->setItemBoundingRect(m_localRect);
+    //        m_textItem->setTransformOriginPoint(m_localRect.center());
 }

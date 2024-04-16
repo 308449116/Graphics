@@ -4,14 +4,14 @@
 CustomCombineControlBase::CustomCombineControlBase(QWidget *parent)
     :CustomWidget(parent)
 {
-    m_pMainLayout = new QHBoxLayout(this);
-    m_pMainLayout->setSpacing(0);
-    m_pMainLayout->setContentsMargins(0, 0, 0, 0);
+    m_mainLayout = new QHBoxLayout(this);
+    m_mainLayout->setSpacing(0);
+    m_mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_pTagLabel = new QLabel();
-    m_pMainLayout->addWidget(m_pTagLabel);
-    m_pTagLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_pTagLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    m_tagLabel = new QLabel();
+    m_mainLayout->addWidget(m_tagLabel);
+    m_tagLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_tagLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // 设置默认第0列宽度
@@ -26,10 +26,10 @@ CustomCombineControlBase::~CustomCombineControlBase()
 
 void CustomCombineControlBase::setColumnWidth(int column, int width)
 {
-    int count = m_pMainLayout->count();
+    int count = m_mainLayout->count();
     int number = 0;
     for (int i=0; i<count; ++i) {
-        QWidget *pWidget = m_pMainLayout->itemAt(i)->widget();
+        QWidget *pWidget = m_mainLayout->itemAt(i)->widget();
         if (pWidget == nullptr) {
             continue;
         }
@@ -44,10 +44,10 @@ void CustomCombineControlBase::setColumnWidth(int column, int width)
 
 void CustomCombineControlBase::setColumnVisible(int column, bool visible)
 {
-    int count = m_pMainLayout->count();
+    int count = m_mainLayout->count();
     int number = 0;
     for (int i=0; i<count; ++i) {
-        QWidget *pWidget = m_pMainLayout->itemAt(i)->widget();
+        QWidget *pWidget = m_mainLayout->itemAt(i)->widget();
         if (pWidget == nullptr) {
             continue;
         }
@@ -62,11 +62,11 @@ void CustomCombineControlBase::setColumnVisible(int column, bool visible)
 
 void CustomCombineControlBase::setColumnExpingVisible(int column, bool isExping)
 {
-    int count = m_pMainLayout->count();
+    int count = m_mainLayout->count();
     int number = 0;
     for (int i=0; i<count; ++i)
     {
-        QWidget *pWidget = m_pMainLayout->itemAt(i)->widget();
+        QWidget *pWidget = m_mainLayout->itemAt(i)->widget();
         if (pWidget == nullptr) {
             continue;
         }
@@ -85,12 +85,12 @@ void CustomCombineControlBase::setColumnExpingVisible(int column, bool isExping)
 
 void CustomCombineControlBase::setTagText(const QString& tagText)
 {
-    m_pTagLabel->setText(tagText);
+    m_tagLabel->setText(tagText);
 }
 
 void CustomCombineControlBase::setTextAlign(Qt::Alignment alignment)
 {
-    m_pTagLabel->setAlignment(alignment);
+    m_tagLabel->setAlignment(alignment);
 }
 
 void CustomCombineControlBase::setWidth(int width)

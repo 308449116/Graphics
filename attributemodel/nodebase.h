@@ -4,17 +4,13 @@
 #include "attributebase.h"
 #include "attributegroup.h"
 
-static constexpr const char *X = "xPt";
-static constexpr const char *Y = "yPt";
-static constexpr const char *Z = "zPt";
-static constexpr const char *WIDTH = "width";
-static constexpr const char *HEIGHT = "height";
-static constexpr const char *ROTATE = "rotate";
-
 class GraphicsItem;
 class AttributeBase;
 class RealAttribute;
 class IntAttribute;
+class StringAttribute;
+class QXmlStreamWriter;
+class QXmlStreamReader;
 class NodeBase : public QObject
 {
     Q_OBJECT
@@ -25,16 +21,14 @@ public:
         t_textNode,
         t_RectNode,
         t_Elleipse,
-        t_Arrow,
-        t_FreeDraw,
-
-        t_User,         // 自定义节点类型
+        t_Canvas,
+        t_Group,
         t_End
     };
 
 public:
-    explicit NodeBase(GraphicsItem *item);
-    explicit NodeBase(GraphicsItem *item, NodeType type);
+    explicit NodeBase(QObject *parent = nullptr);
+    explicit NodeBase(NodeType type, QObject *parent = nullptr);
     ~NodeBase();
 
     // 设置/获取节点类型
@@ -69,30 +63,17 @@ public:
     // 查找属性
     AttributeBase *getAttribute(const QString& attrName) const;
 
-protected:
-    void initNodeBase();
+    virtual void saveToXml(QXmlStreamWriter *xml) = 0;
 
-    // 通用属性
-    RealAttribute *m_pXPositionAttribute = nullptr;
-    RealAttribute *m_pYPositionAttribute = nullptr;
-    RealAttribute *m_pZPositionAttribute = nullptr;
+    virtual void loadFromXml(QXmlStreamReader *xml) = 0;
 
-    // 宽度和高度属性
-    RealAttribute *m_pWidthAttribute = nullptr;
-    RealAttribute *m_pHeightAttribute = nullptr;
+//    void readBaseAttributes(QXmlStreamReader *xml);
+//    void writeBaseAttributes(QXmlStreamWriter *xml);
 
-    // 旋转属性
-    RealAttribute *m_pRotateAttribute = nullptr;
-
-    GraphicsItem *m_item = nullptr;
-
-private slots:
-    void onXYSuffixChanged(const QVariant &value);
 private:
     QList<AttributeGroup*> m_groupList;
     int m_nodeType;
     QString m_name;     // 节点名字
-
 };
 
 #endif

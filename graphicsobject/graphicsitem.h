@@ -20,10 +20,12 @@ enum GraphicsItemType
 class NodeBase;
 class GraphicsItemGroup;
 class QXmlStreamReader;
+class QXmlStreamWriter;
 
 class GraphicsItem : public QObject
 {
     Q_OBJECT
+
 public:
     explicit GraphicsItem(QObject *parent = nullptr);
 
@@ -31,9 +33,13 @@ public:
 
     virtual int type() const = 0;
 
+    virtual void init() = 0;
+
     virtual void updateCoordinate() = 0;
 
     virtual bool loadFromXml(QXmlStreamReader *xml) = 0;
+
+    virtual bool saveToXml( QXmlStreamWriter *xml) = 0 ;
 
     virtual void stretch(qreal sx, qreal sy, const QPointF &origin) = 0;
 
@@ -41,11 +47,15 @@ public:
 
     virtual QRectF getRect() const;
 
+    QString uid() const { return m_uid; }
+    void setUid(const QString &uid);
+
     void setPos(const QPointF &pos);
     void setPos(qreal x, qreal y);
     QPointF pos() const;
 
-    void move(const QPointF &point);
+    void moveBy(const QPointF &point);
+    void moveBy(qreal x, qreal y);
     QGraphicsItem *subItem() const;
     QRectF boundingRect() const;
 
@@ -58,7 +68,6 @@ public:
     qreal height() const;
     void setHeight(qreal newHeight);
 
-
     QPointF oppositePos() const;
     void setOppositePos(QPointF newOppositePos);
 
@@ -66,7 +75,7 @@ public:
     qreal scaleX() const;
     void setScale(qreal scaleX, qreal scaleY);
 
-    void setRotation(qreal newAngle);
+    void setRotation(qreal newAngle, bool isSendChanged = true);
     void setInitAngle(qreal newInitAngle);
     void setGroupAngle(qreal newGroupAngle);
     qreal rotation() const;
@@ -84,23 +93,29 @@ public:
 
     NodeBase *getCurrentNode() const;
 
-    void updateAttribute();
+    void updateBaseAttribute();
+    void updateXYAttribute();
 
 signals:
     void sendUpdateHandle();
-    void sendGraphicsItemChange();
-    void sendZValueChange();
+    void sendGraphicsItemChanged();
+    void sendZValueChanged();
+    void sendItemNameChanged(const QString &newName, const QString &oldName);
 
 public slots:
     void onXPositionAttributeValueChanged(const QVariant& value);
     void onYPositionAttributeValueChanged(const QVariant& value);
-    void onZPositionAttributeValueChanged(const QVariant& value);
+//    void onZPositionAttributeValueChanged(const QVariant& value);
     void onWidthAttributeValueChanged(const QVariant& value);
     void onHeightAttributeValueChanged(const QVariant& value);
     void onRotateAttributeValueChanged(const QVariant& value);
+    void onNameAttributeValueChanged(const QVariant &value);
+    void onIDAttributeValueChanged(const QVariant &value);
 
-private:
+protected:
     void setChildItemRotation(GraphicsItem *item, qreal angleGroup);
+    void writeBaseAttributes(QXmlStreamWriter *xml);
+    void readBaseAttributes(QXmlStreamReader *xml);
 
 protected:
     qreal m_initAngle = 0;
@@ -113,6 +128,7 @@ protected:
     // 属性
     NodeBase *m_AtrributeNode = nullptr;
 
+    QString m_uid;
     QString m_itemName;
     QRectF m_localRect;
     QRectF m_initialRect;

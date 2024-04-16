@@ -8,6 +8,7 @@
 class GraphicsItemGroup : public GraphicsItem
 {
     Q_OBJECT
+
 public:
     explicit GraphicsItemGroup(QGraphicsItem *parentItem = nullptr, QObject *parent = nullptr);
 
@@ -17,9 +18,13 @@ public:
 
     int  type() const override;
 
+    void init() override;
+
     void updateCoordinate() override;
 
     bool loadFromXml(QXmlStreamReader *xml) override;
+
+    bool saveToXml(QXmlStreamWriter *xml) override;
 
 //    void setRotation(qreal newAngle)  override;
 

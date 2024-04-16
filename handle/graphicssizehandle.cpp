@@ -33,7 +33,7 @@ void GraphicsSizeHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     m_lastPos = m_pressedPos = event->scenePos();
 //    setItemsOpposite(m_item);
     m_oppositePos = m_view->opposite(m_item, m_handleType);
-    qDebug() << "11111 oppositePos:" << m_oppositePos;
+//    qDebug() << "11111 oppositePos:" << m_oppositePos;
 //    m_item->setOppositePos(m_item->mapFromScene(oppositePos));
 
 //    if (m_item->type() == GraphicsItemType::GroupItem) {
@@ -126,10 +126,6 @@ void GraphicsSizeHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         m_view->updateHandle(m_item);
         m_selection->setOpacity(1);
         m_view->resizeItemByCmd(m_handleType, m_item, QPointF(m_scaleX, m_scaleY), true);
-
-        if (m_item->subItem()->parentItem()) {
-            emit m_item->sendGraphicsItemChange();
-        }
     }
     QGraphicsItem::mouseReleaseEvent(event);
 }

@@ -16,8 +16,8 @@ public:
     void setCurrentAttrNode(NodeBase *node);
 
 private:
-    QVBoxLayout *m_pMainLayout = nullptr;
-    QWidget *m_pWidget = nullptr;
+    QVBoxLayout *m_mainLayout = nullptr;
+    QWidget *m_widget = nullptr;
 };
 
 #endif

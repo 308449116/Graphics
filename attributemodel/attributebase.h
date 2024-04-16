@@ -57,7 +57,7 @@ public:
     NodeBase *getParentNode() const;
 
     // 设置/获取使能
-    void setEnable(bool isEnabled);
+    void setEnabled(bool isEnabled);
     bool isEnable() const;
 
 signals:
@@ -74,11 +74,11 @@ protected:
     QVariant m_value;
     QVariant m_lastValue;
     bool m_isEnabled = true;
-//    bool m_isFirstSetValue = true;
+    bool m_isFirstSetValue = true;
 
     AttributeType m_type;
-    NodeBase *m_pParentNode = nullptr;
-    AttributeGroup *m_pParentGroup = nullptr;
+    NodeBase *m_parentNode = nullptr;
+    AttributeGroup *m_parentGroup = nullptr;
 };
 
 #endif

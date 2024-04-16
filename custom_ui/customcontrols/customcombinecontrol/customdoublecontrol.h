@@ -23,6 +23,9 @@ public:
     void setRangeValue(qreal minValue, qreal maxValue);
     void setSuffix(const QString &suffix);
 
+    //设置控件是否使能
+    void setEnabled(bool enabled);
+
 private slots:
     void onSliderPressed();
     void onSliderMoved();
@@ -34,14 +37,16 @@ signals:
     void valueChanged(qreal value, bool cmd = false);
 
 private:
-    CustomDoubleSpinBox *m_pDoubleSpinBox = nullptr;
-    QSlider *m_pSlider = nullptr;
+    qreal getValuesBySlider();
+
+private:
+    CustomDoubleSpinBox *m_doubleSpinBox = nullptr;
+    QSlider *m_slider = nullptr;
 
     qreal m_beforeValue = 0;
     qreal m_MaxValue = 0;
     qreal m_MinValue = 1;
 
-    qreal getValuesBySlider();
 };
 
 #endif

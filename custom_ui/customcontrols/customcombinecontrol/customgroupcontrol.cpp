@@ -52,12 +52,12 @@ void CustomGroupTitleItem::customPaint(QPainter *painter)
     // 绘制Title
     qreal leftWidth = spandRect.x() + leftSpacing + drawMargin * 2 + expandWidth;
     QRectF rect(leftWidth, 0, this->width() - leftWidth, this->height());
-    painter->drawText(rect, m_cTitleName, option);
+    painter->drawText(rect, m_titleName, option);
 }
 
 void CustomGroupTitleItem::setTitleText(const QString& titleNameString)
 {
-    m_cTitleName = titleNameString;
+    m_titleName = titleNameString;
     this->update();
 }
 
@@ -72,9 +72,9 @@ QSize CustomGroupTitleItem::sizeHint() const
 CustomGroupContentItem::CustomGroupContentItem(QWidget *parent)
     :CustomWidget(parent)
 {
-    m_pLayout = new QVBoxLayout(this);
-    m_pLayout->setContentsMargins(2, 2, 2, 2);
-    m_pLayout->setSpacing(2);
+    m_layout = new QVBoxLayout(this);
+    m_layout->setContentsMargins(2, 2, 2, 2);
+    m_layout->setSpacing(2);
 
 //    g_StyleConfig->setCurrentStyle(this, "GroupContent");
 }
@@ -86,23 +86,23 @@ CustomGroupContentItem::~CustomGroupContentItem()
 
 void CustomGroupContentItem::addWidget(QWidget *widget)
 {
-    m_pLayout->addWidget(widget);
+    m_layout->addWidget(widget);
 }
 
 void CustomGroupContentItem::insertWidget(int index, QWidget *widget)
 {
-    m_pLayout->insertWidget(index, widget);
+    m_layout->insertWidget(index, widget);
 }
 
 QSize CustomGroupContentItem::sizeHint() const
 {
-    int count = m_pLayout->count();
+    int count = m_layout->count();
 
     // 高度
     int height = 0;
     for (int i=0; i<count; ++i)
     {
-        QWidget *pWidget = m_pLayout->itemAt(i)->widget();
+        QWidget *pWidget = m_layout->itemAt(i)->widget();
         if (pWidget == nullptr)
             continue;
 
@@ -118,19 +118,19 @@ QSize CustomGroupContentItem::sizeHint() const
 CustomGroupControl::CustomGroupControl(QWidget *parent)
     :CustomWidget(parent)
 {
-    m_pMainLayout = new QVBoxLayout(this);
-    m_pMainLayout->setContentsMargins(2, 2, 2, 2);
-    m_pMainLayout->setSpacing(0);
+    m_mainLayout = new QVBoxLayout(this);
+    m_mainLayout->setContentsMargins(2, 2, 2, 2);
+    m_mainLayout->setSpacing(0);
 
-    m_pTitleItemWidget = new CustomGroupTitleItem;
-    m_pContentItemWidget = new CustomGroupContentItem;
+    m_titleItemWidget = new CustomGroupTitleItem;
+    m_contentItemWidget = new CustomGroupContentItem;
 
-    m_pMainLayout->addWidget(m_pTitleItemWidget);
-    m_pMainLayout->addWidget(m_pContentItemWidget);
+    m_mainLayout->addWidget(m_titleItemWidget);
+    m_mainLayout->addWidget(m_contentItemWidget);
 
 //    g_StyleConfig->setCurrentStyle(this, "GroupWidget");
 
-    QObject::connect(m_pTitleItemWidget, &CustomGroupTitleItem::clickedTitle, \
+    QObject::connect(m_titleItemWidget, &CustomGroupTitleItem::clickedTitle, \
                      this, &CustomGroupControl::onClickedGroupTitleItem);
 }
 
@@ -141,31 +141,31 @@ CustomGroupControl::~CustomGroupControl()
 
 void CustomGroupControl::addContentWidget(QWidget *widget)
 {
-    m_pContentItemWidget->addWidget(widget);
+    m_contentItemWidget->addWidget(widget);
 }
 
 void CustomGroupControl::insertContentWidget(int index, QWidget *widget)
 {
-    m_pContentItemWidget->insertWidget(index, widget);
+    m_contentItemWidget->insertWidget(index, widget);
 }
 
 void CustomGroupControl::setTitleText(const QString& string)
 {
-    m_pTitleItemWidget->setTitleText(string);
+    m_titleItemWidget->setTitleText(string);
 }
 
 void CustomGroupControl::onClickedGroupTitleItem(bool isExpanded)
 {
-    m_pContentItemWidget->setVisible(isExpanded);
+    m_contentItemWidget->setVisible(isExpanded);
 }
 
 QSize CustomGroupControl::sizeHint() const
 {
     int height = 4;
-    height += m_pTitleItemWidget->sizeHint().height();
+    height += m_titleItemWidget->sizeHint().height();
 
-    if (m_pContentItemWidget->isVisible())
-        height += m_pContentItemWidget->sizeHint().height();
+    if (m_contentItemWidget->isVisible())
+        height += m_contentItemWidget->sizeHint().height();
 
     return QSize(400, height);
 }

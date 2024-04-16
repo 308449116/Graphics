@@ -19,6 +19,8 @@ public:
 private:
     Utils();
     virtual ~Utils();
+    Utils(const Utils&) = delete;
+    Utils& operator=(const Utils&) = delete;
 };
 
 #endif // UTILS_H

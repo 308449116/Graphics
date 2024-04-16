@@ -20,5 +20,7 @@
         <file>icons/delete.png</file>
         <file>icons/group.png</file>
         <file>icons/ungroup.png</file>
+        <file>icons/Blue.ico</file>
+        <file>icons/align_all.png</file>
     </qresource>
 </RCC>

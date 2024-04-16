@@ -44,10 +44,10 @@ QString AttributeBase::getDisplayName() const
 
 QString AttributeBase::getFullName() const
 {
-    if (m_pParentNode == nullptr)
+    if (m_parentNode == nullptr)
         return "";
 
-    return m_pParentNode->getNodeName() + "." + m_attributeName;
+    return m_parentNode->getNodeName() + "." + m_attributeName;
 }
 
 // 设置/获取父节点
@@ -57,27 +57,27 @@ void AttributeBase::setParentGroup(AttributeGroup *group)
         return;
 
     this->setParent(group);
-    m_pParentGroup = group;
+    m_parentGroup = group;
 }
 
 AttributeGroup *AttributeBase::getParentGroup() const
 {
-    return m_pParentGroup;
+    return m_parentGroup;
 }
 
 // 设置/获取父节点
 void AttributeBase::setParentNode(NodeBase *node)
 {
-    m_pParentNode = node;
+    m_parentNode = node;
 }
 
 NodeBase *AttributeBase::getParentNode() const
 {
-    return m_pParentNode;
+    return m_parentNode;
 }
 
 // 设置/获取使能
-void AttributeBase::setEnable(bool isEnabled)
+void AttributeBase::setEnabled(bool isEnabled)
 {
     if (isEnabled != m_isEnabled) {
         m_isEnabled = isEnabled;
@@ -160,6 +160,12 @@ void AttributeBase::setValue(const QVariant& value, bool cmd)
 {
     if (m_value == value) {
         return;
+    }
+
+    // 处理第一次
+    if (m_isFirstSetValue) {
+        m_lastValue = value;
+        m_isFirstSetValue = false;
     }
 
     m_lastValue = m_value;

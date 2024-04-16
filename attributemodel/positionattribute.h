@@ -15,11 +15,11 @@ public:
     void setCurrentValue(const QPoint& value);
     QPoint getCurrentValue();
 
-private:
-    QPoint m_value;
-
 signals:
     void valueChanged(const QPoint& value);
+
+private:
+    QPoint m_value;
 };
 
 #endif

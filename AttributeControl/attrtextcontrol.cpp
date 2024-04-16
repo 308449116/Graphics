@@ -3,7 +3,7 @@
 AttrTextControl::AttrTextControl(AttributeBase *attribute, QWidget *parent)
     :CustomLineEditControl(parent)
 {
-    m_tempString = "EasyCanvas";
+//    m_tempString = "";
     setAttribute(attribute);
 
     if (m_attribute == nullptr)
@@ -31,10 +31,14 @@ void AttrTextControl::setAttribute(AttributeBase *attribute)
 
     this->setText(m_attribute->getValue().toString());
     this->setTagText(m_attribute->getDisplayName());
+    this->setEnabled(m_attribute->isEnable());
 
     QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
-    QObject::connect(this, &AttrTextControl::textChanged, this, &AttrTextControl::onControlTextChanged);
+//    QObject::connect(this, &AttrTextControl::textChanged, this, &AttrTextControl::onControlTextChanged);
     QObject::connect(this, &AttrTextControl::editingFinished, this, &AttrTextControl::onControlEditFinished);
+    QObject::connect(m_attribute, &StringAttribute::enabledChanged, this, [this](bool enabled){
+        this->setEnabled(enabled);
+    });
 }
 
 void AttrTextControl::onTextAttrValueChanged(const QVariant& value)
@@ -44,28 +48,30 @@ void AttrTextControl::onTextAttrValueChanged(const QVariant& value)
     this->blockSignals(false);
 }
 
-void AttrTextControl::onControlTextChanged(const QString& value)
-{
-//    if (m_attribute->getValue().toString() == value) {
-//        return;
-//    }
+//void AttrTextControl::onControlTextChanged(const QString& value)
+//{
+////    if (m_attribute->getValue().toString() == value) {
+////        return;
+////    }
 
-//    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
-    m_attribute->setValue(value);
-//    QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
-}
+////    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
+//    m_attribute->setValue(value);
+////    QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
+//}
 
 void AttrTextControl::onControlEditFinished()
 {
-    QString text = this->getText();
-    if (m_tempString == text)
-        return;
+    m_attribute->setValue(this->getText(), true);
 
-    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
-    m_attribute->setValue(m_tempString);
-    m_tempString = text;
-    m_attribute->setValue(text, true);
-    QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
+//    QString text = this->getText();
+//    if (m_tempString == text)
+//        return;
+
+//    QObject::disconnect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
+//    m_attribute->setValue(m_tempString);
+//    m_tempString = text;
+//    m_attribute->setValue(text, true);
+//    QObject::connect(m_attribute, &StringAttribute::valueChanged, this, &AttrTextControl::onTextAttrValueChanged);
 }
 
 void AttrTextControl::onClickedToolButton()

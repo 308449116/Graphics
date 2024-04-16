@@ -1,6 +1,8 @@
 #include "scenegraphics.h"
 #include "handle/graphicshandle.h"
-
+#include "graphicsobject/graphicsitemgroup.h"
+#include "attributemodel/canvasnode.h"
+#include "attributemodel/nodebase.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -10,7 +12,7 @@
 SceneGraphics::SceneGraphics(QObject* parent)
     : QGraphicsScene{parent}
 {
-
+    m_AtrributeNode = new CanvasNode(this);
 }
 
 SceneGraphics::~SceneGraphics()
@@ -69,7 +71,6 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
                     handle->setSelected(true);
                 }
             }
-            //            if(selectedItems().length() == 1) signalSelectItem(selectedItems().at(0));
         }
         break;
     }
@@ -77,14 +78,6 @@ void SceneGraphics::keyPressEvent(QKeyEvent *event)
         break;
     }
     QGraphicsScene::keyPressEvent(event);
-}
-
-void SceneGraphics::deselectItems()
-{
-    for (auto item : selectedItems()) {
-        removeItem(item);
-        item->setSelected(false);
-    }
 }
 
 void SceneGraphics::addItem(QGraphicsItem *item)
@@ -110,13 +103,20 @@ void SceneGraphics::setIsControlModifier(bool newIsControlModifier)
 void SceneGraphics::addItem(GraphicsItem *item)
 {
     this->addItem(item->subItem());
-    m_items.insert(item);
+    itemInsert(item);
+//    qDebug() << "========= addItem m_items.count:" << m_items.count();
 }
 
 void SceneGraphics::removeItem(GraphicsItem *item)
 {
     this->removeItem(item->subItem());
-    m_items.remove(item);
+    itemRemove(item);
+//    qDebug() << "========= removeItem m_items.count:" << m_items.count();
+}
+
+NodeBase *SceneGraphics::getCurrentNode()
+{
+    return m_AtrributeNode;
 }
 
 void SceneGraphics::drawBackground(QPainter *painter, const QRectF &rect)
@@ -134,6 +134,38 @@ void SceneGraphics::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawPoints(points.data(), points.size());
 }
 
+void SceneGraphics::itemInsert(GraphicsItem *item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+        QSet<GraphicsItem *> itemSet = itemGroup->getChildItems();
+        QSet<GraphicsItem *>::const_iterator it = itemSet.constBegin();
+        for (; it != itemSet.constEnd(); it++) {
+            itemInsert(*it);
+        }
+    }
+
+    if (!m_items.contains(item)) {
+        m_items.insert(item);
+    }
+}
+
+void SceneGraphics::itemRemove(GraphicsItem *item)
+{
+    if (item->type() == GraphicsItemType::GroupItem) {
+        GraphicsItemGroup *itemGroup = dynamic_cast<GraphicsItemGroup *>(item);
+        QSet<GraphicsItem *> itemSet = itemGroup->getChildItems();
+        QSet<GraphicsItem *>::const_iterator it = itemSet.constBegin();
+        for (; it != itemSet.constEnd(); it++) {
+            itemRemove(*it);
+        }
+    }
+
+    if (m_items.contains(item)) {
+        m_items.remove(item);
+    }
+}
+
 //void SceneGraphics::mouseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 //{
 //    switch( mouseEvent->type() ) {
@@ -149,3 +181,29 @@ void SceneGraphics::drawBackground(QPainter *painter, const QRectF &rect)
 //    default: break;
 //    }
 //}
+
+void SceneGraphics::onWidthAttributeValueChanged(const QVariant& value)
+{
+    qreal itemWidth = value.toDouble();
+    if (itemWidth == width()) {
+        return;
+    }
+
+    setSceneRect(0, 0, itemWidth, height());
+}
+
+void SceneGraphics::onHeightAttributeValueChanged(const QVariant& value)
+{
+    qreal itemHeight = value.toDouble();
+    if (itemHeight == height()) {
+        return;
+    }
+
+    setSceneRect(0, 0, width(), itemHeight);
+}
+
+QSet<GraphicsItem *> SceneGraphics::itemSet() const
+{
+    return m_items;
+}
+

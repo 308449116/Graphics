@@ -31,12 +31,15 @@ public:
     // 清除所有元素
     void clearAllItems();
 
-private:
-    CustomComboBox *m_pCustomComboBox = nullptr;
+    //设置控件是否使能
+    void setEnabled(bool enabled);
 
 signals:
     void currentTextChanged(const QString& str);
     void currentIndexChanged(int index);
+
+private:
+    CustomComboBox *m_customComboBox = nullptr;
 };
 
 #endif

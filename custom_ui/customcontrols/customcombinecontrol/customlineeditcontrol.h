@@ -24,14 +24,17 @@ public:
     void setText(const QString& string);
     QString getText();
 
-private:
-    CustomLineEdit *m_pLineEdit = nullptr;
-    QToolButton *m_pToolButton = nullptr;
+    //设置控件是否使能
+    void setEnabled(bool enabled);
 
 signals:
     void clickedToolButton();
     void textChanged(const QString &text);
     void editingFinished();
+
+private:
+    CustomLineEdit *m_lineEdit = nullptr;
+    QToolButton *m_toolButton = nullptr;
 };
 
 #endif

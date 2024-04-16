@@ -16,16 +16,16 @@ public:
     // 设置属性
     void setAttribute(AttributeBase *attribute);
 
-private:
-    StringAttribute *m_attribute = nullptr;
-    QString m_tempString;
-
 private slots:
     void onTextAttrValueChanged(const QVariant& value);
-    void onControlTextChanged(const QString& value);
+//    void onControlTextChanged(const QString& value);
     void onControlEditFinished();
 
     void onClickedToolButton();
+
+private:
+    StringAttribute *m_attribute = nullptr;
+    //    QString m_tempString;
 };
 
 #endif

@@ -33,6 +33,7 @@ void AttrFloatControl::setAttribute(AttributeBase *attribute)
     qreal startValue, endValue;
     m_attribute->getValueRange(startValue, endValue);
     this->setRangeValue(startValue, endValue);
+    this->setEnabled(m_attribute->isEnable());
 
     // 设置值
     NumericAttribute *numericAttr = dynamic_cast<NumericAttribute *>(m_attribute);

@@ -27,6 +27,9 @@ RC_ICONS = Agul.ico
 #INCLUDEPATH += $$PWD/custom_ui/customcontrols/customsinglecontrol
 
 SOURCES += \
+    attributemodel/canvasnode.cpp \
+    attributemodel/groupnode.cpp \
+    attributemodel/itemnodebase.cpp \
     custom_ui/customcontrols/customcombinecontrol/customcombinecontrolbase.cpp \
     custom_ui/customcontrols/customcombinecontrol/customcomboboxcontrol.cpp \
     custom_ui/customcontrols/customcombinecontrol/customdoublecontrol.cpp \
@@ -71,6 +74,7 @@ SOURCES += \
     handle/graphicsselection.cpp \
     handle/graphicsselectionmanager.cpp \
     handle/graphicssizehandle.cpp \
+    undocmd/itemattributechangedcmd.cpp \
     undocmd/itemcopycmd.cpp \
     undocmd/itemcreatecmd.cpp \
     undocmd/itemdeletecmd.cpp \
@@ -79,6 +83,7 @@ SOURCES += \
     undocmd/itemresizecmd.cpp \
     undocmd/itemrotatecmd.cpp \
     undocmd/itemungroupcmd.cpp \
+    utils/fadingindicator.cpp \
     utils/utils.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -86,6 +91,9 @@ SOURCES += \
     viewgraphics.cpp
 
 HEADERS += \
+    attributemodel/canvasnode.h \
+    attributemodel/groupnode.h \
+    attributemodel/itemnodebase.h \
     custom_ui/customcontrols/customcombinecontrol/customcombinecontrolbase.h \
     custom_ui/customcontrols/customcombinecontrol/customcomboboxcontrol.h \
     custom_ui/customcontrols/customcombinecontrol/customdoublecontrol.h \
@@ -130,6 +138,7 @@ HEADERS += \
     handle/graphicsselection.h \
     handle/graphicsselectionmanager.h \
     handle/graphicssizehandle.h \
+    undocmd/itemattributechangedcmd.h \
     undocmd/itemcopycmd.h \
     undocmd/itemcreatecmd.h \
     undocmd/itemdeletecmd.h \
@@ -138,6 +147,9 @@ HEADERS += \
     undocmd/itemresizecmd.h \
     undocmd/itemrotatecmd.h \
     undocmd/itemungroupcmd.h \
+    utils/attribute_constants.h \
+    utils/fadingindicator.h \
+    utils/uid.h \
     utils/utils.h \
     mainwindow.h \
     scenegraphics.h \

@@ -5,12 +5,6 @@ AttrIntControl::AttrIntControl(AttributeBase *attribute, QWidget *parent)
     :CustomIntControl(parent)
 {
     setAttribute(attribute);
-
-    QObject::connect(m_attribute, &IntAttribute::valueChanged, this, &AttrIntControl::onAttrValueChanged);
-    QObject::connect(this, &AttrIntControl::valueChanged, this, &AttrIntControl::onControlValueChanged);
-
-    NumericAttribute *numericAttr = dynamic_cast<NumericAttribute *>(m_attribute);
-    QObject::connect(numericAttr, &NumericAttribute::suffixTypeChanged, this, &AttrIntControl::onSuffixTypeChanged);
 }
 
 AttrIntControl::~AttrIntControl()
@@ -40,6 +34,15 @@ void AttrIntControl::setAttribute(AttributeBase *attribute)
     onSuffixTypeChanged(numericAttr->suffixType());
 //    this->setCurrentValue(m_attribute->getValue().toInt());
     this->setTagText(m_attribute->getDisplayName());
+    this->setEnabled(m_attribute->isEnable());
+
+    //设置是否使能
+    setEnabled(m_attribute->isEnable());
+
+    QObject::connect(m_attribute, &IntAttribute::valueChanged, this, &AttrIntControl::onAttrValueChanged);
+//    QObject::connect(m_attribute, &IntAttribute::enabledChanged, this, &AttrIntControl::onEnableChanged);
+    QObject::connect(this, &AttrIntControl::valueChanged, this, &AttrIntControl::onControlValueChanged);
+    QObject::connect(numericAttr, &NumericAttribute::suffixTypeChanged, this, &AttrIntControl::onSuffixTypeChanged);
 }
 
 void AttrIntControl::onAttrValueChanged(const QVariant& value)
@@ -98,6 +101,12 @@ void AttrIntControl::onSuffixTypeChanged(NumericAttribute::SuffixType type)
         }
     }
 
-    int newValue = NumericAttribute::convertFormPixels(this->getCurrentValue(), type);
+    int newValue = NumericAttribute::convertFormPixels(m_attribute->getValue().toInt(), type);
     this->setCurrentValue(newValue);
+}
+
+void AttrIntControl::onEnableChanged(bool enabled)
+{
+    qDebug() << "1111111111 enabled" << enabled;
+    setEnabled(enabled);
 }

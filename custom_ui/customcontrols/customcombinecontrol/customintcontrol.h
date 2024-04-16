@@ -23,6 +23,8 @@ public:
     void setRangeValue(int minValue, int maxValue);
     void setSuffix(const QString &suffix);
 
+    void setEnabled(bool enabled);
+
 private slots:
     void onSliderPressed();
     void onSliderMoved();
@@ -34,14 +36,15 @@ signals:
     void valueChanged(int value, bool cmd = false);
 
 private:
-    CustomIntSpinBox *m_pIntValue = nullptr;
-    QSlider *m_pSlider = nullptr;
+    int getValuesBySlider();
+
+private:
+    CustomIntSpinBox *m_intValue = nullptr;
+    QSlider *m_slider = nullptr;
 
     int m_MaxValue = 100;
     int m_MinValue = 0;
     int m_tempValue = 0;
-
-    int getValuesBySlider();
 };
 
 #endif

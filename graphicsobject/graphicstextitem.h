@@ -20,7 +20,11 @@ public:
 
     bool loadFromXml(QXmlStreamReader *xml) override;
 
+    bool saveToXml(QXmlStreamWriter *xml) override;
+
     int type() const override;
+
+    void init() override;
 
     // 设置文本
     void setText(const QString& text);

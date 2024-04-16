@@ -36,8 +36,8 @@ protected:
     QSize sizeHint() const override;
 
 protected:
-    QHBoxLayout *m_pMainLayout = nullptr;
-    QLabel *m_pTagLabel = nullptr;
+    QHBoxLayout *m_mainLayout = nullptr;
+    QLabel *m_tagLabel = nullptr;
 
 private:
     int m_nWidth = 400;

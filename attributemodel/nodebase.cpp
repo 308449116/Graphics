@@ -1,22 +1,15 @@
 #include "nodebase.h"
-//#include "intattribute.h"
-#include "realattribute.h"
 #include "attributegroup.h"
-#include "graphicsobject/graphicsitem.h"
 
-NodeBase::NodeBase(GraphicsItem *item, NodeType type)
+NodeBase::NodeBase(NodeType type, QObject *item)
     :QObject(item)
-    ,m_item(item)
     ,m_nodeType(type)
 {
-    initNodeBase();
 }
 
-NodeBase::NodeBase(GraphicsItem *item)
+NodeBase::NodeBase(QObject *item)
     :QObject (item)
-    ,m_item(item)
 {
-    initNodeBase();
 }
 
 NodeBase::~NodeBase()
@@ -104,73 +97,8 @@ AttributeBase *NodeBase::getAttribute(const QString& attrName) const
             return attribute;
         }
     }
-
+    
     return nullptr;
-}
-
-void NodeBase::initNodeBase()
-{
-    if (m_item == nullptr) {
-        return;
-    }
-
-    // 添加属性组
-    QString attributeGroupString = tr("Base Attribute");
-    AttributeGroup *group = this->addAttributeGroup("BaseAttr", attributeGroupString);
-
-    // X坐标
-    m_pXPositionAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
-    m_pXPositionAttribute->setDisplayName(tr("X Position: "));
-    m_pXPositionAttribute->setName(QString::fromUtf8(X));
-    m_pXPositionAttribute->setValueRange(0, 5000);
-    this->addAttribute(group, m_pXPositionAttribute);
-
-    // Y坐标
-    m_pYPositionAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
-    m_pYPositionAttribute->setDisplayName(tr("Y Position: "));
-    m_pYPositionAttribute->setName(QString::fromUtf8(Y));
-    m_pYPositionAttribute->setValueRange(0, 5000);
-    this->addAttribute(group, m_pYPositionAttribute);
-
-    // Z坐标
-    m_pZPositionAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
-    m_pZPositionAttribute->setDisplayName(tr("Z Position: "));
-    m_pZPositionAttribute->setName(QString::fromUtf8(Z));
-    m_pZPositionAttribute->setValueRange(0, 10);
-    this->addAttribute(group, m_pZPositionAttribute);
-
-    // 宽度
-    m_pWidthAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
-    m_pWidthAttribute->setDisplayName(tr("width: "));
-    m_pWidthAttribute->setName(QString::fromUtf8(WIDTH));
-    m_pWidthAttribute->setValueRange(10, 5000);
-    this->addAttribute(group, m_pWidthAttribute);
-
-    // 高度
-    m_pHeightAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
-    m_pHeightAttribute->setDisplayName(tr("height: "));
-    m_pHeightAttribute->setName(QString::fromUtf8(HEIGHT));
-    m_pHeightAttribute->setValueRange(10, 5000);
-    this->addAttribute(group, m_pHeightAttribute);
-
-    // 旋转
-    m_pRotateAttribute = new RealAttribute(AttributeBase::DOUBLESPINBOX_TYPE);
-    m_pRotateAttribute->setDisplayName(tr("Rotate Angle: "));
-    m_pRotateAttribute->setName(QString::fromUtf8(ROTATE));
-    m_pRotateAttribute->setValueRange(0, 360);
-    m_pRotateAttribute->setValue(0);
-    this->addAttribute(group, m_pRotateAttribute);
-
-    // 连接信号和槽
-    QObject::connect(m_pXPositionAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onXPositionAttributeValueChanged);
-    QObject::connect(m_pYPositionAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onYPositionAttributeValueChanged);
-    QObject::connect(m_pZPositionAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onZPositionAttributeValueChanged);
-    QObject::connect(m_pWidthAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onWidthAttributeValueChanged);
-    QObject::connect(m_pHeightAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onHeightAttributeValueChanged);
-    QObject::connect(m_pRotateAttribute, &RealAttribute::valueChanged, m_item, &GraphicsItem::onRotateAttributeValueChanged);
-
-    //测试使用
-    QObject::connect(m_pZPositionAttribute, &RealAttribute::valueChanged, this, &NodeBase::onXYSuffixChanged);
 }
 
 // 设置节点名字
@@ -237,10 +165,4 @@ void NodeBase::deleteAttributeGroup(const QString& name)
             break;
         }
     }
-}
-
-void NodeBase::onXYSuffixChanged(const QVariant& value)
-{
-    m_pXPositionAttribute->setSuffixType((NumericAttribute::SuffixType)value.toInt());
-    m_pYPositionAttribute->setSuffixType((NumericAttribute::SuffixType)value.toInt());
 }

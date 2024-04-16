@@ -22,30 +22,30 @@ protected:
     virtual QSize sizeHint() const override;
     virtual void mousePressEvent(QMouseEvent *event) override;
 
-private:
-    bool m_isSwitchOn = false;
-
-    QMargins m_margin;
-    QColor m_cBgColor;                  // 背景色
-    QColor m_cSliderColor;              // 滑块的颜色
-    int m_nCurrentXPos = 0;             // 当前的X的位置
-    int m_nSliderWidth = 40;             // 滑块大小
-    int m_nSliderHeight = 22;
-    int m_nAnimationInterval = 5;
-
-    QColor m_cOnBgColor;            // 打开时背景色
-    QColor m_cOnSliderColor;        // 打开时滑块颜色
-
-    QColor m_cOffBgColor;           // 关闭时背景颜色
-    QColor m_cOffSliderColor;       // 关闭时滑块颜色
-
-    QTimer *m_pTimer = nullptr;
-
 private slots:
     void onTimeout();
 
 signals:
     void valueChanged(bool isOn, bool cmd = false);
+
+private:
+    bool m_isSwitchOn = false;
+
+    QMargins m_margin;
+    QColor m_BgColor;                  // 背景色
+    QColor m_sliderColor;              // 滑块的颜色
+    int m_currentXPos = 0;             // 当前的X的位置
+    int m_sliderWidth = 40;             // 滑块大小
+    int m_sliderHeight = 22;
+    int m_animationInterval = 5;
+
+    QColor m_onBgColor;            // 打开时背景色
+    QColor m_onSliderColor;        // 打开时滑块颜色
+
+    QColor m_offBgColor;           // 关闭时背景颜色
+    QColor m_offSliderColor;       // 关闭时滑块颜色
+
+    QTimer *m_timer = nullptr;
 };
 
 #endif

@@ -49,10 +49,14 @@ void GraphicsSelection::setItem(GraphicsItem *item)
     show();
 
     connect(item, &GraphicsItem::sendUpdateHandle, this, [this](){
-        updateHandle();
+        GraphicsItem *itemSender = dynamic_cast<GraphicsItem *>(sender());
+        m_view->updateHandle(itemSender);
+//        updateHandle();
     });
 
-    connect(item, &GraphicsItem::sendZValueChange, this, [this](){
+//    connect(item, &GraphicsItem::sendUpdateHandle, m_view, &ViewGraphics::changed);
+
+    connect(item, &GraphicsItem::sendZValueChanged, this, [this](){
         setZValue(m_item->zValue() + 1);
     });
 //    connect(m_item, &GraphicsItem::handleStateSwitch, this, [this](bool isShow) {
@@ -90,17 +94,16 @@ void GraphicsSelection::updateHandle()
     qreal angle = 0;
     if (startAngle == 0) {
         angle = initAngle;
-        m_item->setRotation(0);
+        m_item->setRotation(0, false);
     } else {
         angle = initAngle + startAngle;
-        m_item->setRotation(-startAngle);
-
+        m_item->setRotation(-startAngle, false);
     }
 
     const QRectF &r = m_item->subItem()->mapRectToScene(m_item->getRect());
 //    const QRectF r =  m_handleList[GraphicsHandle::Drag]->mapRectFromItem(m_item, m_item->getRect());
     QPointF originPoint = m_item->subItem()->mapToScene(m_item->getRect().center());
-    m_item->setRotation(initAngle);
+    m_item->setRotation(initAngle, false);
 //    qDebug() << "updateHandle r:" << r;
 //    qDebug() << "updateHandle pos:" << m_item->pos();
 //    qDebug() << "updateHandle scenePos:" << m_item->subItem()->scenePos();

@@ -7,6 +7,7 @@
 class CustomTextEdit : public QTextEdit
 {
     Q_OBJECT
+
 public:
     CustomTextEdit(QWidget *parent = nullptr);
     ~CustomTextEdit() override;

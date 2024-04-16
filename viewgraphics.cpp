@@ -5,6 +5,9 @@
 #include "handle/graphicsselectionmanager.h"
 #include "graphicsobject/graphicsitemgroup.h"
 #include "graphicsobject/graphicsitemmanager.h"
+#include "attributemodel/nodebase.h"
+#include "attributemodel/nodemanager.h"
+#include "utils/attribute_constants.h"
 
 #include "undocmd/itemcreatecmd.h"
 #include "undocmd/itemdeletecmd.h"
@@ -14,11 +17,18 @@
 #include "undocmd/itemcopycmd.h"
 #include "undocmd/itemgroupcmd.h"
 #include "undocmd/itemungroupcmd.h"
+#include "undocmd/itemattributechangedcmd.h"
 
 #include <QUndoView>
 #include <QAction>
 #include <QDebug>
 #include <QGraphicsItemGroup>
+#include <QXmlStreamReader>
+#include <QMessageBox>
+#include <QFile>
+#include <QWheelEvent>
+
+using namespace Utils::Constants;
 
 ViewGraphics::ViewGraphics(QWidget* parent)
     : QGraphicsView{parent}, m_selectionManager(new GraphicsSelectionManager)
@@ -30,17 +40,26 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 
     this->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     this->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-//    this->setDragMode(QGraphicsView::RubberBandDrag);
+    this->setDragMode(QGraphicsView::RubberBandDrag);
 
     m_scene = new SceneGraphics();
     m_scene->setSceneRect(rect);
     this->setScene(m_scene);
 
-    m_itemManager = new GraphicsItemManager(m_scene);
+    GraphicsItemManager::getInstance()->setCurrentGraphicsView(this);
+//    m_itemManager = new GraphicsItemManager(m_scene);
     m_undoStack = new QUndoStack(this);
 
     connect(m_scene, &SceneGraphics::deleteGraphicsItems, this, &ViewGraphics::deleteItemsByCmd);
     connect(m_scene, &SceneGraphics::selectionChanged, this, &ViewGraphics::itemSelectedChanged);
+    connect(m_scene, &SceneGraphics::sceneRectChanged, this, [this] () {
+        m_modified = true;
+        emit changed();
+    });
+
+    connect(g_nodeManager, &NodeManager::signalAttrValueChanged, \
+            this, &ViewGraphics::onAttributeValueChanged);
+
 //    connect(m_undoStack, &QUndoStack::canRedoChanged, this, [this](){
 //        qDebug() << "canRedoChanged count:" << m_undoStack->count();
 //    });
@@ -70,12 +89,15 @@ ViewGraphics::ViewGraphics(QWidget* parent)
 ViewGraphics::~ViewGraphics()
 {
     delete m_selectionManager;
-    delete m_itemManager;
+//    delete m_itemManager;
     m_scene->deleteLater();
 }
 
 void ViewGraphics::createItemByCmd(GraphicsItemType type)
 {
+    m_modified = true;
+    emit changed();
+
     if (m_isUndoCmdEnabled) {
         ItemCreateCmd *createCmd = new ItemCreateCmd(type, this);
         m_undoStack->push(createCmd);
@@ -86,7 +108,8 @@ void ViewGraphics::createItemByCmd(GraphicsItemType type)
 
 GraphicsItem *ViewGraphics::createItem(GraphicsItemType type)
 {
-    GraphicsItem *item = m_itemManager->createGraphicsItem(type);
+    m_modified = true;
+    GraphicsItem *item = GraphicsItemManager::getInstance()->createGraphicsItem(type);
     addItem(item);
     return item;
 }
@@ -94,23 +117,27 @@ GraphicsItem *ViewGraphics::createItem(GraphicsItemType type)
 void ViewGraphics::deleteItemsByCmd()
 {
 //    QList<GraphicsItem *> items = selectedItems();
-    QList<GraphicsItem *> items;
+    QList<GraphicsItem *> itemList;
     QList<GraphicsItem *> itemTempList = selectedItems();
     for (auto item : itemTempList) {
         if (item->subItem()->group()) {
             continue;
         }
-        items << item;
+        itemList << item;
     }
 
-    if (items.isEmpty()) return;
+    if (itemList.isEmpty()) return;
 
+    m_modified = true;
+    emit changed();
     if (m_isUndoCmdEnabled) {
-        ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(items, this);
+        ItemDeleteCmd *deleteCmd = new ItemDeleteCmd(itemList, this);
         m_undoStack->push(deleteCmd);
     } else {
-        deleteItems(items);
+        deleteItems(itemList);
     }
+
+//    qDebug() << "========== items.count:" << items().count();
 }
 
 void ViewGraphics::deleteItems(const QList<GraphicsItem *> &items, bool isFreeMemory)
@@ -124,7 +151,8 @@ void ViewGraphics::deleteItem(GraphicsItem *item, bool isFreeMemory)
 {
     removeItem(item);
     m_scene->removeItem(item);
-
+    m_scene->update();
+    this->update();
     if (isFreeMemory) {
         delete item;
         item = nullptr;
@@ -135,6 +163,9 @@ void ViewGraphics::moveItemsByCmd(const QList<GraphicsItem *> &items,
                              const QPointF &pos, bool isMoved)
 {
     if (items.empty()) return;
+
+    m_modified = true;
+    emit changed();
 
     if (m_isUndoCmdEnabled) {
         ItemMoveCmd *moveCmd = new ItemMoveCmd(items, pos, this, isMoved);
@@ -148,18 +179,17 @@ void ViewGraphics::moveItems(const QList<GraphicsItem *> &items,
                              const QPointF &pos)
 {
     for (const auto &item : items) {
-        item->subItem()->moveBy(pos.x(), pos.y());
+        item->moveBy(pos);
         m_selectionManager->updateHandle(item);
-
-        if (item->subItem()->parentItem()) {
-            emit item->sendGraphicsItemChange();
-        }
     }
 }
 
 void ViewGraphics::resizeItemByCmd(int handleType, GraphicsItem *item,
                                    const QPointF &scale, bool isResized)
 {
+    m_modified = true;
+    emit changed();
+
     if (m_isUndoCmdEnabled) {
         ItemResizeCmd *resizeCmd = new ItemResizeCmd(handleType, item, scale, this, isResized);
         m_undoStack->push(resizeCmd);
@@ -178,12 +208,15 @@ void ViewGraphics::resizeItem(int handleType, GraphicsItem *item,
     m_selectionManager->updateHandle(item);
 
     if (item->subItem()->parentItem()) {
-        emit item->sendGraphicsItemChange();
+        emit item->sendGraphicsItemChanged();
     }
 }
 
 void ViewGraphics::rotateItemByCmd(GraphicsItem *item, const qreal angle)
 {
+    m_modified = true;
+    emit changed();
+
     if (m_isUndoCmdEnabled) {
         ItemRotateCmd *rotateCmd = new ItemRotateCmd(item, angle, this);
         m_undoStack->push(rotateCmd);
@@ -196,10 +229,6 @@ void ViewGraphics::rotateItem(GraphicsItem *item, const qreal angle)
 {
     item->setRotation(angle);
     m_selectionManager->updateHandle(item);
-
-    if (item->subItem()->parentItem()) {
-        emit item->sendGraphicsItemChange();
-    }
 }
 
 void ViewGraphics::alignItems(AlignType alignType)
@@ -214,8 +243,8 @@ void ViewGraphics::alignItems(AlignType alignType)
     QList<GraphicsItem *> itemList;
     for (auto item : items) {
         itemList.clear();
-        QGraphicsItemGroup *g = qgraphicsitem_cast<QGraphicsItemGroup *>(item->subItem()->parentItem());
-        if (g) {
+        QGraphicsItemGroup *group = qgraphicsitem_cast<QGraphicsItemGroup *>(item->subItem()->parentItem());
+        if (group) {
             continue;
         }
 
@@ -250,6 +279,9 @@ void ViewGraphics::alignItems(AlignType alignType)
         QPointF initPos = rect.center();
         QPointF movePos = lastPos - initPos;
         if ( !movePos.isNull() ) {
+            m_modified = true;
+            emit changed();
+
             itemList.push_back(item);
             moveItemsByCmd(itemList, movePos, false);
         }
@@ -270,6 +302,9 @@ void ViewGraphics::groupItemsByCmd()
         }
     }
 
+    m_modified = true;
+    emit changed();
+
     if (m_isUndoCmdEnabled) {
         ItemGroupCmd *groupCmd = new ItemGroupCmd(items, this);
         m_undoStack->push(groupCmd);
@@ -280,7 +315,7 @@ void ViewGraphics::groupItemsByCmd()
 
 GraphicsItem *ViewGraphics::groupItems(QList<GraphicsItem *> items)
 {
-    GraphicsItem *itemGroup = m_itemManager->createGraphicsItemGroup(items);
+    GraphicsItem *itemGroup = GraphicsItemManager::getInstance()->createGraphicsItemGroup(items);
     addItem(itemGroup);
     return itemGroup;
 }
@@ -298,6 +333,9 @@ void ViewGraphics::ungroupItemsByCmd()
     }
 
     if (items.isEmpty()) return;
+
+    m_modified = true;
+    emit changed();
 
     if (m_isUndoCmdEnabled) {
         ItemUngroupCmd *ungroupCmd = new ItemUngroupCmd(items, this);
@@ -331,11 +369,26 @@ void ViewGraphics::ungroupItems(QList<GraphicsItem *> items, bool isFreeMemory)
     }
 }
 
+void ViewGraphics::onAttributeValueChanged(AttributeBase *attribute, const QVariant &value, bool cmd)
+{
+    m_modified = true;
+    emit changed();
+
+    if (m_isUndoCmdEnabled && cmd) {
+        ItemAttributeChangedCmd *itemAttrChangedCmd =
+            new ItemAttributeChangedCmd(attribute, value, this, true);
+        m_undoStack->push(itemAttrChangedCmd);
+    }
+}
+
 void ViewGraphics::duplicateItemsByCmd()
 {
     QList<GraphicsItem *> items = selectedItems();
     qDebug() << "duplicateItems count:" << items.count();
     if (items.isEmpty()) return;
+
+    m_modified = true;
+    emit changed();
 
     if (m_isUndoCmdEnabled) {
         ItemCopyCmd *copyCmd = new ItemCopyCmd(items, this);
@@ -359,7 +412,7 @@ QList<GraphicsItem *> ViewGraphics::duplicateItems(QList<GraphicsItem *> items)
 
 QString ViewGraphics::getItemDisplayName(GraphicsItemType type)
 {
-    return m_itemManager->getItemDisplayName(type);
+    return GraphicsItemManager::getInstance()->getItemDisplayName(type);
 }
 
 
@@ -393,8 +446,8 @@ void ViewGraphics::addGroupItems(GraphicsItem *item)
 //        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) + 1);
 //    }
     addItemToSelectionManager(item);
-    m_itemManager->addItem(item->itemName(), item);
-//    qDebug() << "=========== itemCount:" << m_itemManager->itemCount();
+    GraphicsItemManager::getInstance()->addItem(item);
+//    qDebug() << "=========== itemCount:" << GraphicsItemManager::getInstance()->itemCount();
 }
 
 //void ViewGraphics::setZValue(GraphicsItem *item, int increment)
@@ -424,7 +477,7 @@ void ViewGraphics::removeItem(GraphicsItem *item)
 //        m_selectionManager->setZValue(item, m_selectionManager->zValue(item) - 1);
 //    }
     m_selectionManager->removeItem(item);
-    m_itemManager->removeItem(item->itemName());
+    GraphicsItemManager::getInstance()->removeItem(item->uid());
 }
 
 QAction *ViewGraphics::createUndoAction()
@@ -443,7 +496,11 @@ QAction *ViewGraphics::createRedoAction()
 
 bool ViewGraphics::canUndo() const
 {
-    return m_undoStack->canUndo();
+    bool isCanUndo = m_undoStack->canUndo();
+//    if (isCanUndo) {
+//        m_modified = false;
+//    }
+    return isCanUndo;
 }
 
 bool ViewGraphics::canRedo() const
@@ -486,17 +543,68 @@ void ViewGraphics::setIsControlModifier(bool newIsControlModifier)
 
 QList<GraphicsItem *> ViewGraphics::selectedItems()
 {
-    QList<GraphicsItem *> itemList;
+    QList<GraphicsItem *> selectedItemList;
 
     QList<QGraphicsItem *> items = m_scene->selectedItems();
     for (auto item : items) {
         GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
         if (handle->handleType() == GraphicsHandle::Drag) {
-            itemList << handle->item();
+            selectedItemList << handle->item();
+        }
+    }
+
+    return selectedItemList;
+}
+
+void ViewGraphics::wheelEvent(QWheelEvent *wheelEvent)
+{
+    if (wheelEvent->modifiers() == Qt::ControlModifier) {
+        int degree = wheelEvent->angleDelta().y() / 8;
+        QPoint zoomOrigin = wheelEvent->position().toPoint();
+        if (degree > 0)
+            emit zoomIn(zoomOrigin);
+        else if (degree < 0)
+            emit zoomOut(zoomOrigin);
+    }
+}
+
+QList<GraphicsItem *> ViewGraphics::items()
+{
+    QList<GraphicsItem *> itemList;
+
+    QSet<GraphicsItem *> items = m_scene->itemSet();
+    for (auto item : items) {
+        if (item->itemGroup() == nullptr) {
+            itemList << item;
         }
     }
 
     return itemList;
+}
+
+//QList<GraphicsItem *> ViewGraphics::items()
+//{
+//    QList<GraphicsItem *> itemList;
+
+//    QList<QGraphicsItem *> items = m_scene->items();
+//    for (auto item : items) {
+//        GraphicsHandle *handle = qgraphicsitem_cast<GraphicsHandle *>(item);
+//        if (handle->handleType() == GraphicsHandle::Drag) {
+//            GraphicsItem *item = handle->item();
+//            if (item->itemGroup() == nullptr) {
+//                itemList << item;
+//            }
+//        }
+//    }
+
+//    return itemList;
+//}
+void ViewGraphics::cleanAllSelected()
+{
+    auto items = m_scene->selectedItems();
+    for (auto item : items) {
+        item->setSelected(false);
+    }
 }
 
 QPointF ViewGraphics::opposite(GraphicsItem *item, int handleType) const
@@ -521,17 +629,114 @@ NodeBase* ViewGraphics::getCurrentSelectedNode()
         return canvasItem->getCurrentNode();
     }
 
-    return nullptr;
+    return m_scene->getCurrentNode();
 }
+
+void ViewGraphics::setModified(bool value)
+{
+    m_modified = value;
+}
+
+bool ViewGraphics::isModified() const
+{
+    return m_modified;
+}
+
+bool ViewGraphics::save()
+{
+
+}
+
+bool ViewGraphics::saveAs()
+{
+
+}
+
+bool ViewGraphics::saveFile(QString *errorString, const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        *errorString = tr("Could not open file:") + fileName + tr("\nfor writing:") + file.errorString() + ".";
+        return false;
+    }
+
+    QXmlStreamWriter xml(&file);
+    xml.setAutoFormatting(true);
+    xml.writeStartDocument();
+//    xml.writeDTD("<!DOCTYPE GraphicsView>");
+    xml.writeStartElement(CANVAS);
+    m_scene->getCurrentNode()->saveToXml(&xml);
+    for (auto item : items()) {
+        item->saveToXml(&xml);
+    }
+    xml.writeEndElement();
+    xml.writeEndDocument();
+    return true;
+}
+
+bool ViewGraphics::loadFile(QString *errorString, const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        *errorString = tr("Could not open file :") + fileName + tr("\nfor reading:") + file.errorString() + ".";
+        return false;
+    }
+
+    if (file.size() == 0) {
+        return true;
+    }
+
+    QXmlStreamReader xml(&file);
+    if (xml.readNextStartElement()) {
+        if ( xml.name().toString() == QString::fromUtf8(CANVAS) ) {
+            qreal width = xml.attributes().value(WIDTH).toDouble();
+            qreal height = xml.attributes().value(HEIGHT).toDouble();
+            m_scene->getCurrentNode()->getAttribute(QString::fromUtf8(WIDTH))->setValue(width);
+            m_scene->getCurrentNode()->getAttribute(QString::fromUtf8(HEIGHT))->setValue(height);
+            GraphicsItemManager::getInstance()->loadGraphicsItem(&xml);
+        }
+    }
+
+//    setCurrentFile(fileName);
+    if (xml.error()) {
+        *errorString = xml.errorString();
+    }
+
+    return !xml.error();
+}
+
+//void ViewGraphics::loadCanvas(QXmlStreamReader *xml)
+//{
+//    Q_ASSERT(xml->isStartElement() && xml->name() == "canvas");
+
+//    while (xml->readNextStartElement()) {
+//        GraphicsItem *item = NULL;
+//        if (xml->name() == tr("rect")) {
+//            item = new GraphicsRectItem(QRectF(0, 0, 100, 100));
+//        }else if (xml->name() == tr("roundrect")) {
+//            item = new GraphicsRectItem(QRect(0,0,1,1),true);
+//        else if ( xml->name() == tr("group")) {
+////            item =qgraphicsitem_cast<AbstractShape*>(loadGroupFromXML(xml));
+//        }
+//        else {
+//            xml->skipCurrentElement();
+//        }
+
+//        if (item && item->loadFromXml(xml))
+//            scene()->addItem(item);
+//        else if ( item )
+//            delete item;
+//    }
+//}
 //void ViewGraphics::createTextItem()
 //{
-//    GraphicsItem *textItem = m_itemManager->createGraphicsItem(GraphicsItemManager::TextItem);
+//    GraphicsItem *textItem = GraphicsItemManager::getInstance()->createGraphicsItem(GraphicsItemManager::TextItem);
 //    addItemToScene(textItem);
 //}
 
 //void ViewGraphics::createRectItem()
 //{
-//    GraphicsItem *rectItem = m_itemManager->createGraphicsItem(GraphicsItemManager::RectItem);
+//    GraphicsItem *rectItem = GraphicsItemManager::getInstance()->createGraphicsItem(GraphicsItemManager::RectItem);
 //    addItemToScene(rectItem);
 //    /*
 //    //    CanvasRectItem* rectItem = new CanvasRectItem();

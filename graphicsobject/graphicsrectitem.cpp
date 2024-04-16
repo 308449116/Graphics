@@ -2,8 +2,6 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
-
-
 GraphicsRectItem::GraphicsRectItem(const QRectF &rect, QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem(parent)
 {
@@ -45,12 +43,24 @@ void GraphicsRectItem::updateCoordinate()
     m_rectItem->moveBy(-diff.x(), -diff.y());
     m_rectItem->setTransformOriginPoint(m_localRect.center());
     m_initialRect = m_localRect;
-    updateAttribute();
+    updateBaseAttribute();
 }
 
 bool GraphicsRectItem::loadFromXml(QXmlStreamReader *xml)
 {
+    if (xml == nullptr) {
+        return false;
+    }
+    qDebug() << "GraphicsRectItem::loadFromXml";
+    return true;
+}
 
+bool GraphicsRectItem::saveToXml(QXmlStreamWriter *xml)
+{
+    if (xml == nullptr) {
+        return false;
+    }
+    return true;
 }
 
 GraphicsItem *GraphicsRectItem::duplicate() const
@@ -82,4 +92,9 @@ GraphicsItem *GraphicsRectItem::duplicate() const
 int GraphicsRectItem::type() const
 {
     return GraphicsItemType::RectItem;
+}
+
+void GraphicsRectItem::init()
+{
+
 }

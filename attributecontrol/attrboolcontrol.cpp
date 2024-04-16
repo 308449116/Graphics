@@ -19,6 +19,7 @@ void AttrBoolControl::setAttribute(AttributeBase *attribute)
     m_attribute = qobject_cast<BoolAttribute*>(attribute);
     this->setCurrentValue(m_attribute->getValue().toBool());
     this->setTagText(m_attribute->getDisplayName());
+    this->setEnabled(m_attribute->isEnable());
 
     QObject::connect(m_attribute, &BoolAttribute::valueChanged, this, &AttrBoolControl::onAttrValueChanged);
     QObject::connect(this, &AttrBoolControl::valueChanged, this, &AttrBoolControl::onControlValueChanged);

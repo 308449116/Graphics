@@ -4,7 +4,10 @@
 #include <QSet>
 #include <QGraphicsView>
 
-#include "graphicsobject/graphicsitemmanager.h"
+#include "graphicsobject/graphicsitem.h"
+//#include "utils/exceptions.h"
+
+const static double ZOOM_FACTOR = 1.05;
 
 enum AlignType
 {
@@ -25,6 +28,7 @@ enum AlignType
 class QUndoView;
 class QUndoStack;
 class SceneGraphics;
+class AttributeBase;
 class UndoCmdManager;
 class GraphicsItemManager;
 class GraphicsSelectionManager;
@@ -106,22 +110,44 @@ public:
 
     void setIsControlModifier(bool newIsControlModifier);
 
-    QList<GraphicsItem *> selectedItems();
+    void cleanAllSelected();
 
     QPointF opposite(GraphicsItem *item, int handleType) const;
 
     void updateHandle(GraphicsItem *item);
 
     NodeBase *getCurrentSelectedNode();
+
+    void setModified(bool value);
+
+    bool isModified() const;
+
+    bool save();
+    bool saveAs();
+    bool saveFile(QString *errorString, const QString &fileName);
+
+    bool loadFile(QString *errorString, const QString &fileName);
+
+    QList<GraphicsItem *> items();
+
+    QList<GraphicsItem *> selectedItems();
+
+//    void loadCanvas(QXmlStreamReader *xml);
 signals:
     void itemSelectedChanged();
+    void changed();
+    void zoomIn(const QPoint &zoomOrigin);
+    void zoomOut(const QPoint &zoomOrigin);
 
 protected:
+    void wheelEvent(QWheelEvent *wheelEvent) override;
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 
-public slots:
+private slots:
+    void onAttributeValueChanged(AttributeBase *attribute, const QVariant& value, bool cmd);
+
 //    void removeItemsByCmd(const QList<GraphicsItem *> &items);
 //    void selectedStateChange(GraphicsItem *item, bool checked);
 //    void updateItemHandle(GraphicsItem *item);
@@ -137,13 +163,15 @@ private:
 private:
     bool m_isUndoCmdEnabled = true;
     SceneGraphics *m_scene = nullptr;
-    GraphicsItemManager *m_itemManager = nullptr;
+//    GraphicsItemManager *m_itemManager = nullptr;
     GraphicsSelectionManager *m_selectionManager = nullptr;
     QUndoStack *m_undoStack = nullptr;
+    bool m_modified = false;
+//    mutable bool m_modified = false;
 
-    //    QSet<GraphicsItem *> m_manageItem;
+//    QSet<GraphicsItem *> m_manageItem;
 //    bool m_isMousePress = false;
-    //    GraphicsItem  *m_currentItem = nullptr;
+//    GraphicsItem  *m_currentItem = nullptr;
 };
 
 #endif // VIEWGRAPHICS_H

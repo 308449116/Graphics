@@ -5,7 +5,7 @@
 AttributeWidget::AttributeWidget(QWidget *parent)
     :QWidget(parent)
 {
-    m_pMainLayout = new QVBoxLayout(this);
+    m_mainLayout = new QVBoxLayout(this);
     this->setMinimumWidth(100);
 }
 
@@ -17,9 +17,9 @@ AttributeWidget::~AttributeWidget()
 // 设置当前显示的节点
 void AttributeWidget::setCurrentAttrNode(NodeBase *node)
 {
-    if (m_pWidget) {
-        m_pWidget->deleteLater();
-        m_pWidget = nullptr;
+    if (m_widget) {
+        m_widget->deleteLater();
+        m_widget = nullptr;
     }
 
     QWidget *widget = NodeAttrControl::createNodeWidget(node);
@@ -27,8 +27,8 @@ void AttributeWidget::setCurrentAttrNode(NodeBase *node)
         return;
     }
 
-    m_pWidget = widget;
+    m_widget = widget;
 
     // 设置Widget
-    m_pMainLayout->addWidget(widget);
+    m_mainLayout->addWidget(widget);
 }

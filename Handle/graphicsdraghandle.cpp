@@ -1,7 +1,7 @@
 #include "graphicsdraghandle.h"
 #include "graphicsselection.h"
 #include "viewgraphics.h"
-#include "graphicsobject/graphicstextitem.h"
+//#include "graphicsobject/graphicstextitem.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -26,7 +26,8 @@ void GraphicsDragHandle::customPaint(QPainter *painter, const QStyleOptionGraphi
 
 //    qDebug() << "GraphicsDragHandle boundingRect" << m_item->boundingRect();
 //    qDebug() << "GraphicsDragHandle boundingRect" << boundingRect();
-//    if (getState() & GraphicsHandleState::HandleActive) {
+//    if ((getState() & GraphicsHandleState::HandleActive) ||
+//        m_item->type() == GraphicsItemType::GroupItem) {
         painter->save();
         painter->setPen(Qt::DashLine);
         QRectF rect = mapRectFromItem(m_item->subItem(), m_item->getRect());
@@ -47,6 +48,9 @@ void GraphicsDragHandle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug () << "boundingRect:" << m_item->subItem()->boundingRect();
     qDebug () << "scenePos:" << m_item->subItem()->scenePos();
     qDebug () << "sceneBoundingRect:" << m_item->subItem()->sceneBoundingRect();
+    qDebug () << "mapRectToScene:" << m_item->subItem()->mapRectToScene(m_item->getRect());
+    qDebug () << "uid:" << m_item->uid();
+    qDebug () << "zValue:" << m_selection->zValue();
 
 //    qDebug() << "========= mousePressEvent getRect:" << m_item->getRect();
 //    qDebug() << "========= mousePressEvent sceneBoundingRect:" << m_item->subItem()->sceneBoundingRect();
@@ -119,42 +123,37 @@ void GraphicsDragHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     //Undo/Redo 移动处理
     if (m_itemPosHash.count() > 0 && m_lastPos != m_pressedPos) {
         m_view->moveItemsByCmd(m_itemPosHash.keys(), m_offsetPos, true);
-        for (auto item : m_itemPosHash.keys()) {
-            if (item->subItem()->parentItem()) {
-                emit item->sendGraphicsItemChange();
-            }
-        }
     }
 
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void GraphicsDragHandle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (m_item->type() == GraphicsItemType::TextItem) {
-        // 弹出文本输入框
-        bool ok;
-        QString text = QInputDialog::getText(nullptr, "输入对话框", "请输入文本:", QLineEdit::Normal, "", &ok);
+//void GraphicsDragHandle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    if (m_item->type() == GraphicsItemType::TextItem) {
+//        // 弹出文本输入框
+//        bool ok;
+//        QString text = QInputDialog::getText(nullptr, "输入对话框", "请输入文本:", QLineEdit::Normal, "", &ok);
 
-        if (ok && !text.isEmpty()) {
-            GraphicsTextItem *textItem = dynamic_cast<GraphicsTextItem *>(m_item);
-//            qDebug() << "========= 11111111111111111111 pixelSize:" << textItem->font().pixelSize();
+//        if (ok && !text.isEmpty()) {
+//            GraphicsTextItem *textItem = dynamic_cast<GraphicsTextItem *>(m_item);
+////            qDebug() << "========= 11111111111111111111 pixelSize:" << textItem->font().pixelSize();
 
-            if (textItem) {
-                QFont font = textItem->font();
-//                qDebug() << "========= 2222222222222222222 input Size:" << text.toInt();
-//                font.setPixelSize(text.toInt());
-//                qDebug() << "========= 444444444444444 font Size:" << font.pixelSize();
-                textItem->setText(text);
-//                textItem->setFont(font);
-                m_selection->updateHandle();
-            }
-//            qDebug() << "========= 3333333333 pixelSize:" << textItem->font().pixelSize();
+//            if (textItem) {
+//                QFont font = textItem->font();
+////                qDebug() << "========= 2222222222222222222 input Size:" << text.toInt();
+////                font.setPixelSize(text.toInt());
+////                qDebug() << "========= 444444444444444 font Size:" << font.pixelSize();
+//                textItem->setText(text);
+////                textItem->setFont(font);
+//                m_selection->updateHandle();
+//            }
+////            qDebug() << "========= 3333333333 pixelSize:" << textItem->font().pixelSize();
 
-        }
-    }
-    QGraphicsItem::mouseDoubleClickEvent(event);
-}
+//        }
+//    }
+//    QGraphicsItem::mouseDoubleClickEvent(event);
+//}
 
 QVariant GraphicsDragHandle::itemChange(GraphicsItemChange change, const QVariant &value)
 {

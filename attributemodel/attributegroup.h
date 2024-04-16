@@ -36,7 +36,7 @@ public:
     QString getDisplayName() const;
 
 private:
-    NodeBase *m_pParentNode = nullptr;
+    NodeBase *m_parentNode = nullptr;
     QList<AttributeBase*> m_attributes;
     QString m_groupName;
     QString m_displayName;

@@ -20,12 +20,12 @@ public:
     // 设置右侧文本
     void setRightText(const QString& text);
 
-private:
-    CustomSwitchWidget *m_pSwitchWidget = nullptr;
-    QLabel *m_pLabel = nullptr;
-
 signals:
     void valueChanged(bool isOn, bool cmd = false);
+
+private:
+    CustomSwitchWidget *m_switchWidget = nullptr;
+    QLabel *m_label = nullptr;
 };
 
 #endif

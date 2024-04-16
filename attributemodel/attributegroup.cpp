@@ -56,13 +56,13 @@ AttributeBase *AttributeGroup::getAttribute(const QString& name) const
 // 设置父节点
 void AttributeGroup::setParentNode(NodeBase *node)
 {
-    m_pParentNode = node;
+    m_parentNode = node;
     this->setParent(node);
 }
 
 NodeBase *AttributeGroup::getParentNode() const
 {
-    return m_pParentNode;
+    return m_parentNode;
 }
 
 // 设置/获取属性组的名称

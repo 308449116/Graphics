@@ -5,18 +5,19 @@
 #include <QHash>
 #include <QSharedPointer>
 
-
 #include "graphicsitem.h"
+#include "viewgraphics.h"
 
-class ViewGraphics;
+class AttributeBase;
 class GraphicsSelectionManager;
 
 class GraphicsItemManager : public QObject
 {
     Q_OBJECT
+
 public:
-    explicit GraphicsItemManager(QObject *parent = nullptr);
-    ~GraphicsItemManager();
+
+    static GraphicsItemManager* getInstance();
 
     // 创建图元
     GraphicsItem *createGraphicsItem(
@@ -43,16 +44,32 @@ public:
 
     int itemCount();
 
-    void addItem(const QString &name, GraphicsItem *item);
+    void addItem(GraphicsItem *item);
 
-    void removeItem(const QString &name);
+    void removeItem(const QString &uid);
+
+    // 设置/获取当前的view
+    void setCurrentGraphicsView(ViewGraphics *view);
+    ViewGraphics *getCurrentGraphicsView();
+
+    void loadGraphicsItem(QXmlStreamReader *xml);
+
+    GraphicsItem *loadGraphicsItemGroup(QXmlStreamReader *xml);
+
+    GraphicsItemType getTypeByName(const QString &name);
 
 private:
+    explicit GraphicsItemManager(QObject *parent = nullptr);
+    GraphicsItemManager(const GraphicsItemManager &) = delete;
+    GraphicsItemManager &operator=(const GraphicsItemManager&) = delete;
+    ~GraphicsItemManager();
+    int getChildItemCount(GraphicsItem *item);
     void manageItem(GraphicsItem *item, const QString& itemName);
 
 private:
-    QHash<QString, GraphicsItem *> m_nameHash;
-    QMap<GraphicsItemType, int> m_countMap;
+    QHash<QString, GraphicsItem *> m_graphicsManager;
+    QMap<GraphicsItemType, int> m_counterItemType;
+    ViewGraphics *m_grphicsView = nullptr;
 };
 
 #endif // GRAPHICSITEMMANAGER_H

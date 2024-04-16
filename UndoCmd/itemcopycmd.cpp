@@ -43,6 +43,5 @@ void ItemCopyCmd::redo()
             m_view->addItem(item);
         }
     }
-
     this->setText(QString("Redo Copy [%1]").arg(m_strName));
 }

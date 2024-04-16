@@ -14,9 +14,13 @@ public:
 
     bool loadFromXml(QXmlStreamReader *xml) override;
 
+    bool saveToXml(QXmlStreamWriter *xml) override;
+
     GraphicsItem *duplicate() const override;
 
     int type() const override;
+
+    void init() override;
 
 private:
     QGraphicsRectItem *m_rectItem = nullptr;

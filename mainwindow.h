@@ -26,6 +26,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void zoomInAtPos(const QPoint &pos);
+    void zoomOutAtPos(const QPoint &pos);
+
 public slots:
     void onSelectedItemChanged();
 
@@ -35,9 +38,13 @@ public slots:
 
     void on_barcodeBtn_clicked();
 
-    void on_underLineBtn_clicked(bool checked);
+//    void on_underLineBtn_clicked(bool checked);
 
     void updateActions();
+
+private:
+    void showZoomIndicator();
+    void zoomAtPos(const QPoint &pos, double scale);
 
 private:
     Ui::MainWindow *ui;
@@ -61,6 +68,7 @@ private:
 
     QAction *m_zoomInAct;
     QAction *m_zoomOutAct;
+    QAction *m_zoomResetAct;
 
     QAction *m_groupAct;
     QAction *m_ungroupAct;

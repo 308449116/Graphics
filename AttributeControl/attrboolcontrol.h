@@ -15,12 +15,12 @@ public:
     // 设置属性
     void setAttribute(AttributeBase *attribute);
 
-private:
-    BoolAttribute *m_attribute = nullptr;
-
 private slots:
     void onAttrValueChanged(const QVariant& value);
     void onControlValueChanged(bool value, bool cmd = false);
+
+private:
+    BoolAttribute *m_attribute = nullptr;
 };
 
 #endif

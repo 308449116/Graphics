@@ -3,17 +3,16 @@
 CustomLineEditControl::CustomLineEditControl(QWidget *parent)
     :CustomCombineControlBase(parent)
 {
-    m_pLineEdit = new CustomLineEdit;
-    m_pMainLayout->addWidget(m_pLineEdit);
-    m_pLineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_lineEdit = new CustomLineEdit;
+    m_mainLayout->addWidget(m_lineEdit);
+    m_lineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    m_pToolButton = new QToolButton;
-    m_pMainLayout->addWidget(m_pToolButton);
+    m_toolButton = new QToolButton;
+    m_mainLayout->addWidget(m_toolButton);
 
-    // 转发信后
-    QObject::connect(m_pLineEdit, &QLineEdit::textChanged, this, &CustomLineEditControl::textChanged);
-    QObject::connect(m_pLineEdit, &QLineEdit::editingFinished, this, &CustomLineEditControl::editingFinished);
-    QObject::connect(m_pToolButton, &QToolButton::clicked, this, &CustomLineEditControl::clickedToolButton);
+    QObject::connect(m_lineEdit, &QLineEdit::textChanged, this, &CustomLineEditControl::textChanged);
+    QObject::connect(m_lineEdit, &QLineEdit::editingFinished, this, &CustomLineEditControl::editingFinished);
+    QObject::connect(m_toolButton, &QToolButton::clicked, this, &CustomLineEditControl::clickedToolButton);
 
     this->setWidth(400);
     this->setHeight(30);
@@ -24,29 +23,33 @@ CustomLineEditControl::~CustomLineEditControl()
 
 }
 
-// 设置按钮相关
 void CustomLineEditControl::setToolButtonVisible(bool isVisible)
 {
-    m_pToolButton->setVisible(isVisible);
+    m_toolButton->setVisible(isVisible);
 }
 
 void CustomLineEditControl::setToolButtonText(const QString& text)
 {
-    m_pToolButton->setText(text);
+    m_toolButton->setText(text);
 }
 
 void CustomLineEditControl::setToolButtonIcon(const QIcon& icon)
 {
-    m_pToolButton->setIcon(icon);
+    m_toolButton->setIcon(icon);
 }
 
-// 设置文本
 void CustomLineEditControl::setText(const QString& string)
 {
-    m_pLineEdit->setText(string);
+    m_lineEdit->setText(string);
 }
 
 QString CustomLineEditControl::getText()
 {
-    return m_pLineEdit->text();
+    return m_lineEdit->text();
+}
+
+void CustomLineEditControl::setEnabled(bool enabled)
+{
+    m_lineEdit->setEnabled(enabled);
+    m_toolButton->setEnabled(enabled);
 }

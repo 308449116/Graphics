@@ -1,8 +1,11 @@
 #include "graphicsitemgroup.h"
 #include "graphicsitem.h"
-
+#include "attributemodel/groupnode.h"
+#include "utils/attribute_constants.h"
 
 #include <QPainter>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 GraphicsItemGroup::GraphicsItemGroup(QGraphicsItem *parentItem, QObject *parent)
     : GraphicsItem{parent}
@@ -16,7 +19,7 @@ GraphicsItemGroup::GraphicsItemGroup(QList<GraphicsItem *> items, QGraphicsItem 
     : GraphicsItem{parent}
 {
     m_subItem = m_group = new QGraphicsItemGroup(parentItem);
-    for (auto item : items){
+    for (auto item : items) {
         QGraphicsItemGroup *g = dynamic_cast<QGraphicsItemGroup*>(item->subItem()->parentItem());
         if ( !g ) {
             GraphicsItemGroup::addToGroup(item);
@@ -43,54 +46,17 @@ int GraphicsItemGroup::type() const
     return GraphicsItemType::GroupItem;
 }
 
-//QRectF GraphicsItemGroup::boundingRect() const
-//{
-//    return getRect();
-//}
-
-//void GraphicsItemGroup::updateCoordinate(bool isGroup)
-//{
-//    foreach (QGraphicsItem *item , childItems()) {
-//        GraphicsItem *abstractItem = qgraphicsitem_cast<GraphicsItem*>(item);
-//        if (abstractItem) {
-//            qDebug() << "isGroup:" << isGroup;
-
-//            abstractItem->updateCoordinate(true);
-//        }
-//    }
-
-////    qDebug() << "2222222222 transformOriginPoint:" << transformOriginPoint();
-////    qDebug() << "2222222222 m_localRect.center():" << m_localRect.center();
-////    qDebug() << "2222222222 delta:" << delta;
-//    if (m_localRect == nullptr) {
-//        m_localRect = QGraphicsItemGroup::boundingRect();
-//        qDebug() << "m_localRect:" << m_localRect;
-//    }
-
-//    QPointF pt1, pt2, delta;
-//    pt1 = mapToScene(transformOriginPoint());
-//    pt2 = mapToScene(m_localRect.center());
-//    delta = pt1 - pt2;
-//    //    if (!parentItem()) {
-//    prepareGeometryChange();
-////    m_localRect = QRectF(-m_width / 2, -m_height / 2, m_width, m_height);
-//    m_width = m_localRect.width();
-//    m_height = m_localRect.height();
-//    setTransform(transform().translate(delta.x(), delta.y()));
-//    setTransformOriginPoint(m_localRect.center());
-//    moveBy(-delta.x(), -delta.y());
-////    setTransform(transform().translate(-delta.x(), -delta.y()));
-//    m_oppositePos = m_localRect.center();
-//    //    }
-
-//    m_initialRect = m_localRect;
-//    m_ratio = m_width / m_height;
-//}
+void GraphicsItemGroup::init()
+{
+    m_AtrributeNode = new GroupNode(this);
+}
 
 void GraphicsItemGroup::updateCoordinate()
 {
     for (auto childItem : this->getChildItems()) {
-        childItem->updateCoordinate();
+        if (childItem) {
+            childItem->updateCoordinate();
+        }
     }
 
 //    if (m_localRect == nullptr) {
@@ -122,12 +88,38 @@ void GraphicsItemGroup::updateCoordinate()
 //    m_group->setTransform(m_group->transform().translate(delta.x(),delta.y()));
 //    m_group->setTransformOriginPoint(m_localRect.center());
 //    m_group->moveBy(-delta.x(),-delta.y());
-    //    m_oppositePos = m_localRect.center();
+//    m_oppositePos = m_localRect.center();
 }
 
 bool GraphicsItemGroup::loadFromXml(QXmlStreamReader *xml)
 {
+    Q_UNUSED(xml)
+    qDebug()<<"GraphicsItemGroup::loadFromXml";
+//    if (xml == nullptr) {
+//        return false;
+//    }
 
+//    readBaseAttributes(xml);
+//    m_AtrributeNode->loadFromXml(xml);
+    return true;
+}
+
+bool GraphicsItemGroup::saveToXml(QXmlStreamWriter *xml)
+{
+    if (xml == nullptr) {
+        return false;
+    }
+
+    xml->writeStartElement(Utils::Constants::GROUP);
+    writeBaseAttributes(xml);
+    m_AtrributeNode->saveToXml(xml);
+
+    for (auto childItem : m_childItems) {
+        childItem->saveToXml(xml);
+    }
+
+    xml->writeEndElement();
+    return true;
 }
 
 //void GraphicsItemGroup::setRotation(qreal newAngle)
@@ -210,7 +202,7 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
     m_group->addToGroup(item->subItem());
     m_childItems.insert(item);
 
-    QObject::connect(item, &GraphicsItem::sendGraphicsItemChange, this, [this](){
+    QObject::connect(item, &GraphicsItem::sendGraphicsItemChanged, this, [this](){
         QRectF rect;
         for (auto childItem : m_childItems) {
             QTransform itemTransform = childItem->subItem()->itemTransform(m_group);
@@ -219,10 +211,11 @@ void GraphicsItemGroup::addToGroup(GraphicsItem *item)
         }
         m_localRect = rect;
         updateCoordinate();
-
         emit sendUpdateHandle();
+        updateBaseAttribute();
+
         if (this->itemGroup()) {
-            emit this->sendGraphicsItemChange();
+            emit sendGraphicsItemChanged();
         }
     });
 
@@ -261,6 +254,7 @@ void GraphicsItemGroup::removeFromGroup(GraphicsItem *item)
 //    }
     m_group->removeFromGroup(item->subItem());
     m_childItems.remove(item);
+
 //    m_localRect = childrenBoundingRect();
 }
 

@@ -27,13 +27,13 @@ public:
 protected:
     virtual QSize sizeHint() const override;
 
-private:
-    QVBoxLayout *m_pMainLayout = nullptr;
-    CustomGroupTitleItem *m_pTitleItemWidget = nullptr;
-    CustomGroupContentItem *m_pContentItemWidget = nullptr;
-
 private slots:
     void onClickedGroupTitleItem(bool isExpanded);
+
+private:
+    QVBoxLayout *m_mainLayout = nullptr;
+    CustomGroupTitleItem *m_titleItemWidget = nullptr;
+    CustomGroupContentItem *m_contentItemWidget = nullptr;
 };
 
 // -----------------------------------------------------------------------------
@@ -50,18 +50,18 @@ public:
     void setTitleText(const QString& titleNameString);
 
     friend class CustomGroupControl;
+
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void customPaint(QPainter *painter) override;
     virtual QSize sizeHint() const override;
 
-private:
-    QString m_cTitleName;
-
-    bool m_isExpanding = true;
-
 signals:
     void clickedTitle(bool isExpanded);
+
+private:
+    QString m_titleName;
+    bool m_isExpanding = true;
 };
 
 // -----------------------------------------------------------------------------
@@ -78,11 +78,12 @@ public:
     void insertWidget(int index, QWidget *widget);
 
     friend class CustomGroupControl;
+
 protected:
     virtual QSize sizeHint() const override;
 
 private:
-    QVBoxLayout *m_pLayout = nullptr;
+    QVBoxLayout *m_layout = nullptr;
 };
 
 #endif

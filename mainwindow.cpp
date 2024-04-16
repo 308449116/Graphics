@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "attributeview/attributewidget.h"
+#include "utils/fadingindicator.h"
+//#include "messageeditortr.h"
+
 //#include "graphicsitemmanager.h"
 //#include "graphicstextitem.h"
 #include <QGraphicsItem>
@@ -8,6 +11,7 @@
 #include <QGraphicsSimpleTextItem>
 #include <QDockWidget>
 #include <QUndoView>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,13 +30,26 @@ MainWindow::MainWindow(QWidget *parent)
     //放大功能
     m_zoomInAct = new QAction(QIcon(":/icons/zoomin"), tr("zoomIn"));
     connect(m_zoomInAct, &QAction::triggered, this, [this]() {
-        ui->graphicsView->scale(1.2, 1.2);
+        QTransform transform = ui->graphicsView->transform();
+        transform.scale(ZOOM_FACTOR, ZOOM_FACTOR);
+        ui->graphicsView->setTransform(transform);
+        showZoomIndicator();
     });
 
     //缩小功能
     m_zoomOutAct = new QAction(QIcon(":/icons/zoomout"), tr("zoomOut"));
     connect(m_zoomOutAct, &QAction::triggered, this, [this]() {
-        ui->graphicsView->scale(1.0/1.2, 1.0/1.2);
+        QTransform transform = ui->graphicsView->transform();
+        transform.scale(1.0 / ZOOM_FACTOR, 1.0 / ZOOM_FACTOR);
+        ui->graphicsView->setTransform(transform);
+        showZoomIndicator();
+    });
+
+    //缩放重置功能
+    m_zoomResetAct = new QAction(QIcon(":/icons/align_all"), tr("zoomReset"));
+    connect(m_zoomResetAct, &QAction::triggered, this, [this]() {
+        ui->graphicsView->setTransform(QTransform());
+        showZoomIndicator();
     });
 
     //多选功能
@@ -105,6 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->editToolBar->addAction(m_redoAct);
     ui->editToolBar->addSeparator();
 
+    ui->editToolBar->addAction(m_zoomResetAct);
     ui->editToolBar->addAction(m_zoomInAct);
     ui->editToolBar->addAction(m_zoomOutAct);
     ui->editToolBar->addSeparator();
@@ -156,6 +174,12 @@ MainWindow::MainWindow(QWidget *parent)
     updateActions();
     connect(&m_timer, &QTimer::timeout, this, &MainWindow::updateActions);
     m_timer.start(1000);
+
+    connect(ui->graphicsView, &ViewGraphics::zoomIn,
+            this, &MainWindow::zoomInAtPos);
+    connect(ui->graphicsView, &ViewGraphics::zoomOut,
+            this, &MainWindow::zoomOutAtPos);
+
     //    int width = 600;
     //    int height = 400;
     //    QRectF rect(-width/2, -height/2, width, height);
@@ -243,17 +267,17 @@ void MainWindow::on_barcodeBtn_clicked()
     //    ui->graphicsView->createItemByCmd(GraphicsItemType::BarcodeItem);
 }
 
-void MainWindow::on_underLineBtn_clicked(bool checked)
-{
-    //    qDebug() << "checked:"<< checked;
-    //    QFont font = textItem->getCurrentFont();
-    //    font.setUnderline(true);
-    //    font.setOverline(true);
-    //    font.setItalic(true);
-    //    font.setStrikeOut(true);
-    //    font.setBold(true);
-    //    textItem->setCurrentFont(font);
-}
+//void MainWindow::on_underLineBtn_clicked(bool checked)
+//{
+//    //    qDebug() << "checked:"<< checked;
+//    //    QFont font = textItem->getCurrentFont();
+//    //    font.setUnderline(true);
+//    //    font.setOverline(true);
+//    //    font.setItalic(true);
+//    //    font.setStrikeOut(true);
+//    //    font.setBold(true);
+//    //    textItem->setCurrentFont(font);
+//}
 
 void MainWindow::updateActions()
 {
@@ -275,4 +299,41 @@ void MainWindow::onSelectedItemChanged()
 {
     NodeBase* node = ui->graphicsView->getCurrentSelectedNode();
     m_pAttributeWidget->setCurrentAttrNode(node);
+}
+
+void MainWindow::zoomInAtPos(const QPoint &pos)
+{
+    zoomAtPos(pos, ZOOM_FACTOR);
+}
+
+void MainWindow::zoomOutAtPos(const QPoint &pos)
+{
+    zoomAtPos(pos, 1.0 / ZOOM_FACTOR);
+}
+
+void MainWindow::zoomAtPos(const QPoint &pos, double scale)
+{
+    QPointF scenePos = ui->graphicsView->mapToScene(pos);
+    QTransform transform = ui->graphicsView->transform();
+    transform.scale(scale, scale);
+    ui->graphicsView->setTransform(transform);
+    QPoint scaledPos = ui->graphicsView->mapFromScene(scenePos);
+    QPoint delta = pos - scaledPos;
+    QScrollBar *hBar = ui->graphicsView->horizontalScrollBar();
+    if (hBar) {
+        hBar->setValue(hBar->value() - delta.x());
+    }
+    QScrollBar *vBar = ui->graphicsView->verticalScrollBar();
+    if (vBar) {
+        vBar->setValue(vBar->value() - delta.y());
+    }
+    showZoomIndicator();
+}
+
+void MainWindow::showZoomIndicator()
+{
+    int scale = int(ui->graphicsView->transform().map(QPointF(100, 100)).x() + 0.5);
+    Utils::FadingIndicator::showText(ui->graphicsView,
+                                     tr("Zoom: %1%").arg(scale),
+                                     Utils::FadingIndicator::SmallText);
 }

@@ -15,13 +15,14 @@ public:
     // 设置属性
     void setAttribute(AttributeBase *attribute);
 
-private:
-    IntAttribute *m_attribute = nullptr;
-
 private slots:
     void onAttrValueChanged(const QVariant& value);
     void onControlValueChanged(int value, bool cmd = false);
     void onSuffixTypeChanged(NumericAttribute::SuffixType type);
+    void onEnableChanged(bool enabled);
+
+private:
+    IntAttribute *m_attribute = nullptr;
 };
 
 #endif
